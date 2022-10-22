@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Simple Template</string>
+
+    <!-- MoviesHome: -->
+    <!-- -->
+    <string name="movies_home_error">There was a problem loading the movie list. Sorry for the inconvenience.</string>
+
+    <!-- MovieDetail: -->
+    <!-- Dummy movie data: -->
+    <string name="movie_details_title">Movie detail</string>
+    <string name="dummy_movie_title">Léon: The Professional</string>
+    <string name="dummy_movie_original_title">Léon</string>
+    <string name="dummy_movie_full_title">Léon: The Professional (1994)</string>
+    <string name="dummy_movie_year">1994</string>
+    <string name="dummy_movie_release_date">1994–11–18</string>
+    <string name="dummy_movie_runtime">1h 50 min</string>
+    <string name="dummy_movie_plot">12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all</string>
+    <string name="dummy_movie_directors">Luc Besson</string>
+
+    <!-- ¿?: -->
+    <string name="movie_detail_error">There was a problem loading the movie detail. Sorry for the inconvenience.</string>
+</resources>

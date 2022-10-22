@@ -1,0 +1,123 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.maneletorres.simpletemplate"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion rootProject.composeCompilerVersion
+    }
+    namespace 'com.maneletorres.simpletemplate'
+}
+
+dependencies {
+    // region Dependency injection (DI) libraries:
+    implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
+    // endregion
+
+    // region AndroidX libraries:
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
+    //implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentKtxVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    implementation "androidx.cardview:cardview:$rootProject.cardViewVersion"
+    // endregion
+
+    // region Lifecycle libraries:
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    // endregion
+
+    // region Kotlin libraries:
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
+    // endregion
+
+    // region Retrofit libraries:
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    // endregion
+
+    // region OkHttp libraries:
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+    // endregion
+
+    // region Gson libraries:
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    // endregion
+
+    // region UI libraries:
+    implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
+    implementation "com.hannesdorfmann:adapterdelegates4:$rootProject.adapterDelegatesVersion"
+    // implementation "com.github.skydoves:landscapist-coil:$rootProject.coilVersion"
+    implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
+
+    // region Glide libraries:
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    // endregion
+    // endregion
+
+    // region Navigation:
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+    implementation "androidx.navigation:navigation-compose:$rootProject.navigationVersion"
+    // endregion
+
+    // region Jetpack Compose:
+    implementation "androidx.activity:activity-compose:$rootProject.activityComposeVersion"
+    implementation "androidx.compose.material:material:$rootProject.composeVersion"
+    implementation "androidx.compose.animation:animation:$rootProject.composeVersion"
+    implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelComposeVersion"
+    // endregion
+
+    // region Util libraries:
+    // TODO: implementation "com.ncorti.ktfmt.gradle:plugin:rootProject."
+    // TODO: implementation "com.vanniktech:gradle-android-junit-jacoco-plugin:rootProject."
+    // endregion
+
+    // region Testing libraries:
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    // endregion
+}
