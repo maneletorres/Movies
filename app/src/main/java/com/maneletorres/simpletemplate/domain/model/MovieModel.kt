@@ -7,10 +7,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MovieModel(
     override val id: String,
+    val rank: String,
+    val rankUpDown: String,
     val title: String,
-    val originalTitle: String,
-    val overview: String? = null,
-    val adult: Boolean,
-    val popularity: Float,
-    val posterPath: String? = null,
+    val fullTitle: String,
+    val year: String,
+    val image: String,
+    val crew: String,
+    val imdbRating: String? = "",
+    val imdbRatingCount: String? = ""
 ) : Identifiable, Parcelable

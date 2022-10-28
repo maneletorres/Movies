@@ -2,20 +2,23 @@ package com.maneletorres.simpletemplate.network.model
 
 import com.maneletorres.simpletemplate.domain.model.MovieModel
 import com.maneletorres.simpletemplate.domain.util.DomainMapper
-import com.maneletorres.simpletemplate.network.response.theMoviesDB.MovieDto
+import com.maneletorres.simpletemplate.network.response.MovieDto
 
-class MovieDtoMapper: DomainMapper<MovieDto, MovieModel> {
+class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
 
     override fun mapToDomainModel(model: MovieDto): MovieModel {
         with (model) {
             return MovieModel(
-                id = id.toString(),
+                id = id,
+                rank = rank,
+                rankUpDown = rankUpDown,
                 title = title,
-                originalTitle = originalTitle,
-                overview = overview,
-                adult = adult,
-                popularity = popularity,
-                posterPath = image
+                fullTitle = fullTitle,
+                year = year,
+                image = image,
+                crew = crew,
+                imdbRating = imdbRating,
+                imdbRatingCount = imdbRatingCount
             )
         }
     }
@@ -23,13 +26,16 @@ class MovieDtoMapper: DomainMapper<MovieDto, MovieModel> {
     override fun mapFromDomainModel(domainModel: MovieModel): MovieDto {
         with (domainModel) {
             return MovieDto(
-                id = id.toInt(),
+                id = id,
+                rank = rank,
+                rankUpDown = rankUpDown,
                 title = title,
-                originalTitle = originalTitle,
-                overview = overview,
-                adult = adult,
-                popularity = popularity,
-                image = posterPath
+                fullTitle = fullTitle,
+                year = year,
+                image = image,
+                crew = crew,
+                imdbRating = imdbRating,
+                imdbRatingCount = imdbRatingCount
             )
         }
     }

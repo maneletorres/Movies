@@ -5,7 +5,7 @@ import com.maneletorres.simpletemplate.domain.id.Identifiable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class IMDBMovieDetailModel(
+data class MovieDetailModel(
     override val id: String,
     val title: String,
     val originalTitle: String,

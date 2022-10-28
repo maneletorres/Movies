@@ -11,10 +11,9 @@ import com.maneletorres.simpletemplate.domain.error.GlobalErrorMapperImpl
 import com.maneletorres.simpletemplate.domain.repository.MovieDetailRepository
 import com.maneletorres.simpletemplate.domain.repository.MovieRepository
 import com.maneletorres.simpletemplate.network.*
-import com.maneletorres.simpletemplate.network.model.IMDBMovieDetailDtoMapper
-import com.maneletorres.simpletemplate.network.model.IMDBMovieDtoMapper
+import com.maneletorres.simpletemplate.network.model.MovieDetailDtoMapper
 import com.maneletorres.simpletemplate.network.model.MovieDtoMapper
-import com.maneletorres.simpletemplate.network.util.IMDB_API_BASE_URL
+import com.maneletorres.simpletemplate.network.util.API_BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +30,7 @@ import javax.inject.Singleton
 object AppModule2 {
 
     @Provides
-    fun provideBaseUrl() = IMDB_API_BASE_URL
+    fun provideBaseUrl() = API_BASE_URL
 
     @Singleton
     @Provides
@@ -71,11 +70,11 @@ object AppModule2 {
         MovieRemoteDataSourceImpl(customService, service)
 
     @Provides
-    fun bindMovieRepositoryProvider(movieRemoteDataSource: MovieRemoteDataSource, movieDtoMapper: MovieDtoMapper, imdbMovieDtoMapper: IMDBMovieDtoMapper): MovieRepository =
-        MovieRepositoryImpl(movieRemoteDataSource, movieDtoMapper, imdbMovieDtoMapper)
+    fun bindMovieRepositoryProvider(movieRemoteDataSource: MovieRemoteDataSource, movieDtoMapper: MovieDtoMapper, imdbMovieDtoMapper: MovieDtoMapper): MovieRepository =
+        MovieRepositoryImpl(movieRemoteDataSource, movieDtoMapper)
 
     @Provides
-    fun bindMovieDetailRepositoryProvider(movieRemoteDataSource: MovieRemoteDataSource, imdbMovieDtoMapper: IMDBMovieDetailDtoMapper): MovieDetailRepository =
+    fun bindMovieDetailRepositoryProvider(movieRemoteDataSource: MovieRemoteDataSource, imdbMovieDtoMapper: MovieDetailDtoMapper): MovieDetailRepository =
         MovieDetailRepositoryImpl(movieRemoteDataSource, imdbMovieDtoMapper)
 
     @Provides
@@ -84,9 +83,5 @@ object AppModule2 {
 
     @Provides
     @Singleton
-    fun bindIMBDMovieDtoMapperProvider(): IMDBMovieDtoMapper = IMDBMovieDtoMapper()
-
-    @Provides
-    @Singleton
-    fun bindIMBDMovieDetailDtoMapperProvider(): IMDBMovieDetailDtoMapper = IMDBMovieDetailDtoMapper()
+    fun bindMovieDetailDtoMapperProvider(): MovieDetailDtoMapper = MovieDetailDtoMapper()
 }

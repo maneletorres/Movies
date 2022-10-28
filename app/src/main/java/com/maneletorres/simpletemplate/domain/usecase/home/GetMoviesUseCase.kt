@@ -2,7 +2,6 @@ package com.maneletorres.simpletemplate.domain.usecase.home
 
 import com.maneletorres.simpletemplate.domain.common.DomainError
 import com.maneletorres.simpletemplate.domain.error.GlobalErrorMapper
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieModel
 import com.maneletorres.simpletemplate.domain.model.MovieModel
 import com.maneletorres.simpletemplate.domain.repository.MovieRepository
 import com.maneletorres.simpletemplate.domain.usecase.base.dispatchers.DispatcherProvider
@@ -17,9 +16,9 @@ class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider
-) : FlowUseCase<Unit, Either<List<IMDBMovieModel>, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
+) : FlowUseCase<Unit, Either<List<MovieModel>, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-    override fun prepareFlow(input: Unit): Flow<Either<List<IMDBMovieModel>, DomainError>> = flow {
+    override fun prepareFlow(input: Unit): Flow<Either<List<MovieModel>, DomainError>> = flow {
         movieRepository.getMostPopularMovies()
             .onSuccess {
                 emit(eitherSuccess(it))

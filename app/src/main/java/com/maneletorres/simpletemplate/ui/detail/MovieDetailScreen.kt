@@ -4,10 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,74 +12,63 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.maneletorres.simpletemplate.R
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieDetailModel
+import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
+import com.maneletorres.simpletemplate.network.model.MovieDetailDtoMapper
 import com.maneletorres.simpletemplate.ui.detail.MovieDetailViewModel.MovieDetailUiState.*
-
-// TODO 1: check image failed and loading.
-// TODO 2: check vertical scrolling when plot is very large.
+import com.maneletorres.simpletemplate.ui.generic.GenericError
+import com.maneletorres.simpletemplate.ui.generic.GenericLoading
+import com.maneletorres.simpletemplate.ui.generic.GenericPlaceholder
+import com.maneletorres.simpletemplate.ui.theme.SimpleTemplateTheme
+import com.maneletorres.simpletemplate.utils.fakeMovieDetailDto
 
 @Composable
-fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel) {
+fun MovieDetailScreen(
+    movieDetailViewModel: MovieDetailViewModel,
+    movieId: String?
+) {
     val movieDetailUIState by movieDetailViewModel.movieDetailUIState.collectAsState()
     movieDetailUIState.let {
         when (it) {
-            Idle -> {}
-            Loading -> MovieDetailLoading()
+            Idle -> movieDetailViewModel.loadMovieDetail(movieId)
+            Loading -> GenericLoading()
             is Data -> MovieDetailContent(it.movieDetail)
-            Error -> MovieDetailError()
+            Error -> GenericError(errorMessage = R.string.movie_detail_error)
         }
     }
 }
 
 @Composable
-fun MovieDetailLoading(modifier: Modifier = Modifier) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        CircularProgressIndicator()
+fun MovieDetailContent(
+    movieDetail: MovieDetailModel,
+    modifier: Modifier = Modifier
+) {
+    Surface(modifier = modifier.fillMaxSize()) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .verticalScroll(rememberScrollState()) // TODO: check vertical scrolling when plot is very large.
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .fillMaxHeight()
+        ) {
+            MovieGeneralInfoSection(movieDetail = movieDetail)
+            Spacer(modifier = Modifier.height(8.dp))
+            MoviePlotSection(plot = movieDetail.plot)
+        }
     }
 }
 
 @Composable
-fun MovieDetailContent(movieDetail: IMDBMovieDetailModel) {
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-            .fillMaxHeight()
-    ) {
-        MovieGeneralInfoSection(movieDetail = movieDetail)
-        Spacer(modifier = Modifier.height(8.dp))
-        MoviePlotSection(plot = movieDetail.plot)
-    }
-}
-
-@Composable
-fun MovieDetailError() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.movie_detail_error)
-        )
-    }
-}
-
-@Composable
-fun MovieGeneralInfoSection(movieDetail: IMDBMovieDetailModel) {
+fun MovieGeneralInfoSection(
+    movieDetail: MovieDetailModel,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         MovieImageSection(imageUrl = movieDetail.image)
         Spacer(modifier = Modifier.width(8.dp))
@@ -91,76 +77,61 @@ fun MovieGeneralInfoSection(movieDetail: IMDBMovieDetailModel) {
 }
 
 @Composable
-private fun MoviePlotSection(plot: String) {
+private fun MoviePlotSection(
+    plot: String,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = plot,
         style = MaterialTheme.typography.body1,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }
 
 @Composable
-private fun MovieImageSection(imageUrl: String) {
+private fun MovieImageSection(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
     Card(
         border = BorderStroke(1.dp, colorResource(id = R.color.black)),
-        modifier = Modifier
+        modifier = modifier
             .height(100.dp)
             .width(75.dp)
     ) {
-//        val painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
-//            .data(imageUrl)
-//            .size(Size.ORIGINAL)
-//            .build())
-//
-//        when (painter.state) {
-//            AsyncImagePainter.State.Empty -> {}
-//            is AsyncImagePainter.State.Error -> {}
-//            is AsyncImagePainter.State.Loading -> {}
-//            is AsyncImagePainter.State.Success -> {}
-//        }
-
-        // Image(painter = painter, contentDescription = "")
-
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = imageUrl,
             contentDescription = "",
-            modifier = Modifier,
-            placeholder = painterResource(id = R.drawable.ic_pulp_fiction),
-            error = painterResource(id = R.drawable.ic_placeholder),
-            onLoading = {
-                // TODO:
+            loading = {
+                GenericLoading()
             },
-            onSuccess = {},
-            onError = {},
+            error = {
+                GenericPlaceholder(
+                    modifier = Modifier
+                        .width(25.dp)
+                        .height(25.dp)
+                )
+            },
             alignment = Alignment.Center,
-            contentScale = ContentScale.Crop
-            // previewPlaceholder = R.drawable.ic_pulp_fiction,
+            contentScale = ContentScale.Fit
         )
-
-//        CoilImage(
-//            loading = {
-//                Box(modifier = Modifier.matchParentSize()) {
-//                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-//                }
-//            },
-//            failure = {
-//                Image(
-//                    painterResource(id = R.drawable.ic_placeholder),
-//                    contentDescription = "",
-//                )
-//            }
-//        )
     }
 }
 
 @Composable
-fun MoviePrimaryInfoSection(movieDetail: IMDBMovieDetailModel) {
+fun MoviePrimaryInfoSection(
+    movieDetail: MovieDetailModel,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         MovieTitle(title = movieDetail.title)
         MovieDirectors(director = movieDetail.directors)
-        MovieDetailSecondaryInfo(year = movieDetail.year, runtimeStr = movieDetail.runtimeStr)
+        MovieDetailSecondaryInfo(
+            year = movieDetail.year,
+            runtimeStr = movieDetail.runtimeStr
+        )
     }
 }
 
@@ -181,9 +152,13 @@ private fun MovieDirectors(director: String) {
 }
 
 @Composable
-fun MovieDetailSecondaryInfo(year: String, runtimeStr: String?) {
+fun MovieDetailSecondaryInfo(
+    year: String,
+    runtimeStr: String?,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MovieYear(year)
@@ -210,17 +185,9 @@ private fun MovieRuntime(runtime: String) {
 // region Previews
 @Preview
 @Composable
-private fun MovieDetailLoadingPreview() {
-    MaterialTheme {
-        MovieDetailLoading()
-    }
-}
-
-@Preview
-@Composable
 private fun MovieDetailContentPreview() {
-    val movieDetail = IMDBMovieDetailModel(
-        id = "0",
+    val movieDetail = MovieDetailModel(
+        id = stringResource(id = R.string.dummy_movie_id),
         title = stringResource(id = R.string.dummy_movie_title),
         originalTitle = stringResource(id = R.string.dummy_movie_original_title),
         fullTitle = stringResource(id = R.string.dummy_movie_full_title),
@@ -231,39 +198,33 @@ private fun MovieDetailContentPreview() {
         plot = stringResource(id = R.string.dummy_movie_plot),
         directors = stringResource(id = R.string.dummy_movie_directors)
     )
-    MaterialTheme {
+    SimpleTemplateTheme {
         MovieDetailContent(movieDetail)
     }
 }
 
 @Preview
 @Composable
-private fun MovieDetailErrorPreview() {
-    MaterialTheme {
-        MovieDetailError()
-    }
-}
-
-@Preview
-@Composable
 private fun MovieGeneralInfoSectionPreview() {
-    MaterialTheme {
-        MovieGeneralInfoSection(movieDetail = getDummyIMDBMovieDetailModel())
+    SimpleTemplateTheme {
+        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
+        MovieGeneralInfoSection(movieDetail = movieDetail)
     }
 }
 
 @Preview
 @Composable
 private fun MoviePlotSectionPreview() {
-    MaterialTheme {
+    SimpleTemplateTheme {
         MoviePlotSection(plot = stringResource(id = R.string.dummy_movie_plot))
     }
 }
 
+// TODO: to check!!!
 @Preview
 @Composable
 private fun MovieImageSectionPreview() {
-    MaterialTheme {
+    SimpleTemplateTheme {
         MovieImageSection(imageUrl = "")
     }
 }
@@ -271,15 +232,16 @@ private fun MovieImageSectionPreview() {
 @Preview
 @Composable
 private fun MoviePrimaryInfoSectionPreview() {
-    MaterialTheme {
-        MoviePrimaryInfoSection(movieDetail = getDummyIMDBMovieDetailModel())
+    SimpleTemplateTheme {
+        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
+        MoviePrimaryInfoSection(movieDetail = movieDetail)
     }
 }
 
 @Preview
 @Composable
 private fun MovieTitlePreview() {
-    MaterialTheme {
+    SimpleTemplateTheme {
         MovieTitle(title = stringResource(id = R.string.dummy_movie_title))
     }
 }
@@ -287,34 +249,35 @@ private fun MovieTitlePreview() {
 @Preview
 @Composable
 private fun MovieDirectorsPreview() {
-    MaterialTheme {
+    SimpleTemplateTheme {
         MovieDirectors(director = stringResource(id = R.string.dummy_movie_directors))
     }
 }
 
+@Preview
 @Composable
 private fun MovieDetailSecondaryInfoPreview() {
-    MaterialTheme {
+    SimpleTemplateTheme {
         MovieDetailSecondaryInfo(
             year = stringResource(id = R.string.dummy_movie_year),
             runtimeStr = stringResource(id = R.string.dummy_movie_runtime)
         )
     }
 }
-// endregion
 
-// region Helper methods
+@Preview
 @Composable
-private fun getDummyIMDBMovieDetailModel(): IMDBMovieDetailModel = IMDBMovieDetailModel(
-    id = "0",
-    title = stringResource(id = R.string.dummy_movie_title),
-    originalTitle = stringResource(id = R.string.dummy_movie_original_title),
-    fullTitle = stringResource(id = R.string.dummy_movie_full_title),
-    year = stringResource(id = R.string.dummy_movie_year),
-    image = "",
-    releaseDate = stringResource(id = R.string.dummy_movie_release_date),
-    runtimeStr = stringResource(id = R.string.dummy_movie_runtime),
-    plot = stringResource(id = R.string.dummy_movie_plot),
-    directors = stringResource(id = R.string.dummy_movie_directors)
-)
-//endregion
+private fun MovieYearPreview() {
+    SimpleTemplateTheme {
+        MovieYear(year = stringResource(id = R.string.dummy_movie_year))
+    }
+}
+
+@Preview
+@Composable
+private fun MovieRuntimePreview() {
+    SimpleTemplateTheme {
+        MovieRuntime(runtime = stringResource(id = R.string.dummy_movie_runtime))
+    }
+}
+// endregion

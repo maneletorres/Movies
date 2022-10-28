@@ -31,6 +31,7 @@ buildscript {
         activityComposeVersion = '1.5.1'
         composeVersion = '1.2.1'
         viewModelComposeVersion = '2.5.1'
+        hiltNavigationCompose = '1.0.0'
 
         // Testing:
         junitVersion = '4.13.2'

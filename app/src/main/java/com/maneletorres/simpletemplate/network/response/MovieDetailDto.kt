@@ -1,8 +1,8 @@
-package com.maneletorres.simpletemplate.network.response.imdb
+package com.maneletorres.simpletemplate.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ImdbMovieDetailDto(
+data class MovieDetailDto(
     @SerializedName("id")
     val id: String,
     @SerializedName("title")

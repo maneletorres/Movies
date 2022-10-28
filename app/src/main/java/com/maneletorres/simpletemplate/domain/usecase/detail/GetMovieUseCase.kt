@@ -2,10 +2,8 @@ package com.maneletorres.simpletemplate.domain.usecase.detail
 
 import com.maneletorres.simpletemplate.domain.common.DomainError
 import com.maneletorres.simpletemplate.domain.error.GlobalErrorMapper
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieDetailModel
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieModel
+import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
 import com.maneletorres.simpletemplate.domain.repository.MovieDetailRepository
-import com.maneletorres.simpletemplate.domain.repository.MovieRepository
 import com.maneletorres.simpletemplate.domain.usecase.base.dispatchers.DispatcherProvider
 import com.maneletorres.simpletemplate.domain.usecase.base.flow.FlowUseCase
 import com.maneletorres.simpletemplate.domain.usecase.base.flow.FlowUseCaseExceptionDelegate
@@ -18,10 +16,10 @@ class GetMovieUseCase @Inject constructor(
     private val movieDetailRepository: MovieDetailRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider
-) : FlowUseCase<String, Either<IMDBMovieDetailModel, DomainError>>(dispatcherProvider),
+) : FlowUseCase<String, Either<MovieDetailModel, DomainError>>(dispatcherProvider),
     FlowUseCaseExceptionDelegate {
 
-    override fun prepareFlow(input: String): Flow<Either<IMDBMovieDetailModel, DomainError>> = flow {
+    override fun prepareFlow(input: String): Flow<Either<MovieDetailModel, DomainError>> = flow {
         movieDetailRepository.getMovie(input)
             .onSuccess {
                 emit(eitherSuccess(it))
@@ -29,7 +27,7 @@ class GetMovieUseCase @Inject constructor(
             .onFailure {
                 emit(eitherFailure(it))
             }
-    }/*.spreadUnauthorized {
+    }.spreadUnauthorized {
         eitherFailure(DomainError("", ""))
-    }*/
+    }
 }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Simple Template</string>
 
+    <!-- Generic: -->
+    <string name="generic_error_message">This is a generic error message.</string>
+
     <!-- MoviesHome: -->
     <!-- -->
     <string name="movies_home_error">There was a problem loading the movie list. Sorry for the inconvenience.</string>
@@ -8,6 +11,7 @@
     <!-- MovieDetail: -->
     <!-- Dummy movie data: -->
     <string name="movie_details_title">Movie detail</string>
+    <string name="dummy_movie_id">tt0110413</string>
     <string name="dummy_movie_title">Léon: The Professional</string>
     <string name="dummy_movie_original_title">Léon</string>
     <string name="dummy_movie_full_title">Léon: The Professional (1994)</string>

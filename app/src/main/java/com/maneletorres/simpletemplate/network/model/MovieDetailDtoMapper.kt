@@ -1,14 +1,14 @@
 package com.maneletorres.simpletemplate.network.model
 
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieDetailModel
+import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
 import com.maneletorres.simpletemplate.domain.util.DomainMapper
-import com.maneletorres.simpletemplate.network.response.imdb.ImdbMovieDetailDto
+import com.maneletorres.simpletemplate.network.response.MovieDetailDto
 
-class IMDBMovieDetailDtoMapper : DomainMapper<ImdbMovieDetailDto, IMDBMovieDetailModel> {
+class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
 
-    override fun mapToDomainModel(model: ImdbMovieDetailDto): IMDBMovieDetailModel {
+    override fun mapToDomainModel(model: MovieDetailDto): MovieDetailModel {
         with (model) {
-            return IMDBMovieDetailModel(
+            return MovieDetailModel(
                 id = id,
                 title = title,
                 originalTitle = originalTitle,
@@ -23,9 +23,9 @@ class IMDBMovieDetailDtoMapper : DomainMapper<ImdbMovieDetailDto, IMDBMovieDetai
         }
     }
 
-    override fun mapFromDomainModel(domainModel: IMDBMovieDetailModel): ImdbMovieDetailDto {
+    override fun mapFromDomainModel(domainModel: MovieDetailModel): MovieDetailDto {
         with (domainModel) {
-            return ImdbMovieDetailDto(
+            return MovieDetailDto(
                 id = id,
                 title = title,
                 originalTitle = originalTitle,

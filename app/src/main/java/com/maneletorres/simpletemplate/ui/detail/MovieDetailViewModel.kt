@@ -1,12 +1,9 @@
 package com.maneletorres.simpletemplate.ui.detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maneletorres.simpletemplate.domain.error.SafeFlowUseCaseDelegate
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieDetailModel
+import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
 import com.maneletorres.simpletemplate.domain.usecase.detail.GetMovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -24,9 +21,6 @@ class MovieDetailViewModel @Inject constructor(
     private val _movieDetailUiState: MutableStateFlow<MovieDetailUiState> = MutableStateFlow(Idle)
     val movieDetailUIState: StateFlow<MovieDetailUiState> = _movieDetailUiState.asStateFlow()
 
-    var uiState by mutableStateOf<MovieDetailUiState>(Idle)
-        private set
-
     fun loadMovieDetail(id: String?) {
         id?.let {
             getMovieUseCase
@@ -35,8 +29,8 @@ class MovieDetailViewModel @Inject constructor(
                     _movieDetailUiState.value = Loading
                 }
                 .onEach {
-                    it.onSuccess { imdbMovieDetailModel: IMDBMovieDetailModel ->
-                         _movieDetailUiState.value = Data(imdbMovieDetailModel)
+                    it.onSuccess { movieDetailModel: MovieDetailModel ->
+                        _movieDetailUiState.value = Data(movieDetailModel)
                     }.onFailure {
                         _movieDetailUiState.value = Error
                     }
@@ -47,7 +41,7 @@ class MovieDetailViewModel @Inject constructor(
     sealed interface MovieDetailUiState {
         object Idle : MovieDetailUiState
         object Loading : MovieDetailUiState
-        data class Data(val movieDetail: IMDBMovieDetailModel) : MovieDetailUiState
+        data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState
         object Error : MovieDetailUiState
     }
 }

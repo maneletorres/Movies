@@ -1,13 +1,8 @@
 package com.maneletorres.simpletemplate.domain.repository
 
 import com.maneletorres.simpletemplate.domain.common.DomainResponse
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieDetailModel
+import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
 
 interface MovieDetailRepository {
-
-    // TheMovieDB:
-    // TODO:
-
-    // IMDB:
-    fun getMovie(id: String): DomainResponse<IMDBMovieDetailModel>
+    fun getMovie(id: String): DomainResponse<MovieDetailModel>
 }

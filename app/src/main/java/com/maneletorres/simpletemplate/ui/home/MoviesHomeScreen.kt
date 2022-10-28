@@ -1,6 +1,5 @@
 package com.maneletorres.simpletemplate.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -10,59 +9,58 @@ import com.maneletorres.simpletemplate.ui.home.MoviesHomeViewModel.MoviesHomeUiS
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.maneletorres.simpletemplate.R
-import com.maneletorres.simpletemplate.domain.model.IMDBMovieModel
-import com.maneletorres.simpletemplate.network.model.IMDBMovieDtoMapper
-import com.maneletorres.simpletemplate.utils.fakeImdbMoviesDto
+import com.maneletorres.simpletemplate.domain.model.MovieModel
+import com.maneletorres.simpletemplate.network.model.MovieDtoMapper
+import com.maneletorres.simpletemplate.ui.generic.GenericError
+import com.maneletorres.simpletemplate.ui.generic.GenericLoading
+import com.maneletorres.simpletemplate.ui.generic.GenericPlaceholder
+import com.maneletorres.simpletemplate.ui.theme.SimpleTemplateTheme
+import com.maneletorres.simpletemplate.utils.fakeMoviesDto
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, /* TODO: navController: NavController */) {
+fun MoviesHomeScreen(
+    moviesHomeViewModel: MoviesHomeViewModel,
+    onClickMovie: (String) -> Unit = {}
+) {
     val moviesHomeUIState by moviesHomeViewModel.moviesHomeUIState.collectAsState()
     moviesHomeUIState.let {
         when (it) {
             Idle -> Unit
-            Loading -> MoviesHomeLoading()
-            is Data -> MoviesHomeContent(movies = it.movieList)
-            Error -> MoviesHomeError()
+            Loading -> GenericLoading()
+            is Data -> {
+                MoviesHomeContent(movies = it.movieList) { movieId ->
+                    onClickMovie(movieId)
+                }
+            }
+            Error -> GenericError(errorMessage = R.string.movies_home_error)
         }
     }
 }
 
 @Composable
-fun MoviesHomeLoading(modifier: Modifier = Modifier) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
 fun MoviesHomeContent(
+    movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    movies: List<IMDBMovieModel>
+    onClickMovie: (String) -> Unit
 ) {
-    Surface(modifier = modifier.fillMaxSize(), color = Color.White) {
+    Surface(modifier = modifier.fillMaxSize()) {
         Box {
             val gridState = rememberLazyGridState()
-            MoviesGrid(movies, gridState = gridState)
+            MoviesGrid(movies, gridState = gridState) { movieId ->
+                onClickMovie(movieId)
+            }
 
             val showButton by remember {
                 derivedStateOf {
                     gridState.firstVisibleItemIndex > 0
                 }
             }
-
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
@@ -84,23 +82,11 @@ fun MoviesHomeContent(
 }
 
 @Composable
-fun MoviesHomeError() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(32.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.movies_home_error)
-        )
-    }
-}
-
-@Composable
 fun MoviesGrid(
-    movies: List<IMDBMovieModel>,
+    movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    gridState: LazyGridState = rememberLazyGridState()
+    gridState: LazyGridState = rememberLazyGridState(),
+    onClickMovie: (String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -109,102 +95,69 @@ fun MoviesGrid(
     ) {
         items(movies, key = { it.id }) { movie ->
             val rememberedMovie = rememberSaveable { movie } // TODO: to check
-            Movie(rememberedMovie)
+            Movie(rememberedMovie) { movieId ->
+                onClickMovie(movieId)
+            }
         }
     }
 }
 
 @Composable
-fun Movie(movie: IMDBMovieModel) {
+fun Movie(
+    movie: MovieModel,
+    onClickMovie: (String) -> Unit
+) {
     SubcomposeAsyncImage(
         model = movie.image,
         contentDescription = "",
         modifier = Modifier
             .height(200.dp)
             .clickable {
-                // TODO: click.invoke() or navController.navigate("details")
+                onClickMovie(movie.id)
             },
         loading = {
-            MoviesHomeLoading()
+            GenericLoading()
         },
         error = {
-            MoviePlaceholder(modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth())
+            GenericPlaceholder(
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+            )
         },
         alignment = Alignment.Center,
         contentScale = ContentScale.Crop
     )
 }
 
-@Composable
-fun MoviePlaceholder(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_placeholder),
-            contentDescription = "",
-            modifier = Modifier
-                .width(50.dp)
-                .height(50.dp)
-        )
-    }
-}
-
 // region Previews
-@Preview
-@Composable
-private fun MoviesHomeLoadingPreview() {
-    MaterialTheme {
-        MoviesHomeLoading(modifier = Modifier.fillMaxSize())
-    }
-}
-
+// TODO: to check!!!
 @Preview
 @Composable
 private fun MoviesHomeContentPreview() {
-    MaterialTheme {
-        val movies = fakeImdbMoviesDto.items.map {  IMDBMovieDtoMapper().mapToDomainModel(it) }
-        MoviesHomeContent(movies = movies)
+    SimpleTemplateTheme {
+        val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
+        MoviesHomeContent(movies = movies) {}
     }
 }
 
+// TODO: to check!!!
 @Preview
 @Composable
-private fun MoviesHomeErrorPreview() {
-    MaterialTheme {
-        MoviesHomeError()
+private fun MoviesGridPreview() {
+    SimpleTemplateTheme {
+        val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
+        MoviesGrid(movies = movies) {}
     }
 }
 
-@Preview
-@Composable
-private fun MovieLoadingPreview() {
-    MaterialTheme {
-        MoviesHomeLoading(modifier = Modifier
-            .heightIn(200.dp)
-            .widthIn(150.dp))
-    }
-}
-
+// TODO: to check!!!
 @Preview
 @Composable
 private fun MoviePreview() {
-    MaterialTheme {
-        val movie = IMDBMovieDtoMapper().mapToDomainModel(fakeImdbMoviesDto.items[0])
-        Movie(movie)
-    }
-}
-
-@Preview
-@Composable
-private fun MoviePlaceholderPreview() {
-    MaterialTheme {
-        MoviePlaceholder(modifier = Modifier
-            .heightIn(200.dp)
-            .widthIn(150.dp))
+    SimpleTemplateTheme {
+        val movie = MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])
+        Movie(movie) {}
     }
 }
 // endregion
