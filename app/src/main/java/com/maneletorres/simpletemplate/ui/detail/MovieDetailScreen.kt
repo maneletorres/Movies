@@ -13,11 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.maneletorres.simpletemplate.R
-import com.maneletorres.simpletemplate.domain.model.MovieDetailModel
 import com.maneletorres.simpletemplate.network.model.MovieDetailDtoMapper
 import com.maneletorres.simpletemplate.ui.detail.MovieDetailViewModel.MovieDetailUiState.*
 import com.maneletorres.simpletemplate.ui.generic.GenericError
@@ -36,7 +37,9 @@ fun MovieDetailScreen(
         when (it) {
             Idle -> movieDetailViewModel.loadMovieDetail(movieId)
             Loading -> GenericLoading()
-            is Data -> MovieDetailContent(it.movieDetail)
+            is Data -> with (it.movieDetail) {
+                MovieDetailContent(image, title, directors, year, plot, runtimeStr)
+            }
             Error -> GenericError(errorMessage = R.string.movie_detail_error)
         }
     }
@@ -44,35 +47,54 @@ fun MovieDetailScreen(
 
 @Composable
 fun MovieDetailContent(
-    movieDetail: MovieDetailModel,
+    image: String,
+    title: String,
+    directors: String,
+    year: String,
+    plot: String,
+    runtime: String?,
     modifier: Modifier = Modifier
 ) {
-    Surface(modifier = modifier.fillMaxSize()) {
-        Column(
-            horizontalAlignment = Alignment.Start,
-            modifier = Modifier
-                .verticalScroll(rememberScrollState()) // TODO: check vertical scrolling when plot is very large.
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxHeight()
-        ) {
-            MovieGeneralInfoSection(movieDetail = movieDetail)
-            Spacer(modifier = Modifier.height(8.dp))
-            MoviePlotSection(plot = movieDetail.plot)
-        }
+    Column(
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .fillMaxHeight()
+            .semantics { contentDescription = "Movie Detail Screen" }
+    ) {
+        MovieGeneralInfoSection(
+            image = image,
+            title = title,
+            directors = directors,
+            year = year,
+            runtime = runtime
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        MoviePlotSection(plot = plot)
     }
 }
 
 @Composable
 fun MovieGeneralInfoSection(
-    movieDetail: MovieDetailModel,
+    image: String,
+    title: String,
+    directors: String,
+    year: String,
+    runtime: String?,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
-        MovieImageSection(imageUrl = movieDetail.image)
+        MovieImageSection(imageUrl = image)
         Spacer(modifier = Modifier.width(8.dp))
-        MoviePrimaryInfoSection(movieDetail = movieDetail)
+        MoviePrimaryInfoSection(
+            title = title,
+            directors = directors,
+            year = year,
+            runtime = runtime
+        )
     }
 }
 
@@ -120,17 +142,20 @@ private fun MovieImageSection(
 
 @Composable
 fun MoviePrimaryInfoSection(
-    movieDetail: MovieDetailModel,
+    title: String,
+    directors: String,
+    year: String,
+    runtime: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-        MovieTitle(title = movieDetail.title)
-        MovieDirectors(director = movieDetail.directors)
+        MovieTitle(title = title)
+        MovieDirectors(director = directors)
         MovieDetailSecondaryInfo(
-            year = movieDetail.year,
-            runtimeStr = movieDetail.runtimeStr
+            year = year,
+            runtime = runtime
         )
     }
 }
@@ -154,7 +179,7 @@ private fun MovieDirectors(director: String) {
 @Composable
 fun MovieDetailSecondaryInfo(
     year: String,
-    runtimeStr: String?,
+    runtime: String?,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -162,7 +187,7 @@ fun MovieDetailSecondaryInfo(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         MovieYear(year)
-        runtimeStr?.let { MovieRuntime(it) }
+        runtime?.let { MovieRuntime(it) }
     }
 }
 
@@ -186,20 +211,17 @@ private fun MovieRuntime(runtime: String) {
 @Preview
 @Composable
 private fun MovieDetailContentPreview() {
-    val movieDetail = MovieDetailModel(
-        id = stringResource(id = R.string.dummy_movie_id),
-        title = stringResource(id = R.string.dummy_movie_title),
-        originalTitle = stringResource(id = R.string.dummy_movie_original_title),
-        fullTitle = stringResource(id = R.string.dummy_movie_full_title),
-        year = stringResource(id = R.string.dummy_movie_year),
-        image = "",
-        releaseDate = stringResource(id = R.string.dummy_movie_release_date),
-        runtimeStr = stringResource(id = R.string.dummy_movie_runtime),
-        plot = stringResource(id = R.string.dummy_movie_plot),
-        directors = stringResource(id = R.string.dummy_movie_directors)
-    )
     SimpleTemplateTheme {
-        MovieDetailContent(movieDetail)
+        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+            MovieDetailContent(
+                image = image,
+                title = title,
+                directors = directors,
+                year = year,
+                plot = plot,
+                runtime = runtimeStr
+            )
+        }
     }
 }
 
@@ -207,8 +229,15 @@ private fun MovieDetailContentPreview() {
 @Composable
 private fun MovieGeneralInfoSectionPreview() {
     SimpleTemplateTheme {
-        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
-        MovieGeneralInfoSection(movieDetail = movieDetail)
+        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+            MovieGeneralInfoSection(
+                image = image,
+                title = title,
+                directors = directors,
+                year = year,
+                runtime = runtimeStr
+            )
+        }
     }
 }
 
@@ -233,8 +262,14 @@ private fun MovieImageSectionPreview() {
 @Composable
 private fun MoviePrimaryInfoSectionPreview() {
     SimpleTemplateTheme {
-        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
-        MoviePrimaryInfoSection(movieDetail = movieDetail)
+        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+            MoviePrimaryInfoSection(
+                title = title,
+                directors = directors,
+                year = year,
+                runtime = runtimeStr
+            )
+        }
     }
 }
 
@@ -260,7 +295,7 @@ private fun MovieDetailSecondaryInfoPreview() {
     SimpleTemplateTheme {
         MovieDetailSecondaryInfo(
             year = stringResource(id = R.string.dummy_movie_year),
-            runtimeStr = stringResource(id = R.string.dummy_movie_runtime)
+            runtime = stringResource(id = R.string.dummy_movie_runtime)
         )
     }
 }

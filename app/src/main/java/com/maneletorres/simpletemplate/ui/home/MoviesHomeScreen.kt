@@ -10,6 +10,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -33,11 +35,7 @@ fun MoviesHomeScreen(
         when (it) {
             Idle -> Unit
             Loading -> GenericLoading()
-            is Data -> {
-                MoviesHomeContent(movies = it.movieList) { movieId ->
-                    onClickMovie(movieId)
-                }
-            }
+            is Data -> MoviesHomeContent(movies = it.movieList) { movieId -> onClickMovie(movieId) }
             Error -> GenericError(errorMessage = R.string.movies_home_error)
         }
     }
@@ -47,35 +45,35 @@ fun MoviesHomeScreen(
 fun MoviesHomeContent(
     movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    onClickMovie: (String) -> Unit
+    onClickMovie: (String) -> Unit = {}
 ) {
-    Surface(modifier = modifier.fillMaxSize()) {
-        Box {
-            val gridState = rememberLazyGridState()
-            MoviesGrid(movies, gridState = gridState) { movieId ->
-                onClickMovie(movieId)
-            }
+    Box(
+        modifier = modifier.semantics { contentDescription = "Movies Home Screen" }
+    ) {
+        val gridState = rememberLazyGridState()
+        MoviesGrid(movies, gridState = gridState) { movieId ->
+            onClickMovie(movieId)
+        }
 
-            val showButton by remember {
-                derivedStateOf {
-                    gridState.firstVisibleItemIndex > 0
-                }
+        val showButton by remember {
+            derivedStateOf {
+                gridState.firstVisibleItemIndex > 0
             }
-            if (showButton) {
-                val coroutineScope = rememberCoroutineScope()
-                FloatingActionButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .navigationBarsPadding()
-                        .padding(bottom = 8.dp, end = 8.dp),
-                    onClick = {
-                        coroutineScope.launch {
-                            gridState.scrollToItem(0)
-                        }
+        }
+        if (showButton) {
+            val coroutineScope = rememberCoroutineScope()
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .navigationBarsPadding()
+                    .padding(bottom = 8.dp, end = 8.dp),
+                onClick = {
+                    coroutineScope.launch {
+                        gridState.scrollToItem(0)
                     }
-                ) {
-                    Text("Up!")
                 }
+            ) {
+                Text("Up!")
             }
         }
     }
@@ -86,7 +84,7 @@ fun MoviesGrid(
     movies: List<MovieModel>,
     modifier: Modifier = Modifier,
     gridState: LazyGridState = rememberLazyGridState(),
-    onClickMovie: (String) -> Unit
+    onClickMovie: (String) -> Unit = {}
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -95,8 +93,8 @@ fun MoviesGrid(
     ) {
         items(movies, key = { it.id }) { movie ->
             val rememberedMovie = rememberSaveable { movie } // TODO: to check
-            Movie(rememberedMovie) { movieId ->
-                onClickMovie(movieId)
+            with (rememberedMovie) {
+                Movie(id, image) { movieId -> onClickMovie(movieId) }
             }
         }
     }
@@ -104,17 +102,18 @@ fun MoviesGrid(
 
 @Composable
 fun Movie(
-    movie: MovieModel,
-    onClickMovie: (String) -> Unit
+    id: String,
+    image: String,
+    onClickMovie: (String) -> Unit = {}
 ) {
     SubcomposeAsyncImage(
-        model = movie.image,
+        model = image,
         contentDescription = "",
         modifier = Modifier
             .height(200.dp)
             .clickable {
-                onClickMovie(movie.id)
-            },
+                onClickMovie(id)
+            }.semantics { contentDescription = "Movie Detail" },
         loading = {
             GenericLoading()
         },
@@ -137,7 +136,7 @@ fun Movie(
 private fun MoviesHomeContentPreview() {
     SimpleTemplateTheme {
         val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
-        MoviesHomeContent(movies = movies) {}
+        MoviesHomeContent(movies = movies)
     }
 }
 
@@ -147,7 +146,7 @@ private fun MoviesHomeContentPreview() {
 private fun MoviesGridPreview() {
     SimpleTemplateTheme {
         val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
-        MoviesGrid(movies = movies) {}
+        MoviesGrid(movies = movies)
     }
 }
 
@@ -156,8 +155,9 @@ private fun MoviesGridPreview() {
 @Composable
 private fun MoviePreview() {
     SimpleTemplateTheme {
-        val movie = MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])
-        Movie(movie) {}
+        with (MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) {
+            Movie(id, image)
+        }
     }
 }
 // endregion

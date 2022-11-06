@@ -2,7 +2,6 @@ package com.maneletorres.simpletemplate.domain.usecase.base.flow
 
 import androidx.annotation.CheckResult
 import com.maneletorres.simpletemplate.domain.usecase.base.dispatchers.DispatcherProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlin.coroutines.CoroutineContext

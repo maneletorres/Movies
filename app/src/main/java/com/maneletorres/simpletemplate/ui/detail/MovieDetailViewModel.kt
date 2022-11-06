@@ -38,10 +38,10 @@ class MovieDetailViewModel @Inject constructor(
         }
     }
 
-    sealed interface MovieDetailUiState {
-        object Idle : MovieDetailUiState
-        object Loading : MovieDetailUiState
-        data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState
-        object Error : MovieDetailUiState
+    sealed class MovieDetailUiState {
+        object Idle : MovieDetailUiState()
+        object Loading : MovieDetailUiState()
+        data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState()
+        object Error : MovieDetailUiState()
     }
 }

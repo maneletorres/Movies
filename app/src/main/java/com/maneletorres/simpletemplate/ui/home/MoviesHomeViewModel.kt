@@ -46,11 +46,11 @@ class MoviesHomeViewModel @Inject constructor(
     }
 
     // region States
-    sealed interface MoviesHomeUiState {
-        object Idle : MoviesHomeUiState
-        object Loading : MoviesHomeUiState
-        data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState
-        object Error : MoviesHomeUiState
+    sealed class MoviesHomeUiState {
+        object Idle : MoviesHomeUiState()
+        object Loading : MoviesHomeUiState()
+        data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState()
+        object Error : MoviesHomeUiState()
     }
 
     sealed interface Event {

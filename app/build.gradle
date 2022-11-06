@@ -57,28 +57,8 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
     // endregion
 
-    // region AndroidX libraries:
-    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
-    implementation "com.google.android.material:material:$rootProject.materialVersion"
-    implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
-    //implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentKtxVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
-    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
-    implementation "androidx.cardview:cardview:$rootProject.cardViewVersion"
-    // endregion
-
-    // region Lifecycle libraries:
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
-    // endregion
-
-    // region Kotlin libraries:
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
-    // endregion
-
     // region Retrofit libraries:
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     // endregion
 
@@ -88,34 +68,19 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
     // endregion
 
-    // region Gson libraries:
-    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-    // endregion
-
     // region UI libraries:
-    implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
-    implementation "com.hannesdorfmann:adapterdelegates4:$rootProject.adapterDelegatesVersion"
-    // implementation "com.github.skydoves:landscapist-coil:$rootProject.coilVersion"
     implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
-
-    // region Glide libraries:
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-    // endregion
+    implementation "com.hannesdorfmann:adapterdelegates4:$rootProject.adapterDelegatesVersion"
     // endregion
 
-    // region Navigation:
+    // region Navigation libraries:
     implementation "androidx.hilt:hilt-navigation-compose:$rootProject.hiltNavigationCompose"
-    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    implementation "androidx.navigation:navigation-compose:$rootProject.navigationVersion"
     // endregion
 
-    // region Jetpack Compose:
+    // region Jetpack Compose libraries:
     implementation "androidx.compose.material:material:$rootProject.composeVersion"
-    implementation "androidx.compose.animation:animation:$rootProject.composeVersion"
     implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelComposeVersion"
     // endregion
 
     // region Util libraries:
@@ -125,7 +90,12 @@ dependencies {
 
     // region Testing libraries:
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+
+    // region Compose testing libraries:
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$rootProject.composeVersion"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$rootProject.composeVersion"
+    androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
+    // endregion
     // endregion
 }

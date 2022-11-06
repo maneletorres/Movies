@@ -2,9 +2,6 @@ package com.maneletorres.simpletemplate.delegate
 
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.Method
 import kotlin.properties.ReadOnlyProperty
