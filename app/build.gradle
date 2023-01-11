@@ -53,35 +53,15 @@ android {
 
 dependencies {
     // region Dependency injection (DI) libraries:
-    implementation "com.google.dagger:hilt-android:$rootProject.daggerHiltVersion"
-    kapt "com.google.dagger:hilt-android-compiler:$rootProject.daggerHiltVersion"
+    implementation libs.dagger.hilt.android
+    kapt libs.dagger.hilt.android.compiler
     // endregion
 
-    // region Retrofit libraries:
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    // endregion
-
-    // region OkHttp libraries:
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.okHttpVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
-    // endregion
-
-    // region UI libraries:
-    implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
-    implementation "com.hannesdorfmann:adapterdelegates4:$rootProject.adapterDelegatesVersion"
-    // endregion
-
-    // region Navigation libraries:
-    implementation "androidx.hilt:hilt-navigation-compose:$rootProject.hiltNavigationCompose"
-    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    // endregion
-
-    // region Jetpack Compose libraries:
-    implementation "androidx.compose.material:material:$rootProject.composeVersion"
-    implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
-    // endregion
+    implementation libs.bundles.retrofit2
+    implementation libs.bundles.okhttp3
+    implementation libs.bundles.ui
+    implementation libs.bundles.navigation
+    implementation libs.bundles.compose
 
     // region Util libraries:
     // TODO: implementation "com.ncorti.ktfmt.gradle:plugin:rootProject."
@@ -89,13 +69,13 @@ dependencies {
     // endregion
 
     // region Testing libraries:
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.espresso.core
 
     // region Compose testing libraries:
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$rootProject.composeVersion"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$rootProject.composeVersion"
-    androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.navigationVersion"
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    debugImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation libs.androidx.navigation.testing
     // endregion
     // endregion
 }
