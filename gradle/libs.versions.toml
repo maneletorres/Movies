@@ -72,6 +72,7 @@ compose = [
 [plugins]
 com-android-application = "com.android.application:7.3.1"
 com-android-library = "com.android.library:7.3.1"
-org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.8.0"
+# @pin this library to 1.7.20
+org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.20"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.44.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
