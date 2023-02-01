@@ -1,15 +1,18 @@
 package com.manishsputnikcorporation.movies.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +27,7 @@ fun SplashScreen(
     onNavigation: () -> Unit = {}
 ) {
     LaunchedEffect(key1 = true) {
-        // TODO: operación contra servidor o inicializar contexto
+        // TODO: to implement resource load
         delay(3000)
         onNavigation()
     }
@@ -42,10 +45,16 @@ fun Splash() {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = stringResource(id = R.string.logo_description),
-            modifier = Modifier.size(150.dp, 150.dp)
+            modifier = Modifier
+                .size(150.dp, 150.dp)
+                .clip(CircleShape)
+                .border(2.dp, Color.Black, CircleShape)
+                .background(Color.Gray),
+            contentScale = ContentScale.Crop
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-           text = stringResource(id = R.string.welcome_message),
+            text = stringResource(id = R.string.welcome_message),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
