@@ -48,6 +48,13 @@ fun MoviesHomeContent(
     modifier: Modifier = Modifier,
     onClickMovie: (String) -> Unit = {}
 ) {
+    val gridState = rememberLazyGridState()
+    val showButton by remember {
+        derivedStateOf {
+            gridState.firstVisibleItemIndex > 0
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar {
@@ -61,29 +68,10 @@ fun MoviesHomeContent(
             // TODO:
         },
         floatingActionButton = {
-            // TODO: to move the showButton logic
-        }
-    ) { contentPadding ->
-        Box(
-            modifier = modifier
-                .padding(contentPadding)
-                .semantics { contentDescription = "Movies Home Screen" }
-        ) {
-            val gridState = rememberLazyGridState()
-            MoviesGrid(movies, gridState = gridState) { movieId ->
-                onClickMovie(movieId)
-            }
-
-            val showButton by remember {
-                derivedStateOf {
-                    gridState.firstVisibleItemIndex > 0
-                }
-            }
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)
                         .navigationBarsPadding()
                         .padding(bottom = 8.dp, end = 8.dp),
                     onClick = {
@@ -94,6 +82,17 @@ fun MoviesHomeContent(
                 ) {
                     Text("Up!")
                 }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
+    ) { contentPadding ->
+        Box(
+            modifier = modifier
+                .padding(contentPadding)
+                .semantics { contentDescription = "Movies Home Screen" }
+        ) {
+            MoviesGrid(movies, gridState = gridState) { movieId ->
+                onClickMovie(movieId)
             }
         }
     }
