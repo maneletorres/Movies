@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.screens.detail
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,17 +19,17 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
+import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
-import com.manishsputnikcorporation.movies.utils.fakeMovieDetailDto
-import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
+import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 
 @Composable
 fun MovieDetailScreen(
@@ -41,7 +42,7 @@ fun MovieDetailScreen(
         when (it) {
             Idle -> movieDetailViewModel.loadMovieDetail(movieId)
             Loading -> GenericLoading()
-            is Data -> with (it.movieDetail) {
+            is Data -> with(it.movieDetail) {
                 MovieDetailContent(image, title, directors, year, plot, runtimeStr) {
                     onBackArrowClick()
                 }
@@ -51,6 +52,7 @@ fun MovieDetailScreen(
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MovieDetailContent(
     image: String,
@@ -64,7 +66,7 @@ fun MovieDetailContent(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar() {
+            TopAppBar {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
@@ -77,14 +79,14 @@ fun MovieDetailContent(
             }
         },
         bottomBar = {
-            // TODO:
+            // TODO: implement when new features are introduced
         }
-    ) { contentPadding ->
+    ) {
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = modifier
                 .verticalScroll(rememberScrollState())
-                .padding(contentPadding) // TODO: .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxHeight()
                 .semantics { contentDescription = "Movie Detail Screen" }
         ) {
@@ -234,11 +236,11 @@ private fun MovieRuntime(runtime: String) {
 }
 
 // region Previews
-@Preview
+@UiModePreviews
 @Composable
 private fun MovieDetailContentPreview() {
     MoviesTheme {
-        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+        with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
             MovieDetailContent(
                 image = image,
                 title = title,
@@ -251,32 +253,36 @@ private fun MovieDetailContentPreview() {
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun MovieGeneralInfoSectionPreview() {
     MoviesTheme {
-        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-            MovieGeneralInfoSection(
-                image = image,
-                title = title,
-                directors = directors,
-                year = year,
-                runtime = runtimeStr
-            )
+        Surface {
+            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+                MovieGeneralInfoSection(
+                    image = image,
+                    title = title,
+                    directors = directors,
+                    year = year,
+                    runtime = runtimeStr
+                )
+            }
         }
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun MoviePlotSectionPreview() {
     MoviesTheme {
-        MoviePlotSection(plot = stringResource(id = R.string.dummy_movie_plot))
+        Surface {
+            MoviePlotSection(plot = stringResource(id = R.string.dummy_movie_plot))
+        }
     }
 }
 
 // TODO: to check!!!
-@Preview
+@UiModePreviews
 @Composable
 private fun MovieImageSectionPreview() {
     MoviesTheme {
@@ -284,61 +290,73 @@ private fun MovieImageSectionPreview() {
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun MoviePrimaryInfoSectionPreview() {
     MoviesTheme {
-        with (MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-            MoviePrimaryInfoSection(
-                title = title,
-                directors = directors,
-                year = year,
-                runtime = runtimeStr
+        Surface {
+            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+                MoviePrimaryInfoSection(
+                    title = title,
+                    directors = directors,
+                    year = year,
+                    runtime = runtimeStr
+                )
+            }
+        }
+    }
+}
+
+@UiModePreviews
+@Composable
+private fun MovieTitlePreview() {
+    MoviesTheme {
+        Surface {
+            MovieTitle(title = stringResource(id = R.string.dummy_movie_title))
+        }
+    }
+}
+
+@UiModePreviews
+@Composable
+private fun MovieDirectorsPreview() {
+    MoviesTheme {
+        Surface {
+            MovieDirectors(director = stringResource(id = R.string.dummy_movie_directors))
+        }
+    }
+}
+
+@UiModePreviews
+@Composable
+private fun MovieDetailSecondaryInfoPreview() {
+    MoviesTheme {
+        Surface {
+            MovieDetailSecondaryInfo(
+                year = stringResource(id = R.string.dummy_movie_year),
+                runtime = stringResource(id = R.string.dummy_movie_runtime)
             )
         }
     }
 }
 
-@Preview
-@Composable
-private fun MovieTitlePreview() {
-    MoviesTheme {
-        MovieTitle(title = stringResource(id = R.string.dummy_movie_title))
-    }
-}
-
-@Preview
-@Composable
-private fun MovieDirectorsPreview() {
-    MoviesTheme {
-        MovieDirectors(director = stringResource(id = R.string.dummy_movie_directors))
-    }
-}
-
-@Preview
-@Composable
-private fun MovieDetailSecondaryInfoPreview() {
-    MoviesTheme {
-        MovieDetailSecondaryInfo(
-            year = stringResource(id = R.string.dummy_movie_year),
-            runtime = stringResource(id = R.string.dummy_movie_runtime)
-        )
-    }
-}
-
-@Preview
+@UiModePreviews
 @Composable
 private fun MovieYearPreview() {
     MoviesTheme {
-        MovieYear(year = stringResource(id = R.string.dummy_movie_year))
+        Surface {
+            MovieYear(year = stringResource(id = R.string.dummy_movie_year))
+        }
     }
 }
 
-@Preview
+@UiModePreviews
 @Composable
 private fun MovieRuntimePreview() {
     MoviesTheme {
-        MovieRuntime(runtime = stringResource(id = R.string.dummy_movie_runtime))
+        Surface {
+            MovieRuntime(runtime = stringResource(id = R.string.dummy_movie_runtime))
+        }
     }
 }
 // endregion

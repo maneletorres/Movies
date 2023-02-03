@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.data
 
-import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.BuildConfig
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
@@ -9,7 +8,8 @@ import com.manishsputnikcorporation.movies.network.CustomServicesExecutor
 import com.manishsputnikcorporation.movies.network.MoviesService
 import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
 import com.manishsputnikcorporation.movies.network.response.MoviesDto
-import com.manishsputnikcorporation.movies.utils.mapSuccess
+import com.manishsputnikcorporation.movies.utils.Either
+import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton

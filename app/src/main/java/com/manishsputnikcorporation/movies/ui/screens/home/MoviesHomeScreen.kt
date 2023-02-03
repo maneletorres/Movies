@@ -12,19 +12,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.R
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
-import kotlinx.coroutines.launch
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
-import com.manishsputnikcorporation.movies.utils.fakeMoviesDto
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
+import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
+import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import kotlinx.coroutines.launch
 
 @Composable
 fun MoviesHomeScreen(
@@ -65,7 +65,7 @@ fun MoviesHomeContent(
             }
         },
         bottomBar = {
-            // TODO:
+            // TODO: implement when new features are introduced
         },
         floatingActionButton = {
             if (showButton) {
@@ -112,7 +112,7 @@ fun MoviesGrid(
     ) {
         items(movies, key = { it.id }) { movie ->
             val rememberedMovie = rememberSaveable { movie } // TODO: to check
-            with (rememberedMovie) {
+            with(rememberedMovie) {
                 Movie(id, image) { movieId -> onClickMovie(movieId) }
             }
         }
@@ -151,32 +151,36 @@ fun Movie(
 
 // region Previews
 // TODO: to check!!!
-@Preview
+@UiModePreviews
 @Composable
 private fun MoviesHomeContentPreview() {
     MoviesTheme {
-        val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
+        val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
         MoviesHomeContent(movies = movies)
     }
 }
 
 // TODO: to check!!!
-@Preview
+@UiModePreviews
 @Composable
 private fun MoviesGridPreview() {
     MoviesTheme {
-        val movies = fakeMoviesDto.items.map {  MovieDtoMapper().mapToDomainModel(it) }
-        MoviesGrid(movies = movies)
+        Surface {
+            val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+            MoviesGrid(movies = movies)
+        }
     }
 }
 
 // TODO: to check!!!
-@Preview
+@UiModePreviews
 @Composable
 private fun MoviePreview() {
     MoviesTheme {
-        with (MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) {
-            Movie(id, image)
+        Surface {
+            with(MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) {
+                Movie(id, image)
+            }
         }
     }
 }

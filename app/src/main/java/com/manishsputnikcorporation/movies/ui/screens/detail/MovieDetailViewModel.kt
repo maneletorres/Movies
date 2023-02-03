@@ -2,15 +2,15 @@ package com.manishsputnikcorporation.movies.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
+import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieUseCase
-import com.manishsputnikcorporation.movies.utils.onSuccess
+import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
+import com.manishsputnikcorporation.movies.utils.extensions.onFailure
+import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
-import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
-import com.manishsputnikcorporation.movies.utils.onFailure
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(

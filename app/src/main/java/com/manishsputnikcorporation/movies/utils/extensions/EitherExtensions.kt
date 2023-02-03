@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.utils
+package com.manishsputnikcorporation.movies.utils.extensions
 
 import com.manishsputnikcorporation.movies.utils.Either
 import kotlin.contracts.ExperimentalContracts
@@ -93,7 +93,8 @@ inline fun <T1, E1, T2, E2> Either<T1, E1>.then(
 // region Retrieve
 fun <T, E> Either<T, E>.getOrNull() = if (this is Either.Success) data else null
 
-fun <T, E> Either<T, E>.getOrThrow() = if (this is Either.Success) data else error("Response must be Success")
+fun <T, E> Either<T, E>.getOrThrow() =
+    if (this is Either.Success) data else error("Response must be Success")
 
 fun <T, E> Either<T, E>.getOrElse(value: T) = if (this is Either.Success) data else value
 

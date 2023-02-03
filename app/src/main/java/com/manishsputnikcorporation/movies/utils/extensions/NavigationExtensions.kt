@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.utils
+package com.manishsputnikcorporation.movies.utils.extensions
 
 import androidx.navigation.NavHostController
 
