@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:app/src/main/java/com/manishsputnikcorporation/movies/utils/extensions/EitherExtensions.kt
 package com.manishsputnikcorporation.movies.utils.extensions
-========
-package com.manishsputnikcorporation.movies.utils
->>>>>>>> c0801610c5e22d55cd52b6d2df80e21916a62fd6:app/src/main/java/com/manishsputnikcorporation/movies/utils/EitherExtensions.kt
 
 import com.manishsputnikcorporation.movies.utils.Either
 import kotlin.contracts.ExperimentalContracts
