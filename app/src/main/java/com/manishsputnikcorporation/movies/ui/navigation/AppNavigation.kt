@@ -6,10 +6,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.manishsputnikcorporation.movies.ui.screens.SplashScreen
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailScreen
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeScreen
-import com.manishsputnikcorporation.movies.utils.navigateSingleTopTo
+import com.manishsputnikcorporation.movies.ui.screens.splash.SplashScreen
+import com.manishsputnikcorporation.movies.utils.extensions.navigateSingleTopTo
 
 @Composable
 fun AppNavigation(
@@ -22,7 +22,7 @@ fun AppNavigation(
         modifier = modifier
     ) {
         composable(route = SplashScreen.route) {
-            SplashScreen() {
+            SplashScreen {
                 navController.apply {
                     popBackStack()
                     navigateSingleTopTo(MoviesHome.route)

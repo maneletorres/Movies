@@ -1,13 +1,17 @@
 package com.manishsputnikcorporation.movies.domain.usecase.home
 
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
-import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.repository.MovieRepository
+import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
+import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCaseExceptionDelegate
-import com.manishsputnikcorporation.movies.utils.*
+import com.manishsputnikcorporation.movies.utils.Either
+import com.manishsputnikcorporation.movies.utils.eitherFailure
+import com.manishsputnikcorporation.movies.utils.eitherSuccess
+import com.manishsputnikcorporation.movies.utils.extensions.onFailure
+import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

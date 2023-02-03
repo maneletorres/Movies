@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.utils
+package com.manishsputnikcorporation.movies.utils.fake
 
 import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
 import com.manishsputnikcorporation.movies.network.response.MovieDto

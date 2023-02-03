@@ -2,18 +2,18 @@ package com.manishsputnikcorporation.movies.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetMoviesUseCase
+import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.utils.Either
+import com.manishsputnikcorporation.movies.utils.extensions.onFailure
+import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
-import com.manishsputnikcorporation.movies.utils.onFailure
-import com.manishsputnikcorporation.movies.utils.onSuccess
 
 @HiltViewModel
 class MoviesHomeViewModel @Inject constructor(
