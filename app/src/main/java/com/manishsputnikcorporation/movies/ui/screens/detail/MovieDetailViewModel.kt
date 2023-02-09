@@ -9,39 +9,39 @@ import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewMode
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import kotlinx.coroutines.flow.*
 
 @HiltViewModel
-class MovieDetailViewModel @Inject constructor(
+class MovieDetailViewModel
+@Inject
+constructor(
     private val getMovieUseCase: GetMovieUseCase,
     private val safeFlowUseCase: SafeFlowUseCaseDelegate,
 ) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
 
-    private val _movieDetailUiState: MutableStateFlow<MovieDetailUiState> = MutableStateFlow(Idle)
-    val movieDetailUIState: StateFlow<MovieDetailUiState> = _movieDetailUiState.asStateFlow()
+  private val _movieDetailUiState: MutableStateFlow<MovieDetailUiState> = MutableStateFlow(Idle)
+  val movieDetailUIState: StateFlow<MovieDetailUiState> = _movieDetailUiState.asStateFlow()
 
-    fun loadMovieDetail(id: String?) {
-        id?.let {
-            getMovieUseCase
-                .safePrepare(id)
-                .onStart {
-                    _movieDetailUiState.value = Loading
+  fun loadMovieDetail(id: String?) {
+    id?.let {
+      getMovieUseCase
+          .safePrepare(id)
+          .onStart { _movieDetailUiState.value = Loading }
+          .onEach {
+            it.onSuccess { movieDetailModel: MovieDetailModel ->
+                  _movieDetailUiState.value = Data(movieDetailModel)
                 }
-                .onEach {
-                    it.onSuccess { movieDetailModel: MovieDetailModel ->
-                        _movieDetailUiState.value = Data(movieDetailModel)
-                    }.onFailure {
-                        _movieDetailUiState.value = Error
-                    }
-                }.launchIn(viewModelScope)
-        }
+                .onFailure { _movieDetailUiState.value = Error }
+          }
+          .launchIn(viewModelScope)
     }
+  }
 
-    sealed class MovieDetailUiState {
-        object Idle : MovieDetailUiState()
-        object Loading : MovieDetailUiState()
-        data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState()
-        object Error : MovieDetailUiState()
-    }
+  sealed class MovieDetailUiState {
+    object Idle : MovieDetailUiState()
+    object Loading : MovieDetailUiState()
+    data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState()
+    object Error : MovieDetailUiState()
+  }
 }

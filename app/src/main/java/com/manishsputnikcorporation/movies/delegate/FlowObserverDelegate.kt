@@ -12,6 +12,11 @@ import kotlinx.coroutines.launch
 inline fun <reified T> Flow<T>.launchInLifecycle(lifecycleOwner: LifecycleOwner): Job =
     lifecycleOwner.lifecycleScope.launch { flowWithLifecycle(lifecycleOwner.lifecycle).collect() }
 
-inline fun <reified T> Flow<T>.collectInLifecycle(lifecycleOwner: LifecycleOwner, noinline collector: suspend (T) -> Unit) {
-    lifecycleOwner.lifecycleScope.launch { flowWithLifecycle(lifecycleOwner.lifecycle).onEach(collector).collect() }
+inline fun <reified T> Flow<T>.collectInLifecycle(
+    lifecycleOwner: LifecycleOwner,
+    noinline collector: suspend (T) -> Unit
+) {
+  lifecycleOwner.lifecycleScope.launch {
+    flowWithLifecycle(lifecycleOwner.lifecycle).onEach(collector).collect()
+  }
 }

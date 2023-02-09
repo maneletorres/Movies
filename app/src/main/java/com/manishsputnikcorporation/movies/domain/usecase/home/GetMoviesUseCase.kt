@@ -12,26 +12,26 @@ import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class GetMoviesUseCase @Inject constructor(
+class GetMoviesUseCase
+@Inject
+constructor(
     private val movieRepository: MovieRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider
-) : FlowUseCase<Unit, Either<List<MovieModel>, DomainError>>(dispatcherProvider),
+) :
+    FlowUseCase<Unit, Either<List<MovieModel>, DomainError>>(dispatcherProvider),
     FlowUseCaseExceptionDelegate {
 
-    override fun prepareFlow(input: Unit): Flow<Either<List<MovieModel>, DomainError>> = flow {
-        movieRepository.getMostPopularMovies()
-            .onSuccess {
-                emit(eitherSuccess(it))
-            }
-            .onFailure {
-                emit(eitherFailure(it))
-            }
-    }.spreadUnauthorized {
-        eitherFailure(DomainError("", ""))
-    }
+  override fun prepareFlow(input: Unit): Flow<Either<List<MovieModel>, DomainError>> =
+      flow {
+            movieRepository
+                .getMostPopularMovies()
+                .onSuccess { emit(eitherSuccess(it)) }
+                .onFailure { emit(eitherFailure(it)) }
+          }
+          .spreadUnauthorized { eitherFailure(DomainError("", "")) }
 }
