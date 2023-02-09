@@ -19,6 +19,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
@@ -37,19 +38,20 @@ fun MovieDetailScreen(
     movieId: String?,
     onBackArrowClick: () -> Unit
 ) {
-    val movieDetailUIState by movieDetailViewModel.movieDetailUIState.collectAsState()
-    movieDetailUIState.let {
-        when (it) {
-            Idle -> movieDetailViewModel.loadMovieDetail(movieId)
-            Loading -> GenericLoading()
-            is Data -> with(it.movieDetail) {
-                MovieDetailContent(image, title, directors, year, plot, runtimeStr) {
-                    onBackArrowClick()
-                }
+  val movieDetailUIState by movieDetailViewModel.movieDetailUIState.collectAsState()
+  movieDetailUIState.let {
+    when (it) {
+      Idle -> movieDetailViewModel.loadMovieDetail(movieId)
+      Loading -> GenericLoading()
+      is Data ->
+          with(it.movieDetail) {
+            MovieDetailContent(image, title, directors, year, plot, runtimeStr) {
+              onBackArrowClick()
             }
-            Error -> GenericError(errorMessage = R.string.movie_detail_error)
-        }
+          }
+      Error -> GenericError(errorMessage = R.string.movie_detail_error)
     }
+  }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -64,43 +66,38 @@ fun MovieDetailContent(
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
-                    modifier = Modifier.clickable {
-                        onBackArrowClick()
-                    }
-                )
-                Spacer(modifier = modifier.width(8.dp))
-                Text(stringResource(id = R.string.movie_detail_label))
-            }
-        },
-        bottomBar = {
-            // TODO: implement when new features are introduced
+  Scaffold(
+      topBar = {
+        TopAppBar {
+          Icon(
+              imageVector = Icons.Default.ArrowBack,
+              contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
+              modifier = Modifier.clickable { onBackArrowClick() })
+          Spacer(modifier = modifier.width(8.dp))
+          Text(stringResource(id = R.string.movie_detail_label))
         }
-    ) {
+      },
+      bottomBar = {
+        // TODO: implement when new features are introduced
+      }) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = modifier
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxHeight()
-                .semantics { contentDescription = "Movie Detail Screen" }
-        ) {
-            MovieGeneralInfoSection(
-                image = image,
-                title = title,
-                directors = directors,
-                year = year,
-                runtime = runtime
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            MoviePlotSection(plot = plot)
-        }
-    }
+            modifier =
+                modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .fillMaxHeight()
+                    .semantics { contentDescription = "Movie Detail Screen" }) {
+              MovieGeneralInfoSection(
+                  image = image,
+                  title = title,
+                  directors = directors,
+                  year = year,
+                  runtime = runtime)
+              Spacer(modifier = Modifier.height(8.dp))
+              MoviePlotSection(plot = plot)
+            }
+      }
 }
 
 @Composable
@@ -112,60 +109,31 @@ fun MovieGeneralInfoSection(
     runtime: String?,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        MovieImageSection(imageUrl = image)
-        Spacer(modifier = Modifier.width(8.dp))
-        MoviePrimaryInfoSection(
-            title = title,
-            directors = directors,
-            year = year,
-            runtime = runtime
-        )
-    }
+  Row(modifier = modifier.fillMaxWidth()) {
+    MovieImageSection(imageUrl = image)
+    Spacer(modifier = Modifier.width(8.dp))
+    MoviePrimaryInfoSection(title = title, directors = directors, year = year, runtime = runtime)
+  }
 }
 
 @Composable
-private fun MoviePlotSection(
-    plot: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = plot,
-        style = MaterialTheme.typography.body1,
-        modifier = modifier.fillMaxWidth()
-    )
+private fun MoviePlotSection(plot: String, modifier: Modifier = Modifier) {
+  Text(text = plot, style = MaterialTheme.typography.body1, modifier = modifier.fillMaxWidth())
 }
 
 @Composable
-private fun MovieImageSection(
-    imageUrl: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        border = BorderStroke(1.dp, colorResource(id = R.color.black)),
-        modifier = modifier
-            .height(100.dp)
-            .width(75.dp)
-    ) {
+private fun MovieImageSection(imageUrl: String, modifier: Modifier = Modifier) {
+  Card(
+      border = BorderStroke(1.dp, colorResource(id = R.color.black)),
+      modifier = modifier.height(100.dp).width(75.dp)) {
         SubcomposeAsyncImage(
             model = imageUrl,
             contentDescription = "",
-            loading = {
-                GenericLoading()
-            },
-            error = {
-                GenericPlaceholder(
-                    modifier = Modifier
-                        .width(25.dp)
-                        .height(25.dp)
-                )
-            },
+            loading = { GenericLoading() },
+            error = { GenericPlaceholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,
-            contentScale = ContentScale.Fit
-        )
-    }
+            contentScale = ContentScale.Fit)
+      }
 }
 
 @Composable
@@ -176,187 +144,143 @@ fun MoviePrimaryInfoSection(
     runtime: String?,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        MovieTitle(title = title)
-        MovieDirectors(director = directors)
-        MovieDetailSecondaryInfo(
-            year = year,
-            runtime = runtime
-        )
-    }
+  Column(modifier = modifier.fillMaxWidth()) {
+    MovieTitle(title = title)
+    MovieDirectors(director = directors)
+    MovieDetailSecondaryInfo(year = year, runtime = runtime)
+  }
 }
 
 @Composable
 private fun MovieTitle(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.h6
-    )
+  Text(text = title, style = MaterialTheme.typography.h6)
 }
 
 @Composable
 private fun MovieDirectors(director: String) {
-    Text(
-        text = director,
-        style = MaterialTheme.typography.subtitle1,
-    )
+  Text(
+      text = director,
+      style = MaterialTheme.typography.subtitle1,
+  )
 }
 
 @Composable
-fun MovieDetailSecondaryInfo(
-    year: String,
-    runtime: String?,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        MovieYear(year)
-        runtime?.let { MovieRuntime(it) }
-    }
+fun MovieDetailSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modifier) {
+  Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    MovieYear(year)
+    runtime?.let { MovieRuntime(it) }
+  }
 }
 
 @Composable
 private fun MovieYear(year: String) {
-    Text(
-        text = year,
-        style = MaterialTheme.typography.subtitle2,
-    )
+  Text(
+      text = year,
+      style = MaterialTheme.typography.subtitle2,
+  )
 }
 
 @Composable
 private fun MovieRuntime(runtime: String) {
-    Text(
-        text = runtime,
-        style = MaterialTheme.typography.subtitle2
-    )
+  Text(text = runtime, style = MaterialTheme.typography.subtitle2)
 }
 
 // region Previews
 @UiModePreviews
+@Preview(showSystemUi = true)
 @Composable
 private fun MovieDetailContentPreview() {
-    MoviesTheme {
-        with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-            MovieDetailContent(
-                image = image,
-                title = title,
-                directors = directors,
-                year = year,
-                plot = plot,
-                runtime = runtimeStr
-            )
-        }
+  MoviesTheme {
+    with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+      MovieDetailContent(
+          image = image,
+          title = title,
+          directors = directors,
+          year = year,
+          plot = plot,
+          runtime = runtimeStr)
     }
+  }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieGeneralInfoSectionPreview() {
-    MoviesTheme {
-        Surface {
-            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-                MovieGeneralInfoSection(
-                    image = image,
-                    title = title,
-                    directors = directors,
-                    year = year,
-                    runtime = runtimeStr
-                )
-            }
-        }
+  MoviesTheme {
+    Surface {
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+        MovieGeneralInfoSection(
+            image = image, title = title, directors = directors, year = year, runtime = runtimeStr)
+      }
     }
+  }
 }
 
 @UiModePreviews
 @Composable
 private fun MoviePlotSectionPreview() {
-    MoviesTheme {
-        Surface {
-            MoviePlotSection(plot = stringResource(id = R.string.dummy_movie_plot))
-        }
-    }
+  MoviesTheme {
+    Surface { MoviePlotSection(plot = stringResource(id = R.string.dummy_movie_plot)) }
+  }
 }
 
 // TODO: to check!!!
 @UiModePreviews
 @Composable
 private fun MovieImageSectionPreview() {
-    MoviesTheme {
-        MovieImageSection(imageUrl = "")
-    }
+  MoviesTheme { MovieImageSection(imageUrl = "") }
 }
 
 @UiModePreviews
 @Composable
 private fun MoviePrimaryInfoSectionPreview() {
-    MoviesTheme {
-        Surface {
-            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-                MoviePrimaryInfoSection(
-                    title = title,
-                    directors = directors,
-                    year = year,
-                    runtime = runtimeStr
-                )
-            }
-        }
+  MoviesTheme {
+    Surface {
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+        MoviePrimaryInfoSection(
+            title = title, directors = directors, year = year, runtime = runtimeStr)
+      }
     }
+  }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieTitlePreview() {
-    MoviesTheme {
-        Surface {
-            MovieTitle(title = stringResource(id = R.string.dummy_movie_title))
-        }
-    }
+  MoviesTheme { Surface { MovieTitle(title = stringResource(id = R.string.dummy_movie_title)) } }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieDirectorsPreview() {
-    MoviesTheme {
-        Surface {
-            MovieDirectors(director = stringResource(id = R.string.dummy_movie_directors))
-        }
-    }
+  MoviesTheme {
+    Surface { MovieDirectors(director = stringResource(id = R.string.dummy_movie_directors)) }
+  }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieDetailSecondaryInfoPreview() {
-    MoviesTheme {
-        Surface {
-            MovieDetailSecondaryInfo(
-                year = stringResource(id = R.string.dummy_movie_year),
-                runtime = stringResource(id = R.string.dummy_movie_runtime)
-            )
-        }
+  MoviesTheme {
+    Surface {
+      MovieDetailSecondaryInfo(
+          year = stringResource(id = R.string.dummy_movie_year),
+          runtime = stringResource(id = R.string.dummy_movie_runtime))
     }
+  }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieYearPreview() {
-    MoviesTheme {
-        Surface {
-            MovieYear(year = stringResource(id = R.string.dummy_movie_year))
-        }
-    }
+  MoviesTheme { Surface { MovieYear(year = stringResource(id = R.string.dummy_movie_year)) } }
 }
 
 @UiModePreviews
 @Composable
 private fun MovieRuntimePreview() {
-    MoviesTheme {
-        Surface {
-            MovieRuntime(runtime = stringResource(id = R.string.dummy_movie_runtime))
-        }
-    }
+  MoviesTheme {
+    Surface { MovieRuntime(runtime = stringResource(id = R.string.dummy_movie_runtime)) }
+  }
 }
 // endregion
