@@ -14,86 +14,53 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.R
+import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 
 @Composable
 fun GenericLoading(modifier: Modifier = Modifier) {
-    Surface(
-        contentColor = MaterialTheme.colors.primary
-    ) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
+  Surface(contentColor = MaterialTheme.colors.primary) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+      CircularProgressIndicator()
     }
+  }
 }
 
 @Composable
-fun GenericError(
-    @StringRes errorMessage: Int
-) {
-    Surface(
-        contentColor = MaterialTheme.colors.primary
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(32.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(id = errorMessage)
-            )
-        }
+fun GenericError(@StringRes errorMessage: Int) {
+  Surface(contentColor = MaterialTheme.colors.primary) {
+    Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+      Text(text = stringResource(id = errorMessage))
     }
+  }
 }
 
 @Composable
 fun GenericPlaceholder(modifier: Modifier = Modifier) {
-    Box(
-        modifier = Modifier
-            .height(200.dp)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_placeholder),
-            contentDescription = "",
-            modifier = modifier
-                .width(50.dp)
-                .height(50.dp)
-        )
-    }
+  Box(modifier = Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_placeholder),
+        contentDescription = "",
+        modifier = modifier.width(50.dp).height(50.dp))
+  }
 }
 
 // region Previews
 @Preview
 @Composable
 private fun MoviesHomeLoadingPreview() {
-    MoviesTheme {
-        GenericLoading()
-    }
+  MoviesTheme { GenericLoading() }
 }
 
 @Preview
 @Composable
 private fun MoviesHomeErrorPreview() {
-    MoviesTheme {
-        GenericError(errorMessage = R.string.generic_error_message)
-    }
+  MoviesTheme { GenericError(errorMessage = R.string.generic_error_message) }
 }
 
 @Preview
 @Composable
 private fun MoviePlaceholderPreview() {
-    MoviesTheme {
-        GenericPlaceholder(modifier = Modifier
-            .width(50.dp)
-            .height(50.dp)
-        )
-    }
+  MoviesTheme { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) }
 }
 // endregion
