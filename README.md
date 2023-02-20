@@ -1,5 +1,5 @@
 # Movies
-Response example: https://imdb-api.com/en/API/Title/k_3x134525/tt0110413
+[Response example](https://imdb-api.com/en/API/Title/k_3x134525/tt0110413)
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -33,4 +33,4 @@ Movies is a simple movie application built entirely in Kotlin & Jetpack Compose 
 - Others...
 
 ## Screenshots
-<img width="200" alt="Start screen" src="https://user-images.githubusercontent.com/33102786/215556885-0b659344-06de-4d70-8ea2-e7b6dde8dc31.jpg"> <img width="200" alt="Pizza screen" src="https://user-images.githubusercontent.com/33102786/215558002-25dfd085-0afa-4fa4-bdda-5f167bbf7248.jpg"> <img width="200" alt="Pickup screen" src="https://user-images.githubusercontent.com/33102786/215558037-55adeca1-f6e5-42c8-bb49-92da24ff00a1.jpg"> <img width="200" alt="Summary screen" src="https://user-images.githubusercontent.com/33102786/215558078-ee453acf-5562-423b-83d2-9bb050e62603.jpg">
+<img width="200" alt="Splash screen" src="https://user-images.githubusercontent.com/33102786/220135136-cfdc255c-41d7-4a3f-9664-bc97148dcf2f.jpg"> <img width="200" alt="Movies home screen" src="https://user-images.githubusercontent.com/33102786/220135247-76172262-990e-4009-bb95-62ce8e0a4933.jpg"> <img width="200" alt="Movie detail screen" src="https://user-images.githubusercontent.com/33102786/220135288-22982b86-a86c-4f1d-a036-551a340631e9.jpg">
