@@ -15,7 +15,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.manishsputnikcorp.movies"
+        applicationId "com.manishsputnikcorporation.movies"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -63,11 +63,6 @@ dependencies {
     implementation libs.bundles.ui
     implementation libs.bundles.navigation
     implementation libs.bundles.compose
-
-    // region Util libraries:
-    // TODO: implementation "com.ncorti.ktfmt.gradle:plugin:rootProject."
-    // TODO: implementation "com.vanniktech:gradle-android-junit-jacoco-plugin:rootProject."
-    // endregion
 
     // region Testing libraries:
     testImplementation libs.junit
