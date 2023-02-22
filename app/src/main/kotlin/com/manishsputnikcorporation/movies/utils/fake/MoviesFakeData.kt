@@ -266,5 +266,5 @@ val fakeMovieDetailDto =
         plot =
             "12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all",
         plotLocal = "",
-        plotLocalIsRtl = "",
+        plotLocalIsRtl = false,
         directors = "Luc Besson")

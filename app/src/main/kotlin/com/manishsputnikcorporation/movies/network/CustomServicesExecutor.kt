@@ -1,11 +1,11 @@
 package com.manishsputnikcorporation.movies.network
 
 import android.util.Log
-import com.google.gson.JsonParseException
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.rest.exceptions.TimeOutException
 import com.manishsputnikcorporation.movies.utils.Either
+import com.squareup.moshi.JsonDataException
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -35,7 +35,7 @@ interface CustomServicesExecutor {
             val raw: String = response.errorBody()?.string().orEmpty()
             Either.Failure(CustomError(raw, response.code(), response.headers()))
           }
-        } catch (ex: JsonParseException) {
+        } catch (ex: JsonDataException) {
           Log.e(logTag, ex.toString()) // TODO: to review!
           throw ServiceException(ex.message ?: "", (request.request() as Request).url.toString())
         } catch (ex: SocketTimeoutException) {
