@@ -43,18 +43,14 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material-version" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-version" }
 
-# Util libraries:
-# TODO: to transform -> implementation "com.ncorti.ktfmt.gradle:plugin:rootProject."
-# TODO: to transform -> implementation "com.vanniktech:gradle-android-junit-jacoco-plugin:rootProject."
-
 # Testing libraries:
 junit = { module = "junit:junit", version.ref = "junit-version" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
 
 # Compose testing libraries:
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-version" }
-androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
 
 [bundles]
 retrofit2 = [
