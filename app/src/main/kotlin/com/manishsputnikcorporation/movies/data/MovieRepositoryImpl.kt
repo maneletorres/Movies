@@ -21,7 +21,7 @@ constructor(
     private val mapper: MovieDtoMapper
 ) : MovieRepository {
 
-  override fun getMostPopularMovies(): DomainResponse<List<MovieModel>> {
+  override suspend fun getMostPopularMovies(): DomainResponse<List<MovieModel>> {
     // TODO: only for test purposes
     val fakeMovies = fakeMoviesDto.items.map { mapper.mapToDomainModel(it) }
     return eitherSuccess(fakeMovies)
@@ -37,7 +37,7 @@ constructor(
         }
   }
 
-  override fun getMostPopularTVs(): DomainResponse<List<MovieModel>> {
+  override suspend fun getMostPopularTVs(): DomainResponse<List<MovieModel>> {
     return movieRemoteDataSource
         .getMostPopularTVs()
         .mapSuccess { moviesDto ->

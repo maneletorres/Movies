@@ -1,16 +1,16 @@
 package com.manishsputnikcorporation.movies.network.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class MovieDto(
-    @SerializedName("id") val id: String,
-    @SerializedName("rank") val rank: String,
-    @SerializedName("rankUpDown") val rankUpDown: String,
-    @SerializedName("title") val title: String,
-    @SerializedName("fullTitle") val fullTitle: String,
-    @SerializedName("year") val year: String,
-    @SerializedName("image") val image: String,
-    @SerializedName("crew") val crew: String,
-    @SerializedName("imdbRating") val imdbRating: String? = "",
-    @SerializedName("imdbRatingCount") val imdbRatingCount: String? = ""
+    @Json(name = "id") val id: String,
+    @Json(name = "rank") val rank: String,
+    @Json(name = "rankUpDown") val rankUpDown: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "fullTitle") val fullTitle: String,
+    @Json(name = "year") val year: String,
+    @Json(name = "image") val image: String,
+    @Json(name = "crew") val crew: String,
+    @Json(name = "imdbRating") val imdbRating: String? = "",
+    @Json(name = "imdbRatingCount") val imdbRatingCount: String? = ""
 )

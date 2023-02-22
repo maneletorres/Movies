@@ -20,7 +20,7 @@ constructor(
     private val mapper: MovieDetailDtoMapper
 ) : MovieDetailRepository {
 
-  override fun getMovie(id: String): DomainResponse<MovieDetailModel> {
+  override suspend fun getMovie(id: String): DomainResponse<MovieDetailModel> {
     // TODO: only for test purposes
     //  val fakeMovieDetail = mapper.mapToDomainModel(fakeMovieDetailDto)
     // return eitherSuccess(fakeMovieDetail)

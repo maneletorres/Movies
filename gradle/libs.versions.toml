@@ -24,7 +24,7 @@ dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compil
 
 # Retrofit libraries:
 com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2-version" }
-com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit2-version" }
+com-squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit2-version" }
 
 # OkHttp libraries:
 com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3-version" }
@@ -54,8 +54,8 @@ androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-mani
 
 [bundles]
 retrofit2 = [
-    "com-squareup-retrofit2-converter-gson",
     "com-squareup-retrofit2-retrofit",
+    "com-squareup-retrofit2-converter-moshi",
 ]
 okhttp3 = [
     "com-squareup-okhttp3-logging-interceptor",

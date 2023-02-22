@@ -1,20 +1,20 @@
 package com.manishsputnikcorporation.movies.network.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class MovieDetailDto(
-    @SerializedName("id") val id: String,
-    @SerializedName("title") val title: String,
-    @SerializedName("originalTitle") val originalTitle: String,
-    @SerializedName("fullTitle") val fullTitle: String,
-    @SerializedName("year") val year: String,
-    @SerializedName("image") val image: String,
-    @SerializedName("releaseDate") val releaseDate: String,
-    @SerializedName("runtimeMins") val runtimeMins: String? = "",
-    @SerializedName("runtimeStr") val runtimeStr: String? = null,
-    @SerializedName("plot") val plot: String = "",
-    @SerializedName("plotLocal") val plotLocal: String? = "",
-    @SerializedName("plotLocalIsRtl") val plotLocalIsRtl: String? = "",
-    @SerializedName("directors") val directors: String
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "originalTitle") val originalTitle: String,
+    @Json(name = "fullTitle") val fullTitle: String,
+    @Json(name = "year") val year: String,
+    @Json(name = "image") val image: String,
+    @Json(name = "releaseDate") val releaseDate: String,
+    @Json(name = "runtimeMins") val runtimeMins: String? = "",
+    @Json(name = "runtimeStr") val runtimeStr: String? = null,
+    @Json(name = "plot") val plot: String = "",
+    @Json(name = "plotLocal") val plotLocal: String? = "",
+    @Json(name = "plotLocalIsRtl") val plotLocalIsRtl: Boolean? = false,
+    @Json(name = "directors") val directors: String
 // TODO: to complete with all fields!
 )
