@@ -2,9 +2,9 @@ package com.manishsputnikcorporation.movies.data.local
 
 import android.database.sqlite.SQLiteException
 import androidx.room.*
+import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import java.io.IOException
 
 @Dao
 interface MovieDao {
