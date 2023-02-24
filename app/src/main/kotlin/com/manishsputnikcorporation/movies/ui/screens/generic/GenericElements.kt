@@ -27,10 +27,10 @@ fun GenericLoading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GenericError(@StringRes errorMessage: Int) {
+fun EmptyContent(@StringRes message: Int) {
   Surface(contentColor = MaterialTheme.colors.primary) {
     Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
-      Text(text = stringResource(id = errorMessage))
+      Text(text = stringResource(id = message))
     }
   }
 }
@@ -55,7 +55,7 @@ private fun MoviesHomeLoadingPreview() {
 @Preview
 @Composable
 private fun MoviesHomeErrorPreview() {
-  MoviesTheme { GenericError(errorMessage = R.string.generic_error_message) }
+  MoviesTheme { EmptyContent(message = R.string.generic_error_message) }
 }
 
 @Preview
