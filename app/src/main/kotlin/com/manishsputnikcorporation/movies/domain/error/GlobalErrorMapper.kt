@@ -4,13 +4,11 @@ import com.manishsputnikcorporation.movies.domain.error.exception.NetworkExcepti
 import com.manishsputnikcorporation.movies.domain.error.exception.UnauthorizedException
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 interface GlobalErrorMapper {
   fun map(throwable: Throwable): GlobalErrorType
 }
 
-@Singleton
 class GlobalErrorMapperImpl @Inject constructor() : GlobalErrorMapper {
 
   override fun map(throwable: Throwable): GlobalErrorType =

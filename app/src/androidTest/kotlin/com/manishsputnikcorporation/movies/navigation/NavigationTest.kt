@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies
+package com.manishsputnikcorporation.movies.navigation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed

@@ -8,6 +8,7 @@
 
     <!-- MoviesHome: -->
     <!-- -->
+    <string name="movies_home_empty">No movies</string>
     <string name="movies_home_error">There was a problem loading the movie list. Sorry for the inconvenience.</string>
 
     <!-- MovieDetail: -->

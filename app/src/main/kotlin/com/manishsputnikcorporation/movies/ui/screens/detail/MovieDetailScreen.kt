@@ -25,7 +25,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
+import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
@@ -49,7 +49,7 @@ fun MovieDetailScreen(
               onBackArrowClick()
             }
           }
-      Error -> GenericError(errorMessage = R.string.movie_detail_error)
+      Error -> EmptyContent(message = R.string.movie_detail_error)
     }
   }
 }

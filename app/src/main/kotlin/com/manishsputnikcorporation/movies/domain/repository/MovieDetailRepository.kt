@@ -4,5 +4,5 @@ import com.manishsputnikcorporation.movies.domain.common.DomainResponse
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 
 interface MovieDetailRepository {
-  suspend fun getMovie(id: String): DomainResponse<MovieDetailModel>
+  fun getMovie(id: String): DomainResponse<MovieDetailModel>
 }

@@ -7,13 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MovieModel(
     override val id: String,
-    val rank: String,
-    val rankUpDown: String,
     val title: String,
-    val fullTitle: String,
     val year: String,
-    val image: String,
-    val crew: String,
-    val imdbRating: String? = "",
-    val imdbRatingCount: String? = ""
+    val imageUrl: String,
+    val rating: String, // TODO: to put a FAB in the item. Bottom right
 ) : Identifiable, Parcelable

@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.data
+package com.manishsputnikcorporation.movies.data.remote
 
 import com.manishsputnikcorporation.movies.BuildConfig
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
@@ -11,7 +11,6 @@ import com.manishsputnikcorporation.movies.network.response.MoviesDto
 import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import javax.inject.Inject
-import javax.inject.Singleton
 import retrofit2.Call
 
 interface MovieRemoteDataSource {
@@ -26,7 +25,6 @@ interface MovieRemoteDataSource {
   fun getMovie(id: String): Either<MovieDetailDto, CustomError>
 }
 
-@Singleton
 class MovieRemoteDataSourceImpl
 @Inject
 constructor(private val customService: CustomServicesExecutor, private val service: MoviesService) :

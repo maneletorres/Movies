@@ -2,16 +2,11 @@ package com.manishsputnikcorporation.movies.domain.error
 
 import com.manishsputnikcorporation.movies.domain.error.model.GlobalErrorHandlerModel
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-@Singleton
-class GlobalErrorManager @Inject constructor(private val defaultErrorMapper: GlobalErrorMapper) {
-
-  private val _event: MutableSharedFlow<GlobalErrorHandlerModel> = MutableSharedFlow()
-  val event: SharedFlow<GlobalErrorHandlerModel> = _event.asSharedFlow()
+interface GlobalErrorManager {
 
   suspend fun emitError(
       throwable: Throwable,
@@ -19,6 +14,22 @@ class GlobalErrorManager @Inject constructor(private val defaultErrorMapper: Glo
       onUnauthorized: (suspend () -> Unit)? = null,
       onNetworkAvailable: (suspend () -> Unit)? = null,
       dismissAction: (() -> Unit)? = null
+  )
+}
+
+class GlobalErrorManagerImpl
+@Inject
+constructor(private val defaultErrorMapper: GlobalErrorMapper) : GlobalErrorManager {
+
+  private val _event: MutableSharedFlow<GlobalErrorHandlerModel> = MutableSharedFlow()
+  val event: SharedFlow<GlobalErrorHandlerModel> = _event.asSharedFlow()
+
+  override suspend fun emitError(
+      throwable: Throwable,
+      onGenericError: (suspend () -> Unit)?,
+      onUnauthorized: (suspend () -> Unit)?,
+      onNetworkAvailable: (suspend () -> Unit)?,
+      dismissAction: (() -> Unit)?
   ) {
     _event.emit(
         GlobalErrorHandlerModel(
