@@ -31,8 +31,8 @@ object DatabaseModule {
   ): MovieRoomDatabase =
       Room.databaseBuilder(context, MovieRoomDatabase::class.java, "movie_database")
           .fallbackToDestructiveMigration()
-          /** Database preload (only for debug purposes): */
-          //.addCallback(callback)
+          /** Pre-populate the database (only for test purposes): */
+          // .addCallback(callback)
           .build()
 
   @Provides

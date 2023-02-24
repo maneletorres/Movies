@@ -26,9 +26,7 @@ abstract class MovieRoomDatabase : RoomDatabase() {
       super.onCreate(db)
 
       val dao = database.get().movieDao()
-      applicationScope.launch {
-        dao.insertAll(fakeMoviesDto.asDatabaseModel())
-      }
+      applicationScope.launch { dao.insertAll(fakeMoviesDto.asDatabaseModel()) }
     }
   }
 }
