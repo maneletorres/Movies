@@ -6,9 +6,7 @@ import retrofit2.http.GET
 
 interface MovieRepository {
 
-  @GET("mostPopularMovies")
-  suspend fun getMostPopularMovies(): DomainResponse<List<MovieModel>>
+  @GET("mostPopularMovies") suspend fun getMostPopularMovies(): DomainResponse<List<MovieModel>>
 
-  @GET("mostPopularTVs")
-  suspend fun getMostPopularTVs(): DomainResponse<List<MovieModel>>
+  @GET("mostPopularTVs") suspend fun getMostPopularTVs(): DomainResponse<List<MovieModel>>
 }
