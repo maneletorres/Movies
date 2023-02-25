@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true) // TODO: is it necessary?
 data class NetworkMovieContainer(val movies: List<MovieDto>)
 
-fun MoviesDto.asDatabaseModel(): List<DatabaseMovie> {
+fun MoviesDto.asDatabaseModel(type: Type): List<DatabaseMovie> {
   return items.map {
     DatabaseMovie(
         id = it.id,
