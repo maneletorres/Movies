@@ -19,13 +19,13 @@ data class DatabaseMovie(
 
 fun List<DatabaseMovie>.asDomainModel(): List<MovieModel> {
   return map {
-    MovieModel(id = it.id,
+    MovieModel(
+        id = it.id,
         rank = it.rank,
         title = it.title,
         year = it.year,
         imageUrl = it.imageUrl,
         rating = it.rating,
-        type = it.type
-    )
+        type = it.type)
   }
 }
