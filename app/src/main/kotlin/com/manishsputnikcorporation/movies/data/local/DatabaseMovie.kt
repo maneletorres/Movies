@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.utils.enums.Type
 
 @Entity(tableName = "movie")
 data class DatabaseMovie(
@@ -12,7 +13,8 @@ data class DatabaseMovie(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "year") val year: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
-    @ColumnInfo(name = "rating") val rating: String
+    @ColumnInfo(name = "rating") val rating: String,
+    @ColumnInfo(name = "type") val type: Type
 )
 
 fun List<DatabaseMovie>.asDomainModel(): List<MovieModel> {
@@ -22,7 +24,8 @@ fun List<DatabaseMovie>.asDomainModel(): List<MovieModel> {
         title = it.title,
         year = it.year,
         imageUrl = it.imageUrl,
-        rating = it.rating
+        rating = it.rating,
+        type = it.type
     )
   }
 }

@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.network.response
 
+import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.squareup.moshi.Json
 
 data class MovieDto(
@@ -9,4 +10,5 @@ data class MovieDto(
     val year: String,
     @field:Json(name = "image") val imageUrl: String,
     @field:Json(name = "imDbRating") val rating: String,
+    val type: Type
 )

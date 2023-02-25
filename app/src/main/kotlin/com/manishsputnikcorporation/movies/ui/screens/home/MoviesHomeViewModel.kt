@@ -8,7 +8,7 @@ import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetNetworkMoviesUseCase
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
-import com.manishsputnikcorporation.movies.utils.Either
+import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +28,8 @@ constructor(
   val moviesHomeUIState: StateFlow<MoviesHomeUiState> =
       moviesRepository.movies
           .map {
-            if (it.isEmpty()) Empty else Data(it)
+            it.filter { movieModel -> movieModel.type == Type.MOVIE }
+            if (it.isEmpty()) Empty else Data(Type.MOVIE, it)
           }
           .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Loading)
 
@@ -71,7 +72,7 @@ constructor(
   sealed class MoviesHomeUiState {
     object Empty : MoviesHomeUiState() // TODO: to delete?
     object Loading : MoviesHomeUiState()
-    data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState()
+    data class Data(val searchType: Type, val movieList: List<MovieModel>) : MoviesHomeUiState()
     object Error : MoviesHomeUiState()
   }
 

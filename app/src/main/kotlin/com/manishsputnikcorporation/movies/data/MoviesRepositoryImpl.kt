@@ -41,6 +41,21 @@ constructor(
         }
   }
 
+  // TODO: to add a MenuItem to change the API search call
+  override fun refreshMostPopularTVs(): DomainResponse<Unit> {
+    // TODO: only for test purposes
+    // return insertMovies(fakeSeriesListDto, DatabaseMovieType.SERIES)
+
+    return movieRemoteDataSource
+        .getMostPopularTVs()
+        .mapSuccess { moviesDto ->
+          return insertMovies(moviesDto, Type.SERIES)
+        }
+        .mapFailure { error ->
+          return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
+        }
+  }
+
   // TODO: are necessary these try-catch clauses?
   private fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
       try {

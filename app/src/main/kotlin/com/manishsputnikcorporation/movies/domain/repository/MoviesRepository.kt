@@ -9,4 +9,6 @@ interface MoviesRepository {
   val movies: Flow<List<MovieModel>>
 
   fun refreshMostPopularMovies(): DomainResponse<Unit>
+
+  fun refreshMostPopularTVs(): DomainResponse<Unit>
 }

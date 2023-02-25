@@ -4,7 +4,9 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.manishsputnikcorporation.movies.di.ApplicationScope
 import com.manishsputnikcorporation.movies.network.asDatabaseModel
-import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.enums.Type.*
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +28,11 @@ abstract class MovieRoomDatabase : RoomDatabase() {
       super.onCreate(db)
 
       val dao = database.get().movieDao()
-      applicationScope.launch { dao.insertAll(fakeMoviesDto.asDatabaseModel()) }
+      applicationScope.launch {
+        // TODO: to check
+        dao.insertAll(
+            fakeMovieListDto.asDatabaseModel(MOVIE).plus(fakeSeriesListDto.asDatabaseModel(SERIES)))
+      }
     }
   }
 }

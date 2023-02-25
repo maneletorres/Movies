@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,8 @@ import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
-import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,7 +42,11 @@ fun MoviesHomeScreen(
       is Data ->
           MoviesHomeContent(
               movies = it.movieList,
-              onClickMovie = { movieId -> onClickMovie(movieId) })
+              onClickMovie = { movieId -> onClickMovie(movieId) },
+              // TODO: to check
+              onClickMoreVert = {
+                moviesHomeViewModel.loadNetworkData(it.searchType.toggleSearchType())
+              })
       Empty -> EmptyContent(message = R.string.movies_home_empty)
       Error -> EmptyContent(message = R.string.movies_home_error)
     }
@@ -50,18 +57,27 @@ fun MoviesHomeScreen(
 fun MoviesHomeContent(
     movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
+    onClickMoreVert: () -> Unit = {}
 ) {
   val gridState = rememberLazyGridState()
   val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
   Scaffold(
       topBar = {
-        TopAppBar {
-          Text(
-              text = stringResource(id = R.string.app_name),
-              modifier = Modifier.padding(start = 8.dp))
-        }
+        TopAppBar(
+            title = {
+              Text(
+                  text = stringResource(id = R.string.app_name),
+                  modifier = Modifier.padding(start = 8.dp))
+            },
+            actions = {
+              IconButton(onClick = { onClickMoreVert() }) {
+                Icon(
+                    imageVector = Icons.Filled.MoreVert, contentDescription = "" // TODO:
+                    )
+              }
+            })
       },
       bottomBar = {
         // TODO: implement when new features are introduced
@@ -124,7 +140,7 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 @Composable
 private fun MoviesHomeContentPreview() {
   MoviesTheme {
-    val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+    val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
     MoviesHomeContent(movies = movies)
   }
 }
@@ -135,7 +151,7 @@ private fun MoviesHomeContentPreview() {
 private fun MoviesGridPreview() {
   MoviesTheme {
     Surface {
-      val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+      val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
       MoviesGrid(movies = movies)
     }
   }
@@ -147,7 +163,7 @@ private fun MoviesGridPreview() {
 private fun MoviePreview() {
   MoviesTheme {
     Surface {
-      with(MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) { Movie(id, imageUrl) }
+      with(MovieDtoMapper().mapToDomainModel(fakeMovieListDto.items[0])) { Movie(id, imageUrl) }
     }
   }
 }
