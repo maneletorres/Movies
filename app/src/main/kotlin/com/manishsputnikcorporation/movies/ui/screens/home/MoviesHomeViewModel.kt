@@ -1,11 +1,12 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.domain.usecase.home.GetMoviesUseCase
+import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
+import com.manishsputnikcorporation.movies.domain.usecase.home.GetNetworkMoviesUseCase
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
@@ -19,36 +20,56 @@ import kotlinx.coroutines.flow.*
 class MoviesHomeViewModel
 @Inject
 constructor(
-    private val getMoviesUseCase: GetMoviesUseCase,
+    moviesRepository: MoviesRepository,
+    private val getNetworkMoviesUseCase: GetNetworkMoviesUseCase,
     private val safeFlowUseCase: SafeFlowUseCaseDelegate
 ) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
 
-  private val _moviesHomeUiState: MutableStateFlow<MoviesHomeUiState> = MutableStateFlow(Idle)
-  val moviesHomeUIState: StateFlow<MoviesHomeUiState> = _moviesHomeUiState.asStateFlow()
+  val moviesHomeUIState: StateFlow<MoviesHomeUiState> =
+      moviesRepository.movies
+          .map {
+            if (it.isEmpty()) Empty else Data(it)
+          }
+          .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Loading)
 
   private val _event: Channel<Event> = Channel()
   val event: Flow<Event> = _event.receiveAsFlow()
 
   init {
-    loadData()
+    // loadDatabaseData()
+    loadNetworkData()
   }
 
-  private fun loadData() {
-    getMoviesUseCase
-        .safePrepare<Unit, Either<List<MovieModel>, DomainError>>()
-        .onStart { _moviesHomeUiState.value = Loading }
+  //  private fun loadDatabaseData() {
+  //    getDatabaseMoviesUseCase
+  //        .safePrepare<Unit, List<MovieModel>>()
+  //        .onStart { _moviesHomeUiState.value = Loading }
+  //        .onEach { movieModelList: List<MovieModel> ->
+  //          _moviesHomeUiState.value = Data(movieModelList)
+  //        }
+  //        .onEmpty {
+  //            // TODO: to investigate
+  //        }
+  //        .launchIn(viewModelScope)
+  //  }
+
+  fun loadNetworkData(searchType: Type = Type.MOVIE) {
+    getNetworkMoviesUseCase
+        .safePrepare(searchType)
         .onEach {
-          it.onSuccess { movieModelList: List<MovieModel> ->
-                _moviesHomeUiState.value = Data(movieModelList)
+          it.onSuccess {
+                // TODO: nothing to do.
               }
-              .onFailure { _moviesHomeUiState.value = Error }
+              .onFailure {
+                Log.e("", "") // TODO:
+              }
         }
         .launchIn(viewModelScope)
   }
 
   // region States
   sealed class MoviesHomeUiState {
-    object Idle : MoviesHomeUiState()
+    object Empty : MoviesHomeUiState() // TODO: to delete?
     object Loading : MoviesHomeUiState()
     data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState()
     object Error : MoviesHomeUiState()

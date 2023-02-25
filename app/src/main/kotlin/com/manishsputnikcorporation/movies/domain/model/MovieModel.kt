@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MovieModel(
     override val id: String,
+    val rank: String,
     val title: String,
     val year: String,
     val imageUrl: String,

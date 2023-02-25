@@ -22,7 +22,7 @@ interface MovieDao {
 
   @Query("SELECT * FROM movie WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
 
-  @Query("SELECT * FROM movie ORDER BY title ASC") fun getMovies(): Flow<List<DatabaseMovie>>
+  @Query("SELECT * FROM movie ORDER BY rank ASC") fun getMovies(): Flow<List<DatabaseMovie>>
 
   // region Helper methods
   fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()

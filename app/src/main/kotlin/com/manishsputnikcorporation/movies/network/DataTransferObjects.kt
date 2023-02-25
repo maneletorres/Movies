@@ -11,6 +11,12 @@ data class NetworkMovieContainer(val movies: List<MovieDto>)
 fun MoviesDto.asDatabaseModel(): List<DatabaseMovie> {
   return items.map {
     DatabaseMovie(
-        id = it.id, title = it.title, year = it.year, imageUrl = it.imageUrl, rating = it.rating)
+        id = it.id,
+        rank = it.rank,
+        title = it.title,
+        year = it.year,
+        imageUrl = it.imageUrl,
+        rating = it.rating
+        )
   }
 }

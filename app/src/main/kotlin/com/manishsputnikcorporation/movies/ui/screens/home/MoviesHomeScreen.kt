@@ -18,7 +18,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
+import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
@@ -35,10 +35,13 @@ fun MoviesHomeScreen(
   val moviesHomeUIState by moviesHomeViewModel.moviesHomeUIState.collectAsState()
   moviesHomeUIState.let {
     when (it) {
-      Idle -> Unit
       Loading -> GenericLoading()
-      is Data -> MoviesHomeContent(movies = it.movieList) { movieId -> onClickMovie(movieId) }
-      Error -> GenericError(errorMessage = R.string.movies_home_error)
+      is Data ->
+          MoviesHomeContent(
+              movies = it.movieList,
+              onClickMovie = { movieId -> onClickMovie(movieId) })
+      Empty -> EmptyContent(message = R.string.movies_home_empty)
+      Error -> EmptyContent(message = R.string.movies_home_error)
     }
   }
 }
@@ -94,7 +97,7 @@ fun MoviesGrid(
   LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
     items(movies, key = { it.id }) { movie ->
       val rememberedMovie = rememberSaveable { movie } // TODO: to check
-      with(rememberedMovie) { Movie(id, image) { movieId -> onClickMovie(movieId) } }
+      with(rememberedMovie) { Movie(id, imageUrl) { movieId -> onClickMovie(movieId) } }
     }
   }
 }
@@ -143,7 +146,9 @@ private fun MoviesGridPreview() {
 @Composable
 private fun MoviePreview() {
   MoviesTheme {
-    Surface { with(MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) { Movie(id, image) } }
+    Surface {
+      with(MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) { Movie(id, imageUrl) }
+    }
   }
 }
 // endregion

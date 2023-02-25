@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 
 data class MovieDto(
     val id: String,
+    val rank: String,
     val title: String,
     val year: String,
     @field:Json(name = "image") val imageUrl: String,

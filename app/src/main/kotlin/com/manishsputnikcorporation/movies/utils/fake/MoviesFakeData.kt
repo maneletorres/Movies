@@ -10,6 +10,7 @@ val fakeMoviesDto =
             listOf(
                 MovieDto(
                     id = "tt11909878",
+                    rank = "1",
                     title = "Hocus Pocus 2",
                     year = "2022",
                     imageUrl =
@@ -18,6 +19,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt1655389",
+                    rank = "2",
                     title = "Blonde",
                     year = "2022",
                     imageUrl =
@@ -26,6 +28,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt0107120",
+                    rank = "3",
                     title = "Hocus Pocus",
                     year = "1993",
                     imageUrl =
@@ -34,6 +37,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt15474916",
+                    rank = "4",
                     title = "Smile",
                     year = "2022",
                     imageUrl =
@@ -42,6 +46,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt6718170",
+                    rank = "5",
                     title = "The Super Mario Bros. Movie",
                     year = "2023",
                     imageUrl =
@@ -50,6 +55,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt12593682",
+                    rank = "6",
                     title = "Bullet Train",
                     year = "2022",
                     imageUrl =
@@ -58,6 +64,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt10731256",
+                    rank = "7",
                     title = "Don't Worry Darling",
                     year = "2022",
                     imageUrl =
@@ -66,6 +73,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt9114286",
+                    rank = "8",
                     title = "Black Panther: Wakanda Forever",
                     year = "2022",
                     imageUrl =
@@ -74,6 +82,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt10304142",
+                    rank = "9",
                     title = "Amsterdam",
                     year = "2022",
                     imageUrl =
@@ -82,6 +91,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt0887261",
+                    rank = "10",
                     title = "Hellraiser",
                     year = "2022",
                     imageUrl =
@@ -90,6 +100,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt9731598",
+                    rank = "11",
                     title = "Bros",
                     year = "2022",
                     imageUrl = "Wrong_image_url.jpg",
@@ -97,6 +108,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt12908110",
+                    rank = "12",
                     title = "Mr. Harrigan's Phone",
                     year = "2022",
                     imageUrl =
@@ -105,6 +117,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt14813212",
+                    rank = "13",
                     title = "The Munsters",
                     year = "2022",
                     imageUrl =
@@ -113,6 +126,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt10268488",
+                    rank = "14",
                     title = "The Greatest Beer Run Ever",
                     year = "2022",
                     imageUrl =
@@ -121,6 +135,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt5315210",
+                    rank = "15",
                     title = "Lou",
                     year = "2022",
                     imageUrl =
@@ -129,6 +144,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt4595186",
+                    rank = "16",
                     title = "Luckiest Girl Alive",
                     year = "2022",
                     imageUrl =
@@ -137,6 +153,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt1745960",
+                    rank = "17",
                     title = "Top Gun: Maverick",
                     year = "2022",
                     imageUrl =
@@ -145,6 +162,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt13560574",
+                    rank = "18",
                     title = "X",
                     year = "2022",
                     imageUrl =
@@ -153,6 +171,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt10242388",
+                    rank = "19",
                     title = "Last Seen Alive",
                     year = "2022",
                     imageUrl =
@@ -161,6 +180,7 @@ val fakeMoviesDto =
                 ),
                 MovieDto(
                     id = "tt8093700",
+                    rank = "20",
                     title = "The Woman King",
                     year = "2022",
                     imageUrl =
