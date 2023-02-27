@@ -2,6 +2,7 @@ package com.manishsputnikcorporation.movies.domain.model
 
 import android.os.Parcelable
 import com.manishsputnikcorporation.movies.domain.id.Identifiable
+import com.manishsputnikcorporation.movies.utils.enums.Type
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,6 +11,7 @@ data class MovieDetailModel(
     val title: String,
     val originalTitle: String,
     val fullTitle: String,
+    val type: Type,
     val year: String,
     val plot: String,
     val image: String,
