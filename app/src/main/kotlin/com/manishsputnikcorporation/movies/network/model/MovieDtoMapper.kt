@@ -10,17 +10,25 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
     with(model) {
       return MovieModel(
           id = id,
+          rank = rank,
           title = title,
           year = year,
           imageUrl = imageUrl,
           rating = rating,
-      )
+          type = type)
     }
   }
 
   override fun mapFromDomainModel(domainModel: MovieModel): MovieDto {
     with(domainModel) {
-      return MovieDto(id = id, title = title, year = year, imageUrl = imageUrl, rating = rating)
+      return MovieDto(
+          id = id,
+          rank = rank,
+          title = title,
+          year = year,
+          imageUrl = imageUrl,
+          rating = rating,
+          type = type)
     }
   }
 }
