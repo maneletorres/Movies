@@ -9,6 +9,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -18,13 +20,16 @@ import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericError
+import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
-import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.enums.Type
+import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -32,33 +37,70 @@ fun MoviesHomeScreen(
     moviesHomeViewModel: MoviesHomeViewModel,
     onClickMovie: (String) -> Unit = {}
 ) {
-  val moviesHomeUIState by moviesHomeViewModel.moviesHomeUIState.collectAsState()
+  val scaffoldState: ScaffoldState = rememberScaffoldState()
+  var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
+  val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
   moviesHomeUIState.let {
     when (it) {
       Idle -> Unit
       Loading -> GenericLoading()
-      is Data -> MoviesHomeContent(movies = it.movieList) { movieId -> onClickMovie(movieId) }
-      Error -> GenericError(errorMessage = R.string.movies_home_error)
+      is Data ->
+          MoviesHomeContent(
+              scaffoldState,
+              searchType,
+              movies = it.movieList,
+              toggleSearchType = {
+                searchType = searchType.toggleSearchType()
+                moviesHomeViewModel.loadData(searchType)
+              },
+              onClickMovie = { movieId -> onClickMovie(movieId) })
+    }
+  }
+
+  val context = LocalContext.current
+  LaunchedEffect(Unit) {
+    moviesHomeViewModel.event.collectLatest { event ->
+      when (event) {
+        is MoviesHomeViewModel.Event.Error -> {
+          scaffoldState.snackbarHostState.showSnackbar(
+              message = context.resources.getString(R.string.movies_home_error, event.searchType),
+              actionLabel = context.resources.getString(R.string.generic_close_message),
+              duration = SnackbarDuration.Long)
+        }
+      }
     }
   }
 }
 
 @Composable
 fun MoviesHomeContent(
+    scaffoldState: ScaffoldState,
+    searchType: Type,
     movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    onClickMovie: (String) -> Unit = {}
+    toggleSearchType: () -> Unit = {},
+    onClickMovie: (String) -> Unit = {},
 ) {
   val gridState = rememberLazyGridState()
   val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
   Scaffold(
+      scaffoldState = scaffoldState,
       topBar = {
-        TopAppBar {
-          Text(
-              text = stringResource(id = R.string.app_name),
-              modifier = Modifier.padding(start = 8.dp))
-        }
+        TopAppBar(
+            title = { Text(text = stringResource(id = R.string.app_name)) },
+            actions = {
+              IconButton(onClick = { toggleSearchType() }) {
+                Icon(
+                    painterResource(
+                        id =
+                            when (searchType) {
+                              Type.MOVIE -> R.drawable.series_search
+                              Type.SERIES -> R.drawable.movie_search
+                            }),
+                    contentDescription = stringResource(id = R.string.movies_home_search_type))
+              }
+            })
       },
       bottomBar = {
         // TODO: implement when new features are introduced
@@ -77,9 +119,15 @@ fun MoviesHomeContent(
         Box(
             modifier =
                 modifier.padding(contentPadding).semantics {
-                  contentDescription = "Movies Home Screen"
+                  contentDescription = "Movies Home Screen" // TODO:
                 }) {
-              MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
+              if (movies.isEmpty())
+                  EmptyContent(
+                      when (searchType) {
+                        Type.MOVIE -> R.string.movies_home_empty_movies
+                        Type.SERIES -> R.string.movies_home_empty_series
+                      })
+              else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
             }
       }
 }
@@ -94,7 +142,7 @@ fun MoviesGrid(
   LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
     items(movies, key = { it.id }) { movie ->
       val rememberedMovie = rememberSaveable { movie } // TODO: to check
-      with(rememberedMovie) { Movie(id, image) { movieId -> onClickMovie(movieId) } }
+      with(rememberedMovie) { Movie(id, imageUrl) { movieId -> onClickMovie(movieId) } }
     }
   }
 }
@@ -107,7 +155,7 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
       modifier =
           Modifier.height(200.dp)
               .clickable { onClickMovie(id) }
-              .semantics { contentDescription = "Movie Detail" },
+              .semantics { contentDescription = "Movie Detail" }, // TODO: to check
       loading = { GenericLoading() },
       error = { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) },
       alignment = Alignment.Center,
@@ -115,35 +163,35 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 }
 
 // region Previews
-// TODO: to check!!!
 @UiModePreviews
-@Preview(showSystemUi = true)
+@Preview(showSystemUi = true) // TODO: to check
 @Composable
 private fun MoviesHomeContentPreview() {
   MoviesTheme {
-    val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
-    MoviesHomeContent(movies = movies)
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+    MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
   }
 }
 
-// TODO: to check!!!
 @UiModePreviews
 @Composable
 private fun MoviesGridPreview() {
   MoviesTheme {
     Surface {
-      val movies = fakeMoviesDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+      val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
       MoviesGrid(movies = movies)
     }
   }
 }
 
-// TODO: to check!!!
 @UiModePreviews
 @Composable
 private fun MoviePreview() {
   MoviesTheme {
-    Surface { with(MovieDtoMapper().mapToDomainModel(fakeMoviesDto.items[0])) { Movie(id, image) } }
+    Surface {
+      with(MovieDtoMapper().mapToDomainModel(fakeMovieListDto.items[0])) { Movie(id, imageUrl) }
+    }
   }
 }
 // endregion

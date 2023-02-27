@@ -10,11 +10,12 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
     with(model) {
       return MovieModel(
           id = id,
+          rank = rank,
           title = title,
           year = year,
           imageUrl = imageUrl,
           rating = rating,
-      )
+          type = type)
     }
   }
 
@@ -22,11 +23,12 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
     with(domainModel) {
       return MovieDto(
           id = id,
+          rank = rank,
           title = title,
           year = year,
           imageUrl = imageUrl,
-          rating = rating
-      )
+          rating = rating,
+          type = type)
     }
   }
 }

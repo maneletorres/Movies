@@ -2,7 +2,6 @@ package com.manishsputnikcorporation.movies.ui.screens.detail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -68,14 +67,17 @@ fun MovieDetailContent(
 ) {
   Scaffold(
       topBar = {
-        TopAppBar {
-          Icon(
-              imageVector = Icons.Default.ArrowBack,
-              contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
-              modifier = Modifier.clickable { onBackArrowClick() })
-          Spacer(modifier = modifier.width(8.dp))
-          Text(stringResource(id = R.string.movie_detail_label))
-        }
+        TopAppBar(
+            title = { Text(stringResource(id = R.string.movie_detail_label)) },
+            navigationIcon = {
+              IconButton(onClick = { onBackArrowClick() }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription =
+                        stringResource(id = R.string.movie_detail_arrow_back_label),
+                )
+              }
+            })
       },
       bottomBar = {
         // TODO: implement when new features are introduced
