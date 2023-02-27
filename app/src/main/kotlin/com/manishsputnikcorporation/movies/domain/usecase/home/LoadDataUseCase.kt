@@ -17,7 +17,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetNetworkMoviesUseCase
+class LoadDataUseCase
 @Inject
 constructor(
     private val moviesRepository: MoviesRepository,
@@ -25,14 +25,12 @@ constructor(
     dispatcherProvider: DispatcherProvider
 ) : FlowUseCase<Type, Either<Unit, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> =
-      flow {
-            when (input) {
-                  MOVIE -> moviesRepository.refreshMostPopularMovies()
-                  SERIES -> moviesRepository.refreshMostPopularTVs()
-                }
-                .onSuccess { emit(eitherSuccess(it)) }
-                .onFailure { emit(eitherFailure(it)) }
-          }
-          .spreadUnauthorized { eitherFailure(DomainError("", "")) } // TODO:
+  override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
+    when (input) {
+          MOVIE -> moviesRepository.refreshMostPopularMovies()
+          SERIES -> moviesRepository.refreshMostPopularTVs()
+        }
+        .onSuccess { emit(eitherSuccess(it)) }
+        .onFailure { emit(eitherFailure(it)) }
+  }
 }

@@ -29,7 +29,6 @@ abstract class MovieRoomDatabase : RoomDatabase() {
 
       val dao = database.get().movieDao()
       applicationScope.launch {
-        // TODO: to check
         dao.insertAll(
             fakeMovieListDto.asDatabaseModel(MOVIE).plus(fakeSeriesListDto.asDatabaseModel(SERIES)))
       }

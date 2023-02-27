@@ -1,11 +1,11 @@
 package com.manishsputnikcorporation.movies.data
 
-import android.database.sqlite.SQLiteException
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
-import com.manishsputnikcorporation.movies.data.local.asDomainMovieModel
+import com.manishsputnikcorporation.movies.data.local.asDomainModel
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.network.asDatabaseModel
 import com.manishsputnikcorporation.movies.network.response.MoviesDto
@@ -14,8 +14,8 @@ import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.mapFailure
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
-import java.io.IOException
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MoviesRepositoryImpl
@@ -25,46 +25,38 @@ constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource
 ) : MoviesRepository {
 
-  override val movies = movieLocalDataSource.getMovies().map { it.asDomainMovieModel() }
+  // TODO: optimize the loadData and getData calls to this!!
+  override val movies = movieLocalDataSource.getMovies(Type.MOVIE).map { it.asDomainModel() }
 
-  override fun refreshMostPopularMovies(): DomainResponse<Unit> {
-    // TODO: only for test purposes
-    // return insertMovies(fakeMovieListDto, DatabaseMovieType.MOVIE)
+  override fun refreshMostPopularMovies(): DomainResponse<Unit> =
+      movieRemoteDataSource
+          .getMostPopularMovies()
+          .mapSuccess { moviesDto ->
+            return insertMovies(moviesDto, Type.MOVIE)
+          }
+          .mapFailure { error ->
+            return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
+          }
 
-    return movieRemoteDataSource
-        .getMostPopularMovies()
-        .mapSuccess { moviesDto ->
-          return insertMovies(moviesDto, Type.MOVIE)
-        }
-        .mapFailure { error ->
-          return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
-        }
-  }
+  override fun refreshMostPopularTVs(): DomainResponse<Unit> =
+      movieRemoteDataSource
+          .getMostPopularTVs()
+          .mapSuccess { moviesDto ->
+            return insertMovies(moviesDto, Type.SERIES)
+          }
+          .mapFailure { error ->
+            return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
+          }
 
-  // TODO: to add a MenuItem to change the API search call
-  override fun refreshMostPopularTVs(): DomainResponse<Unit> {
-    // TODO: only for test purposes
-    // return insertMovies(fakeSeriesListDto, DatabaseMovieType.SERIES)
+  override fun getData(searchType: Type): Flow<List<MovieModel>> =
+      movieLocalDataSource.getMovies(searchType).map { it.asDomainModel() }
 
-    return movieRemoteDataSource
-        .getMostPopularTVs()
-        .mapSuccess { moviesDto ->
-          return insertMovies(moviesDto, Type.SERIES)
-        }
-        .mapFailure { error ->
-          return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
-        }
-  }
-
-  // TODO: are necessary these try-catch clauses?
+  // region Helper methods
   private fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
       try {
         eitherSuccess(movieLocalDataSource.insertAll(movies.asDatabaseModel(type)))
-      } catch (ex: SQLiteException) {
-        eitherFailure(DomainError("", ex.message.toString()))
-      } catch (ex: IOException) {
-        eitherFailure(DomainError("", ex.message.toString()))
       } catch (ex: Exception) {
-        eitherFailure(DomainError("", ex.message.toString()))
+        eitherFailure(DomainError("Code: ", ex.message.toString()))
       }
+  // endregion
 }

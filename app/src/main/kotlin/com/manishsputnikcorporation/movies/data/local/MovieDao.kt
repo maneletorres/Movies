@@ -28,6 +28,7 @@ interface MovieDao {
 
   // region Helper methods
   fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
+
   fun getDistinctMovies(type: Type) = getMovies(type).distinctUntilChanged()
   // endregion
 }

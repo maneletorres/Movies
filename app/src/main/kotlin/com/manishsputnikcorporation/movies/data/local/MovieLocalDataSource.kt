@@ -8,7 +8,7 @@ interface MovieLocalDataSource {
 
   fun insertAll(movies: List<DatabaseMovie>)
 
-  fun getMovies(): Flow<List<DatabaseMovie>>
+  fun getMovies(type: Type): Flow<List<DatabaseMovie>>
 }
 
 class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDao) :
@@ -16,5 +16,5 @@ class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDa
 
   override fun insertAll(movies: List<DatabaseMovie>) = movieDao.insertAll(movies)
 
-  override fun getMovies(): Flow<List<DatabaseMovie>> = movieDao.getDistinctMovies(Type.MOVIE)
+  override fun getMovies(type: Type): Flow<List<DatabaseMovie>> = movieDao.getDistinctMovies(type)
 }
