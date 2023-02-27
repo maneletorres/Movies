@@ -16,5 +16,5 @@ class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDa
 
   override fun insertAll(movies: List<DatabaseMovie>) = movieDao.insertAll(movies)
 
-  override fun getMovies(type: Type): Flow<List<DatabaseMovie>> = movieDao.getDistinctMovies(type)
+  override fun getMovies(type: Type): Flow<List<DatabaseMovie>> = movieDao.getMovies(type)
 }
