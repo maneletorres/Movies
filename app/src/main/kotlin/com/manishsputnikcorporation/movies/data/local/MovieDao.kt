@@ -2,9 +2,10 @@ package com.manishsputnikcorporation.movies.data.local
 
 import android.database.sqlite.SQLiteException
 import androidx.room.*
+import com.manishsputnikcorporation.movies.utils.enums.Type
+import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import java.io.IOException
 
 @Dao
 interface MovieDao {
@@ -22,10 +23,12 @@ interface MovieDao {
 
   @Query("SELECT * FROM movie WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
 
-  @Query("SELECT * FROM movie ORDER BY title ASC") fun getMovies(): Flow<List<DatabaseMovie>>
+  @Query("SELECT * FROM movie WHERE type = :type ORDER BY rank ASC")
+  fun getMovies(type: Type): Flow<List<DatabaseMovie>>
 
   // region Helper methods
   fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
-  fun getDistinctMovies() = getMovies().distinctUntilChanged()
+
+  fun getDistinctMovies(type: Type) = getMovies(type).distinctUntilChanged()
   // endregion
 }

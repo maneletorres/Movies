@@ -3,6 +3,7 @@ package com.manishsputnikcorporation.movies.network.model
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
 import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
+import com.manishsputnikcorporation.movies.utils.enums.toType
 
 class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
 
@@ -13,6 +14,7 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
           title = title,
           originalTitle = originalTitle,
           fullTitle = fullTitle,
+          type = type.toType(),
           year = year,
           plot = plot,
           image = image,
@@ -29,6 +31,7 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
           title = title,
           originalTitle = originalTitle,
           fullTitle = fullTitle,
+          type = type.name,
           year = year,
           plot = plot,
           image = image,
