@@ -5,7 +5,6 @@ import androidx.room.*
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface MovieDao {
@@ -27,8 +26,8 @@ interface MovieDao {
   fun getMovies(type: Type): Flow<List<DatabaseMovie>>
 
   // region Helper methods
-  fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
+  // fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
 
-  fun getDistinctMovies(type: Type) = getMovies(type).distinctUntilChanged()
+  // fun getDistinctMovies(type: Type) = getMovies(type).distinctUntilChanged()
   // endregion
 }
