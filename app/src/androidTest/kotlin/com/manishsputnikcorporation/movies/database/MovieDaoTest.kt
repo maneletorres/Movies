@@ -60,15 +60,6 @@ class MovieDaoTest {
     val movie = movieList[0]
     assertTrue(movieList.size == 1)
     assertThat(fakeMovie, equalTo(movie))
-
-    // TODO: is this necessary?
-    assertEquals(movie.id, fakeMovie.id)
-    assertEquals(movie.rank, fakeMovie.rank)
-    assertEquals(movie.title, fakeMovie.title)
-    assertEquals(movie.year, fakeMovie.year)
-    assertEquals(movie.imageUrl, fakeMovie.imageUrl)
-    assertEquals(movie.rating, fakeMovie.rating)
-    assertEquals(movie.type, fakeMovie.type)
   }
 
   @Test
@@ -85,15 +76,6 @@ class MovieDaoTest {
     val series = seriesList[0]
     assertTrue(seriesList.size == 1)
     assertThat(fakeSeries, equalTo(series))
-
-    // TODO: is this necessary?
-    assertEquals(series.id, fakeSeries.id)
-    assertEquals(series.rank, fakeSeries.rank)
-    assertEquals(series.title, fakeSeries.title)
-    assertEquals(series.year, fakeSeries.year)
-    assertEquals(series.imageUrl, fakeSeries.imageUrl)
-    assertEquals(series.rating, fakeSeries.rating)
-    assertEquals(series.type, fakeSeries.type)
   }
 
   @Test
@@ -175,8 +157,9 @@ class MovieDaoTest {
 
     // Then:
     val movieList = movieDao.getMovies(Type.MOVIE).first()
-    assert(movieList.isNotEmpty())
+    assert(movieList.size == 1)
     assertFalse(movieList.contains(fakeMovie1))
+    assert(movieList.contains(fakeMovie2))
   }
 
   @Test
@@ -192,8 +175,9 @@ class MovieDaoTest {
 
     // Then:
     val seriesList = movieDao.getMovies(Type.SERIES).first()
-    assert(seriesList.isNotEmpty())
+    assert(seriesList.size == 1)
     assertFalse(seriesList.contains(fakeSeries1))
+    assert(seriesList.contains(fakeSeries2))
   }
 
   @Test
@@ -228,32 +212,64 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
+  fun isFavoriteMovie() = runBlocking {
+    // Given:
+    val fakeMovie = createMovie(isFavorite = true)
+    movieDao.insert(fakeMovie)
+
+    // When:
+    val isFavoriteMovie = movieDao.isFavoriteMovie(fakeMovie.id).first()
+
+    // Then:
+    assertTrue(isFavoriteMovie)
+  }
+
+  @Test
+  @Throws(Exception::class)
+  fun isNotFavoriteMovie() = runBlocking {
+    // Given:
+    val fakeMovie = createMovie()
+    movieDao.insert(fakeMovie)
+
+    // When:
+    val isFavoriteMovie = movieDao.isFavoriteMovie(fakeMovie.id).first()
+
+    // Then:
+    assertFalse(isFavoriteMovie)
+  }
+
+  @Test
+  @Throws(Exception::class)
   fun getMovieList() = runBlocking {
     // Given:
+    val fakeSeries = createSeries("3")
     val fakeMovieList = listOf(createMovie("1"), createMovie("2"))
-    movieDao.insertAll(fakeMovieList)
+    movieDao.insertAll(fakeMovieList.plus(fakeSeries))
 
     // When:
     val movieList = movieDao.getMovies(Type.MOVIE).first()
 
     // Then:
-    assert(movieList.isNotEmpty())
+    assert(movieList.size == 2)
     assert(movieList.containsAll(fakeMovieList))
+    assertFalse(movieList.contains(fakeSeries))
   }
 
   @Test
   @Throws(Exception::class)
   fun getSeriesList() = runBlocking {
     // Given:
+    val fakeMovie = createMovie("3")
     val fakeSeriesList = listOf(createSeries("1"), createSeries("2"))
-    movieDao.insertAll(fakeSeriesList)
+    movieDao.insertAll(fakeSeriesList.plus(fakeMovie))
 
     // When:
     val seriesList = movieDao.getMovies(Type.SERIES).first()
 
     // Then:
-    assert(seriesList.isNotEmpty())
+    assert(seriesList.size == 2)
     assert(seriesList.containsAll(fakeSeriesList))
+    assertFalse(seriesList.contains(fakeMovie))
   }
 
   @Test
@@ -263,11 +279,10 @@ class MovieDaoTest {
     val fakeNotFavoriteMovie = createMovie("1")
     val fakeDataList =
         listOf(
-            fakeNotFavoriteMovie,
             createMovie("2", true),
             createSeries("3", true),
         )
-    movieDao.insertAll(fakeDataList)
+    movieDao.insertAll(fakeDataList.plus(fakeNotFavoriteMovie))
 
     // When:
     val favorites = movieDao.getFavorites().first()
