@@ -16,7 +16,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetMovieUseCase
+class GetMovieDetailUseCase
 @Inject
 constructor(
     private val movieDetailRepository: MovieDetailRepository,
@@ -29,7 +29,7 @@ constructor(
   override fun prepareFlow(input: String): Flow<Either<MovieDetailModel, DomainError>> =
       flow {
             movieDetailRepository
-                .getMovie(input)
+                .getMovieDetail(input)
                 .onSuccess { emit(eitherSuccess(it)) }
                 .onFailure { emit(eitherFailure(it)) }
           }

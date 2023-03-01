@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -49,7 +51,8 @@ fun MoviesHomeScreen(
               scaffoldState,
               searchType,
               movies = it.movieList,
-              toggleSearchType = {
+              onClickFavorites = { moviesHomeViewModel.getFavorites() },
+              onClickSearchType = {
                 searchType = searchType.toggleSearchType()
                 moviesHomeViewModel.loadData(searchType)
               },
@@ -78,7 +81,8 @@ fun MoviesHomeContent(
     searchType: Type,
     movies: List<MovieModel>,
     modifier: Modifier = Modifier,
-    toggleSearchType: () -> Unit = {},
+    onClickFavorites: () -> Unit = {},
+    onClickSearchType: () -> Unit = {},
     onClickMovie: (String) -> Unit = {},
 ) {
   val gridState = rememberLazyGridState()
@@ -90,7 +94,12 @@ fun MoviesHomeContent(
         TopAppBar(
             title = { Text(text = stringResource(id = R.string.app_name)) },
             actions = {
-              IconButton(onClick = { toggleSearchType() }) {
+              IconButton(onClick = { onClickFavorites() }) {
+                Icon(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = stringResource(id = R.string.movies_home_favorites))
+              }
+              IconButton(onClick = { onClickSearchType() }) {
                 Icon(
                     painterResource(
                         id =
@@ -126,6 +135,7 @@ fun MoviesHomeContent(
                       when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
                         Type.SERIES -> R.string.movies_home_empty_series
+                        else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
                       })
               else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
             }

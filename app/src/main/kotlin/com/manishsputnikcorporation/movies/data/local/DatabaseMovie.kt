@@ -14,18 +14,19 @@ data class DatabaseMovie(
     @ColumnInfo(name = "year") val year: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
     @ColumnInfo(name = "rating") val rating: String,
-    @ColumnInfo(name = "type") val type: Type
+    @ColumnInfo(name = "type") val type: Type,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
 )
 
-fun List<DatabaseMovie>.asDomainModel(): List<MovieModel> {
-  return map {
+fun DatabaseMovie.asDomainModel(): MovieModel =
     MovieModel(
-        id = it.id,
-        rank = it.rank,
-        title = it.title,
-        year = it.year,
-        imageUrl = it.imageUrl,
-        rating = it.rating,
-        type = it.type)
-  }
-}
+        id = id,
+        rank = rank,
+        title = title,
+        year = year,
+        imageUrl = imageUrl,
+        rating = rating,
+        type = type,
+        isFavorite = isFavorite)
+
+fun List<DatabaseMovie>.asDomainModel(): List<MovieModel> = map { it.asDomainModel() }
