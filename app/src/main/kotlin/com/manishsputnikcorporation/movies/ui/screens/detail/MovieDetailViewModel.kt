@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
-import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieUseCase
-import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
+import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieDetailUseCase
+import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieFavoriteStatusUseCase
+import com.manishsputnikcorporation.movies.domain.usecase.detail.SetMovieFavoriteStatusUseCase
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,32 +17,87 @@ import kotlinx.coroutines.flow.*
 class MovieDetailViewModel
 @Inject
 constructor(
-    private val getMovieUseCase: GetMovieUseCase,
+    private val getMovieDetailUseCase: GetMovieDetailUseCase,
+    private val getMovieFavoriteStatusUseCase: GetMovieFavoriteStatusUseCase,
+    private val setMovieFavoriteStatusUseCase: SetMovieFavoriteStatusUseCase,
     private val safeFlowUseCase: SafeFlowUseCaseDelegate,
 ) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
 
-  private val _movieDetailUiState: MutableStateFlow<MovieDetailUiState> = MutableStateFlow(Idle)
-  val movieDetailUIState: StateFlow<MovieDetailUiState> = _movieDetailUiState.asStateFlow()
+  private val _movieDetailUiState = MutableStateFlow(MovieDetailUiState())
+  val movieDetailUiState: StateFlow<MovieDetailUiState> = _movieDetailUiState
 
-  fun loadMovieDetail(id: String?) {
+  fun loadData(id: String?) {
     id?.let {
-      getMovieUseCase
+      // TODO: to merge these two methods!
+      getMovieDetail(it)
+      getMovieFavoriteStatus(it)
+    }
+  }
+
+  private fun getMovieDetail(id: String?) {
+    id?.let {
+      getMovieDetailUseCase
           .safePrepare(id)
-          .onStart { _movieDetailUiState.value = Loading }
+          .onStart {
+            _movieDetailUiState.update { state -> state.copy(isIdle = false, isLoading = true) }
+          }
           .onEach {
             it.onSuccess { movieDetailModel: MovieDetailModel ->
-                  _movieDetailUiState.value = Data(movieDetailModel)
+                  _movieDetailUiState.update { state ->
+                    state.copy(
+                        isLoading = false,
+                        movieDetailData =
+                            state.movieDetailData.copy(movieDetailModel = movieDetailModel))
+                  }
                 }
-                .onFailure { _movieDetailUiState.value = Error }
+                .onFailure {
+                  _movieDetailUiState.update { state ->
+                    state.copy(isLoading = false, isFailed = true)
+                  }
+                }
           }
           .launchIn(viewModelScope)
     }
   }
-
-  sealed class MovieDetailUiState {
-    object Idle : MovieDetailUiState()
-    object Loading : MovieDetailUiState()
-    data class Data(val movieDetail: MovieDetailModel) : MovieDetailUiState()
-    object Error : MovieDetailUiState()
+  private fun getMovieFavoriteStatus(id: String) {
+    getMovieFavoriteStatusUseCase
+        .safePrepare(id)
+        .onEach { favoriteStatus -> updateFavoriteStatus(favoriteStatus) }
+        .launchIn(viewModelScope)
   }
+
+  fun setMovieFavoriteStatus(id: String) {
+    setMovieFavoriteStatusUseCase
+        .safePrepare(id)
+        .onEach {
+          it.onSuccess { favoriteStatus -> updateFavoriteStatus(favoriteStatus) }
+              .onFailure {
+                // Nothing to do
+              }
+        }
+        .launchIn(viewModelScope)
+  }
+
+  // region Helper methods
+  private fun updateFavoriteStatus(favoriteStatus: Boolean) {
+    _movieDetailUiState.update { state ->
+      state.copy(movieDetailData = state.movieDetailData.copy(isFavorite = favoriteStatus))
+    }
+  }
+  // endregion
+
+  // region State & Events
+  data class MovieDetailUiState(
+      val isIdle: Boolean = true,
+      val isLoading: Boolean = false,
+      val movieDetailData: MovieDetailData = MovieDetailData(),
+      val isFailed: Boolean = false
+  ) {
+
+    data class MovieDetailData(
+        val movieDetailModel: MovieDetailModel? = null,
+        val isFavorite: Boolean = false
+    )
+  }
+  // endregion
 }

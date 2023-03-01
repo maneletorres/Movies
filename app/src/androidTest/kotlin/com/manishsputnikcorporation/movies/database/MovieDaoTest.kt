@@ -255,5 +255,27 @@ class MovieDaoTest {
     assert(seriesList.isNotEmpty())
     assert(seriesList.containsAll(fakeSeriesList))
   }
+
+  @Test
+  @Throws(Exception::class)
+  fun getFavorites() = runBlocking {
+    // Given:
+    val fakeNotFavoriteMovie = createMovie("1")
+    val fakeDataList =
+        listOf(
+            fakeNotFavoriteMovie,
+            createMovie("2", true),
+            createSeries("3", true),
+        )
+    movieDao.insertAll(fakeDataList)
+
+    // When:
+    val favorites = movieDao.getFavorites().first()
+
+    // Then:
+    assert(favorites.isNotEmpty())
+    assert(favorites.containsAll(fakeDataList))
+    assertFalse(favorites.contains(fakeNotFavoriteMovie))
+  }
   // endregion
 }

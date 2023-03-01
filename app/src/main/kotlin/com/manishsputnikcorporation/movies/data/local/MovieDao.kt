@@ -22,8 +22,14 @@ interface MovieDao {
 
   @Query("SELECT * FROM movie WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
 
+  @Query("SELECT is_favorite FROM movie WHERE id = :id")
+  fun isFavoriteMovie(id: String): Flow<Boolean>
+
   @Query("SELECT * FROM movie WHERE type = :type ORDER BY rank ASC")
   fun getMovies(type: Type): Flow<List<DatabaseMovie>>
+
+  @Query("SELECT * FROM movie WHERE is_favorite = true ORDER BY rank ASC")
+  fun getFavorites(): Flow<List<DatabaseMovie>>
 
   // region Helper methods
   // fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()

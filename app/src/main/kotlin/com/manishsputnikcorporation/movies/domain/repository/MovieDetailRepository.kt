@@ -2,7 +2,15 @@ package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import kotlinx.coroutines.flow.Flow
 
 interface MovieDetailRepository {
-  fun getMovie(id: String): DomainResponse<MovieDetailModel>
+  fun getMovieDetail(id: String): DomainResponse<MovieDetailModel>
+
+  fun isFavoriteMovie(id: String): Flow<Boolean>
+
+  fun getMovie(id: String): Flow<MovieModel>
+
+  suspend fun updateMovie(id: String): DomainResponse<Boolean>
 }
