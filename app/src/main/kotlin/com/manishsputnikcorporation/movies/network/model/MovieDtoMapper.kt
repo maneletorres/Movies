@@ -15,7 +15,8 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
           year = year,
           imageUrl = imageUrl,
           rating = rating,
-          type = type)
+          type = type,
+          isFavorite = false)
     }
   }
 

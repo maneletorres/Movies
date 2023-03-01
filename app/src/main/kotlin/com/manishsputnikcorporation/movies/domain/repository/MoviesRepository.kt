@@ -14,4 +14,6 @@ interface MoviesRepository {
   fun refreshMostPopularTVs(): DomainResponse<Unit>
 
   fun getData(searchType: Type): Flow<List<MovieModel>>
+
+  fun getFavorites(): Flow<List<MovieModel>>
 }

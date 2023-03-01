@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
+import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.utils.enums.Type
@@ -20,9 +20,9 @@ import kotlinx.coroutines.flow.*
 class MoviesHomeViewModel
 @Inject
 constructor(
-    moviesRepository: MoviesRepository,
     private val loadDataUseCase: LoadDataUseCase,
     private val getDataUseCase: GetDataUseCase,
+    private val getFavoriteDataUseCase: GetFavoriteDataUseCase,
     private val safeFlowUseCase: SafeFlowUseCaseDelegate
 ) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
 
@@ -58,16 +58,23 @@ constructor(
   private fun getData(type: Type) {
     getDataUseCase
         .safePrepare(type)
-        .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList, type) } }
+        .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
         .launchIn(viewModelScope)
   }
 
-  // region States
-  sealed class MoviesHomeUiState {
+  fun getFavorites() {
+    getFavoriteDataUseCase
+        .safePrepare<Unit, List<MovieModel>>()
+        .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
+        .launchIn(viewModelScope)
+  }
 
-    object Idle : MoviesHomeUiState()
-    object Loading : MoviesHomeUiState()
-    data class Data(val movieList: List<MovieModel>, val type2: Type) : MoviesHomeUiState()
+  // region State & Events
+  sealed interface MoviesHomeUiState {
+
+    object Idle : MoviesHomeUiState
+    object Loading : MoviesHomeUiState
+    data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState
   }
 
   sealed interface Event {

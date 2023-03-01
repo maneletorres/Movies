@@ -9,13 +9,16 @@
 
     <!-- MoviesHome: -->
     <!-- -->
+    <string name="movies_home_favorites">Favorites</string>
     <string name="movies_home_search_type">Search type</string>
     <string name="movies_home_empty_movies">No movies</string>
     <string name="movies_home_empty_series">No series</string>
+    <string name="movies_home_empty_favorites">No favorites</string>
     <string name="movies_home_error">There was a problem loading the %s list. Sorry for the inconvenience.</string>
 
     <!-- MovieDetail: -->
     <!-- Dummy movie data: -->
+    <string name="movie_detail_favorite_movie">Favorite movie</string>
     <string name="dummy_movie_title">Léon: The Professional</string>
     <string name="dummy_movie_year">1994</string>
     <string name="dummy_movie_runtime">1h 50 min</string>

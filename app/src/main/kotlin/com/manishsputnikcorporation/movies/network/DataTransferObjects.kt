@@ -18,6 +18,7 @@ fun MoviesDto.asDatabaseModel(type: Type): List<DatabaseMovie> {
         year = it.year,
         imageUrl = it.imageUrl,
         rating = it.rating,
-        type = type)
+        type = type,
+        isFavorite = false)
   }
 }

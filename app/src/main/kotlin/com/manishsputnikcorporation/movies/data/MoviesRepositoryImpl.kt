@@ -51,6 +51,9 @@ constructor(
   override fun getData(searchType: Type): Flow<List<MovieModel>> =
       movieLocalDataSource.getMovies(searchType).map { it.asDomainModel() }
 
+  override fun getFavorites(): Flow<List<MovieModel>> =
+      movieLocalDataSource.getFavorites().map { it.asDomainModel() }
+
   // region Helper methods
   private fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
       try {
