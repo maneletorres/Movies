@@ -27,7 +27,6 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "API_KEY", localProperties['apiKey'])
-            buildConfigField("String", "IMDB_API_KEY", localProperties['imdbApiKey'])
         }
 
         release {
