@@ -10,7 +10,12 @@ plugins {
 
 android {
     def localProperties = new Properties()
-    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+    try {
+        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+    } catch (IOException exception) {
+        println "Exception: $exception"
+        localProperties.put("apiKey", "\"k_12345678\"")
+    }
 
     compileSdk 33
 
