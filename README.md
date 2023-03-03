@@ -1,14 +1,14 @@
-# Movies
-[Response example](https://imdb-api.com/en/API/Title/k_3x134525/tt0110413)
-
 ## Table of Contents
-- [Introduction](#introduction)
+- [Getting started](#getting-started)
 - [Architectures](#architectures)
 - [Next steps](#next-steps)
 - [Screenshots](#screenshots)
 
-## Introduction
 Movies is a simple movie application built entirely in Kotlin & Jetpack Compose for Android, which follows the conventions and good practices, applying the most recent methodologies and technologies on the market, focused on being updated and improved over time.
+
+## Getting started
+This app requires the configuration of the "local.properties" file at the app root level as follows:
+apiKey="${YOUR_IMDB_API_KEY}"
 
 ## Architectures
 - MVVM pattern
@@ -27,6 +27,7 @@ Movies is a simple movie application built entirely in Kotlin & Jetpack Compose 
 - Testing
 - Others:
   - ktfmt
+  - Version update catalog
 
 ## Next steps
 - Add JaCoCo for code coverage

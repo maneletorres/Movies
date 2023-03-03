@@ -10,7 +10,12 @@ plugins {
 
 android {
     def localProperties = new Properties()
-    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+    try {
+        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+    } catch (IOException exception) {
+        println "Exception: $exception"
+        localProperties.put("apiKey", "\"k_12345678\"")
+    }
 
     compileSdk 33
 
@@ -32,6 +37,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "API_KEY", localProperties['apiKey'])
         }
     }
     buildFeatures {
