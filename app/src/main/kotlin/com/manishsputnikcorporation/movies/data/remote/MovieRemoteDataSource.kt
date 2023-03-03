@@ -32,21 +32,21 @@ constructor(private val customService: CustomServicesExecutor, private val servi
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getMostPopularMovies(): Either<MoviesDto, CustomError> {
-    val call: Call<MoviesDto> = service.getMostPopularMovies(BuildConfig.IMDB_API_KEY)
+    val call: Call<MoviesDto> = service.getMostPopularMovies(BuildConfig.API_KEY)
     val response = customService.execute(call)
     return response.mapSuccess { it.data }
   }
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getMostPopularTVs(): Either<MoviesDto, CustomError> {
-    val call: Call<MoviesDto> = service.getMostPopularTVs(BuildConfig.IMDB_API_KEY)
+    val call: Call<MoviesDto> = service.getMostPopularTVs(BuildConfig.API_KEY)
     val response = customService.execute(call)
     return response.mapSuccess { it.data }
   }
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getMovie(id: String): Either<MovieDetailDto, CustomError> {
-    val call: Call<MovieDetailDto> = service.getMovie(BuildConfig.IMDB_API_KEY, id)
+    val call: Call<MovieDetailDto> = service.getMovie(BuildConfig.API_KEY, id)
     val response = customService.execute(call)
     return response.mapSuccess { it.data }
   }
