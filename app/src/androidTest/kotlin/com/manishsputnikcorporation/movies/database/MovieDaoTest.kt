@@ -1,16 +1,16 @@
 package com.manishsputnikcorporation.movies.database
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.data.local.MovieDao
 import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
 import com.manishsputnikcorporation.movies.utils.createMovie
 import com.manishsputnikcorporation.movies.utils.createSeries
 import com.manishsputnikcorporation.movies.utils.enums.Type
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Named
 import junit.framework.TestCase.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,23 +18,21 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class MovieDaoTest {
 
   // region Setup
+  @get:Rule var hiltRule = HiltAndroidRule(this)
+
+  @Inject @Named("test_db") lateinit var db: MovieRoomDatabase
   private lateinit var movieDao: MovieDao
-  private lateinit var db: MovieRoomDatabase
 
   @Before
-  fun createDb() {
-    val context: Context = ApplicationProvider.getApplicationContext()
-    db =
-        Room.inMemoryDatabaseBuilder(context, MovieRoomDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
+  fun setup() {
+    hiltRule.inject()
     movieDao = db.movieDao()
   }
 

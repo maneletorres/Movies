@@ -13,6 +13,7 @@ room-version = "2.5.0"
 # Testing library versions:
 junit-version = "4.13.2"
 test-espresso-core-version = "3.5.1"
+hilt-testing-version = "2.44"
 
 [libraries]
 # Project dependencies:
@@ -57,6 +58,10 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 # Compose testing libraries:
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-version" }
+
+# Hilt testing libraries:
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt-testing-version" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-testing-version" }
 
 [bundles]
 retrofit2 = [

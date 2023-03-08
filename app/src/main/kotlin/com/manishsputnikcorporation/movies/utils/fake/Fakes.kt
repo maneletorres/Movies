@@ -1,8 +1,43 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
-import com.manishsputnikcorporation.movies.network.response.*
+import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
+import com.manishsputnikcorporation.movies.network.response.MovieDto
+import com.manishsputnikcorporation.movies.network.response.MoviesDto
 import com.manishsputnikcorporation.movies.utils.enums.Type
 
+// region Model
+val fakeMovieModel =
+    MovieModel(
+        id = "tt11909878",
+        rank = "1",
+        title = "Hocus Pocus 2",
+        year = "2022",
+        imageUrl =
+            "https://m.media-amazon.com/images/M/MV5BODcxYzI1MTktZWYzNC00MGZlLWI3ZjYtNzhmM2IyOTlkNjYyXkEyXkFqcGdeQXVyMTA1OTcyNDQ4._V1_Ratio0.6716_AL_.jpg",
+        rating = "6.1",
+        type = Type.MOVIE,
+        isFavorite = true)
+
+val fakeMovieDetailModel =
+    MovieDetailModel(
+        id = "tt0110413",
+        title = "Léon: The Professional",
+        originalTitle = "Léon",
+        fullTitle = "Léon: The Professional (1994)",
+        type = Type.MOVIE,
+        year = "1994",
+        plot =
+            "12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin... Read all",
+        image =
+            "https://m.media-amazon.com/images/M/MV5BOTgyMWQ0ZWUtN2Q2MS00NmY0LWI3OWMtNjFkMzZlNDZjNTk0XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_Ratio0.6762_AL_.jpg",
+        releaseDate = "1994-11-18",
+        runtimeStr = "1h 50min",
+        directors = "Luc Besson")
+// endregion
+
+// region DTO
 val fakeMovieListDto =
     MoviesDto(
         items =
@@ -188,21 +223,75 @@ val fakeMovieListDto =
                     type = Type.MOVIE)),
         errorMessage = "")
 
+val fakeSeriesListDto =
+    MoviesDto(
+        items =
+            listOf(
+                MovieDto(
+                    id = "tt3581920",
+                    rank = "1",
+                    title = "The Last of Us",
+                    year = "2023",
+                    imageUrl =
+                        "https://m.media-amazon.com/images/M/MV5BZGUzYTI3M2EtZmM0Yy00NGUyLWI4ODEtN2Q3ZGJlYzhhZjU3XkEyXkFqcGdeQXVyNTM0OTY1OQ@@._V1_Ratio0.6716_AL_.jpg",
+                    rating = "9.2",
+                    type = Type.SERIES),
+                MovieDto(
+                    id = "tt7335184",
+                    rank = "2",
+                    title = "You",
+                    year = "2018",
+                    imageUrl =
+                        "https://m.media-amazon.com/images/M/MV5BZmUxYTllMzEtNmNmMi00OWNkLTg0ZmItZDdkYTJkOTAxZmJlXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_Ratio0.7910_AL_.jpg",
+                    rating = "7.7",
+                    type = Type.SERIES),
+                MovieDto(
+                    id = "tt14269590",
+                    rank = "3",
+                    title = "Poker Face",
+                    year = "2023",
+                    imageUrl =
+                        "https://m.media-amazon.com/images/M/MV5BNDMyNjAxYTQtMjAyNi00NGQ5LWE0YzUtMTEzNWQ5NjYyNmFjXkEyXkFqcGdeQXVyMDA4NzMyOA@@._V1_Ratio0.6716_AL_.jpg",
+                    rating = "8.1",
+                    type = Type.SERIES),
+            ),
+        errorMessage = "")
+
 val fakeMovieDetailDto =
     MovieDetailDto(
-        id = "tt11909878",
+        id = "tt0110413",
         title = "Léon: The Professional",
         originalTitle = "Léon",
         fullTitle = "Léon: The Professional (1994)",
         type = Type.MOVIE.type,
         year = "1994",
         image =
-            "https://m.media-amazon.com/images/M/MV5BODcxYzI1MTktZWYzNC00MGZlLWI3ZjYtNzhmM2IyOTlkNjYyXkEyXkFqcGdeQXVyMTA1OTcyNDQ4._V1_Ratio0.6716_AL_.jpg",
-        releaseDate = "1994–11–18",
+            "https://m.media-amazon.com/images/M/MV5BOTgyMWQ0ZWUtN2Q2MS00NmY0LWI3OWMtNjFkMzZlNDZjNTk0XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_Ratio0.6762_AL_.jpg",
+        releaseDate = "1994-11-18",
         runtimeMins = "",
-        runtimeStr = "1h 50 min",
+        runtimeStr = "1h 50min",
         plot =
-            "12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all",
+            "12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin... Read all",
         plotLocal = "",
         plotLocalIsRtl = false,
         directors = "Luc Besson")
+
+val fakeSeriesDetailDto =
+    MovieDetailDto(
+        id = "tt3581920",
+        title = "The Last of Us",
+        originalTitle = "",
+        fullTitle = "The Last of Us (TV Series 2023– )",
+        type = Type.SERIES.type,
+        year = "2023",
+        image =
+            "https://m.media-amazon.com/images/M/MV5BZGUzYTI3M2EtZmM0Yy00NGUyLWI4ODEtN2Q3ZGJlYzhhZjU3XkEyXkFqcGdeQXVyNTM0OTY1OQ@@._V1_Ratio0.6762_AL_.jpg",
+        releaseDate = "2023-01-15",
+        runtimeMins = null,
+        runtimeStr = null,
+        plot =
+            "After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl who may be humanity's last hope.",
+        plotLocal = "",
+        plotLocalIsRtl = false,
+        directors = "")
+// endregion
