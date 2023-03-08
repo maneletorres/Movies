@@ -13,7 +13,7 @@ android {
     try {
         localProperties.load(new FileInputStream(rootProject.file("local.properties")))
     } catch (IOException exception) {
-        println "Exception: $exception"
+        println "Exception: $exception" // TODO: replace with GitHub API Secrets and study its obfuscation
         localProperties.put("apiKey", "\"k_12345678\"")
     }
 
@@ -35,9 +35,10 @@ android {
         }
 
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
             buildConfigField("String", "API_KEY", localProperties['apiKey'])
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
