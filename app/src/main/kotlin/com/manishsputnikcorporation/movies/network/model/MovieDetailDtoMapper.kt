@@ -31,7 +31,7 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
           title = title,
           originalTitle = originalTitle,
           fullTitle = fullTitle,
-          type = type.name,
+          type = type.type,
           year = year,
           plot = plot,
           image = image,
