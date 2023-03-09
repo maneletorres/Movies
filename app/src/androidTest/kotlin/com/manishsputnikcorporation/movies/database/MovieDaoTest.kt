@@ -3,6 +3,7 @@ package com.manishsputnikcorporation.movies.database
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.data.local.MovieDao
 import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
+import com.manishsputnikcorporation.movies.di.annotations.TestDatabase
 import com.manishsputnikcorporation.movies.utils.createMovie
 import com.manishsputnikcorporation.movies.utils.createSeries
 import com.manishsputnikcorporation.movies.utils.enums.Type
@@ -10,7 +11,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.io.IOException
 import javax.inject.Inject
-import javax.inject.Named
 import junit.framework.TestCase.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -27,7 +27,7 @@ class MovieDaoTest {
   // region Setup
   @get:Rule var hiltRule = HiltAndroidRule(this)
 
-  @Inject @Named("test_db") lateinit var db: MovieRoomDatabase
+  @Inject @TestDatabase lateinit var db: MovieRoomDatabase
   private lateinit var movieDao: MovieDao
 
   @Before

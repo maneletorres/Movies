@@ -6,6 +6,7 @@ import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSourceImpl
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSourceImpl
+import com.manishsputnikcorporation.movies.di.annotations.ApiUrl
 import com.manishsputnikcorporation.movies.network.CustomServicesExecutor
 import com.manishsputnikcorporation.movies.network.MoviesService
 import com.manishsputnikcorporation.movies.network.NetworkManager
@@ -28,7 +29,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-  @Provides @Singleton fun provideBaseUrl() = API_BASE_URL
+  @Provides @Singleton @ApiUrl fun provideBaseUrl() = API_BASE_URL
 
   @Provides
   @Singleton
@@ -39,7 +40,7 @@ object RetrofitModule {
 
   @Provides
   @Singleton
-  fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
+  fun provideRetrofit(@ApiUrl baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
       Retrofit.Builder()
           .baseUrl(baseUrl)
           .addConverterFactory(MoshiConverterFactory.create())

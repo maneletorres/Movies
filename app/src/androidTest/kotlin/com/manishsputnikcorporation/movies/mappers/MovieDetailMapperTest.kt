@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.mappers
 
+import com.manishsputnikcorporation.movies.di.annotations.TestMovieDetailMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.extensions.isContentEquals
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
@@ -7,7 +8,6 @@ import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import javax.inject.Inject
-import javax.inject.Named
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +18,7 @@ class MovieDetailMapperTest {
   // region Setup
   @get:Rule val hiltRule = HiltAndroidRule(this)
 
-  @Inject @Named("test_movie_detail_mapper") lateinit var mapper: MovieDetailDtoMapper
+  @Inject @TestMovieDetailMapper lateinit var mapper: MovieDetailDtoMapper
 
   @Before
   fun setup() {
