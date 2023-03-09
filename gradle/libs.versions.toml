@@ -13,7 +13,7 @@ room-version = "2.5.0"
 # Testing library versions:
 junit-version = "4.13.2"
 test-espresso-core-version = "3.5.1"
-hilt-testing-version = "2.44"
+hilt-testing-version = "2.45"
 
 [libraries]
 # Project dependencies:
