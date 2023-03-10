@@ -27,9 +27,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RetrofitModule {
+object ApiUrlModule {
 
-  @Provides @Singleton @ApiUrl fun provideBaseUrl() = API_BASE_URL
+    @Provides @Singleton @ApiUrl fun provideBaseUrl() = API_BASE_URL
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RetrofitModule {
 
   @Provides
   @Singleton

@@ -88,6 +88,7 @@ dependencies {
     // region Hilt testing libraries:
     androidTestImplementation libs.hilt.android.testing
     kaptAndroidTest libs.hilt.android.compiler
+    androidTestImplementation libs.com.squareup.okhttp3.mockwebserver
     // endregion
     // endregion
 }
