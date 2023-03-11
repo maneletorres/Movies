@@ -3,7 +3,6 @@ package com.manishsputnikcorporation.movies.data.network
 import com.manishsputnikcorporation.movies.BuildConfig
 import com.manishsputnikcorporation.movies.data.network.base.NetworkBaseTest
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.extensions.fromJson
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -12,9 +11,6 @@ import javax.inject.Inject
 import junit.framework.Assert.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -82,9 +78,7 @@ class NetworkTest : NetworkBaseTest() {
     // Then:
     assertNotNull(movie)
     assert(movie.isSuccess)
-    movie.mapSuccess {
-      assertEquals("Cocaine Bear", it.title)
-    }
+    movie.mapSuccess { assertEquals("Cocaine Bear", it.title) }
   }
   // endregion
 }
