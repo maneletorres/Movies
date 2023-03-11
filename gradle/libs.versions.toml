@@ -14,6 +14,7 @@ room-version = "2.5.0"
 junit-version = "4.13.2"
 test-espresso-core-version = "3.5.1"
 hilt-testing-version = "2.45"
+mockito-version = "4.1.0"
 
 [libraries]
 # Project dependencies:
@@ -55,6 +56,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-ver
 junit = { module = "junit:junit", version.ref = "junit-version" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
+mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-version" }
 
 # Compose testing libraries:
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }

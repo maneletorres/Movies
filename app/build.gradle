@@ -56,6 +56,9 @@ android {
         kotlinCompilerExtensionVersion rootProject.composeCompilerVersion
     }
     namespace 'com.manishsputnikcorporation.movies'
+    sourceSets {
+        test.resources.srcDirs += 'src/test/res'
+    }
 }
 
 dependencies {
@@ -76,8 +79,10 @@ dependencies {
     // endregion
 
     // region Testing libraries:
-    testImplementation libs.junit
     androidTestImplementation libs.androidx.test.espresso.core
+    testImplementation libs.junit
+    testImplementation libs.mockito
+    testImplementation libs.com.squareup.okhttp3.mockwebserver
 
     // region Compose testing libraries:
     androidTestImplementation libs.androidx.compose.ui.test.junit4
