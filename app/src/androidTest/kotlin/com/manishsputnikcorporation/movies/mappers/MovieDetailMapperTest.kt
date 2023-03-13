@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.mappers
 
-import com.manishsputnikcorporation.movies.di.annotations.TestMovieDetailMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.extensions.isContentEquals
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
@@ -18,7 +17,7 @@ class MovieDetailMapperTest {
   // region Setup
   @get:Rule val hiltRule = HiltAndroidRule(this)
 
-  @Inject @TestMovieDetailMapper lateinit var mapper: MovieDetailDtoMapper
+  @Inject lateinit var mapper: MovieDetailDtoMapper
 
   @Before
   fun setup() {
@@ -30,7 +29,7 @@ class MovieDetailMapperTest {
   @Test
   fun map_movie_detail_dto_to_movie_detail_model() {
     // Given:
-    val fakeMovieDetailDto = fakeMovieDetailDto // TODO: replace by FakeApi retrofit call
+    val fakeMovieDetailDto = fakeMovieDetailDto
 
     // When:
     val result = mapper.mapToDomainModel(fakeMovieDetailDto)
@@ -42,7 +41,7 @@ class MovieDetailMapperTest {
   @Test
   fun map_from_movie_detail_model_to_movie_detail_dto() {
     // Given:
-    val fakeMovieDetailModel = fakeMovieDetailModel // TODO: replace by FakeApi retrofit call
+    val fakeMovieDetailModel = fakeMovieDetailModel
 
     // When:
     val result = mapper.mapFromDomainModel(fakeMovieDetailModel)

@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.database
+package com.manishsputnikcorporation.movies.data.database
 
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.data.local.MovieDao
@@ -38,7 +38,7 @@ class MovieDaoTest {
 
   @After
   @Throws(IOException::class)
-  fun closeDb() {
+  fun tearDown() {
     db.close()
   }
   // endregion
