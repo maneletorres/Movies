@@ -14,32 +14,40 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class UseCaseModule {
 
   @Binds
+  @ViewModelScoped
   abstract fun bindSafeFlowUseCaseDelegate(
       safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate.Default
   ): SafeFlowUseCaseDelegate
 
   @Binds
+  @ViewModelScoped
   abstract fun bindGlobalErrorManager(
       globalErrorManager: GlobalErrorManagerImpl
   ): GlobalErrorManager
 
-  @Binds abstract fun bindMoviesRepository(moviesRepository: MoviesRepositoryImpl): MoviesRepository
+  @Binds
+  @ViewModelScoped
+  abstract fun bindMoviesRepository(moviesRepository: MoviesRepositoryImpl): MoviesRepository
 
   @Binds
+  @ViewModelScoped
   abstract fun bindMovieDetailRepository(
       movieDetailRepository: MovieDetailRepositoryImpl
   ): MovieDetailRepository
 
   @Binds
+  @ViewModelScoped
   abstract fun bindGlobalErrorMapper(globalErrorMapper: GlobalErrorMapperImpl): GlobalErrorMapper
 
   @Binds
+  @ViewModelScoped
   abstract fun bindDispatcherProvider(
       dispatcherProvider: DefaultDispatcherProvider
   ): DispatcherProvider
@@ -49,7 +57,9 @@ abstract class UseCaseModule {
 @InstallIn(ViewModelComponent::class)
 object MapperModule {
 
-  @Provides fun provideMovieDtoMapper(): MovieDtoMapper = MovieDtoMapper()
+  @Provides @ViewModelScoped fun provideMovieDtoMapper(): MovieDtoMapper = MovieDtoMapper()
 
-  @Provides fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
+  @Provides
+  @ViewModelScoped
+  fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
 }
