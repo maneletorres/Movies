@@ -82,8 +82,8 @@ io-mockk = { module = "io.mockk:mockk", version.ref = "io-mockk-version" }
 
 [bundles]
 retrofit2 = [
-    "com-squareup-retrofit2-retrofit",
     "com-squareup-retrofit2-converter-moshi",
+    "com-squareup-retrofit2-retrofit",
 ]
 okhttp3 = [
     "com-squareup-okhttp3-logging-interceptor",
@@ -103,8 +103,8 @@ compose = [
     "androidx-compose-ui-tooling",
 ]
 room = [
+    "androidx-room-ktx",
     "androidx-room-runtime",
-    "androidx-room-ktx"
 ]
 
 # Testing bundles:
@@ -121,9 +121,9 @@ unit-testing = [
 ]
 
 [plugins]
-com-android-application = "com.android.application:7.4.1"
-com-android-library = "com.android.library:7.4.1"
+com-android-application = "com.android.application:7.4.2"
+com-android-library = "com.android.library:7.4.2"
 # @pin this library to 1.7.20
 org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.20"
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.45.0"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
