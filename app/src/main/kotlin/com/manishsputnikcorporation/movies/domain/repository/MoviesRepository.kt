@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
 
-  val movies: Flow<List<MovieModel>>
+  // TODO: optimize the loadData and getData calls to this!!
+  // val movies: Flow<List<MovieModel>>
 
   fun refreshMostPopularMovies(): DomainResponse<Unit>
 

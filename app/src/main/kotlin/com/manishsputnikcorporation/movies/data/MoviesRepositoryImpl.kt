@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.data
 
+import androidx.annotation.VisibleForTesting
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.local.asDomainModel
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
@@ -26,7 +27,7 @@ constructor(
 ) : MoviesRepository {
 
   // TODO: optimize the loadData and getData calls to this!!
-  override val movies = movieLocalDataSource.getMovies(Type.MOVIE).map { it.asDomainModel() }
+  // override val movies = movieLocalDataSource.getMovies(Type.MOVIE).map { it.asDomainModel() }
 
   override fun refreshMostPopularMovies(): DomainResponse<Unit> =
       movieRemoteDataSource
@@ -55,7 +56,8 @@ constructor(
       movieLocalDataSource.getFavorites().map { it.asDomainModel() }
 
   // region Helper methods
-  private fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
       try {
         eitherSuccess(movieLocalDataSource.insertAll(movies.asDatabaseModel(type)))
       } catch (ex: Exception) {
