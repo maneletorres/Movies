@@ -79,12 +79,8 @@ dependencies {
     // endregion
 
     // region Testing libraries:
-    androidTestImplementation libs.androidx.test.espresso.core
-    testImplementation libs.junit
-    testImplementation libs.junit.params
-    testImplementation libs.mockito
-    testImplementation libs.com.squareup.okhttp3.mockwebserver
-    testImplementation libs.io.mockk
+    androidTestImplementation libs.bundles.android.testing
+    testImplementation libs.bundles.unit.testing
 
     // region Compose testing libraries:
     androidTestImplementation libs.androidx.compose.ui.test.junit4
