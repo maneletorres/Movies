@@ -25,61 +25,60 @@ import org.junit.Test
 
 internal class MovieDetailRepositoryImplTest {
 
-    // region Setup
-    private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
-    private val movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
-    private val mapper: MovieDetailDtoMapper = mockk(relaxed = true)
-    private val movieDetailRepository = MovieDetailRepositoryImpl(
-        movieLocalDataSource,
-        movieRemoteDataSource,
-        mapper
-    )
+  // region Setup
+  private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
+  private val movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
+  private val mapper: MovieDetailDtoMapper = mockk(relaxed = true)
+  private val movieDetailRepository =
+      MovieDetailRepositoryImpl(movieLocalDataSource, movieRemoteDataSource, mapper)
 
-    private val fakeMovieId = "tt11909878"
-    private val fakeCustomError: CustomError = CustomError("fakeCustomErrorRaw", 0, Headers.headersOf())
+  private val fakeMovieId = "tt11909878"
+  private val fakeCustomError: CustomError =
+      CustomError("fakeCustomErrorRaw", 0, Headers.headersOf())
 
-    @Before
-    fun setUp() {
-        // TODO:
-    }
+  @Before
+  fun setUp() {
+    // TODO:
+  }
 
-    @After
-    fun tearDown() {
-        unmockkAll()
-    }
-    // endregion
+  @After
+  fun tearDown() {
+    unmockkAll()
+  }
+  // endregion
 
-    // region Testing
-    @Test
-    fun `on getMovieDetail WHEN remote data doesn't contain an error THEN returns a success response`() {
-        // Given:
-        every { movieRemoteDataSource.getMovie(fakeMovieId) } returns eitherSuccess(fakeMovieDetailDto)
+  // region Testing
+  @Test
+  fun `on getMovieDetail WHEN remote data doesn't contain an error THEN returns a success response`() {
+    // Given:
+    every { movieRemoteDataSource.getMovie(fakeMovieId) } returns eitherSuccess(fakeMovieDetailDto)
 
-        // When:
-        val result = movieDetailRepository.getMovieDetail(fakeMovieId)
+    // When:
+    val result = movieDetailRepository.getMovieDetail(fakeMovieId)
 
-        // Then:
-        assert(result.isSuccess)
-        verify(exactly = 1) { movieRemoteDataSource.getMovie(fakeMovieId) }
-        confirmVerified(movieRemoteDataSource)
-    }
+    // Then:
+    assert(result.isSuccess)
+    verify(exactly = 1) { movieRemoteDataSource.getMovie(fakeMovieId) }
+    confirmVerified(movieRemoteDataSource)
+  }
 
-    @Test
-    fun `on getMovieDetail WHEN remote data contains an error THEN returns a failure response`() {
-        // Given:
-        every { movieRemoteDataSource.getMovie(fakeMovieId) } returns eitherFailure(fakeCustomError)
+  @Test
+  fun `on getMovieDetail WHEN remote data contains an error THEN returns a failure response`() {
+    // Given:
+    every { movieRemoteDataSource.getMovie(fakeMovieId) } returns eitherFailure(fakeCustomError)
 
-        // When:
-        val result = movieDetailRepository.getMovieDetail(fakeMovieId)
+    // When:
+    val result = movieDetailRepository.getMovieDetail(fakeMovieId)
 
-        // Then:
-        assert(result.isFailure)
-        verify(exactly = 1) { movieRemoteDataSource.getMovie(fakeMovieId) }
-        confirmVerified(movieRemoteDataSource)
-    }
+    // Then:
+    assert(result.isFailure)
+    verify(exactly = 1) { movieRemoteDataSource.getMovie(fakeMovieId) }
+    confirmVerified(movieRemoteDataSource)
+  }
 
-    @Test
-    fun `on isFavoriteMovie WHEN the movie ID belongs to a favorite movie THEN returns a true`() = runBlocking {
+  @Test
+  fun `on isFavoriteMovie WHEN the movie ID belongs to a favorite movie THEN returns a true`() =
+      runBlocking {
         // Given:
         every { movieLocalDataSource.isFavoriteMovie(fakeMovieId) } returns flow { emit(true) }
 
@@ -90,10 +89,11 @@ internal class MovieDetailRepositoryImplTest {
         assertTrue(result)
         verify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(fakeMovieId) }
         confirmVerified(movieLocalDataSource)
-    }
+      }
 
-    @Test
-    fun `on isFavoriteMovie WHEN the movie ID doesn't belong to a favorite movie THEN returns a false`() = runBlocking {
+  @Test
+  fun `on isFavoriteMovie WHEN the movie ID doesn't belong to a favorite movie THEN returns a false`() =
+      runBlocking {
         // Given:
         every { movieLocalDataSource.isFavoriteMovie(fakeMovieId) } returns flow { emit(false) }
 
@@ -104,27 +104,29 @@ internal class MovieDetailRepositoryImplTest {
         assertFalse(result)
         verify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(fakeMovieId) }
         confirmVerified(movieLocalDataSource)
-    }
+      }
 
-    @Test
-    fun `on getMovie THEN returns the corresponding movie`() = runBlocking {
-        // Given:
-        every { movieLocalDataSource.getMovie(fakeMovieId) } returns flow { emit(fakeDatabaseMovie) }
+  @Test
+  fun `on getMovie THEN returns the corresponding movie`() = runBlocking {
+    // Given:
+    every { movieLocalDataSource.getMovie(fakeMovieId) } returns flow { emit(fakeDatabaseMovie) }
 
-        // When:
-        val result = movieDetailRepository.getMovie(fakeMovieId).first()
+    // When:
+    val result = movieDetailRepository.getMovie(fakeMovieId).first()
 
-        // Then:
-        assert(result.id == fakeMovieId)
-        verify(exactly = 1) { movieLocalDataSource.getMovie(fakeMovieId) }
-        confirmVerified(movieLocalDataSource)
-    }
+    // Then:
+    assert(result.id == fakeMovieId)
+    verify(exactly = 1) { movieLocalDataSource.getMovie(fakeMovieId) }
+    confirmVerified(movieLocalDataSource)
+  }
 
-    @Test
-    fun `on updateMovie WHEN the database update process is successful THEN returns a success response`() = runBlocking {
+  @Test
+  fun `on updateMovie WHEN the database update process is successful THEN returns a success response`() =
+      runBlocking {
         // Given:
         val fakeDatabaseMovieId = fakeDatabaseMovie.id
-        every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(fakeDatabaseMovie) }
+        every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns
+            flow { emit(fakeDatabaseMovie) }
         coEvery { movieLocalDataSource.updateMovie(any()) } returns Unit
 
         // When:
@@ -132,19 +134,19 @@ internal class MovieDetailRepositoryImplTest {
 
         // Then:
         assert(result.isSuccess)
-        result.mapSuccess {
-            assertFalse(fakeDatabaseMovie.isFavorite == it)
-        }
+        result.mapSuccess { assertFalse(fakeDatabaseMovie.isFavorite == it) }
         verify(exactly = 1) { movieLocalDataSource.getMovie(fakeDatabaseMovieId) }
         coVerify(exactly = 1) { movieLocalDataSource.updateMovie(any()) }
         confirmVerified(movieLocalDataSource)
-    }
+      }
 
-    @Test
-    fun `on updateMovie WHEN the database update process is unsuccessful THEN returns a failure response`() = runBlocking {
+  @Test
+  fun `on updateMovie WHEN the database update process is unsuccessful THEN returns a failure response`() =
+      runBlocking {
         // Given:
         val fakeDatabaseMovieId = fakeDatabaseMovie.id
-        every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(fakeDatabaseMovie) }
+        every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns
+            flow { emit(fakeDatabaseMovie) }
         coEvery { movieLocalDataSource.updateMovie(any()) } throws Exception()
 
         // When:
@@ -155,10 +157,10 @@ internal class MovieDetailRepositoryImplTest {
         verify(exactly = 1) { movieLocalDataSource.getMovie(fakeDatabaseMovieId) }
         coVerify(exactly = 1) { movieLocalDataSource.updateMovie(any()) }
         confirmVerified(movieLocalDataSource)
-    }
+      }
 
-    // region Helper methods
-    private val fakeDatabaseMovie = fakeMovieListDto.items[0].asDatabaseModel()
-    // endregion
-    // endregion
+  // region Helper methods
+  private val fakeDatabaseMovie = fakeMovieListDto.items[0].asDatabaseModel()
+  // endregion
+  // endregion
 }
