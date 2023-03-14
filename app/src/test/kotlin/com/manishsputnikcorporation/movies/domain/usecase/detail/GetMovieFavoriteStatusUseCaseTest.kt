@@ -11,8 +11,8 @@ import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -44,26 +44,25 @@ internal class GetMovieFavoriteStatusUseCaseTest {
 
   // region Testing
   @Test
-  fun `with ID as input, WHEN the movie is favorite, THEN the use case returns a true`() =
-      runBlocking {
-        // Given:
-        every { repository.isFavoriteMovie(fakeId) } returns flow { emit(true) }
+  fun `with ID as input, WHEN the movie is favorite, THEN the use case returns a true`() = runTest {
+    // Given:
+    every { repository.isFavoriteMovie(fakeId) } returns flow { emit(true) }
 
-        // When:
-        coroutineTestRule.runTest {
-          with(safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(fakeId).collect { isFavorite -> assertTrue(isFavorite) }
-          }
-        }
-
-        // Then:
-        verify(exactly = 1) { repository.isFavoriteMovie(fakeId) }
-        confirmVerified(repository)
+    // When:
+    coroutineTestRule.runTest {
+      with(safeFlowUseCaseDelegate) {
+        useCaseToTest.safePrepare(fakeId).collect { isFavorite -> assertTrue(isFavorite) }
       }
+    }
+
+    // Then:
+    verify(exactly = 1) { repository.isFavoriteMovie(fakeId) }
+    confirmVerified(repository)
+  }
 
   @Test
   fun `with ID as input, WHEN the movie isn't favorite, THEN the use case returns a false`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.isFavoriteMovie(fakeId) } returns flow { emit(false) }
 

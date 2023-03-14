@@ -13,8 +13,8 @@ import junitparams.JUnitParamsRunner
 import junitparams.Parameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -47,7 +47,7 @@ internal class GetDataUseCaseTest {
   @Parameters(method = "searchTypeScenario")
   fun `with search type as input, WHEN invoke the service, THEN the use case returns the corresponding list`(
       searchType: Type
-  ) = runBlocking {
+  ) = runTest {
     // Given:
     every { repository.getData(searchType) } returns getDomainMovieList(searchType)
 

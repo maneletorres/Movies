@@ -9,8 +9,8 @@ import com.manishsputnikcorporation.movies.utils.getDomainMovieList
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +39,7 @@ internal class GetFavoriteDataUseCaseTest {
 
   // region Testing
   @Test
-  fun `WHEN invoke the service, THEN the use case returns the list of favorites`() = runBlocking {
+  fun `WHEN invoke the service, THEN the use case returns the list of favorites`() = runTest {
     // Given:
     every { repository.getFavorites() } returns getDomainMovieList()
 

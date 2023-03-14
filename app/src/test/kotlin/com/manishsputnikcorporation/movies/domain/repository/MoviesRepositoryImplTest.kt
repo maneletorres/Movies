@@ -16,8 +16,9 @@ import com.manishsputnikcorporation.movies.utils.getDatabaseMovieList
 import io.mockk.*
 import junitparams.JUnitParamsRunner
 import junitparams.Parameters
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.Headers
 import org.junit.After
 import org.junit.Before
@@ -25,6 +26,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnitParamsRunner::class)
 internal class MoviesRepositoryImplTest {
 
@@ -110,7 +112,7 @@ internal class MoviesRepositoryImplTest {
 
   @Test
   @Parameters(method = "searchTypeScenario")
-  fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runBlocking {
+  fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runTest {
     // Given:
     every { movieLocalDataSource.getMovies(searchType) } returns getDatabaseMovieList(searchType)
 
@@ -126,7 +128,7 @@ internal class MoviesRepositoryImplTest {
   }
 
   @Test
-  fun `on getFavorites THEN returns the list of favorites`() = runBlocking {
+  fun `on getFavorites THEN returns the list of favorites`() = runTest {
     // Given:
     every { movieLocalDataSource.getFavorites() } returns getDatabaseMovieList()
 

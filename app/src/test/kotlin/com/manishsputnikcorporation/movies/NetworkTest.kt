@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies
 
 import android.content.Context
 import com.manishsputnikcorporation.movies.network.MoviesService
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +38,7 @@ class NetworkTest : BaseTest() {
   fun api_service() {
     // TODO: to complete this test.
     enqueue("popular_movies.json")
-    runBlocking {
+    runTest {
       // Given:
       // mockContext = mock()
       // val networkManager = NetworkManagerImpl(mockContext)

@@ -15,8 +15,8 @@ import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +46,7 @@ internal class LoadDataUseCaseTest {
   // region Testing
   @Test
   fun `with MOVIE search type as input, WHEN invoke the corresponding service successfully, THEN the use case returns a success response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.refreshMostPopularMovies() } returns eitherSuccess(Unit)
 
@@ -65,7 +65,7 @@ internal class LoadDataUseCaseTest {
 
   @Test
   fun `with MOVIE search type as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.refreshMostPopularMovies() } returns eitherFailure(fakeDomainError)
 
@@ -84,7 +84,7 @@ internal class LoadDataUseCaseTest {
 
   @Test
   fun `with SERIES search type as input, WHEN invoke the corresponding service successfully, THEN the use case returns a success response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.refreshMostPopularTVs() } returns eitherSuccess(Unit)
 
@@ -103,7 +103,7 @@ internal class LoadDataUseCaseTest {
 
   @Test
   fun `with SERIES search type as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.refreshMostPopularTVs() } returns eitherFailure(fakeDomainError)
 

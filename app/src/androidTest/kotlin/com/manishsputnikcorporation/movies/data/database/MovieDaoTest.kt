@@ -12,8 +12,9 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import java.io.IOException
 import javax.inject.Inject
 import junit.framework.TestCase.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -22,6 +23,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
+@OptIn(ExperimentalCoroutinesApi::class)
 class MovieDaoTest {
 
   // region Setup
@@ -46,7 +48,7 @@ class MovieDaoTest {
   // region Testing
   @Test
   @Throws(Exception::class)
-  fun insertMovie() = runBlocking {
+  fun insertMovie() = runTest {
     // Given:
     val fakeMovie = createMovie()
 
@@ -62,7 +64,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun insertSeries() = runBlocking {
+  fun insertSeries() = runTest {
     // Given:
     val fakeSeries = createSeries()
 
@@ -78,7 +80,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun insertAllMovieList() = runBlocking {
+  fun insertAllMovieList() = runTest {
     // Given:
     val fakeMovieList = mutableListOf<DatabaseMovie>()
     for (i in 0..2) fakeMovieList.add(createMovie(i.toString()))
@@ -94,7 +96,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun insertAllSeriesList() = runBlocking {
+  fun insertAllSeriesList() = runTest {
     // Given:
     val fakeSeriesList = mutableListOf<DatabaseMovie>()
     for (i in 0..2) fakeSeriesList.add(createSeries(i.toString()))
@@ -110,7 +112,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun updateMovie() = runBlocking {
+  fun updateMovie() = runTest {
     // Given:
     val fakeMovie = createMovie()
     val updatedFakeMovieTitle = "updated-fake-movie-title"
@@ -127,7 +129,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun updateSeries() = runBlocking {
+  fun updateSeries() = runTest {
     // Given:
     val fakeSeries = createSeries()
     val updatedFakeSeriesTitle = "updated-fake-series-title"
@@ -144,7 +146,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun deleteMovie() = runBlocking {
+  fun deleteMovie() = runTest {
     // Given:
     val fakeMovie1 = createMovie("1")
     val fakeMovie2 = createMovie("2")
@@ -162,7 +164,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun deleteSeries() = runBlocking {
+  fun deleteSeries() = runTest {
     // Given:
     val fakeSeries1 = createSeries("1")
     val fakeSeries2 = createSeries("2")
@@ -180,7 +182,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun getMovie() = runBlocking {
+  fun getMovie() = runTest {
     // Given:
     val fakeMovie = createMovie()
     movieDao.insert(fakeMovie)
@@ -195,7 +197,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun getSeries() = runBlocking {
+  fun getSeries() = runTest {
     // Given:
     val fakeSeries = createSeries()
     movieDao.insert(fakeSeries)
@@ -210,7 +212,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun isFavoriteMovie() = runBlocking {
+  fun isFavoriteMovie() = runTest {
     // Given:
     val fakeMovie = createMovie(isFavorite = true)
     movieDao.insert(fakeMovie)
@@ -224,7 +226,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun isNotFavoriteMovie() = runBlocking {
+  fun isNotFavoriteMovie() = runTest {
     // Given:
     val fakeMovie = createMovie()
     movieDao.insert(fakeMovie)
@@ -238,7 +240,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun getMovieList() = runBlocking {
+  fun getMovieList() = runTest {
     // Given:
     val fakeSeries = createSeries("3")
     val fakeMovieList = listOf(createMovie("1"), createMovie("2"))
@@ -255,7 +257,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun getSeriesList() = runBlocking {
+  fun getSeriesList() = runTest {
     // Given:
     val fakeMovie = createMovie("3")
     val fakeSeriesList = listOf(createSeries("1"), createSeries("2"))
@@ -272,7 +274,7 @@ class MovieDaoTest {
 
   @Test
   @Throws(Exception::class)
-  fun getFavorites() = runBlocking {
+  fun getFavorites() = runTest {
     // Given:
     val fakeNotFavoriteMovie = createMovie("1")
     val fakeDataList =

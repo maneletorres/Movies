@@ -15,8 +15,8 @@ import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +46,7 @@ internal class GetMovieDetailUseCaseTest {
   // region Testing
   @Test
   fun `with ID as input, WHEN invoke the corresponding service successfully, THEN the use case returns a success response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.getMovieDetail(fakeId) } returns eitherSuccess(fakeMovieDetailModel)
 
@@ -64,7 +64,7 @@ internal class GetMovieDetailUseCaseTest {
 
   @Test
   fun `with ID as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
-      runBlocking {
+      runTest {
         // Given:
         every { repository.getMovieDetail(fakeId) } returns
             eitherFailure(DomainError("fakeErrorCode", "fakeErrorMessage"))

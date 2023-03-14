@@ -15,8 +15,8 @@ import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,7 +45,7 @@ internal class SetMovieFavoriteStatusUseCaseTest {
   // region Testing
   @Test
   fun `with ID as input, WHEN invoke the update service successfully, THEN the use case returns a success response`() =
-      runBlocking {
+      runTest {
         // Given:
         coEvery { repository.updateMovie(fakeId) } returns eitherSuccess(true)
 
@@ -63,7 +63,7 @@ internal class SetMovieFavoriteStatusUseCaseTest {
 
   @Test
   fun `with ID as input, WHEN invoke the update service unsuccessfully, THEN the use case returns a failure response`() =
-      runBlocking {
+      runTest {
         // Given:
         coEvery { repository.updateMovie(fakeId) } returns
             eitherFailure(DomainError("fakeErrorCode", "fakeErrorMessage"))
