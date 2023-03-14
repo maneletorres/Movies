@@ -10,10 +10,9 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MainCoroutinesRule : TestRule, TestCoroutineScope by createTestCoroutineScope() {
+class MainCoroutinesRule : TestRule {
 
-  private val testCoroutineDispatcher = TestCoroutineDispatcher()
-  private val testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
+  private val testCoroutineDispatcher = StandardTestDispatcher()
 
   val testDispatcherProvider =
       object : DispatcherProvider {
@@ -28,11 +27,9 @@ class MainCoroutinesRule : TestRule, TestCoroutineScope by createTestCoroutineSc
         override fun evaluate() {
           Dispatchers.setMain(testCoroutineDispatcher)
           base.evaluate()
-          cleanupTestCoroutines()
           Dispatchers.resetMain()
         }
       }
 
-  fun runTest(block: suspend TestCoroutineScope.() -> Unit) =
-      testCoroutineScope.runBlockingTest(block)
+  fun runTest(block: suspend TestScope.() -> Unit) = TestScope().runTest(testBody = block)
 }
