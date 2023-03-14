@@ -1,10 +1,8 @@
-package com.manishsputnikcorporation.movies.repository
+package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
-import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.network.CustomError
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
@@ -14,13 +12,13 @@ import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
+import com.manishsputnikcorporation.movies.utils.getDatabaseMovieList
 import io.mockk.*
 import junitparams.JUnitParamsRunner
 import junitparams.Parameters
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.Headers
 import org.junit.After
 import org.junit.Before
@@ -28,6 +26,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnitParamsRunner::class)
 internal class MoviesRepositoryImplTest {
 
@@ -113,7 +112,7 @@ internal class MoviesRepositoryImplTest {
 
   @Test
   @Parameters(method = "searchTypeScenario")
-  fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runBlocking {
+  fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runTest {
     // Given:
     every { movieLocalDataSource.getMovies(searchType) } returns getDatabaseMovieList(searchType)
 
@@ -129,7 +128,7 @@ internal class MoviesRepositoryImplTest {
   }
 
   @Test
-  fun `on getFavorites THEN returns the list of favorites`() = runBlocking {
+  fun `on getFavorites THEN returns the list of favorites`() = runTest {
     // Given:
     every { movieLocalDataSource.getFavorites() } returns getDatabaseMovieList()
 
@@ -138,6 +137,7 @@ internal class MoviesRepositoryImplTest {
 
     // Then:
     assert(result.isNotEmpty())
+    assert(result.all { it.isFavorite })
     verify(exactly = 1) { moviesRepository.getFavorites() }
     verify(exactly = 1) { movieLocalDataSource.getFavorites() }
     confirmVerified(movieLocalDataSource)
@@ -145,15 +145,6 @@ internal class MoviesRepositoryImplTest {
 
   // region Helper methods
   @SuppressWarnings("unused") private fun searchTypeScenario() = listOf(MOVIE, SERIES)
-
-  private fun getDatabaseMovieList(searchType: Type? = MOVIE): Flow<List<DatabaseMovie>> = flow {
-    emit(
-        when (searchType) {
-          MOVIE -> fakeMovieListDto.items
-          SERIES -> fakeSeriesListDto.items
-          else -> fakeSeriesListDto.items.plus(fakeSeriesListDto.items)
-        }.map { it.asDatabaseModel() })
-  }
   // endregion
   // endregion
 }

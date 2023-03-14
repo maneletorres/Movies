@@ -1,28 +1,30 @@
-package com.manishsputnikcorporation.movies.repository
+package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.network.CustomError
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
+import com.manishsputnikcorporation.movies.utils.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import io.mockk.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.Headers
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieDetailRepositoryImplTest {
 
   // region Setup
@@ -78,7 +80,7 @@ internal class MovieDetailRepositoryImplTest {
 
   @Test
   fun `on isFavoriteMovie WHEN the movie ID belongs to a favorite movie THEN returns a true`() =
-      runBlocking {
+      runTest {
         // Given:
         every { movieLocalDataSource.isFavoriteMovie(fakeMovieId) } returns flow { emit(true) }
 
@@ -93,7 +95,7 @@ internal class MovieDetailRepositoryImplTest {
 
   @Test
   fun `on isFavoriteMovie WHEN the movie ID doesn't belong to a favorite movie THEN returns a false`() =
-      runBlocking {
+      runTest {
         // Given:
         every { movieLocalDataSource.isFavoriteMovie(fakeMovieId) } returns flow { emit(false) }
 
@@ -107,7 +109,7 @@ internal class MovieDetailRepositoryImplTest {
       }
 
   @Test
-  fun `on getMovie THEN returns the corresponding movie`() = runBlocking {
+  fun `on getMovie THEN returns the corresponding movie`() = runTest {
     // Given:
     every { movieLocalDataSource.getMovie(fakeMovieId) } returns flow { emit(fakeDatabaseMovie) }
 
@@ -122,7 +124,7 @@ internal class MovieDetailRepositoryImplTest {
 
   @Test
   fun `on updateMovie WHEN the database update process is successful THEN returns a success response`() =
-      runBlocking {
+      runTest {
         // Given:
         val fakeDatabaseMovieId = fakeDatabaseMovie.id
         every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns
@@ -142,7 +144,7 @@ internal class MovieDetailRepositoryImplTest {
 
   @Test
   fun `on updateMovie WHEN the database update process is unsuccessful THEN returns a failure response`() =
-      runBlocking {
+      runTest {
         // Given:
         val fakeDatabaseMovieId = fakeDatabaseMovie.id
         every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns

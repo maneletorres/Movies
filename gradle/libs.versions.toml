@@ -11,9 +11,10 @@ compose-ui-version = "1.3.3"
 room-version = "2.5.0"
 
 # Testing library versions:
+test-espresso-core-version = "3.5.1"
 junit-version = "4.13.2"
 junit-params-version = "1.1.1"
-test-espresso-core-version = "3.5.1"
+kotlinx-coroutines-test = "1.6.4"
 hilt-testing-version = "2.45"
 mockito-version = "4.1.0"
 io-mockk-version = "1.13.4"
@@ -55,12 +56,17 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
 
 # Testing libraries:
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
+
+# JUnit testing libraries:
 junit = { module = "junit:junit", version.ref = "junit-version" }
 junit-params = { module = "pl.pragmatists:JUnitParams", version.ref = "junit-params-version" }
-androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
+
+# Navigation testing libraries:
 androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
-mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-version" }
-io-mockk = { module = "io.mockk:mockk", version.ref = "io-mockk-version" }
+
+# Coroutines testing libraries:
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 
 # Compose testing libraries:
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }
@@ -69,6 +75,10 @@ androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-mani
 # Hilt testing libraries:
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt-testing-version" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-testing-version" }
+
+# Mock libraries:
+mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-version" }
+io-mockk = { module = "io.mockk:mockk", version.ref = "io-mockk-version" }
 
 [bundles]
 retrofit2 = [
@@ -95,6 +105,19 @@ compose = [
 room = [
     "androidx-room-ktx",
     "androidx-room-runtime",
+]
+
+# Testing bundles:
+android-testing = [
+    "androidx-test-espresso-core"
+]
+unit-testing = [
+    "junit",
+    "junit-params",
+    "kotlinx-coroutines-test",
+    "com-squareup-okhttp3-mockwebserver",
+    "mockito",
+    "io-mockk"
 ]
 
 [plugins]
