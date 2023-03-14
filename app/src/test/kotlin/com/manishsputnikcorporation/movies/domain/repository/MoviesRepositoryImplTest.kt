@@ -1,10 +1,10 @@
-package com.manishsputnikcorporation.movies.repository
+package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.extensions.asDatabaseModel
+import com.manishsputnikcorporation.movies.utils.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.network.CustomError
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess

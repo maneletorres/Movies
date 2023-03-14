@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.extensions
+package com.manishsputnikcorporation.movies.utils.extensions
 
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.network.response.MovieDto
