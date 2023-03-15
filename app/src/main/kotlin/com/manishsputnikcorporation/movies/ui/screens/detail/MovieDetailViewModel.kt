@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.screens.detail
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
@@ -34,7 +35,8 @@ constructor(
     }
   }
 
-  private fun getMovieDetail(id: String?) {
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getMovieDetail(id: String?) {
     id?.let {
       getMovieDetailUseCase
           .safePrepare(id)
@@ -59,7 +61,9 @@ constructor(
           .launchIn(viewModelScope)
     }
   }
-  private fun getMovieFavoriteStatus(id: String) {
+
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+  fun getMovieFavoriteStatus(id: String) {
     getMovieFavoriteStatusUseCase
         .safePrepare(id)
         .onEach { favoriteStatus -> updateFavoriteStatus(favoriteStatus) }
