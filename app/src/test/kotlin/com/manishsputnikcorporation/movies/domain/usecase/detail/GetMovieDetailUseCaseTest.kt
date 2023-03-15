@@ -1,17 +1,16 @@
 package com.manishsputnikcorporation.movies.domain.usecase.detail
 
-import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate.Default
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
 import com.manishsputnikcorporation.movies.domain.usecase.MainCoroutinesRule
-import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
+import com.manishsputnikcorporation.movies.utils.fakeDomainError
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,8 +65,7 @@ internal class GetMovieDetailUseCaseTest {
   fun `with ID as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
       runTest {
         // Given:
-        every { repository.getMovieDetail(fakeId) } returns
-            eitherFailure(DomainError("fakeErrorCode", "fakeErrorMessage"))
+        every { repository.getMovieDetail(fakeId) } returns fakeDomainError
 
         // When:
         coroutineTestRule.runTest {

@@ -3,9 +3,7 @@ package com.manishsputnikcorporation.movies.domain.repository
 import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.network.CustomError
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
-import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
@@ -13,12 +11,12 @@ import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
+import com.manishsputnikcorporation.movies.utils.fakeCustomError
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
-import okhttp3.Headers
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -35,8 +33,6 @@ internal class MovieDetailRepositoryImplTest {
       MovieDetailRepositoryImpl(movieLocalDataSource, movieRemoteDataSource, mapper)
 
   private val fakeMovieId = "tt11909878"
-  private val fakeCustomError: CustomError =
-      CustomError("fakeCustomErrorRaw", 0, Headers.headersOf())
 
   @Before
   fun setUp() {
@@ -67,7 +63,7 @@ internal class MovieDetailRepositoryImplTest {
   @Test
   fun `on getMovieDetail WHEN remote data contains an error THEN returns a failure response`() {
     // Given:
-    every { movieRemoteDataSource.getMovie(fakeMovieId) } returns eitherFailure(fakeCustomError)
+    every { movieRemoteDataSource.getMovie(fakeMovieId) } returns fakeCustomError
 
     // When:
     val result = movieDetailRepository.getMovieDetail(fakeMovieId)
