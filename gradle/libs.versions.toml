@@ -113,7 +113,8 @@ room = [
 
 # Testing bundles:
 android-testing = [
-    "androidx-test-espresso-core"
+    "androidx-test-espresso-core",
+    "junit-params"
 ]
 unit-testing = [
     "junit",
