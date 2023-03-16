@@ -1,11 +1,11 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
+import com.manishsputnikcorporation.movies.common_test.asDatabaseModel
 import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
-import com.manishsputnikcorporation.movies.utils.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 
+// TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieDetailRepositoryImplTest {
 
@@ -33,11 +33,6 @@ internal class MovieDetailRepositoryImplTest {
       MovieDetailRepositoryImpl(movieLocalDataSource, movieRemoteDataSource, mapper)
 
   private val fakeMovieId = "tt11909878"
-
-  @Before
-  fun setUp() {
-    // TODO:
-  }
 
   @After
   fun tearDown() {

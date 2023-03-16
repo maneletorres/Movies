@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.utils.extensions
+package com.manishsputnikcorporation.movies.common_test
 
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.domain.model.MovieModel

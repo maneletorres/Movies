@@ -94,4 +94,9 @@ dependencies {
     androidTestImplementation libs.com.squareup.okhttp3.mockwebserver
     // endregion
     // endregion
+
+    // region Custom libraries: // TODO: to review
+    androidTestImplementation project(":common-test")
+    testImplementation project(":common-test")
+    // endregion
 }
