@@ -80,6 +80,7 @@ internal class MovieDetailViewModelTest {
 
           // Step 3 - onEach/onSuccess:
           assertEquals(fakeMovieDetailModel, awaitItem().movieDetailData.movieDetailModel)
+          cancelAndConsumeRemainingEvents()
         }
 
         verify(exactly = 1) { getMovieDetailUseCase.safePrepare(any()) }
@@ -114,6 +115,7 @@ internal class MovieDetailViewModelTest {
             assertEquals(false, isLoading)
             assertEquals(true, isFailed)
           }
+          cancelAndConsumeRemainingEvents()
         }
 
         verify(exactly = 1) { getMovieDetailUseCase.safePrepare(any()) }
@@ -139,6 +141,7 @@ internal class MovieDetailViewModelTest {
 
           // Step 2 - onEach:
           assertEquals(true, awaitItem().movieDetailData.isFavorite)
+          cancelAndConsumeRemainingEvents()
         }
 
         verify(exactly = 1) { getMovieFavoriteStatusUseCase.safePrepare(any()) }
@@ -165,6 +168,7 @@ internal class MovieDetailViewModelTest {
 
           // Step 2 - onEach:
           assertEquals(true, awaitItem().movieDetailData.isFavorite)
+          cancelAndConsumeRemainingEvents()
         }
 
         verify(exactly = 1) { setMovieFavoriteStatusUseCase.safePrepare(any()) }
@@ -187,6 +191,7 @@ internal class MovieDetailViewModelTest {
           // Then:
           // Step 1 - Initial value:
           awaitItem().assertInitialState()
+          cancelAndConsumeRemainingEvents()
         }
 
         verify(exactly = 1) { setMovieFavoriteStatusUseCase.safePrepare(any()) }
