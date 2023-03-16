@@ -1,5 +1,7 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.Companion.PRIVATE
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
@@ -37,10 +39,6 @@ constructor(
   private val _event: Channel<Event> = Channel()
   val event: Flow<Event> = _event.receiveAsFlow()
 
-  init {
-    loadData()
-  }
-
   fun loadData(type: Type = Type.MOVIE) {
     loadDataUseCase
         .safePrepare(type)
@@ -55,7 +53,8 @@ constructor(
         .launchIn(viewModelScope)
   }
 
-  private fun getData(type: Type) {
+  @VisibleForTesting(otherwise = PRIVATE)
+  fun getData(type: Type) {
     getDataUseCase
         .safePrepare(type)
         .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }

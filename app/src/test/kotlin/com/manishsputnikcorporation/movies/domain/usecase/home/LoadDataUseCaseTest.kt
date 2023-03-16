@@ -1,17 +1,16 @@
 package com.manishsputnikcorporation.movies.domain.usecase.home
 
-import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate.Default
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.MainCoroutinesRule
-import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
+import com.manishsputnikcorporation.movies.utils.fakeDomainError
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,8 +32,6 @@ internal class LoadDataUseCaseTest {
   private val safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate = Default(globalErrorManager)
   private val useCaseToTest: LoadDataUseCase =
       LoadDataUseCase(repository, globalErrorMapper, coroutineTestRule.testDispatcherProvider)
-
-  private val fakeDomainError = DomainError("fakeErrorCode", "fakeErrorMessage")
 
   @After
   fun tearDown() {
@@ -67,7 +64,7 @@ internal class LoadDataUseCaseTest {
   fun `with MOVIE search type as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
       runTest {
         // Given:
-        every { repository.refreshMostPopularMovies() } returns eitherFailure(fakeDomainError)
+        every { repository.refreshMostPopularMovies() } returns fakeDomainError
 
         // When:
         coroutineTestRule.runTest {
@@ -105,7 +102,7 @@ internal class LoadDataUseCaseTest {
   fun `with SERIES search type as input, WHEN invoke the corresponding service unsuccessfully, THEN the use case returns a failure response`() =
       runTest {
         // Given:
-        every { repository.refreshMostPopularTVs() } returns eitherFailure(fakeDomainError)
+        every { repository.refreshMostPopularTVs() } returns fakeDomainError
 
         // When:
         coroutineTestRule.runTest {

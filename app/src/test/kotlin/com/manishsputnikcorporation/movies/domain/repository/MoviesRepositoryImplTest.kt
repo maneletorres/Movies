@@ -3,8 +3,6 @@ package com.manishsputnikcorporation.movies.domain.repository
 import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.network.CustomError
-import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
@@ -12,6 +10,7 @@ import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
+import com.manishsputnikcorporation.movies.utils.fakeCustomError
 import com.manishsputnikcorporation.movies.utils.getDatabaseMovieList
 import io.mockk.*
 import junitparams.JUnitParamsRunner
@@ -19,7 +18,6 @@ import junitparams.Parameters
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import okhttp3.Headers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -34,9 +32,6 @@ internal class MoviesRepositoryImplTest {
   private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
   private val movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
   private val moviesRepository = MoviesRepositoryImpl(movieLocalDataSource, movieRemoteDataSource)
-
-  private val fakeCustomError: CustomError =
-      CustomError("fakeCustomErrorRaw", 0, Headers.headersOf())
 
   @Before
   fun setUp() {
@@ -68,7 +63,7 @@ internal class MoviesRepositoryImplTest {
   @Test
   fun `on refreshMostPopularMovies WHEN remote data contains an error THEN returns a failure response`() {
     // Given:
-    every { movieRemoteDataSource.getMostPopularMovies() } returns eitherFailure(fakeCustomError)
+    every { movieRemoteDataSource.getMostPopularMovies() } returns fakeCustomError
 
     // When:
     val result = moviesRepository.refreshMostPopularMovies()
@@ -98,7 +93,7 @@ internal class MoviesRepositoryImplTest {
   @Test
   fun `on refreshMostPopularTVs WHEN remote data contains an error THEN returns a failure response`() {
     // Given:
-    every { movieRemoteDataSource.getMostPopularTVs() } returns eitherFailure(fakeCustomError)
+    every { movieRemoteDataSource.getMostPopularTVs() } returns fakeCustomError
 
     // When:
     val result = moviesRepository.refreshMostPopularTVs()
