@@ -5,12 +5,8 @@ import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
-import junitparams.NamedParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-
-@NamedParameters("searchTypeScenario") // TODO: to implement
-fun searchTypeScenario() = listOf(MOVIE, SERIES)
 
 fun getDatabaseMovieList(
     searchType: Type? = MOVIE,

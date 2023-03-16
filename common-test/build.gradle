@@ -15,5 +15,4 @@ android {
 dependencies {
     implementation project(path: ':app')
     implementation libs.kotlinx.coroutines.test
-    implementation libs.junit.params
 }
