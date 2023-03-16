@@ -1,8 +1,7 @@
-package com.manishsputnikcorporation.movies.data.network
+package com.manishsputnikcorporation.movies.data.remote
 
 import com.manishsputnikcorporation.movies.BuildConfig
-import com.manishsputnikcorporation.movies.data.network.base.NetworkBaseTest
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
+import com.manishsputnikcorporation.movies.data.remote.base.NetworkBaseTest
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import dagger.hilt.android.testing.HiltAndroidRule

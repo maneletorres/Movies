@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.data.network.base
+package com.manishsputnikcorporation.movies.data.remote.base
 
 import com.manishsputnikcorporation.movies.extensions.fromJson
 import okhttp3.mockwebserver.Dispatcher

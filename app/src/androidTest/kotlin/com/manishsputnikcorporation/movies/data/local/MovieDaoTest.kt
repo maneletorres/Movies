@@ -1,8 +1,5 @@
-package com.manishsputnikcorporation.movies.data.database
+package com.manishsputnikcorporation.movies.data.local
 
-import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
-import com.manishsputnikcorporation.movies.data.local.MovieDao
-import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
 import com.manishsputnikcorporation.movies.di.annotations.TestDatabase
 import com.manishsputnikcorporation.movies.utils.createMovie
 import com.manishsputnikcorporation.movies.utils.createSeries
