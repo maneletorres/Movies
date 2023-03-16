@@ -1,11 +1,11 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
+import com.manishsputnikcorporation.movies.common_test.asDatabaseModel
 import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
-import com.manishsputnikcorporation.movies.utils.extensions.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess

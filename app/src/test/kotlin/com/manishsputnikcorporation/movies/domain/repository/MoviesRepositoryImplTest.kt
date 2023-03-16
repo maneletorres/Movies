@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
+import com.manishsputnikcorporation.movies.common_test.flowDatabaseMovieList
 import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
@@ -11,7 +12,6 @@ import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
 import com.manishsputnikcorporation.movies.utils.fakeCustomError
-import com.manishsputnikcorporation.movies.utils.getDatabaseMovieList
 import io.mockk.*
 import junitparams.JUnitParamsRunner
 import junitparams.Parameters
@@ -109,7 +109,7 @@ internal class MoviesRepositoryImplTest {
   @Parameters(method = "searchTypeScenario")
   fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runTest {
     // Given:
-    every { movieLocalDataSource.getMovies(searchType) } returns getDatabaseMovieList(searchType)
+    every { movieLocalDataSource.getMovies(searchType) } returns flowDatabaseMovieList(searchType)
 
     // When:
     val result = moviesRepository.getData(searchType).first()
@@ -125,7 +125,7 @@ internal class MoviesRepositoryImplTest {
   @Test
   fun `on getFavorites THEN returns the list of favorites`() = runTest {
     // Given:
-    every { movieLocalDataSource.getFavorites() } returns getDatabaseMovieList()
+    every { movieLocalDataSource.getFavorites() } returns flowDatabaseMovieList()
 
     // When:
     val result = moviesRepository.getFavorites().first()
@@ -137,9 +137,9 @@ internal class MoviesRepositoryImplTest {
     verify(exactly = 1) { movieLocalDataSource.getFavorites() }
     confirmVerified(movieLocalDataSource)
   }
+  // endregion
 
   // region Helper methods
   @SuppressWarnings("unused") private fun searchTypeScenario() = listOf(MOVIE, SERIES)
-  // endregion
   // endregion
 }
