@@ -8,7 +8,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
 
-open class NetworkBaseTest {
+open class MovieRemoteDataSourceImplBaseTest {
 
   // region Setup
   private lateinit var server: MockWebServer

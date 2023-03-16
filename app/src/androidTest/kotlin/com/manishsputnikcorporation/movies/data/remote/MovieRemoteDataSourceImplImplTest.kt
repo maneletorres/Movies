@@ -1,7 +1,7 @@
 package com.manishsputnikcorporation.movies.data.remote
 
 import com.manishsputnikcorporation.movies.BuildConfig
-import com.manishsputnikcorporation.movies.data.remote.base.NetworkBaseTest
+import com.manishsputnikcorporation.movies.data.remote.base.MovieRemoteDataSourceImplBaseTest
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -16,7 +16,7 @@ import org.junit.Test
 
 @HiltAndroidTest
 @OptIn(ExperimentalCoroutinesApi::class)
-class NetworkTest : NetworkBaseTest() {
+class MovieRemoteDataSourceImplImplTest : MovieRemoteDataSourceImplBaseTest() {
 
   // region Setup
   @get:Rule val hiltRule = HiltAndroidRule(this)
