@@ -44,7 +44,7 @@ fun MoviesHomeScreen(
   val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
   moviesHomeUIState.let {
     when (it) {
-      Idle -> Unit
+      Idle -> moviesHomeViewModel.loadData()
       Loading -> GenericLoading()
       is Data ->
           MoviesHomeContent(
