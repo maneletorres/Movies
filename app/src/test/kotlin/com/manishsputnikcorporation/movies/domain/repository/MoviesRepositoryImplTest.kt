@@ -19,7 +19,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -32,11 +31,6 @@ internal class MoviesRepositoryImplTest {
   private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
   private val movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
   private val moviesRepository = MoviesRepositoryImpl(movieLocalDataSource, movieRemoteDataSource)
-
-  @Before
-  fun setUp() {
-    // TODO:
-  }
 
   @After
   fun tearDown() {

@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 
+// TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MovieDetailRepositoryImplTest {
 
@@ -33,11 +33,6 @@ internal class MovieDetailRepositoryImplTest {
       MovieDetailRepositoryImpl(movieLocalDataSource, movieRemoteDataSource, mapper)
 
   private val fakeMovieId = "tt11909878"
-
-  @Before
-  fun setUp() {
-    // TODO:
-  }
 
   @After
   fun tearDown() {
