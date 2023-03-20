@@ -1,11 +1,11 @@
 package com.manishsputnikcorporation.movies.domain.usecase.detail
 
+import com.manishsputnikcorporation.movies.MainCoroutinesRule
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate.Default
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
-import com.manishsputnikcorporation.movies.MainCoroutinesRule
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
