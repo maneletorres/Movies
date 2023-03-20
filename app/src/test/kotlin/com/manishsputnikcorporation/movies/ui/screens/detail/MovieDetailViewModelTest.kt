@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies.ui.screens.detail
 
 import app.cash.turbine.test
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.usecase.MainCoroutinesRule
+import com.manishsputnikcorporation.movies.MainCoroutinesRule
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieDetailUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieFavoriteStatusUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.detail.SetMovieFavoriteStatusUseCase

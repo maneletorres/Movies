@@ -1,11 +1,11 @@
-package com.manishsputnikcorporation.movies
+package com.manishsputnikcorporation.movies.data.remote.base
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
 import okio.source
 
-open class BaseTest {
+open class MovieRemoteDataSourceImplBaseTest {
 
   val mockWebServer = MockWebServer()
 

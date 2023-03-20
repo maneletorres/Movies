@@ -1,7 +1,7 @@
 package com.manishsputnikcorporation.movies.domain.model
 
 import android.os.Parcelable
-import com.manishsputnikcorporation.movies.domain.id.Identifiable
+import com.manishsputnikcorporation.movies.domain.model.base.Identifiable
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import kotlinx.parcelize.Parcelize
 

@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.domain.usecase
+package com.manishsputnikcorporation.movies
 
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher

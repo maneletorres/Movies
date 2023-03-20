@@ -3,7 +3,7 @@ package com.manishsputnikcorporation.movies.ui.screens.home
 import app.cash.turbine.test
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.domain.usecase.MainCoroutinesRule
+import com.manishsputnikcorporation.movies.MainCoroutinesRule
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase

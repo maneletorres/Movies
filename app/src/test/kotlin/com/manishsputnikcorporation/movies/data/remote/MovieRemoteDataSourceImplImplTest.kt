@@ -1,6 +1,7 @@
-package com.manishsputnikcorporation.movies
+package com.manishsputnikcorporation.movies.data.remote
 
 import android.content.Context
+import com.manishsputnikcorporation.movies.data.remote.base.MovieRemoteDataSourceImplBaseTest
 import com.manishsputnikcorporation.movies.network.MoviesService
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -13,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @RunWith(MockitoJUnitRunner::class)
-class NetworkTest : BaseTest() {
+class MovieRemoteDataSourceImplImplTest : MovieRemoteDataSourceImplBaseTest() {
 
   @Mock private lateinit var mockContext: Context
 

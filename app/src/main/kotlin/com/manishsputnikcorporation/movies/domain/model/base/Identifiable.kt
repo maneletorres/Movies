@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.domain.id
+package com.manishsputnikcorporation.movies.domain.model.base
 
 interface Identifiable {
   val id: String
