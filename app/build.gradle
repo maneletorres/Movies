@@ -46,11 +46,11 @@ android {
         compose true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     composeOptions {
         kotlinCompilerExtensionVersion rootProject.composeCompilerVersion
@@ -64,6 +64,7 @@ dependencies {
     kapt libs.dagger.hilt.android.compiler
     // endregion
 
+    implementation libs.com.jakewharton.timber
     implementation libs.bundles.retrofit2
     implementation libs.bundles.okhttp3
     implementation libs.bundles.ui
