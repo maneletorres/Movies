@@ -1,5 +1,5 @@
 [versions]
-google-dagger-version = "2.45" # TODO: Upgrade to version 2.46 causes an exception at compile time.
+google-dagger-version = "2.46.1"
 timber-version = "5.0.1"
 retrofit2-version = "2.9.0"
 okhttp3-version = "4.11.0"
@@ -7,8 +7,8 @@ coil-kt-version = "2.3.0"
 adapter-delegates4-version = "4.3.2"
 navigation-ui-ktx-version = "2.5.3"
 hilt-version = "1.0.0"
-compose-material-version = "1.4.2"
-compose-ui-version = "1.4.2"
+compose-material-version = "1.4.3"
+compose-ui-version = "1.4.3"
 room-version = "2.5.1"
 # Testing library versions:
 junit-version = "4.13.2"
@@ -89,8 +89,8 @@ room = [
 ]
 
 [plugins]
-com-android-application = "com.android.application:8.0.0"
-com-android-library = "com.android.library:8.0.0"
+com-android-application = "com.android.application:8.0.1"
+com-android-library = "com.android.library:8.0.1"
 # @pin this library to 1.8.20
 org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.8.20"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
