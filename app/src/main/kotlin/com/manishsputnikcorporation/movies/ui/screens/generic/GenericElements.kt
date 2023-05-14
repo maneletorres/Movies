@@ -40,7 +40,7 @@ fun GenericPlaceholder(modifier: Modifier = Modifier) {
   Box(modifier = Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
     Image(
         painter = painterResource(id = R.drawable.ic_placeholder),
-        contentDescription = "",
+        contentDescription = null,
         modifier = modifier.width(50.dp).height(50.dp))
   }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="logo_description">Logo de movies</string>
+    <string name="welcome_message">Bienvenido a Movies App</string>
+    <string name="generic_error_message">Este es un mensaje de error genérico.</string>
+    <string name="generic_close_message">Cerrar</string>
+    <string name="movies_home_favorites">Favoritos</string>
+    <string name="movies_home_search_type">Tipo de búsqueda</string>
+    <string name="movies_home_empty_movies">Sin películas</string>
+    <string name="movies_home_empty_series">Sin series</string>
+    <string name="movies_home_empty_favorites">Sin favoritos</string>
+    <string name="movies_home_error">Ha ocurrido un problema cargando la lista de %s. Disculpe las molestias.</string>
+    <string name="movie_detail_favorite_movie">Película favorita</string>
+    <string name="dummy_movie_title">El profesional (Léon)</string>
+    <string name="dummy_movie_plot">Mathilda, de 12 años, es acogida a regañadientes por Léon, un asesino profesional, después de que su familia es asesinada. Se forma una relación inusual cuando ella se convierte en su protegida y se entera del asesino... Leer todo</string>
+    <string name="movie_detail_label">Detalle de película</string>
+    <string name="movie_detail_arrow_back_label">Flecha de atrás</string>
+    <string name="movie_detail_error">Ha ocurrido un problema cargando el detalle de la película. Disculpe las molestias.</string>
+    <string name="dummy_movie_name_1">El retorno de las brujas 2</string>
+    <string name="dummy_movie_name_3">El retorno de las brujas</string>
+    <string name="dummy_movie_name_5">Super Mario Bros: La película</string>
+    <string name="dummy_movie_name_7">No te preocupes querida</string>
+    <string name="dummy_movie_name_9">Ámsterdam</string>
+    <string name="dummy_movie_name_11">Bros: Más que amigos</string>
+    <string name="dummy_movie_name_12">El teléfono del señor Harrigan</string>
+    <string name="dummy_movie_name_19">Desaparecida sin rastro</string>
+    <string name="dummy_movie_name_20">La mujer rey</string>
+    <string name="dummy_movie_name_13">Yo me encargo de la cerveza</string>
+    <string name="dummy_series_plot">Veinte años después de la destrucción de la civilización moderna a causa de un hongo -el cordyceps- que se adueña del cuerpo de los humanos, uno de los supervivientes, Joel, recibe el encargo de sacar a la joven Ellie de una opresiva zona de cuarentena. Juntos cruzan Estados Unidos ayudándose mutuamente para intentar sobrevivir... Adaptación del aclamado videojuego homónimo de Naughty Dog.</string>
+    <string name="dummy_movie_name_14">Yo me encargo de la cerveza</string>
+    <string name="dummy_movie_name_16">La chica que lo tenía todo</string>
+    <string name="dummy_movie_full_title">Léon: El profesional (1994)</string>
+    <string name="dummy_series_full_title">The Last of Us (Serie de TV 2023- )</string>
+    <string name="movies_home_up_button_text">¡Arriba!</string>
+</resources>

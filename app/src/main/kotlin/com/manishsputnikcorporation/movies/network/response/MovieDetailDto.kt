@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.network.response
 
+import com.manishsputnikcorporation.movies.network.util.EMPTY_STRING
 import com.squareup.moshi.Json
 
 data class MovieDetailDto(
@@ -11,10 +12,10 @@ data class MovieDetailDto(
     @field:Json(name = "year") val year: String,
     @field:Json(name = "image") val image: String,
     @field:Json(name = "releaseDate") val releaseDate: String,
-    @field:Json(name = "runtimeMins") val runtimeMins: String? = "",
+    @field:Json(name = "runtimeMins") val runtimeMins: String? = EMPTY_STRING,
     @field:Json(name = "runtimeStr") val runtimeStr: String? = null,
-    @field:Json(name = "plot") val plot: String = "",
-    @field:Json(name = "plotLocal") val plotLocal: String? = "",
+    @field:Json(name = "plot") val plot: String = EMPTY_STRING,
+    @field:Json(name = "plotLocal") val plotLocal: String? = EMPTY_STRING,
     @field:Json(name = "plotLocalIsRtl") val plotLocalIsRtl: Boolean? = false,
     @field:Json(name = "directors") val directors: String
 // TODO: to complete with all fields!
