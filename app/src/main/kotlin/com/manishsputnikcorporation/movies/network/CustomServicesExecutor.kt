@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.network
 
-import android.util.Log
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.rest.exceptions.TimeOutException
@@ -13,6 +12,7 @@ import javax.inject.Inject
 import okhttp3.Headers
 import okhttp3.Request
 import retrofit2.Call
+import timber.log.Timber
 
 interface CustomServicesExecutor {
 
@@ -37,14 +37,17 @@ interface CustomServicesExecutor {
             Either.Failure(CustomError(raw, response.code(), response.headers()))
           }
         } catch (ex: JsonDataException) {
-          Log.e(logTag, ex.toString()) // TODO: to review!
-          throw ServiceException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
+          Timber.e(logTag, ex.toString()) // TODO: to review!
+          throw ServiceException(
+              ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         } catch (ex: SocketTimeoutException) {
-          Log.e(logTag, ex.toString()) // TODO: to review!
-          throw TimeOutException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
+          Timber.e(logTag, ex.toString()) // TODO: to review!
+          throw TimeOutException(
+              ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         } catch (ex: IOException) {
-          Log.e(logTag, ex.toString()) // TODO: to review!
-          throw ServiceException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
+          Timber.e(logTag, ex.toString()) // TODO: to review!
+          throw ServiceException(
+              ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         }
   }
 }

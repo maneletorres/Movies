@@ -34,5 +34,7 @@ constructor(
                 .onSuccess { emit(eitherSuccess(it)) }
                 .onFailure { emit(eitherFailure(it)) }
           }
-          .spreadUnauthorized { eitherFailure(DomainError(EMPTY_STRING, EMPTY_STRING)) } // TODO: to check!!
+          .spreadUnauthorized {
+            eitherFailure(DomainError(EMPTY_STRING, EMPTY_STRING))
+          } // TODO: to check!!
 }

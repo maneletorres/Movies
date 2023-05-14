@@ -49,7 +49,7 @@ fun fakeMovieListDto(context: Context) =
                 MovieDto(
                     id = "tt6718170",
                     rank = "5",
-                    title =  context.resources.getString(R.string.dummy_movie_name_5),
+                    title = context.resources.getString(R.string.dummy_movie_name_5),
                     year = "2023",
                     imageUrl =
                         "https://m.media-amazon.com/images/M/MV5BYjY5MTYwMDYtNDk4OS00NmE1LWI2ZjItY2Q5ZmVmNTU4NTAyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6716_AL_.jpg",

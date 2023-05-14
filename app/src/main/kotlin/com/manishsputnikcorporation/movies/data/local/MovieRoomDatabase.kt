@@ -22,9 +22,9 @@ abstract class MovieRoomDatabase : RoomDatabase() {
   class Callback
   @Inject
   constructor(
-    @ApplicationContext private val context: Context, // TODO: to check!
-    private val database: Provider<MovieRoomDatabase>,
-    @ApplicationScope private val applicationScope: CoroutineScope
+      @ApplicationContext private val context: Context, // TODO: to check!
+      private val database: Provider<MovieRoomDatabase>,
+      @ApplicationScope private val applicationScope: CoroutineScope
   ) : RoomDatabase.Callback() {
 
     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -33,7 +33,9 @@ abstract class MovieRoomDatabase : RoomDatabase() {
       val dao = database.get().movieDao()
       applicationScope.launch {
         dao.insertAll(
-            fakeMovieListDto(context).asDatabaseModel(MOVIE).plus(fakeSeriesListDto(context).asDatabaseModel(SERIES)))
+            fakeMovieListDto(context)
+                .asDatabaseModel(MOVIE)
+                .plus(fakeSeriesListDto(context).asDatabaseModel(SERIES)))
       }
     }
   }
