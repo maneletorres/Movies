@@ -135,7 +135,7 @@ fun MoviesHomeContent(
                       when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
                         Type.SERIES -> R.string.movies_home_empty_series
-                        // else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
+                      // else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
                       })
               else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
             }
