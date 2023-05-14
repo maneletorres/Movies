@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.data.local
 
+import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.manishsputnikcorporation.movies.di.ApplicationScope
@@ -7,6 +8,7 @@ import com.manishsputnikcorporation.movies.network.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeSeriesListDto
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.CoroutineScope
@@ -20,8 +22,9 @@ abstract class MovieRoomDatabase : RoomDatabase() {
   class Callback
   @Inject
   constructor(
-      private val database: Provider<MovieRoomDatabase>,
-      @ApplicationScope private val applicationScope: CoroutineScope
+    @ApplicationContext private val context: Context, // TODO: to check!
+    private val database: Provider<MovieRoomDatabase>,
+    @ApplicationScope private val applicationScope: CoroutineScope
   ) : RoomDatabase.Callback() {
 
     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -30,7 +33,7 @@ abstract class MovieRoomDatabase : RoomDatabase() {
       val dao = database.get().movieDao()
       applicationScope.launch {
         dao.insertAll(
-            fakeMovieListDto.asDatabaseModel(MOVIE).plus(fakeSeriesListDto.asDatabaseModel(SERIES)))
+            fakeMovieListDto(context).asDatabaseModel(MOVIE).plus(fakeSeriesListDto(context).asDatabaseModel(SERIES)))
       }
     }
   }

@@ -4,6 +4,7 @@ import android.util.Log
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.rest.exceptions.TimeOutException
+import com.manishsputnikcorporation.movies.network.util.EMPTY_STRING
 import com.manishsputnikcorporation.movies.utils.Either
 import com.squareup.moshi.JsonDataException
 import java.io.IOException
@@ -37,13 +38,13 @@ interface CustomServicesExecutor {
           }
         } catch (ex: JsonDataException) {
           Log.e(logTag, ex.toString()) // TODO: to review!
-          throw ServiceException(ex.message ?: "", (request.request() as Request).url.toString())
+          throw ServiceException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         } catch (ex: SocketTimeoutException) {
           Log.e(logTag, ex.toString()) // TODO: to review!
-          throw TimeOutException(ex.message ?: "", (request.request() as Request).url.toString())
+          throw TimeOutException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         } catch (ex: IOException) {
           Log.e(logTag, ex.toString()) // TODO: to review!
-          throw ServiceException(ex.message ?: "", (request.request() as Request).url.toString())
+          throw ServiceException(ex.message ?: EMPTY_STRING, (request.request() as Request).url.toString())
         }
   }
 }

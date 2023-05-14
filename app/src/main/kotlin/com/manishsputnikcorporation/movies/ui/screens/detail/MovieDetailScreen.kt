@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -145,7 +146,7 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
       modifier = modifier.height(100.dp).width(75.dp)) {
         SubcomposeAsyncImage(
             model = imageUrl,
-            contentDescription = "",
+            contentDescription = null,
             loading = { GenericLoading() },
             error = { GenericPlaceholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,
@@ -197,8 +198,9 @@ fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modi
 @UiModePreviews
 @Composable
 private fun MovieDetailContentPreview() {
+  val context = LocalContext.current
   MoviesTheme {
-    val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
+    val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))
     MovieDetailContent(state = MovieDetailUiState(movieDetailData = MovieDetailData(movieDetail)))
   }
 }
@@ -206,9 +208,10 @@ private fun MovieDetailContentPreview() {
 @Preview
 @Composable
 private fun MovieOverviewPreview() {
+  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))) {
         MovieOverview(
             image = image,
             title = title,
@@ -224,9 +227,10 @@ private fun MovieOverviewPreview() {
 @Preview
 @Composable
 private fun MovieInfoPreview() {
+  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))) {
         MovieInfo(
             title = title,
             isFavorite = true,
