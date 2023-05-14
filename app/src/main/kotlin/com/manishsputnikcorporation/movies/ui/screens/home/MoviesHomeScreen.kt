@@ -54,7 +54,7 @@ fun MoviesHomeScreen(
               onClickFavorites = { moviesHomeViewModel.getFavorites() },
               onClickSearchType = {
                 searchType = searchType.toggleSearchType()
-                moviesHomeViewModel.loadData(searchType)
+                moviesHomeViewModel.loadData(searchType) // TODO: to review!
               },
               onClickMovie = { movieId -> onClickMovie(movieId) })
     }
