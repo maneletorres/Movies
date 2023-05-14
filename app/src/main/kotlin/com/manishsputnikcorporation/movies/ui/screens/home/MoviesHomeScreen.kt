@@ -54,7 +54,7 @@ fun MoviesHomeScreen(
               onClickFavorites = { moviesHomeViewModel.getFavorites() },
               onClickSearchType = {
                 searchType = searchType.toggleSearchType()
-                moviesHomeViewModel.loadData(searchType)
+                moviesHomeViewModel.loadData(searchType) // TODO: to review!
               },
               onClickMovie = { movieId -> onClickMovie(movieId) })
     }
@@ -120,7 +120,7 @@ fun MoviesHomeContent(
           FloatingActionButton(
               modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
               onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                Text("Up!")
+                Text(stringResource(id = R.string.movies_home_up_button_text))
               }
         }
       },
@@ -135,7 +135,7 @@ fun MoviesHomeContent(
                       when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
                         Type.SERIES -> R.string.movies_home_empty_series
-                        else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
+                      // else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
                       })
               else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
             }
@@ -161,7 +161,7 @@ fun MoviesGrid(
 fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
   SubcomposeAsyncImage(
       model = image,
-      contentDescription = "",
+      contentDescription = null,
       modifier =
           Modifier.height(200.dp)
               .clickable { onClickMovie(id) }
@@ -177,9 +177,10 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 @Preview(showSystemUi = true) // TODO: to check
 @Composable
 private fun MoviesHomeContentPreview() {
+  val context = LocalContext.current
   MoviesTheme {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+    val movies = fakeMovieListDto(context).items.map { MovieDtoMapper().mapToDomainModel(it) }
     MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
   }
 }
@@ -187,9 +188,10 @@ private fun MoviesHomeContentPreview() {
 @UiModePreviews
 @Composable
 private fun MoviesGridPreview() {
+  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+      val movies = fakeMovieListDto(context).items.map { MovieDtoMapper().mapToDomainModel(it) }
       MoviesGrid(movies = movies)
     }
   }
@@ -198,9 +200,12 @@ private fun MoviesGridPreview() {
 @UiModePreviews
 @Composable
 private fun MoviePreview() {
+  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      with(MovieDtoMapper().mapToDomainModel(fakeMovieListDto.items[0])) { Movie(id, imageUrl) }
+      with(MovieDtoMapper().mapToDomainModel(fakeMovieListDto(context).items[0])) {
+        Movie(id, imageUrl)
+      }
     }
   }
 }

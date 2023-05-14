@@ -15,18 +15,51 @@
     <string name="movies_home_empty_series">No series</string>
     <string name="movies_home_empty_favorites">No favorites</string>
     <string name="movies_home_error">There was a problem loading the %s list. Sorry for the inconvenience.</string>
+    <string name="movies_home_up_button_text">Up!</string>
 
     <!-- MovieDetail: -->
     <!-- Dummy movie data: -->
     <string name="movie_detail_favorite_movie">Favorite movie</string>
     <string name="dummy_movie_title">Léon: The Professional</string>
-    <string name="dummy_movie_year">1994</string>
-    <string name="dummy_movie_runtime">1h 50 min</string>
+    <string name="dummy_movie_original_title" translatable="false">Léon</string>
+    <string name="dummy_movie_full_title">Léon: The Professional (1994)</string>
+    <string name="dummy_movie_year" translatable="false">1994</string>
+    <string name="dummy_movie_runtime" translatable="false">1h 50 min</string>
     <string name="dummy_movie_plot">12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all</string>
-    <string name="dummy_movie_directors">Luc Besson</string>
+    <string name="dummy_movie_directors" translatable="false">Luc Besson</string>
+    <string name="dummy_movie_name_1">Hocus Pocus 2</string>
+    <string name="dummy_movie_name_2" translatable="false">Blonde</string>
+    <string name="dummy_movie_name_3">Hocus Pocus</string>
+    <string name="dummy_movie_name_4" translatable="false">Smile</string>
+    <string name="dummy_movie_name_5">The Super Mario Bros. Movie</string>
+    <string name="dummy_movie_name_6" translatable="false">Bullet Train</string>
+    <string name="dummy_movie_name_7">Don\'t Worry Darling</string>
+    <string name="dummy_movie_name_8" translatable="false">Black Panther: Wakanda Forever</string>
+    <string name="dummy_movie_name_9">Amsterdam</string>
+    <string name="dummy_movie_name_10" translatable="false">Hellraiser</string>
+    <string name="dummy_movie_name_11">Bros</string>
+    <string name="dummy_movie_name_12">Mr. Harrigan\'s Phone</string>
+    <string name="dummy_movie_name_13">The Munsters</string>
+    <string name="dummy_movie_name_14">The Greatest Beer Run Ever</string>
+    <string name="dummy_movie_name_15" translatable="false">Lou</string>
+    <string name="dummy_movie_name_16">Luckiest Girl Alive</string>
+    <string name="dummy_movie_name_17" translatable="false">Top Gun: Maverick</string>
+    <string name="dummy_movie_name_18" translatable="false">X</string>
+    <string name="dummy_movie_name_19">Last Seen Alive</string>
+    <string name="dummy_movie_name_20">The Woman King</string>
+    <string name="dummy_year_2018" translatable="false">2018</string>
+    <string name="dummy_year_2022" translatable="false">2022</string>
+    <string name="dummy_year_2023" translatable="false">2023</string>
+
+    <!-- Dummy series data: -->
+    <string name="dummy_series_title" translatable="false">The Last of Us</string>
+    <string name="dummy_series_full_title">The Last of Us (TV Series 2023– )</string>
+    <string name="dummy_series_plot">After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl who may be humanity\'s last hope.</string>
+    <string name="dummy_series_name_2" translatable="false">You</string>
+    <string name="dummy_series_name_3" translatable="false">Poker Face</string>
 
     <!-- ¿?: -->
     <string name="movie_detail_label">Movie detail</string>
-    <string name="movie_detail_arrow_back_label">Arrow Back</string>
+    <string name="movie_detail_arrow_back_label">Arrow back</string>
     <string name="movie_detail_error">There was a problem loading the movie detail. Sorry for the inconvenience.</string>
 </resources>
