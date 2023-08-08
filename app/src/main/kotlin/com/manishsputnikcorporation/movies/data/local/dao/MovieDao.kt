@@ -1,7 +1,8 @@
-package com.manishsputnikcorporation.movies.data.local
+package com.manishsputnikcorporation.movies.data.local.dao
 
 import android.database.sqlite.SQLiteException
 import androidx.room.*
+import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
@@ -25,8 +26,8 @@ interface MovieDao {
   @Query("SELECT is_favorite FROM movie WHERE id = :id")
   fun isFavoriteMovie(id: String): Flow<Boolean>
 
-  @Query("SELECT * FROM movie WHERE type = :type ORDER BY rank ASC")
-  fun getMovies(type: Type): Flow<List<DatabaseMovie>>
+  @Query("SELECT * FROM movie ORDER BY rank ASC")
+  fun getMovies(): Flow<List<DatabaseMovie>>
 
   @Query("SELECT * FROM movie WHERE is_favorite = true ORDER BY rank ASC")
   fun getFavorites(): Flow<List<DatabaseMovie>>

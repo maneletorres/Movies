@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
+import com.manishsputnikcorporation.movies.network.model.imdb.MovieDtoMapper
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder

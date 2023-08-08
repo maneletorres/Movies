@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
-import com.manishsputnikcorporation.movies.data.local.MovieDao
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
 import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
 import com.manishsputnikcorporation.movies.utils.createMovie
 import com.manishsputnikcorporation.movies.utils.createSeries

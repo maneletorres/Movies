@@ -1,15 +1,15 @@
 [versions]
-google-dagger-version = "2.46.1"
+google-dagger-version = "2.47"
 timber-version = "5.0.1"
 retrofit2-version = "2.9.0"
 okhttp3-version = "4.11.0"
-coil-kt-version = "2.3.0"
+coil-kt-version = "2.4.0"
 adapter-delegates4-version = "4.3.2"
-navigation-ui-ktx-version = "2.5.3"
+navigation-ui-ktx-version = "2.6.0"
 hilt-version = "1.0.0"
 compose-material-version = "1.4.3"
 compose-ui-version = "1.4.3"
-room-version = "2.5.1"
+room-version = "2.5.2"
 # Testing library versions:
 junit-version = "4.13.2"
 test-espresso-core-version = "3.5.1"
@@ -89,9 +89,9 @@ room = [
 ]
 
 [plugins]
-com-android-application = "com.android.application:8.0.1"
-com-android-library = "com.android.library:8.0.1"
+com-android-application = "com.android.application:8.1.0"
+com-android-library = "com.android.library:8.1.0"
 # @pin this library to 1.8.20
 org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.8.20"
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.46.0"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.47.0"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.1"

@@ -1,11 +1,11 @@
-package com.manishsputnikcorporation.movies.network.model
+package com.manishsputnikcorporation.movies.network.model.imdb
 
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
-import com.manishsputnikcorporation.movies.network.response.MovieDto
+import com.manishsputnikcorporation.movies.network.response.imdb.MovieDto
+import com.manishsputnikcorporation.movies.utils.enums.Type
 
 class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
-
   override fun mapToDomainModel(model: MovieDto): MovieModel {
     with(model) {
       return MovieModel(
@@ -15,7 +15,6 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
           year = year,
           imageUrl = imageUrl,
           rating = rating,
-          type = type,
           isFavorite = false)
     }
   }
@@ -29,7 +28,7 @@ class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
           year = year,
           imageUrl = imageUrl,
           rating = rating,
-          type = type)
+          type = Type.MOVIE)
     }
   }
 }

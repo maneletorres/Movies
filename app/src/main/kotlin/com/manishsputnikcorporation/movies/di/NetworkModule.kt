@@ -4,13 +4,13 @@ import android.content.Context
 import com.manishsputnikcorporation.movies.BuildConfig.DEBUG
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSourceImpl
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSourceImpl
+import com.manishsputnikcorporation.movies.data.remote.tmdb.MovieRemoteDataSource
+import com.manishsputnikcorporation.movies.data.remote.tmdb.MovieRemoteDataSourceImpl
 import com.manishsputnikcorporation.movies.network.CustomServicesExecutor
-import com.manishsputnikcorporation.movies.network.MoviesService
+import com.manishsputnikcorporation.movies.network.service.imdb.MoviesService
 import com.manishsputnikcorporation.movies.network.NetworkManager
 import com.manishsputnikcorporation.movies.network.NetworkManagerImpl
-import com.manishsputnikcorporation.movies.network.util.API_BASE_URL
+import com.manishsputnikcorporation.movies.network.util.TMDB_API_BASE_URL
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -28,7 +28,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-  @Provides @Singleton fun provideBaseUrl() = API_BASE_URL
+  @Provides @Singleton fun provideBaseUrl() = TMDB_API_BASE_URL
 
   @Provides
   @Singleton

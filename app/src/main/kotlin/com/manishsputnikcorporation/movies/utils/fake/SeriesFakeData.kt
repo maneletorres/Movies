@@ -1,6 +1,8 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
-import com.manishsputnikcorporation.movies.network.response.*
+import com.manishsputnikcorporation.movies.network.response.imdb.MovieDetailDto
+import com.manishsputnikcorporation.movies.network.response.imdb.MovieDto
+import com.manishsputnikcorporation.movies.network.response.imdb.MoviesDto
 import com.manishsputnikcorporation.movies.utils.enums.Type
 
 val fakeSeriesListDto =

@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies.di
 
 import android.content.Context
 import androidx.room.Room
-import com.manishsputnikcorporation.movies.data.local.MovieDao
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
 import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
 import dagger.Module
 import dagger.Provides

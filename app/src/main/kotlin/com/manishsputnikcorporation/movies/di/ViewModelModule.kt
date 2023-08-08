@@ -1,14 +1,14 @@
 package com.manishsputnikcorporation.movies.di
 
-import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
-import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
+import com.manishsputnikcorporation.movies.data.repository.imdb.MovieDetailRepositoryImpl
+import com.manishsputnikcorporation.movies.data.repository.imdb.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.domain.error.*
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DefaultDispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
-import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
-import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.network.model.tmdb.movie.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.model.tmdb.movie.MovieDtoMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

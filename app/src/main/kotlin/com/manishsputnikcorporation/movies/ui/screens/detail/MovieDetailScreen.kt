@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.model.imdb.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent

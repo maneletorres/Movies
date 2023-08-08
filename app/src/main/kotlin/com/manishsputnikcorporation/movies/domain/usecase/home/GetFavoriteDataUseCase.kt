@@ -1,7 +1,7 @@
 package com.manishsputnikcorporation.movies.domain.usecase.home
 
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
@@ -17,5 +17,5 @@ constructor(
     dispatcherProvider: DispatcherProvider
 ) : FlowUseCase<Unit, List<MovieModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Unit): Flow<List<MovieModel>> = moviesRepository.getFavorites()
+  override fun prepareFlow(input: Unit): Flow<List<MovieModel>> = moviesRepository.getFavoriteMovies()
 }

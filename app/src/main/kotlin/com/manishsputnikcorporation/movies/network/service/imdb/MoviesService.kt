@@ -1,7 +1,7 @@
-package com.manishsputnikcorporation.movies.network
+package com.manishsputnikcorporation.movies.network.service.imdb
 
-import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
-import com.manishsputnikcorporation.movies.network.response.MoviesDto
+import com.manishsputnikcorporation.movies.network.response.imdb.MovieDetailDto
+import com.manishsputnikcorporation.movies.network.response.imdb.MoviesDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

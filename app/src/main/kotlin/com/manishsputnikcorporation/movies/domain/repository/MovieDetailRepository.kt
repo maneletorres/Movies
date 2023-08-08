@@ -1,8 +1,8 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
 import kotlinx.coroutines.flow.Flow
 
 interface MovieDetailRepository {

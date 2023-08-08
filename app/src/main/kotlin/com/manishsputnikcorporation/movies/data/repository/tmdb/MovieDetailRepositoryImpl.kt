@@ -1,13 +1,13 @@
-package com.manishsputnikcorporation.movies.data
+package com.manishsputnikcorporation.movies.data.repository.tmdb
 
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.local.asDomainModel
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
+import com.manishsputnikcorporation.movies.data.remote.tmdb.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
-import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.model.tmdb.movie.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapFailure

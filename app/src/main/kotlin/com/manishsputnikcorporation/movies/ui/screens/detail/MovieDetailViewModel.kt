@@ -3,7 +3,7 @@ package com.manishsputnikcorporation.movies.ui.screens.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieDetailUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieFavoriteStatusUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.detail.SetMovieFavoriteStatusUseCase

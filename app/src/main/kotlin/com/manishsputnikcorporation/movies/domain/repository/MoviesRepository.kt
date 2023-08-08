@@ -1,19 +1,24 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.utils.enums.Type
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.tvshow.TVShowModel
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
 
   val movies: Flow<List<MovieModel>>
+  val tvShows: Flow<List<TVShowModel>>
 
-  fun refreshMostPopularMovies(): DomainResponse<Unit>
+  fun refreshPopularMovies(): DomainResponse<Unit>
 
-  fun refreshMostPopularTVs(): DomainResponse<Unit>
+  fun refreshPopularTVShows(): DomainResponse<Unit>
 
-  fun getData(searchType: Type): Flow<List<MovieModel>>
+  fun getMovies(): Flow<List<MovieModel>>
 
-  fun getFavorites(): Flow<List<MovieModel>>
+  fun getTVShows(): Flow<List<TVShowModel>>
+
+  fun getFavoriteMovies(): Flow<List<MovieModel>>
+
+  fun getFavoriteTVShows(): Flow<List<TVShowModel>>
 }

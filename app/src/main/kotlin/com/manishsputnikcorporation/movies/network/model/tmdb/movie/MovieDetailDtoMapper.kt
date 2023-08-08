@@ -1,9 +1,9 @@
-package com.manishsputnikcorporation.movies.network.model
+package com.manishsputnikcorporation.movies.network.model.tmdb.movie
 
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
-import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
-import com.manishsputnikcorporation.movies.utils.enums.toType
+import com.manishsputnikcorporation.movies.network.response.tmdb.movie.MovieDetailDto
+import com.manishsputnikcorporation.movies.utils.enums.Type
 
 class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
 
@@ -13,14 +13,14 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
           id = id,
           title = title,
           originalTitle = originalTitle,
-          fullTitle = fullTitle,
-          type = type.toType(),
-          year = year,
-          plot = plot,
+          fullTitle = title,
+          type = Type.MOVIE,
+          year = "", // TODO:
+          plot = overview,
           image = image,
           releaseDate = releaseDate,
-          runtimeStr = runtimeStr,
-          directors = directors)
+          runtimeStr = runtime,
+          directors = "")
     }
   }
 
@@ -30,14 +30,10 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
           id = id,
           title = title,
           originalTitle = originalTitle,
-          fullTitle = fullTitle,
-          type = type.name,
-          year = year,
-          plot = plot,
           image = image,
           releaseDate = releaseDate,
-          runtimeStr = runtimeStr,
-          directors = directors)
+          runtime = runtimeStr ?: "", // TODO:
+          overview = plot)
     }
   }
 }

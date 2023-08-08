@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.network.response
+package com.manishsputnikcorporation.movies.network.response.imdb
 
 import com.squareup.moshi.Json
 

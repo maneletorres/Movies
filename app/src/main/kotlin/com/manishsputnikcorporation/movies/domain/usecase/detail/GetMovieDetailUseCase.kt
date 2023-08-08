@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies.domain.usecase.detail
 
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase

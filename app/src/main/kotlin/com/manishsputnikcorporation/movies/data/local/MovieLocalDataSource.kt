@@ -1,16 +1,23 @@
 package com.manishsputnikcorporation.movies.data.local
 
-import com.manishsputnikcorporation.movies.utils.enums.Type
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
+import com.manishsputnikcorporation.movies.data.local.dao.TVShowDao
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalDataSource {
 
-  fun insertAll(movies: List<DatabaseMovie>)
+  fun insertAllMovies(movies: List<DatabaseMovie>)
 
-  fun getMovies(type: Type): Flow<List<DatabaseMovie>>
+  fun insertAllTVShows(tvShows: List<DatabaseTVShow>)
 
-  fun getFavorites(): Flow<List<DatabaseMovie>>
+  fun getMovies(): Flow<List<DatabaseMovie>>
+
+  fun getTVShows(): Flow<List<DatabaseTVShow>>
+
+  fun getFavoriteMovies(): Flow<List<DatabaseMovie>>
+
+  fun getFavoriteTVShows(): Flow<List<DatabaseTVShow>>
 
   fun isFavoriteMovie(id: String): Flow<Boolean>
 
@@ -19,14 +26,23 @@ interface MovieLocalDataSource {
   suspend fun updateMovie(movie: DatabaseMovie)
 }
 
-class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDao) :
+class MovieLocalDataSourceImpl @Inject constructor(
+  private val movieDao: MovieDao,
+  private val tvShowDao: TVShowDao
+) :
     MovieLocalDataSource {
 
-  override fun insertAll(movies: List<DatabaseMovie>) = movieDao.insertAll(movies)
+  override fun insertAllMovies(movies: List<DatabaseMovie>) = movieDao.insertAll(movies)
 
-  override fun getMovies(type: Type): Flow<List<DatabaseMovie>> = movieDao.getMovies(type)
+  override fun insertAllTVShows(tvShows: List<DatabaseTVShow>) = tvShowDao.insertAll(tvShows)
 
-  override fun getFavorites(): Flow<List<DatabaseMovie>> = movieDao.getFavorites()
+  override fun getMovies(): Flow<List<DatabaseMovie>> = movieDao.getMovies()
+
+  override fun getTVShows(): Flow<List<DatabaseTVShow>> = tvShowDao.getTVShows()
+
+  override fun getFavoriteMovies(): Flow<List<DatabaseMovie>> = movieDao.getFavorites()
+
+  override fun getFavoriteTVShows(): Flow<List<DatabaseTVShow>> = tvShowDao.getFavorites()
 
   override fun isFavoriteMovie(id: String): Flow<Boolean> = movieDao.isFavoriteMovie(id)
 

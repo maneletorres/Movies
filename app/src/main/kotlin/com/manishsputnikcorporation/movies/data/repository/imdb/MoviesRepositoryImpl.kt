@@ -1,14 +1,16 @@
-package com.manishsputnikcorporation.movies.data
+package com.manishsputnikcorporation.movies.data.repository.imdb
 
 import com.manishsputnikcorporation.movies.data.local.MovieLocalDataSource
 import com.manishsputnikcorporation.movies.data.local.asDomainModel
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
+import com.manishsputnikcorporation.movies.data.remote.imdb.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.movie.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.tvshow.TVShowModel
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
-import com.manishsputnikcorporation.movies.network.asDatabaseModel
-import com.manishsputnikcorporation.movies.network.response.MoviesDto
+import com.manishsputnikcorporation.movies.network.asDatabaseMovieModel
+import com.manishsputnikcorporation.movies.network.asDatabaseTVShowModel
+import com.manishsputnikcorporation.movies.network.response.imdb.MoviesDto
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
@@ -26,9 +28,11 @@ constructor(
 ) : MoviesRepository {
 
   // TODO: optimize the loadData and getData calls to this!!
-  override val movies = movieLocalDataSource.getMovies(Type.MOVIE).map { it.asDomainModel() }
+  override val movies = movieLocalDataSource.getMovies().map { it.asDomainModel() }
 
-  override fun refreshMostPopularMovies(): DomainResponse<Unit> =
+  override val tvShows: Flow<List<TVShowModel>> = movieLocalDataSource.getTVShows().map { it.asDomainModel() }
+
+  override fun refreshPopularMovies(): DomainResponse<Unit> =
       movieRemoteDataSource
           .getMostPopularMovies()
           .mapSuccess { moviesDto ->
@@ -38,26 +42,35 @@ constructor(
             return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
           }
 
-  override fun refreshMostPopularTVs(): DomainResponse<Unit> =
+  override fun refreshPopularTVShows(): DomainResponse<Unit> =
       movieRemoteDataSource
           .getMostPopularTVs()
-          .mapSuccess { moviesDto ->
-            return insertMovies(moviesDto, Type.SERIES)
+          .mapSuccess { tvShows ->
+            return insertMovies(tvShows, Type.SERIES)
           }
           .mapFailure { error ->
             return eitherFailure(DomainError(error.statusCode.toString(), error.raw))
           }
 
-  override fun getData(searchType: Type): Flow<List<MovieModel>> =
-      movieLocalDataSource.getMovies(searchType).map { it.asDomainModel() }
+  override fun getMovies(): Flow<List<MovieModel>> =
+      movieLocalDataSource.getMovies().map { it.asDomainModel() }
 
-  override fun getFavorites(): Flow<List<MovieModel>> =
-      movieLocalDataSource.getFavorites().map { it.asDomainModel() }
+  override fun getTVShows(): Flow<List<TVShowModel>> =
+      movieLocalDataSource.getTVShows().map { it.asDomainModel() }
+
+  override fun getFavoriteMovies(): Flow<List<MovieModel>> =
+      movieLocalDataSource.getFavoriteMovies().map { it.asDomainModel() }
+
+  override fun getFavoriteTVShows(): Flow<List<TVShowModel>> =
+      movieLocalDataSource.getFavoriteTVShows().map { it.asDomainModel() }
 
   // region Helper methods
   private fun insertMovies(movies: MoviesDto, type: Type): DomainResponse<Unit> =
       try {
-        eitherSuccess(movieLocalDataSource.insertAll(movies.asDatabaseModel(type)))
+          eitherSuccess(when (type) {
+              Type.MOVIE -> movieLocalDataSource.insertAllMovies(movies.asDatabaseMovieModel())
+              Type.SERIES -> movieLocalDataSource.insertAllTVShows(movies.asDatabaseTVShowModel())
+          })
       } catch (ex: Exception) {
         eitherFailure(DomainError("Code: ", ex.message.toString()))
       }
