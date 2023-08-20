@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp'
+    id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
     id("com.ncorti.ktfmt.gradle") version "0.11.0"
@@ -17,12 +17,12 @@ android {
         localProperties.put("apiKey", "\"k_12345678\"")
     }
 
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.manishsputnikcorporation.movies"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -60,8 +60,8 @@ android {
 
 dependencies {
     // region Dependency injection (DI) libraries:
-    implementation libs.dagger.hilt.android
-    kapt libs.dagger.hilt.android.compiler
+    runtimeOnly libs.dagger.hilt.android
+    ksp libs.dagger.hilt.android.compiler
     // endregion
 
     implementation libs.com.jakewharton.timber
@@ -73,16 +73,15 @@ dependencies {
 
     // region Room:
     implementation libs.bundles.room
-    kapt libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
     // endregion
 
     // region Testing libraries:
     testImplementation libs.junit
-    androidTestImplementation libs.androidx.test.espresso.core
+    testImplementation libs.mockk
 
     // region Compose testing libraries:
     androidTestImplementation libs.androidx.compose.ui.test.junit4
-    debugImplementation libs.androidx.compose.ui.test.manifest
     androidTestImplementation libs.androidx.navigation.testing
     // endregion
     // endregion

@@ -7,7 +7,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val LightColors =
+private val lightColors =
     lightColors(
         primary = Red700,
         primaryVariant = Red900,
@@ -17,7 +17,7 @@ private val LightColors =
         onSecondary = Color.White,
         error = Red800)
 
-private val DarkColors =
+private val darkColors =
     darkColors(
         primary = Red300,
         primaryVariant = Red700,
@@ -30,7 +30,7 @@ private val DarkColors =
 @Composable
 fun MoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
   MaterialTheme(
-      colors = if (darkTheme) DarkColors else LightColors,
+      colors = if (darkTheme) darkColors else lightColors,
       typography = MoviesTypography,
       content = content)
 }

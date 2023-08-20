@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.network.response.tmdb.movie
+package com.manishsputnikcorporation.movies.network.response.movie
 
 import com.squareup.moshi.Json
 

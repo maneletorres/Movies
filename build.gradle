@@ -1,11 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        composeCompilerVersion = '1.4.6'
+        composeCompilerVersion = '1.5.1'
     }
 
     dependencies {
-        classpath libs.com.google.dagger.hilt.android.gradle.plugin
         classpath libs.androidx.navigation.safe.args.gradle.plugin
     }
 }
@@ -14,8 +13,10 @@ plugins {
     alias libs.plugins.com.android.application apply false
     alias libs.plugins.com.android.library apply false
     alias libs.plugins.org.jetbrains.kotlin.android apply false
+    alias libs.plugins.hilt.android.gradle.plugin apply false
     alias libs.plugins.com.github.ben.manes.versions
     alias libs.plugins.nl.littlerobots.version.catalog.update
+    alias libs.plugins.ksp apply false
 }
 
 // region Gradle versions plugin configuration:

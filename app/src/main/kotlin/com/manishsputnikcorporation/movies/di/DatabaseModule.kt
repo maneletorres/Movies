@@ -2,8 +2,9 @@ package com.manishsputnikcorporation.movies.di
 
 import android.content.Context
 import androidx.room.Room
-import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
 import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
+import com.manishsputnikcorporation.movies.data.local.dao.TvShowDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,6 +38,10 @@ object DatabaseModule {
 
   @Provides
   fun provideMovieDao(movieRoomDatabase: MovieRoomDatabase): MovieDao = movieRoomDatabase.movieDao()
+
+  @Provides
+  fun provideTvShowDao(movieRoomDatabase: MovieRoomDatabase): TvShowDao =
+      movieRoomDatabase.tvShowDao()
 }
 
 @Retention @Qualifier annotation class ApplicationScope
