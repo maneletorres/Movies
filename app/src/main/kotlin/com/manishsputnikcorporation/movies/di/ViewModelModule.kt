@@ -23,9 +23,9 @@ abstract class UseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindSafeFlowUseCaseDelegate(
-      safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate.Default
-  ): SafeFlowUseCaseDelegate
+  abstract fun bindFlowUseCaseDelegate(
+      flowUseCaseDelegate: FlowUseCaseDelegate.Default
+  ): FlowUseCaseDelegate
 
   @Binds
   @ViewModelScoped
