@@ -3,7 +3,6 @@ package com.manishsputnikcorporation.movies.data.local.dao
 import android.database.sqlite.SQLiteException
 import androidx.room.*
 import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
-import com.manishsputnikcorporation.movies.utils.enums.Type
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 
@@ -21,20 +20,19 @@ interface MovieDao {
 
   @Delete suspend fun delete(movie: DatabaseMovie)
 
-  @Query("SELECT * FROM movie WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
+  @Query("SELECT * FROM movies WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
 
-  @Query("SELECT is_favorite FROM movie WHERE id = :id")
+  @Query("SELECT is_favorite FROM movies WHERE id = :id")
   fun isFavoriteMovie(id: String): Flow<Boolean>
 
-  @Query("SELECT * FROM movie ORDER BY rank ASC")
-  fun getMovies(): Flow<List<DatabaseMovie>>
+  @Query("SELECT * FROM movies ORDER BY rank ASC") fun getMovies(): Flow<List<DatabaseMovie>>
 
-  @Query("SELECT * FROM movie WHERE is_favorite = true ORDER BY rank ASC")
+  @Query("SELECT * FROM movies WHERE is_favorite = true ORDER BY rank ASC")
   fun getFavorites(): Flow<List<DatabaseMovie>>
 
   // region Helper methods
   // fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
 
-  // fun getDistinctMovies(type: Type) = getMovies(type).distinctUntilChanged()
+  // fun getDistinctMovies() = getMovies(type).distinctUntilChanged()
   // endregion
 }
