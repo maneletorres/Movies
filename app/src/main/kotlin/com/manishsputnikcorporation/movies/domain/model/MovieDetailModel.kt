@@ -1,0 +1,17 @@
+package com.manishsputnikcorporation.movies.domain.model
+
+import android.os.Parcelable
+import com.manishsputnikcorporation.movies.domain.id.Identifiable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class MovieDetailModel(
+    override val id: String,
+    val title: String,
+    val originalTitle: String,
+    val fullTitle: String,
+    val plot: String,
+    val image: String,
+    val releaseDate: String,
+    val runtimeStr: String?
+) : Identifiable, Parcelable
