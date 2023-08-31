@@ -1,19 +1,19 @@
 package com.manishsputnikcorporation.movies.navigation
 
 // TODO: to implement correctly!
-//import androidx.compose.ui.platform.LocalContext
-//import androidx.compose.ui.test.assertIsDisplayed
-//import androidx.compose.ui.test.junit4.createComposeRule
-//import androidx.compose.ui.test.onNodeWithContentDescription
-//import androidx.compose.ui.test.performClick
-//import androidx.navigation.compose.ComposeNavigator
-//import androidx.navigation.testing.TestNavHostController
-//import com.manishsputnikcorporation.movies.ui.navigation.AppNavigation
-//import org.junit.Before
-//import org.junit.Rule
-//import org.junit.Test
+// import androidx.compose.ui.platform.LocalContext
+// import androidx.compose.ui.test.assertIsDisplayed
+// import androidx.compose.ui.test.junit4.createComposeRule
+// import androidx.compose.ui.test.onNodeWithContentDescription
+// import androidx.compose.ui.test.performClick
+// import androidx.navigation.compose.ComposeNavigator
+// import androidx.navigation.testing.TestNavHostController
+// import com.manishsputnikcorporation.movies.ui.navigation.AppNavigation
+// import org.junit.Before
+// import org.junit.Rule
+// import org.junit.Test
 //
-//class NavigationTest {
+// class NavigationTest {
 //
 //    @get:Rule
 //    val composeTestRule = createComposeRule()
@@ -39,4 +39,4 @@ package com.manishsputnikcorporation.movies.navigation
 //
 //      composeTestRule.onNodeWithContentDescription("Movie Detail Screen").assertIsDisplayed()
 //    }
-//}
+// }
