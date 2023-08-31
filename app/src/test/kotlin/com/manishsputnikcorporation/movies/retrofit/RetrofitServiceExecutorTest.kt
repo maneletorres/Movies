@@ -3,8 +3,8 @@ package com.manishsputnikcorporation.movies.retrofit
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.NetworkManager
-import com.manishsputnikcorporation.movies.network.services.executor.RetrofitServiceRequest
 import com.manishsputnikcorporation.movies.network.services.executor.RetrofitServiceExecutor
+import com.manishsputnikcorporation.movies.network.services.executor.RetrofitServiceRequest
 import com.manishsputnikcorporation.movies.network.services.executor.ServiceError
 import com.manishsputnikcorporation.movies.network.services.executor.ServiceResponse
 import com.manishsputnikcorporation.movies.utils.Either
@@ -65,7 +65,7 @@ class RetrofitServiceExecutorTest {
     // When:
     executeNetworkCall()
 
-    // Then:
+        // Then:
         .mapSuccess {
           assertEquals(it.data, successResponseBody)
           assertEquals(it.statusCode, successResponseCode)
@@ -85,7 +85,7 @@ class RetrofitServiceExecutorTest {
     // When:
     executeNetworkCall()
 
-    // Then:
+        // Then:
         .mapSuccess { assert(false) }
         .mapFailure {
           assertEquals(it.description, failureResponseBody)

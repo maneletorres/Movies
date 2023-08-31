@@ -13,21 +13,17 @@ interface MoviesService {
 
   @GET("movie/popular")
   fun getPopularMovies(
-      @Query("api_key") apiKey: String,
       @Query("language") lang: String = "en-US",
       @Query("page") page: Int = 1
   ): Call<MoviesDto>
 
   @GET("tv/popular")
   fun getPopularTVShows(
-      @Query("api_key") apiKey: String,
       @Query("language") lang: String = "en-US",
       @Query("page") page: Int = 1
   ): Call<TVShowsDto>
 
-  @GET("movie/{id}")
-  fun getMovie(@Path("id") id: String, @Query("api_key") apiKey: String): Call<MovieDetailDto>
+  @GET("movie/{id}") fun getMovie(@Path("id") id: String): Call<MovieDetailDto>
 
-  @GET("tv/{id}")
-  fun getTVShow(@Path("id") id: String, @Query("api_key") apiKey: String): Call<TVShowDetailDto>
+  @GET("tv/{id}") fun getTVShow(@Path("id") id: String): Call<TVShowDetailDto>
 }

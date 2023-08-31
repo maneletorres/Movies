@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.data.remote
 
-import com.manishsputnikcorporation.movies.BuildConfig
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
@@ -38,28 +37,28 @@ constructor(private val serviceExecutor: ServiceExecutor, private val service: M
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getPopularMovies(): Either<MoviesDto, ServiceError> {
-    val call: Call<MoviesDto> = service.getPopularMovies(apiKey = BuildConfig.API_KEY)
+    val call: Call<MoviesDto> = service.getPopularMovies()
     val response = serviceExecutor.execute(RetrofitServiceRequest(call))
     return response.mapSuccess { it.data }
   }
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getPopularTVShows(): Either<TVShowsDto, ServiceError> {
-    val call: Call<TVShowsDto> = service.getPopularTVShows(apiKey = BuildConfig.API_KEY)
+    val call: Call<TVShowsDto> = service.getPopularTVShows()
     val response = serviceExecutor.execute(RetrofitServiceRequest(call))
     return response.mapSuccess { it.data }
   }
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getMovie(id: String): Either<MovieDetailDto, ServiceError> {
-    val call: Call<MovieDetailDto> = service.getMovie(id, BuildConfig.API_KEY)
+    val call: Call<MovieDetailDto> = service.getMovie(id)
     val response = serviceExecutor.execute(RetrofitServiceRequest(call))
     return response.mapSuccess { it.data }
   }
 
   @Throws(NetworkException::class, ServiceException::class)
   override fun getTVShow(id: String): Either<TVShowDetailDto, ServiceError> {
-    val call: Call<TVShowDetailDto> = service.getTVShow(id, BuildConfig.API_KEY)
+    val call: Call<TVShowDetailDto> = service.getTVShow(id)
     val response = serviceExecutor.execute(RetrofitServiceRequest(call))
     return response.mapSuccess { it.data }
   }

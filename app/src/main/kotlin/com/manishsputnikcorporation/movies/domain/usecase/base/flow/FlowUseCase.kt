@@ -2,8 +2,8 @@ package com.manishsputnikcorporation.movies.domain.usecase.base.flow
 
 import androidx.annotation.CheckResult
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
-import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 

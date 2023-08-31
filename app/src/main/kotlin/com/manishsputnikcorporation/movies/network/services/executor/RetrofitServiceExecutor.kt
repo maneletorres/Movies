@@ -20,7 +20,9 @@ class RetrofitServiceExecutor @Inject constructor(private val networkManager: Ne
     get() = javaClass.simpleName
 
   override fun <T> execute(request: ServiceRequest<T>): Either<ServiceResponse<T>, ServiceError> {
-    if (request !is RetrofitServiceRequest) throw IllegalArgumentException("RetrofitServiceExecutor only accepts RetrofitServiceRequest.")
+    if (request !is RetrofitServiceRequest)
+        throw IllegalArgumentException(
+            "RetrofitServiceExecutor only accepts RetrofitServiceRequest.")
 
     val retrofitCall = request.retrofitCall
     val url = retrofitCall.request().url.toString()
@@ -38,7 +40,8 @@ class RetrofitServiceExecutor @Inject constructor(private val networkManager: Ne
       }
     } catch (ex: Exception) {
       when (ex) {
-        is JsonDataException, is IOException -> {
+        is JsonDataException,
+        is IOException -> {
           Timber.e(logTag, ex.toString())
           throw ServiceException(ex.message ?: "", url)
         }
