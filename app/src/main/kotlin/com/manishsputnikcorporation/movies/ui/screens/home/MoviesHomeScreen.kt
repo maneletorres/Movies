@@ -20,8 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
+import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
+import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
@@ -30,7 +31,7 @@ import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -51,10 +52,10 @@ fun MoviesHomeScreen(
               scaffoldState,
               searchType,
               movies = it.movieList,
-              onClickFavorites = { moviesHomeViewModel.getFavorites() },
+              onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
               onClickSearchType = {
                 searchType = searchType.toggleSearchType()
-                moviesHomeViewModel.loadData(searchType)
+                moviesHomeViewModel.loadData(searchType) // TODO: to review!
               },
               onClickMovie = { movieId -> onClickMovie(movieId) })
     }
@@ -79,7 +80,7 @@ fun MoviesHomeScreen(
 fun MoviesHomeContent(
     scaffoldState: ScaffoldState,
     searchType: Type,
-    movies: List<MovieModel>,
+    movies: List<MediaItemModel>,
     modifier: Modifier = Modifier,
     onClickFavorites: () -> Unit = {},
     onClickSearchType: () -> Unit = {},
@@ -105,7 +106,7 @@ fun MoviesHomeContent(
                         id =
                             when (searchType) {
                               Type.MOVIE -> R.drawable.series_search
-                              Type.SERIES -> R.drawable.movie_search
+                              Type.TV_SHOW -> R.drawable.movie_search
                             }),
                     contentDescription = stringResource(id = R.string.movies_home_search_type))
               }
@@ -120,7 +121,7 @@ fun MoviesHomeContent(
           FloatingActionButton(
               modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
               onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                Text("Up!")
+                Text(stringResource(id = R.string.movies_home_up_button_text))
               }
         }
       },
@@ -134,8 +135,7 @@ fun MoviesHomeContent(
                   EmptyContent(
                       when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
-                        Type.SERIES -> R.string.movies_home_empty_series
-                        else -> R.string.movies_home_empty_favorites // TODO: CHECK THIS!
+                        Type.TV_SHOW -> R.string.movies_home_empty_series
                       })
               else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
             }
@@ -144,7 +144,7 @@ fun MoviesHomeContent(
 
 @Composable
 fun MoviesGrid(
-    movies: List<MovieModel>,
+    movies: List<MediaItemModel>,
     modifier: Modifier = Modifier,
     gridState: LazyGridState = rememberLazyGridState(),
     onClickMovie: (String) -> Unit = {}
@@ -160,8 +160,8 @@ fun MoviesGrid(
 @Composable
 fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
   SubcomposeAsyncImage(
-      model = image,
-      contentDescription = "",
+      model = "$TMDB_IMAGE_API_BASE_URL$image",
+      contentDescription = null,
       modifier =
           Modifier.height(200.dp)
               .clickable { onClickMovie(id) }
@@ -179,7 +179,7 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 private fun MoviesHomeContentPreview() {
   MoviesTheme {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+    val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
     MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
   }
 }
@@ -189,7 +189,7 @@ private fun MoviesHomeContentPreview() {
 private fun MoviesGridPreview() {
   MoviesTheme {
     Surface {
-      val movies = fakeMovieListDto.items.map { MovieDtoMapper().mapToDomainModel(it) }
+      val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
       MoviesGrid(movies = movies)
     }
   }
@@ -200,7 +200,7 @@ private fun MoviesGridPreview() {
 private fun MoviePreview() {
   MoviesTheme {
     Surface {
-      with(MovieDtoMapper().mapToDomainModel(fakeMovieListDto.items[0])) { Movie(id, imageUrl) }
+      with(MediaItemDtoMapper().mapToDomainModel(fakeMoviesDto.results[0])) { Movie(id, imageUrl) }
     }
   }
 }

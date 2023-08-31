@@ -5,6 +5,6 @@ import com.manishsputnikcorporation.movies.utils.enums.Type.*
 
 fun Type.toggleSearchType(): Type =
     when (this) {
-      MOVIE -> SERIES
-      SERIES -> MOVIE
+      MOVIE -> TV_SHOW
+      TV_SHOW -> MOVIE
     }

@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
+import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieDetailUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.detail.GetMovieFavoriteStatusUseCase
@@ -20,8 +20,8 @@ constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieFavoriteStatusUseCase: GetMovieFavoriteStatusUseCase,
     private val setMovieFavoriteStatusUseCase: SetMovieFavoriteStatusUseCase,
-    private val safeFlowUseCase: SafeFlowUseCaseDelegate,
-) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
+    private val safeFlowUseCase: FlowUseCaseDelegate,
+) : ViewModel(), FlowUseCaseDelegate by safeFlowUseCase {
 
   private val _movieDetailUiState = MutableStateFlow(MovieDetailUiState())
   val movieDetailUiState: StateFlow<MovieDetailUiState> = _movieDetailUiState

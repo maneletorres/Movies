@@ -1,43 +1,38 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp'
+    id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
     id("com.ncorti.ktfmt.gradle") version "0.11.0"
 }
 
 android {
-    def localProperties = new Properties()
-    try {
-        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-    } catch (IOException exception) {
-        println "Exception: $exception" // TODO: replace with GitHub API Secrets and study its obfuscation
-        localProperties.put("apiKey", "\"k_12345678\"")
-    }
-
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.manishsputnikcorporation.movies"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        def localProperties = new Properties()
+        try {
+            localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+            buildConfigField("String", "BEARER_TOKEN", localProperties['BEARER_TOKEN'])
+        } catch (IOException exception) {
+            println "Exception: $exception"
+        }
     }
 
     buildTypes {
-        debug {
-            buildConfigField("String", "API_KEY", localProperties['apiKey'])
-        }
-
         release {
             minifyEnabled true
             shrinkResources true
-            buildConfigField("String", "API_KEY", localProperties['apiKey'])
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -60,8 +55,8 @@ android {
 
 dependencies {
     // region Dependency injection (DI) libraries:
-    implementation libs.dagger.hilt.android
-    kapt libs.dagger.hilt.android.compiler
+    runtimeOnly libs.dagger.hilt.android
+    ksp libs.dagger.hilt.android.compiler
     // endregion
 
     implementation libs.com.jakewharton.timber
@@ -73,16 +68,15 @@ dependencies {
 
     // region Room:
     implementation libs.bundles.room
-    kapt libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
     // endregion
 
     // region Testing libraries:
     testImplementation libs.junit
-    androidTestImplementation libs.androidx.test.espresso.core
+    testImplementation libs.mockk
 
     // region Compose testing libraries:
     androidTestImplementation libs.androidx.compose.ui.test.junit4
-    debugImplementation libs.androidx.compose.ui.test.manifest
     androidTestImplementation libs.androidx.navigation.testing
     // endregion
     // endregion

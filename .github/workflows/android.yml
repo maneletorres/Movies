@@ -16,6 +16,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Load fake bearer token
+        run: echo "BEARER_TOKEN=\"${{ secrets.BEARER_TOKEN }}\"" > ./local.properties
+
       - name: Build with Gradle
         run: ./gradlew build
 
