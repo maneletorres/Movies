@@ -17,10 +17,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Show fake bearer token in GitHub console
-        run: echo "BEARER_TOKEN=${{ vars.BEARER_TOKEN }}"
+        run: echo "BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}"
 
       - name: Load fake bearer token
-        run: echo "BEARER_TOKEN=\"${{ vars.BEARER_TOKEN }}\"" > ./local.properties
+        run: echo "BEARER_TOKEN=\"${{ secrets.BEARER_TOKEN }}\"" > ./local.properties
 
       - name: Build with Gradle
         run: ./gradlew build
