@@ -1,7 +1,7 @@
 package com.manishsputnikcorporation.movies.domain.usecase.home
 
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
@@ -16,7 +16,11 @@ constructor(
     private val moviesRepository: MoviesRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider
-) : FlowUseCase<Type, List<MovieModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
+) : FlowUseCase<Type, List<MediaItemModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Type): Flow<List<MovieModel>> = moviesRepository.getData(input)
+  override fun prepareFlow(input: Type): Flow<List<MediaItemModel>> =
+      when (input) {
+        Type.MOVIE -> moviesRepository.getMovies()
+        Type.TV_SHOW -> moviesRepository.getTvShows()
+      }
 }

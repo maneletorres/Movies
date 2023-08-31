@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
@@ -94,8 +94,7 @@ fun MovieDetailContent(
                     MovieOverview(
                         image = it.image,
                         title = it.title,
-                        directors = it.directors,
-                        year = it.year,
+                        releaseDate = it.releaseDate,
                         runtime = it.runtimeStr,
                         isFavorite = state.movieDetailData.isFavorite) {
                           onFavoriteMovieClick()
@@ -118,8 +117,7 @@ fun MovieDetailContent(
 fun MovieOverview(
     image: String,
     title: String,
-    directors: String,
-    year: String,
+    releaseDate: String,
     runtime: String?,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
@@ -131,8 +129,7 @@ fun MovieOverview(
     MovieInfo(
         title = title,
         isFavorite = isFavorite,
-        directors = directors,
-        year = year,
+        releaseDate = releaseDate,
         runtime = runtime,
         onFavoriteMovieClick = onFavoriteMovieClick)
     Spacer(modifier = Modifier.width(8.dp))
@@ -145,7 +142,7 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
       border = BorderStroke(1.dp, colorResource(id = R.color.black)),
       modifier = modifier.height(100.dp).width(75.dp)) {
         SubcomposeAsyncImage(
-            model = imageUrl,
+            model = "$TMDB_IMAGE_API_BASE_URL$imageUrl",
             contentDescription = null,
             loading = { GenericLoading() },
             error = { GenericPlaceholder(modifier = Modifier.width(25.dp).height(25.dp)) },
@@ -158,8 +155,7 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
 fun MovieInfo(
     title: String,
     isFavorite: Boolean,
-    directors: String,
-    year: String,
+    releaseDate: String,
     runtime: String?,
     modifier: Modifier = Modifier,
     onFavoriteMovieClick: () -> Unit = {}
@@ -169,8 +165,8 @@ fun MovieInfo(
       Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h6)
       MovieFavorite(isFavorite, onFavoriteMovieClick)
     }
-    Text(text = directors, style = MaterialTheme.typography.subtitle1)
-    MovieSecondaryInfo(year = year, runtime = runtime)
+    MovieSecondaryInfo(year = releaseDate, runtime = runtime)
+    // TODO: Text(text = budget, style = MaterialTheme.typography.subtitle2)
   }
 }
 
@@ -188,9 +184,9 @@ fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modi
   Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
     Text(
         text = year,
-        style = MaterialTheme.typography.subtitle2,
+        style = MaterialTheme.typography.subtitle1,
     )
-    runtime?.let { Text(text = runtime, style = MaterialTheme.typography.subtitle2) }
+    runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
   }
 }
 
@@ -198,9 +194,8 @@ fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modi
 @UiModePreviews
 @Composable
 private fun MovieDetailContentPreview() {
-  val context = LocalContext.current
   MoviesTheme {
-    val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))
+    val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
     MovieDetailContent(state = MovieDetailUiState(movieDetailData = MovieDetailData(movieDetail)))
   }
 }
@@ -208,15 +203,13 @@ private fun MovieDetailContentPreview() {
 @Preview
 @Composable
 private fun MovieOverviewPreview() {
-  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))) {
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
         MovieOverview(
             image = image,
             title = title,
-            directors = directors,
-            year = year,
+            releaseDate = releaseDate,
             runtime = runtimeStr,
             isFavorite = false)
       }
@@ -227,16 +220,10 @@ private fun MovieOverviewPreview() {
 @Preview
 @Composable
 private fun MovieInfoPreview() {
-  val context = LocalContext.current
   MoviesTheme {
     Surface {
-      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto(context))) {
-        MovieInfo(
-            title = title,
-            isFavorite = true,
-            directors = directors,
-            year = year,
-            runtime = runtimeStr)
+      with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
+        MovieInfo(title = title, isFavorite = true, releaseDate = releaseDate, runtime = runtimeStr)
       }
     }
   }

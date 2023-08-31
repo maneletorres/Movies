@@ -1,210 +1,117 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
-import android.content.Context
-import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.network.response.*
-import com.manishsputnikcorporation.movies.network.util.EMPTY_STRING
-import com.manishsputnikcorporation.movies.utils.enums.Type.*
+import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
+import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
+import com.manishsputnikcorporation.movies.network.response.movie.MoviesDto
 
-fun fakeMovieListDto(context: Context) =
+val fakeMoviesDto =
     MoviesDto(
-        items =
+        page = 1,
+        results =
             listOf(
                 MovieDto(
-                    id = "tt11909878",
-                    rank = "1",
-                    title = context.resources.getString(R.string.dummy_movie_name_1),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BODcxYzI1MTktZWYzNC00MGZlLWI3ZjYtNzhmM2IyOTlkNjYyXkEyXkFqcGdeQXVyMTA1OTcyNDQ4._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.1",
-                    type = MOVIE),
+                    id = 569094,
+                    title = "Spider-Man: Across the Spider-Verse",
+                    originalTitle = "Spider-Man: Across the Spider-Verse",
+                    overview =
+                        "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse’s very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+                    imageUrl = "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+                    releaseDate = "2023-05-31",
+                    rating = 8.5),
                 MovieDto(
-                    id = "tt1655389",
-                    rank = "2",
-                    title = context.resources.getString(R.string.dummy_movie_name_2),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BNDk2YTA1MGYtMGNjMi00YTJlLWI1YjItMjBjOGJlZGIwZmYzXkEyXkFqcGdeQXVyODA0MjgyNzM@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "5.5",
-                    type = MOVIE),
+                    id = 667538,
+                    title = "Transformers: Rise of the Beasts",
+                    originalTitle = "Transformers: Rise of the Beasts",
+                    overview =
+                        "When a new threat capable of destroying the entire planet emerges, Optimus Prime and the Autobots must team up with a powerful faction known as the Maximals. With the fate of humanity hanging in the balance, humans Noah and Elena will do whatever it takes to help the Transformers as they engage in the ultimate battle to save Earth.",
+                    imageUrl = "/gPbM0MK8CP8A174rmUwGsADNYKD.jpg",
+                    releaseDate = "2023-06-06",
+                    rating = 7.5),
                 MovieDto(
-                    id = "tt0107120",
-                    rank = "3",
-                    title = context.resources.getString(R.string.dummy_movie_name_3),
-                    year = "1993",
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BNWM3NmRhMGMtOGE4ZC00MDk0LWI1NjMtMjVlNTEwOTcwZTc0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.9",
-                    type = MOVIE),
+                    id = 298618,
+                    title = "The Flash",
+                    originalTitle = "The Flash",
+                    overview =
+                        "When his attempt to save his family inadvertently alters the future, Barry Allen becomes trapped in a reality in which General Zod has returned and there are no Super Heroes to turn to. In order to save the world that he is in and return to the future that he knows, Barry's only hope is to race for his life. But will making the ultimate sacrifice be enough to reset the universe?",
+                    imageUrl = "/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg",
+                    releaseDate = "2023-06-13",
+                    rating = 7.0),
                 MovieDto(
-                    id = "tt15474916",
-                    rank = "4",
-                    title = context.resources.getString(R.string.dummy_movie_name_4),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BZjE2ZWIwMWEtNGFlMy00ZjYzLWEzOWEtYzQ0MDAwZDRhYzNjXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.9",
-                    type = MOVIE),
+                    id = 346698,
+                    title = "Barbie",
+                    originalTitle = "Barbie",
+                    overview =
+                        "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
+                    imageUrl = "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+                    releaseDate = "2023-07-19",
+                    rating = 7.5),
                 MovieDto(
-                    id = "tt6718170",
-                    rank = "5",
-                    title = context.resources.getString(R.string.dummy_movie_name_5),
-                    year = "2023",
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BYjY5MTYwMDYtNDk4OS00NmE1LWI2ZjItY2Q5ZmVmNTU4NTAyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6716_AL_.jpg",
-                    rating = EMPTY_STRING,
-                    type = MOVIE),
+                    id = 614479,
+                    title = "Insidious: The Red Door",
+                    originalTitle = "Insidious: The Red Door",
+                    overview =
+                        "To put their demons to rest once and for all, Josh Lambert and a college-aged Dalton Lambert must go deeper into The Further than ever before, facing their family's dark past and a host of new and more horrifying terrors that lurk behind the red door.",
+                    imageUrl = "/d07phJqCx6z5wILDYqkyraorDPi.jpg",
+                    releaseDate = "2023-07-05",
+                    rating = 6.9),
                 MovieDto(
-                    id = "tt12593682",
-                    rank = "6",
-                    title = context.resources.getString(R.string.dummy_movie_name_6),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BMDU2ZmM2OTYtNzIxYy00NjM5LTliNGQtN2JmOWQzYTBmZWUzXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "7.4",
-                    type = MOVIE),
+                    id = 615656,
+                    title = "Meg 2: The Trench",
+                    originalTitle = "Meg 2: The Trench",
+                    overview =
+                        "An exploratory dive into the deepest depths of the ocean of a daring research team spirals into chaos when a malevolent mining operation threatens their mission and forces them into a high-stakes battle for survival.",
+                    imageUrl = "/4m1Au3YkjqsxF8iwQy0fPYSxE0h.jpg",
+                    releaseDate = "2023-08-02",
+                    rating = 7.0),
                 MovieDto(
-                    id = "tt10731256",
-                    rank = "7",
-                    title = context.resources.getString(R.string.dummy_movie_name_7),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BMzFkMWUzM2ItZWFjMi00NDY0LTk2MDMtZDhkMDE2MjRlYmZlXkEyXkFqcGdeQXVyNTAzNzgwNTg@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.3",
-                    type = MOVIE),
+                    id = 1006462,
+                    title = "The Flood",
+                    originalTitle = "The Flood",
+                    overview =
+                        "A horde of giant hungry alligators is unleashed on a group of in-transit prisoners and their guards after a massive hurricane floods Louisiana.",
+                    imageUrl = "/mvjqqklMpHwOxc40rn7dMhGT0Fc.jpg",
+                    releaseDate = "2023-07-14",
+                    rating = 6.9),
                 MovieDto(
-                    id = "tt9114286",
-                    rank = "8",
-                    title = context.resources.getString(R.string.dummy_movie_name_8),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BNTM4NjIxNmEtYWE5NS00NDczLTkyNWQtYThhNmQyZGQzMjM0XkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_Ratio0.6716_AL_.jpg",
-                    rating = EMPTY_STRING,
-                    type = MOVIE),
+                    id = 457332,
+                    title = "Hidden Strike",
+                    originalTitle = "Hidden Strike",
+                    overview =
+                        "Two elite soldiers must escort civilians through a gauntlet of gunfire and explosions.",
+                    imageUrl = "/zsbolOkw8RhTU4DKOrpf4M7KCmi.jpg",
+                    releaseDate = "2023-07-06",
+                    rating = 7.1),
                 MovieDto(
-                    id = "tt10304142",
-                    rank = "9",
-                    title = context.resources.getString(R.string.dummy_movie_name_9),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BNDQwNzE0ZTItYmZjMC00NjI3LWFlNzctNTExZDY2NWE0Zjc0XkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.2",
-                    type = MOVIE),
+                    id = 447277,
+                    title = "The Little Mermaid",
+                    originalTitle = "The Little Mermaid",
+                    overview =
+                        "The youngest of King Triton’s daughters, and the most defiant, Ariel longs to find out more about the world beyond the sea, and while visiting the surface, falls for the dashing Prince Eric. With mermaids forbidden to interact with humans, Ariel makes a deal with the evil sea witch, Ursula, which gives her a chance to experience life on land, but ultimately places her life – and her father’s crown – in jeopardy.",
+                    imageUrl = "/ym1dxyOk4jFcSl4Q2zmRrA5BEEN.jpg",
+                    releaseDate = "2023-05-18",
+                    rating = 6.5),
                 MovieDto(
-                    id = "tt0887261",
-                    rank = "10",
-                    title = context.resources.getString(R.string.dummy_movie_name_10),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BYWM1YTgxNjMtNzY2NC00YjVmLWE1ODUtNTdiYTI4YjZhODMwXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.1",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt9731598",
-                    rank = "11",
-                    title = context.resources.getString(R.string.dummy_movie_name_11),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl = "Wrong_image_url.jpg",
-                    rating = "6.9",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt12908110",
-                    rank = "12",
-                    title = context.resources.getString(R.string.dummy_movie_name_12),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BMmY3NGYzZGUtZDJjMS00NmI1LTgzY2ItODEyODcxNmI5MzkxXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.0",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt14813212",
-                    rank = "13",
-                    title = context.resources.getString(R.string.dummy_movie_name_13),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BYmYyYWQ2ZmEtYTEzZi00OGExLWE0YTItOGYyODBhY2M4NDI1XkEyXkFqcGdeQXVyNTYzMTc4MzY@._V1_Ratio0.7015_AL_.jpg",
-                    rating = "4.6",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt10268488",
-                    rank = "14",
-                    title = context.resources.getString(R.string.dummy_movie_name_14),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BMWUwOThjYTAtZWYyYy00YjllLTkxYjEtNTJmNTI5N2M1NjkxXkEyXkFqcGdeQXVyOTU0NjY1MDM@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.8",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt5315210",
-                    rank = "15",
-                    title = context.resources.getString(R.string.dummy_movie_name_15),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BYzdjMDViYTktM2QyZS00ZGNmLWFlMTctYTliZTUwMWM3YTMwXkEyXkFqcGdeQXVyMTE5MTg5NDIw._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.1",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt4595186",
-                    rank = "16",
-                    title = context.resources.getString(R.string.dummy_movie_name_16),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BNzJlMTE3ODEtODRjOS00Zjg4LWE0ZTYtODAwMWMwNjFmZmQyXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_Ratio0.6716_AL_.jpg",
-                    rating = "6.4",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt1745960",
-                    rank = "17",
-                    title = context.resources.getString(R.string.dummy_movie_name_17),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BZWYzOGEwNTgtNWU3NS00ZTQ0LWJkODUtMmVhMjIwMjA1ZmQwXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_Ratio0.6716_AL_.jpg",
-                    rating = "8.4",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt13560574",
-                    rank = "18",
-                    title = context.resources.getString(R.string.dummy_movie_name_18),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BMTJiMmE5YWItOWZjYS00YTg0LWE0MTYtMzg2ZTY4YjNkNDEzXkEyXkFqcGdeQXVyMTAzMDg4NzU0._V1_Ratio0.7910_AL_.jpg",
-                    rating = "6.6",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt10242388",
-                    rank = "19",
-                    title = context.resources.getString(R.string.dummy_movie_name_19),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BODk4MzkxODgtODEwZi00YTAwLWJjYzUtNjRkYjEzY2ZmNzYxXkEyXkFqcGdeQXVyMDEyNTM2Mg@@._V1_Ratio0.7015_AL_.jpg",
-                    rating = "5.6",
-                    type = MOVIE),
-                MovieDto(
-                    id = "tt8093700",
-                    rank = "20",
-                    title = context.resources.getString(R.string.dummy_movie_name_20),
-                    year = context.resources.getString(R.string.dummy_year_2022),
-                    imageUrl =
-                        "https://m.media-amazon.com/images/M/MV5BY2I4MDIwYWUtOWMxNC00ZTIzLWE3OGYtOWUyMmIwZGE2NjU4XkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_Ratio0.7910_AL_.jpg",
-                    rating = "6.7",
-                    type = MOVIE)),
-        errorMessage = EMPTY_STRING)
+                    id = 1149381,
+                    title = "Soulcatcher",
+                    originalTitle = "Operacja: Soulcatcher",
+                    overview =
+                        "A military contractor hired to seize a weapon that turns people into savage killers seeks revenge when his brother falls victim to the device.",
+                    imageUrl = "/l1f9JSPjCfNftigEii1SDK1g2b3.jpg",
+                    releaseDate = "2023-08-02",
+                    rating = 6.6),
+            ),
+        totalPages = 39558,
+        totalResults = 791149)
 
-fun fakeMovieDetailDto(context: Context) =
+val fakeMovieDetailDto =
     MovieDetailDto(
-        id = "tt11909878",
-        title = context.resources.getString(R.string.dummy_movie_title),
-        originalTitle = context.resources.getString(R.string.dummy_movie_original_title),
-        fullTitle = context.resources.getString(R.string.dummy_movie_full_title),
-        type = MOVIE.type,
-        year = context.resources.getString(R.string.dummy_movie_year),
+        imdbId = "tt0109830",
+        id = 13,
+        title = "Forrest Gump",
+        originalTitle = "Forrest Gump",
         image =
             "https://m.media-amazon.com/images/M/MV5BODcxYzI1MTktZWYzNC00MGZlLWI3ZjYtNzhmM2IyOTlkNjYyXkEyXkFqcGdeQXVyMTA1OTcyNDQ4._V1_Ratio0.6716_AL_.jpg",
-        releaseDate = "1994–11–18",
-        runtimeMins = EMPTY_STRING,
-        runtimeStr = "1h 50 min",
-        plot = context.resources.getString(R.string.dummy_movie_plot),
-        plotLocal = EMPTY_STRING,
-        plotLocalIsRtl = false,
-        directors = context.resources.getString(R.string.dummy_movie_directors))
+        releaseDate = "1994-06-23",
+        overview =
+            "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+        runtime = 142)

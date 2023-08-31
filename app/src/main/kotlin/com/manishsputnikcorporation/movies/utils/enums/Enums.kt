@@ -2,12 +2,12 @@ package com.manishsputnikcorporation.movies.utils.enums
 
 enum class Type(val type: String) {
   MOVIE("Movie"),
-  SERIES("TVSeries")
+  TV_SHOW("TVSeries")
 }
 
 fun String.toType(): Type =
     when (this) {
       Type.MOVIE.type -> Type.MOVIE
-      Type.SERIES.type -> Type.SERIES
+      Type.TV_SHOW.type -> Type.TV_SHOW
       else -> throw Exception() // TODO: to check
     }

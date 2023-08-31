@@ -1,14 +1,15 @@
 package com.manishsputnikcorporation.movies.di
 
-import com.manishsputnikcorporation.movies.data.MovieDetailRepositoryImpl
-import com.manishsputnikcorporation.movies.data.MoviesRepositoryImpl
+import com.manishsputnikcorporation.movies.data.repository.MovieDetailRepositoryImpl
+import com.manishsputnikcorporation.movies.data.repository.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.domain.error.*
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DefaultDispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
+import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
-import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.network.model.TvShowDetailDtoMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,9 +23,9 @@ abstract class UseCaseModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindSafeFlowUseCaseDelegate(
-      safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate.Default
-  ): SafeFlowUseCaseDelegate
+  abstract fun bindFlowUseCaseDelegate(
+      flowUseCaseDelegate: FlowUseCaseDelegate.Default
+  ): FlowUseCaseDelegate
 
   @Binds
   @ViewModelScoped
@@ -57,9 +58,13 @@ abstract class UseCaseModule {
 @InstallIn(ViewModelComponent::class)
 object MapperModule {
 
-  @Provides @ViewModelScoped fun provideMovieDtoMapper(): MovieDtoMapper = MovieDtoMapper()
+  @Provides @ViewModelScoped fun provideMovieDtoMapper(): MediaItemDtoMapper = MediaItemDtoMapper()
 
   @Provides
   @ViewModelScoped
   fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
+
+  @Provides
+  @ViewModelScoped
+  fun provideTvShowDetailDtoMapper(): TvShowDetailDtoMapper = TvShowDetailDtoMapper()
 }

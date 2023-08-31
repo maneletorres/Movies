@@ -2,8 +2,8 @@ package com.manishsputnikcorporation.movies.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
+import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
@@ -23,8 +23,8 @@ constructor(
     private val loadDataUseCase: LoadDataUseCase,
     private val getDataUseCase: GetDataUseCase,
     private val getFavoriteDataUseCase: GetFavoriteDataUseCase,
-    private val safeFlowUseCase: SafeFlowUseCaseDelegate
-) : ViewModel(), SafeFlowUseCaseDelegate by safeFlowUseCase {
+    private val safeFlowUseCase: FlowUseCaseDelegate
+) : ViewModel(), FlowUseCaseDelegate by safeFlowUseCase {
 
   //  val moviesHomeUIState: StateFlow<MoviesHomeUiState> =
   //      moviesRepository.movies
@@ -62,9 +62,9 @@ constructor(
         .launchIn(viewModelScope)
   }
 
-  fun getFavorites() {
+  fun getFavorites(type: Type) {
     getFavoriteDataUseCase
-        .safePrepare<Unit, List<MovieModel>>()
+        .safePrepare(type)
         .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
         .launchIn(viewModelScope)
   }
@@ -72,9 +72,9 @@ constructor(
   // region State & Events
   sealed interface MoviesHomeUiState {
 
-    object Idle : MoviesHomeUiState
-    object Loading : MoviesHomeUiState
-    data class Data(val movieList: List<MovieModel>) : MoviesHomeUiState
+    data object Idle : MoviesHomeUiState
+    data object Loading : MoviesHomeUiState
+    data class Data(val movieList: List<MediaItemModel>) : MoviesHomeUiState
   }
 
   sealed interface Event {

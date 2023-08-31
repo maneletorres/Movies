@@ -27,8 +27,8 @@ constructor(
 
   override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
     when (input) {
-          MOVIE -> moviesRepository.refreshMostPopularMovies()
-          SERIES -> moviesRepository.refreshMostPopularTVs()
+          MOVIE -> moviesRepository.refreshPopularMovies()
+          TV_SHOW -> moviesRepository.refreshPopularTVShows()
         }
         .onSuccess { emit(eitherSuccess(it)) }
         .onFailure { emit(eitherFailure(it)) }
