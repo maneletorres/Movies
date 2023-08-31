@@ -55,7 +55,7 @@ fun MoviesHomeScreen(
               onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
               onClickSearchType = {
                 searchType = searchType.toggleSearchType()
-                moviesHomeViewModel.loadData(searchType)
+                moviesHomeViewModel.loadData(searchType) // TODO: to review!
               },
               onClickMovie = { movieId -> onClickMovie(movieId) })
     }
@@ -121,7 +121,7 @@ fun MoviesHomeContent(
           FloatingActionButton(
               modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
               onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                Text("Up!")
+                Text(stringResource(id = R.string.movies_home_up_button_text))
               }
         }
       },
@@ -161,7 +161,7 @@ fun MoviesGrid(
 fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
   SubcomposeAsyncImage(
       model = "$TMDB_IMAGE_API_BASE_URL$image",
-      contentDescription = "",
+      contentDescription = null,
       modifier =
           Modifier.height(200.dp)
               .clickable { onClickMovie(id) }

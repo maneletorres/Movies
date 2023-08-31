@@ -143,7 +143,7 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
       modifier = modifier.height(100.dp).width(75.dp)) {
         SubcomposeAsyncImage(
             model = "$TMDB_IMAGE_API_BASE_URL$imageUrl",
-            contentDescription = "",
+            contentDescription = null,
             loading = { GenericLoading() },
             error = { GenericPlaceholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,

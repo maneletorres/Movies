@@ -7,6 +7,7 @@ import com.manishsputnikcorporation.movies.domain.repository.MovieDetailReposito
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCaseExceptionDelegate
+import com.manishsputnikcorporation.movies.network.util.EMPTY_STRING
 import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
@@ -33,5 +34,7 @@ constructor(
                 .onSuccess { emit(eitherSuccess(it)) }
                 .onFailure { emit(eitherFailure(it)) }
           }
-          .spreadUnauthorized { eitherFailure(DomainError("", "")) }
+          .spreadUnauthorized {
+            eitherFailure(DomainError(EMPTY_STRING, EMPTY_STRING))
+          } // TODO: to check!!
 }
