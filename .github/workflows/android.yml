@@ -24,7 +24,27 @@ jobs:
         uses: jsdaniell/create-json@v1.2.2
         with:
           name: "./app/google-services.json"
-          json: '{"project_info":""}'
+          json: '{
+                "project_info": {
+                  "project_number": "",
+                  "project_id": ""
+                },
+                "client": [
+                  {
+                    "client_info": {
+                      "mobilesdk_app_id": "1:189647608548:android:c079c129db05d06c952af1",
+                      "android_client_info": {
+                        "package_name": "com.manishsputnikcorporation.movies"
+                      }
+                    },
+                    "api_key": [
+                      {
+                        "current_key": ""
+                      }
+                    ]
+                  }
+                ]
+              }'
 
       - name: Build with Gradle
         run: ./gradlew build
