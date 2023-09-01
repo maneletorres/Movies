@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
     id("com.ncorti.ktfmt.gradle") version "0.11.0"
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -57,6 +58,11 @@ dependencies {
     // region Dependency injection (DI) libraries:
     runtimeOnly libs.dagger.hilt.android
     ksp libs.dagger.hilt.android.compiler
+    // endregion
+
+    // region Firebase:
+    implementation(platform(libs.firebase.bom))
+    implementation libs.firebase.analytics
     // endregion
 
     implementation libs.com.jakewharton.timber

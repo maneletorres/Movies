@@ -1,5 +1,6 @@
 [versions]
 google-dagger-version = "2.48"
+firebase-bom-version = "32.2.3"
 timber-version = "5.0.1"
 retrofit2-version = "2.9.0"
 okhttp3-version = "4.11.0"
@@ -22,6 +23,9 @@ androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:na
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "google-dagger-version" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "google-dagger-version" }
 
+# Firebase libraries:
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 # Timber libraries:
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
 
@@ -89,9 +93,9 @@ room = [
 [plugins]
 com-android-application = "com.android.application:8.1.1"
 com-android-library = "com.android.library:8.1.1"
-# @pin this library to 1.9.0
-org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.9.0"
+org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.9.10"
 hilt-android-gradle-plugin = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger-version" }
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.47.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.1"
 ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
+google-services = "com.google.gms.google-services:4.3.15"
