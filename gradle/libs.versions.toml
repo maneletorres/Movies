@@ -1,5 +1,15 @@
 [versions]
-google-dagger-version = "2.48"
+# Plugin versions:
+android-version = "8.1.1"
+kotlin-version = "1.9.10"
+ksp-version = "1.9.10-1.0.13"
+google-services-version = "4.3.15"
+firebase-crashlytics-version = "2.9.9"
+dagger-hilt-version = "2.48"
+gradle-versions-version = "0.47.0"
+version-catalog-update-version = "0.8.1"
+
+# Library versions:
 firebase-bom-version = "32.2.3"
 timber-version = "5.0.1"
 retrofit2-version = "2.9.0"
@@ -12,20 +22,23 @@ hilt-version = "1.0.0"
 compose-material-version = "1.5.0"
 compose-ui-version = "1.5.0"
 room-version = "2.5.2"
+
 # Testing library versions:
 junit-version = "4.13.2"
 
 [libraries]
 # Project dependencies:
-androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-ui-ktx-version" }
+navigation-safe-args = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-ui-ktx-version" }
 
 # Dependency injection (DI) libraries:
-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "google-dagger-version" }
-dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "google-dagger-version" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt-version" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt-version" }
 
 # Firebase libraries:
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+
 # Timber libraries:
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
 
@@ -64,6 +77,10 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }
 
 [bundles]
+firebase = [
+    "firebase-analytics",
+    "firebase-crashlytics",
+]
 retrofit2 = [
     "com-squareup-retrofit2-converter-moshi",
     "com-squareup-retrofit2-retrofit",
@@ -91,11 +108,12 @@ room = [
 ]
 
 [plugins]
-com-android-application = "com.android.application:8.1.1"
-com-android-library = "com.android.library:8.1.1"
-org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.9.10"
-hilt-android-gradle-plugin = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger-version" }
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.47.0"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.1"
-ksp = "com.google.devtools.ksp:1.9.10-1.0.13"
-google-services = "com.google.gms.google-services:4.3.15"
+android-application = { id = "com.android.application", version.ref = "android-version" }
+android-library = { id = "com.android.library", version.ref = "android-version" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-version" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt-version" }
+gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-version" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update-version" }
