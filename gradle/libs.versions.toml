@@ -8,6 +8,7 @@ firebase-crashlytics-version = "2.9.9"
 dagger-hilt-version = "2.48"
 gradle-versions-version = "0.47.0"
 version-catalog-update-version = "0.8.1"
+ktfmt-version = "0.13.0"
 
 # Library versions:
 firebase-bom-version = "32.2.3"
@@ -27,9 +28,6 @@ room-version = "2.5.2"
 junit-version = "4.13.2"
 
 [libraries]
-# Project dependencies:
-navigation-safe-args = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-ui-ktx-version" }
-
 # Dependency injection (DI) libraries:
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt-version" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt-version" }
@@ -106,6 +104,14 @@ room = [
     "androidx-room-ktx",
     "androidx-room-runtime",
 ]
+testing = [
+    "junit",
+    "mockk",
+]
+testing-compose = [
+    "androidx-compose-ui-test-junit4",
+    "androidx-navigation-testing",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-version" }
@@ -117,3 +123,4 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt-version" }
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update-version" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt-version" }
