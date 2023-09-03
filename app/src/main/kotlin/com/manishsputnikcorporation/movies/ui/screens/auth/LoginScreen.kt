@@ -53,31 +53,29 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     onNavigation: (String, String?) -> Unit = { _, _ -> }
 ) {
-  analyticsManager.trackScreen(screenName = LoginScreen.route)
+    analyticsManager.trackScreen(screenName = LoginScreen.route)
 
-  Surface {
-    Column(modifier = modifier) {
-      val scope = rememberCoroutineScope()
-      MoviesLogo(textRes = R.string.app_name, modifier = Modifier.fillMaxWidth().weight(1f))
-      BottomContent(
-          onIncognitoSignInClick = {
-            scope.launch {
-              incognitoSignIn(
-                  analyticsManager = analyticsManager,
-                  authManager = authManager,
-                  onNavigation = onNavigation)
-            }
-          },
-          onGoogleSignInClick = {
-            // TODO: to implement!
-            // startForResult.launch(googleSignInClient?.signInIntent)
-          },
-          onEmailSignInClick = {
-            // TODO: to implement!
-          },
-          onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) })
+    Surface {
+        Column(modifier = modifier) {
+            val scope = rememberCoroutineScope()
+            MoviesLogo(textRes = R.string.app_name, modifier = Modifier.fillMaxWidth().weight(1f))
+            BottomContent(
+                onIncognitoSignInClick = {
+                    scope.launch {
+                        incognitoSignIn(analyticsManager = analyticsManager, authManager = authManager, onNavigation = onNavigation)
+                    }
+                },
+                onGoogleSignInClick = {
+                    // TODO: to implement!
+                    // startForResult.launch(googleSignInClient?.signInIntent)
+                },
+                onEmailSignInClick = {
+                    // TODO: to implement!
+                },
+                onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) }
+            )
+        }
     }
-  }
 }
 
 @Composable
@@ -88,26 +86,29 @@ fun BottomContent(
     onEmailSignInClick: () -> Unit = {},
     onForgottenPasswordClick: () -> Unit = {},
 ) {
-  Column(modifier = modifier) {
-    ProviderButtonList(
-        onIncognitoSignInClick = onIncognitoSignInClick,
-        onGoogleSignInClick = onGoogleSignInClick,
-        onEmailSignInClick = onEmailSignInClick)
-    Spacer(modifier = Modifier.height(8.dp))
-    ClickableText(
-        text = AnnotatedString(text = stringResource(id = R.string.login_forgotten_password)),
-        modifier = Modifier.align(Alignment.CenterHorizontally),
-        style =
-            TextStyle(
-                // TODO: to improve!
-                color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                fontSize = 12.sp,
-                fontFamily = FontFamily.Default,
-                textDecoration = TextDecoration.Underline)) {
-          onForgottenPasswordClick()
+    Column(modifier = modifier) {
+        ProviderButtonList(
+            onIncognitoSignInClick = onIncognitoSignInClick,
+            onGoogleSignInClick = onGoogleSignInClick,
+            onEmailSignInClick = onEmailSignInClick
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        ClickableText(
+            text = AnnotatedString(text = stringResource(id = R.string.login_forgotten_password)),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            style =
+                TextStyle(
+                    // TODO: to improve!
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    fontSize = 12.sp,
+                    fontFamily = FontFamily.Default,
+                    textDecoration = TextDecoration.Underline
+                )
+        ) {
+            onForgottenPasswordClick()
         }
-    Spacer(modifier = Modifier.height(16.dp))
-  }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
 }
 
 @Composable
@@ -117,71 +118,61 @@ fun ProviderButtonList(
     onGoogleSignInClick: () -> Unit = {},
     onEmailSignInClick: () -> Unit = {}
 ) {
-  Column(modifier = modifier, verticalArrangement = spacedBy(8.dp)) {
-    ProviderButton(
-        textRes = R.string.login_incognito_sign_in,
-        leadingIcon = {
-          Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null)
-        }) {
-          onIncognitoSignInClick.invoke()
+    Column(modifier = modifier, verticalArrangement = spacedBy(8.dp)) {
+        ProviderButton(
+            textRes = R.string.login_incognito_sign_in,
+            leadingIcon = { Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null) }
+        ) {
+            onIncognitoSignInClick.invoke()
         }
-    ProviderButton(
-        textRes = R.string.login_google_sign_in,
-        leadingIcon = {
-          Image(
-              painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null)
-        }) {
-          onGoogleSignInClick.invoke()
+        ProviderButton(
+            textRes = R.string.login_google_sign_in,
+            leadingIcon = { Image(painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null) }
+        ) {
+            onGoogleSignInClick.invoke()
         }
-    ProviderButton(
-        textRes = R.string.login_email_sign_in,
-        leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }) {
-          onEmailSignInClick.invoke()
+        ProviderButton(
+            textRes = R.string.login_email_sign_in,
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }
+        ) {
+            onEmailSignInClick.invoke()
         }
-  }
+    }
 }
 
 @Composable
-fun ProviderButton(
-    @StringRes textRes: Int,
-    leadingIcon: @Composable (() -> Unit) = {},
-    onClick: () -> Unit = {}
-) {
-  Button(
-      onClick = { onClick.invoke() },
-      modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-      shape = RoundedCornerShape(6.dp),
-      colors =
-          ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.White)) {
+fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit) = {}, onClick: () -> Unit = {}) {
+    Button(
+        onClick = { onClick.invoke() },
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(6.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.White)
+    ) {
         leadingIcon.invoke()
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = textRes))
-      }
+    }
 }
 
 // region Helper methods
-private suspend fun incognitoSignIn(
-    authManager: AuthManager,
-    analyticsManager: AnalyticsManager,
-    onNavigation: (String, String?) -> Unit
-) {
-  when (val result = authManager.signInAnonymously()) {
-    is AuthRes.Success -> {
-      analyticsManager.trackButtonClick("incognito_sign_in")
-      onNavigation.invoke(MoviesHome.route, LoginScreen.route)
+private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: AnalyticsManager, onNavigation: (String, String?) -> Unit) {
+    when (val result = authManager.signInAnonymously()) {
+        is AuthRes.Success -> {
+            analyticsManager.trackButtonClick("incognito_sign_in")
+            onNavigation.invoke(MoviesHome.route, LoginScreen.route)
+        }
+        is AuthRes.Error -> {
+            analyticsManager.trackError("Incognito sign in error: ${result.errorMessage}")
+        }
     }
-    is AuthRes.Error -> {
-      analyticsManager.trackError("Incognito sign in error: ${result.errorMessage}")
-    }
-  }
 }
 
 private fun onForgottenPasswordClick(
     analyticsManager: AnalyticsManager,
     onNavigation: (String, String?) -> Unit = { _, _ -> },
 ) {
-  analyticsManager.trackButtonClick("forgotten_password")
-  onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)
+    analyticsManager.trackButtonClick("forgotten_password")
+    onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)
 }
 // endregion
 
@@ -189,17 +180,17 @@ private fun onForgottenPasswordClick(
 @UiModePreviews
 @Composable
 fun LoginScreenPreview() {
-  MoviesTheme {
-    Surface {
-      val context = LocalContext.current
-      LoginScreen(analyticsManager = AnalyticsManager(context), authManager = AuthManager())
+    MoviesTheme {
+        Surface {
+            val context = LocalContext.current
+            LoginScreen(analyticsManager = AnalyticsManager(context), authManager = AuthManager())
+        }
     }
-  }
 }
 
 @Preview
 @Composable
 fun BottomContentPreview() {
-  MoviesTheme { Surface { BottomContent() } }
+    MoviesTheme { Surface { BottomContent() } }
 }
 // endregion

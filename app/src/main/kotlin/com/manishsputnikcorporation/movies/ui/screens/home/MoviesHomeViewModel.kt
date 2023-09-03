@@ -14,6 +14,7 @@ import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class MoviesHomeViewModel
@@ -35,61 +35,61 @@ constructor(
     private val safeFlowUseCase: FlowUseCaseDelegate
 ) : ViewModel(), FlowUseCaseDelegate by safeFlowUseCase {
 
-  //  val moviesHomeUIState: StateFlow<MoviesHomeUiState> =
-  //      moviesRepository.movies
-  //          .map { movieModelList -> Data(movieModelList) }
-  //          .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Loading)
+    //  val moviesHomeUIState: StateFlow<MoviesHomeUiState> =
+    //      moviesRepository.movies
+    //          .map { movieModelList -> Data(movieModelList) }
+    //          .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Loading)
 
-  private val _moviesHomeUiState = MutableStateFlow<MoviesHomeUiState>(Idle)
-  val moviesHomeUiState: StateFlow<MoviesHomeUiState> = _moviesHomeUiState
+    private val _moviesHomeUiState = MutableStateFlow<MoviesHomeUiState>(Idle)
+    val moviesHomeUiState: StateFlow<MoviesHomeUiState> = _moviesHomeUiState
 
-  private val _event: Channel<Event> = Channel()
-  val event: Flow<Event> = _event.receiveAsFlow()
+    private val _event: Channel<Event> = Channel()
+    val event: Flow<Event> = _event.receiveAsFlow()
 
-  init {
-    loadData()
-  }
+    init {
+        loadData()
+    }
 
-  fun loadData(type: Type = Type.MOVIE) {
-    loadDataUseCase
-        .safePrepare(type)
-        .onStart { _moviesHomeUiState.update { Loading } }
-        .onEach {
-          getData(type)
-          it.onSuccess {
-                // Nothing to do
-              }
-              .onFailure { _event.send(Event.Error(type.name.lowercase())) }
-        }
-        .launchIn(viewModelScope)
-  }
+    fun loadData(type: Type = Type.MOVIE) {
+        loadDataUseCase
+            .safePrepare(type)
+            .onStart { _moviesHomeUiState.update { Loading } }
+            .onEach {
+                getData(type)
+                it.onSuccess {
+                        // Nothing to do
+                    }
+                    .onFailure { _event.send(Event.Error(type.name.lowercase())) }
+            }
+            .launchIn(viewModelScope)
+    }
 
-  private fun getData(type: Type) {
-    getDataUseCase
-        .safePrepare(type)
-        .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
-        .launchIn(viewModelScope)
-  }
+    private fun getData(type: Type) {
+        getDataUseCase
+            .safePrepare(type)
+            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
+            .launchIn(viewModelScope)
+    }
 
-  fun getFavorites(type: Type) {
-    getFavoriteDataUseCase
-        .safePrepare(type)
-        .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
-        .launchIn(viewModelScope)
-  }
+    fun getFavorites(type: Type) {
+        getFavoriteDataUseCase
+            .safePrepare(type)
+            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
+            .launchIn(viewModelScope)
+    }
 
-  // region State & Events
-  sealed interface MoviesHomeUiState {
+    // region State & Events
+    sealed interface MoviesHomeUiState {
 
-    data object Idle : MoviesHomeUiState
+        data object Idle : MoviesHomeUiState
 
-    data object Loading : MoviesHomeUiState
+        data object Loading : MoviesHomeUiState
 
-    data class Data(val movieList: List<MediaItemModel>) : MoviesHomeUiState
-  }
+        data class Data(val movieList: List<MediaItemModel>) : MoviesHomeUiState
+    }
 
-  sealed interface Event {
-    data class Error(val searchType: String) : Event
-  }
-  // endregion
+    sealed interface Event {
+        data class Error(val searchType: String) : Event
+    }
+    // endregion
 }

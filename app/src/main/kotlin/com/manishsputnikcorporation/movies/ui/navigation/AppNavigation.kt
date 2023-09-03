@@ -19,53 +19,42 @@ import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
-  val analyticsManager = AnalyticsManager(LocalContext.current)
-  val authManager = AuthManager()
+    val analyticsManager = AnalyticsManager(LocalContext.current)
+    val authManager = AuthManager()
 
-  NavHost(
-      navController = navController, startDestination = SplashScreen.route, modifier = modifier) {
+    NavHost(navController = navController, startDestination = SplashScreen.route, modifier = modifier) {
         composable(route = SplashScreen.route) {
-          SplashScreen(analyticsManager = analyticsManager) {
-            navController.apply {
-              popBackStack()
-              navigateSingleTopTo(LoginScreen.route)
+            SplashScreen(analyticsManager = analyticsManager) {
+                navController.apply {
+                    popBackStack()
+                    navigateSingleTopTo(LoginScreen.route)
+                }
             }
-          }
         }
 
         // region Auth screens:
         composable(route = LoginScreen.route) {
-          LoginScreen(
-              analyticsManager = analyticsManager,
-              authManager = authManager,
-          ) { screenToNavigate, screenToPopUp ->
-            navController.navigate(screenToNavigate) {
-              screenToPopUp?.let { popUpTo(it) { inclusive = true } }
+            LoginScreen(
+                analyticsManager = analyticsManager,
+                authManager = authManager,
+            ) { screenToNavigate, screenToPopUp ->
+                navController.navigate(screenToNavigate) { screenToPopUp?.let { popUpTo(it) { inclusive = true } } }
             }
-          }
         }
-        composable(route = SignInScreen.route) {
-          SignInScreen(analyticsManager = analyticsManager) { navController.popBackStack() }
-        }
+        composable(route = SignInScreen.route) { SignInScreen(analyticsManager = analyticsManager) { navController.popBackStack() } }
         composable(route = RecoverPasswordScreen.route) { RecoverPasswordScreen() }
         // endregion
 
         composable(route = MoviesHome.route) {
-          MoviesHomeScreen(
-              analyticsManager = analyticsManager, moviesHomeViewModel = hiltViewModel()) { movieId
-                ->
+            MoviesHomeScreen(analyticsManager = analyticsManager, moviesHomeViewModel = hiltViewModel()) { movieId ->
                 navController.navigateSingleTopTo("${MovieDetail.route}/$movieId")
-              }
+            }
         }
-        composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) {
-            navBackStackEntry ->
-          val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
-          MovieDetailScreen(
-              analyticsManager = analyticsManager,
-              movieDetailViewModel = hiltViewModel(),
-              movieId) {
+        composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
+            val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
+            MovieDetailScreen(analyticsManager = analyticsManager, movieDetailViewModel = hiltViewModel(), movieId) {
                 navController.popBackStack()
-              }
+            }
         }
-      }
+    }
 }

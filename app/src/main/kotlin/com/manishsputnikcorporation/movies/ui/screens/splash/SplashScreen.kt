@@ -35,39 +35,33 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = {}) {
-  LaunchedEffect(key1 = true) {
-    // TODO: to implement resource load
-    delay(3000)
-    onNavigation()
-  }
+    LaunchedEffect(key1 = true) {
+        // TODO: to implement resource load
+        delay(3000)
+        onNavigation()
+    }
 
-  analyticsManager.trackScreen(screenName = SplashScreen.route)
-  Surface { MoviesLogo(textRes = R.string.welcome_message, modifier = Modifier.fillMaxSize()) }
+    analyticsManager.trackScreen(screenName = SplashScreen.route)
+    Surface { MoviesLogo(textRes = R.string.welcome_message, modifier = Modifier.fillMaxSize()) }
 }
 
 @Composable
 fun MoviesLogo(@StringRes textRes: Int, modifier: Modifier = Modifier) {
-  Column(
-      modifier = modifier,
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = stringResource(id = R.string.logo_description),
-            modifier =
-                Modifier.size(150.dp, 150.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, Color.Black, CircleShape)
-                    .background(Color.Gray),
-            contentScale = ContentScale.Crop)
+            modifier = Modifier.size(150.dp, 150.dp).clip(CircleShape).border(2.dp, Color.Black, CircleShape).background(Color.Gray),
+            contentScale = ContentScale.Crop
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = stringResource(textRes), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-      }
+    }
 }
 
 @UiModePreviews
 @Composable
 fun SplashScreenPreview() {
-  val context = LocalContext.current
-  MoviesTheme { SplashScreen(AnalyticsManager(context)) }
+    val context = LocalContext.current
+    MoviesTheme { SplashScreen(AnalyticsManager(context)) }
 }

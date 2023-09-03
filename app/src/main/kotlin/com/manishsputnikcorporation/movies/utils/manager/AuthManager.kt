@@ -7,20 +7,20 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 class AuthManager {
-  private val auth: FirebaseAuth by lazy { Firebase.auth }
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
 
-  suspend fun signInAnonymously(): AuthRes<FirebaseUser> {
-    return try {
-      val result = auth.signInAnonymously().await()
-      AuthRes.Success(result.user ?: throw Exception("Error to log in"))
-    } catch (e: Exception) {
-      AuthRes.Error(e.message ?: "Error to login in")
+    suspend fun signInAnonymously(): AuthRes<FirebaseUser> {
+        return try {
+            val result = auth.signInAnonymously().await()
+            AuthRes.Success(result.user ?: throw Exception("Error to log in"))
+        } catch (e: Exception) {
+            AuthRes.Error(e.message ?: "Error to login in")
+        }
     }
-  }
 }
 
 sealed class AuthRes<out T> {
-  data class Success<T>(val data: T) : AuthRes<T>()
+    data class Success<T>(val data: T) : AuthRes<T>()
 
-  data class Error(val errorMessage: String) : AuthRes<Nothing>()
+    data class Error(val errorMessage: String) : AuthRes<Nothing>()
 }

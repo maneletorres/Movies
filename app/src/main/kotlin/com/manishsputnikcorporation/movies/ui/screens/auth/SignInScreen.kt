@@ -47,17 +47,18 @@ import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 
 @Composable
 fun SignInScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = {}) {
-  analyticsManager.trackScreen(screenName = SignInScreen.route)
+    analyticsManager.trackScreen(screenName = SignInScreen.route)
 
-  var email by remember { mutableStateOf("") }
-  var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-  val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
-  Column(
-      modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val emailText = stringResource(id = R.string.sign_in_email)
         val passwordText = stringResource(id = R.string.sign_in_password)
 
@@ -66,9 +67,10 @@ fun SignInScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = 
             label = emailText,
             placeholder = emailText,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }) {
-              email = it
-            }
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }
+        ) {
+            email = it
+        }
         Spacer(modifier = Modifier.height(8.dp))
         SignInTextField(
             value = password,
@@ -76,28 +78,21 @@ fun SignInScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = 
             placeholder = passwordText,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
-              password = it
-            }
+            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }
+        ) {
+            password = it
+        }
         Spacer(modifier = Modifier.height(8.dp))
         Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-          Button(
-              modifier = Modifier.fillMaxWidth(),
-              shape = RoundedCornerShape(50.dp),
-              onClick = { /*TODO*/}) {
-                Text(text = "Sign up")
-              }
+            Button(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(50.dp), onClick = { /*TODO*/}) { Text(text = "Sign up") }
         }
         Spacer(modifier = Modifier.height(40.dp))
         ClickableText(
             text = AnnotatedString(text = "Do you have an account yet?"),
             onClick = { onNavigation.invoke() },
-            style =
-                TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline))
-      }
+            style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline)
+        )
+    }
 }
 
 @Composable
@@ -111,55 +106,58 @@ fun SignInTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
-  OutlinedTextField(
-      value = value,
-      onValueChange = onValueChange,
-      label = { Text(text = label) },
-      placeholder = { Text(text = placeholder) },
-      leadingIcon = leadingIcon,
-      trailingIcon = trailingIcon,
-      visualTransformation = visualTransformation,
-      keyboardOptions = keyboardOptions)
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(text = label) },
+        placeholder = { Text(text = placeholder) },
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions
+    )
 }
 
 @Composable
 fun LogoutDialog(onConfirmLogOut: () -> Unit = {}, onDismiss: () -> Unit = {}) {
-  AlertDialog(
-      onDismissRequest = onDismiss,
-      title = { Text(text = "Close session") },
-      text = { Text(text = "Are you sure you want to close session?") },
-      confirmButton = { Button(onClick = onConfirmLogOut) { Text(text = "Accept") } },
-      dismissButton = { Button(onClick = onDismiss) { Text(text = "Cancel") } })
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Close session") },
+        text = { Text(text = "Are you sure you want to close session?") },
+        confirmButton = { Button(onClick = onConfirmLogOut) { Text(text = "Accept") } },
+        dismissButton = { Button(onClick = onDismiss) { Text(text = "Cancel") } }
+    )
 }
 
 // region Preview
 @UiModePreviews
 @Composable
 fun SignInScreenPreview() {
-  MoviesTheme {
-    Surface {
-      val context = LocalContext.current
-      SignInScreen(analyticsManager = AnalyticsManager(context))
+    MoviesTheme {
+        Surface {
+            val context = LocalContext.current
+            SignInScreen(analyticsManager = AnalyticsManager(context))
+        }
     }
-  }
 }
 
 @UiModePreviews
 @Composable
 fun SignInTextFieldPreview() {
-  MoviesTheme {
-    Surface {
-      var password by remember { mutableStateOf("") }
-      SignInTextField(
-          value = password,
-          label = stringResource(id = R.string.sign_in_password),
-          placeholder = stringResource(id = R.string.sign_in_email),
-          visualTransformation = PasswordVisualTransformation(),
-          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-          leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
-            password = it
-          }
+    MoviesTheme {
+        Surface {
+            var password by remember { mutableStateOf("") }
+            SignInTextField(
+                value = password,
+                label = stringResource(id = R.string.sign_in_password),
+                placeholder = stringResource(id = R.string.sign_in_email),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }
+            ) {
+                password = it
+            }
+        }
     }
-  }
 }
 // endregion

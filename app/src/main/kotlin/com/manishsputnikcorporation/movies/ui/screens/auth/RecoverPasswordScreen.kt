@@ -30,10 +30,7 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 
 @Composable
 fun RecoverPasswordScreen() {
-  Column(
-      modifier = Modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.Top,
-      horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
         var email by remember { mutableStateOf("") }
 
         Text(text = "Forgot your password", style = TextStyle(fontSize = 40.sp))
@@ -42,23 +39,21 @@ fun RecoverPasswordScreen() {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
         Spacer(modifier = Modifier.height(30.dp))
         Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-          Button(
-              onClick = {},
-              shape = RoundedCornerShape(50.dp),
-              modifier = Modifier.fillMaxWidth().height(50.dp)) {
+            Button(onClick = {}, shape = RoundedCornerShape(50.dp), modifier = Modifier.fillMaxWidth().height(50.dp)) {
                 Text(text = "Recover password")
-              }
+            }
         }
-      }
+    }
 }
 
 // region Preview
 @UiModePreviews
 @Composable
 fun ForgotPasswordScreenPreview() {
-  MoviesTheme { Surface { RecoverPasswordScreen() } }
+    MoviesTheme { Surface { RecoverPasswordScreen() } }
 }
 // endregion

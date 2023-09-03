@@ -66,48 +66,46 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(
-    analyticsManager: AnalyticsManager,
-    moviesHomeViewModel: MoviesHomeViewModel,
-    onClickMovie: (String) -> Unit = {}
-) {
-  val scaffoldState: ScaffoldState = rememberScaffoldState()
-  var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
+fun MoviesHomeScreen(analyticsManager: AnalyticsManager, moviesHomeViewModel: MoviesHomeViewModel, onClickMovie: (String) -> Unit = {}) {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
 
-  analyticsManager.trackScreen(screenName = MoviesHome.route)
+    analyticsManager.trackScreen(screenName = MoviesHome.route)
 
-  val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
-  moviesHomeUIState.let {
-    when (it) {
-      Idle -> Unit
-      Loading -> GenericLoading()
-      is Data ->
-          MoviesHomeContent(
-              scaffoldState,
-              searchType,
-              movies = it.movieList,
-              onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
-              onClickSearchType = {
-                searchType = searchType.toggleSearchType()
-                moviesHomeViewModel.loadData(searchType) // TODO: to review!
-              },
-              onClickMovie = { movieId -> onClickMovie(movieId) })
-    }
-  }
-
-  val context = LocalContext.current
-  LaunchedEffect(Unit) {
-    moviesHomeViewModel.event.collectLatest { event ->
-      when (event) {
-        is MoviesHomeViewModel.Event.Error -> {
-          scaffoldState.snackbarHostState.showSnackbar(
-              message = context.resources.getString(R.string.movies_home_error, event.searchType),
-              actionLabel = context.resources.getString(R.string.generic_close_message),
-              duration = SnackbarDuration.Long)
+    val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
+    moviesHomeUIState.let {
+        when (it) {
+            Idle -> Unit
+            Loading -> GenericLoading()
+            is Data ->
+                MoviesHomeContent(
+                    scaffoldState,
+                    searchType,
+                    movies = it.movieList,
+                    onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
+                    onClickSearchType = {
+                        searchType = searchType.toggleSearchType()
+                        moviesHomeViewModel.loadData(searchType) // TODO: to review!
+                    },
+                    onClickMovie = { movieId -> onClickMovie(movieId) }
+                )
         }
-      }
     }
-  }
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        moviesHomeViewModel.event.collectLatest { event ->
+            when (event) {
+                is MoviesHomeViewModel.Event.Error -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = context.resources.getString(R.string.movies_home_error, event.searchType),
+                        actionLabel = context.resources.getString(R.string.generic_close_message),
+                        duration = SnackbarDuration.Long
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -120,60 +118,65 @@ fun MoviesHomeContent(
     onClickSearchType: () -> Unit = {},
     onClickMovie: (String) -> Unit = {},
 ) {
-  val gridState = rememberLazyGridState()
-  val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
+    val gridState = rememberLazyGridState()
+    val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
-  Scaffold(
-      scaffoldState = scaffoldState,
-      topBar = {
-        TopAppBar(
-            title = { Text(text = stringResource(id = R.string.app_name)) },
-            actions = {
-              IconButton(onClick = { onClickFavorites() }) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = stringResource(id = R.string.movies_home_favorites))
-              }
-              IconButton(onClick = { onClickSearchType() }) {
-                Icon(
-                    painterResource(
-                        id =
-                            when (searchType) {
-                              Type.MOVIE -> R.drawable.ic_series_search
-                              Type.TV_SHOW -> R.drawable.ic_movie_search
-                            }),
-                    contentDescription = stringResource(id = R.string.movies_home_search_type))
-              }
-            })
-      },
-      bottomBar = {
-        // TODO: implement when new features are introduced
-      },
-      floatingActionButton = {
-        if (showButton) {
-          val coroutineScope = rememberCoroutineScope()
-          FloatingActionButton(
-              modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
-              onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                Text(stringResource(id = R.string.movies_home_up_button_text))
-              }
-        }
-      },
-      floatingActionButtonPosition = FabPosition.End) { contentPadding ->
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.app_name)) },
+                actions = {
+                    IconButton(onClick = { onClickFavorites() }) {
+                        Icon(imageVector = Icons.Filled.Favorite, contentDescription = stringResource(id = R.string.movies_home_favorites))
+                    }
+                    IconButton(onClick = { onClickSearchType() }) {
+                        Icon(
+                            painterResource(
+                                id =
+                                    when (searchType) {
+                                        Type.MOVIE -> R.drawable.ic_series_search
+                                        Type.TV_SHOW -> R.drawable.ic_movie_search
+                                    }
+                            ),
+                            contentDescription = stringResource(id = R.string.movies_home_search_type)
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            // TODO: implement when new features are introduced
+        },
+        floatingActionButton = {
+            if (showButton) {
+                val coroutineScope = rememberCoroutineScope()
+                FloatingActionButton(
+                    modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
+                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }
+                ) {
+                    Text(stringResource(id = R.string.movies_home_up_button_text))
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
+    ) { contentPadding ->
         Box(
             modifier =
                 modifier.padding(contentPadding).semantics {
-                  contentDescription = "Movies Home Screen" // TODO:
-                }) {
-              if (movies.isEmpty())
-                  EmptyContent(
-                      when (searchType) {
+                    contentDescription = "Movies Home Screen" // TODO:
+                }
+        ) {
+            if (movies.isEmpty())
+                EmptyContent(
+                    when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
                         Type.TV_SHOW -> R.string.movies_home_empty_series
-                      })
-              else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
-            }
-      }
+                    }
+                )
+            else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
+        }
+    }
 }
 
 @Composable
@@ -183,27 +186,26 @@ fun MoviesGrid(
     gridState: LazyGridState = rememberLazyGridState(),
     onClickMovie: (String) -> Unit = {}
 ) {
-  LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
-    items(movies, key = { it.id }) { movie ->
-      val rememberedMovie = rememberSaveable { movie } // TODO: to check
-      with(rememberedMovie) { Movie(id, imageUrl) { movieId -> onClickMovie(movieId) } }
+    LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
+        items(movies, key = { it.id }) { movie ->
+            val rememberedMovie = rememberSaveable { movie } // TODO: to check
+            with(rememberedMovie) { Movie(id, imageUrl) { movieId -> onClickMovie(movieId) } }
+        }
     }
-  }
 }
 
 @Composable
 fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
-  SubcomposeAsyncImage(
-      model = "$TMDB_IMAGE_API_BASE_URL$image",
-      contentDescription = null,
-      modifier =
-          Modifier.height(200.dp)
-              .clickable { onClickMovie(id) }
-              .semantics { contentDescription = "Movie Detail" }, // TODO: to check
-      loading = { GenericLoading() },
-      error = { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) },
-      alignment = Alignment.Center,
-      contentScale = ContentScale.Crop)
+    SubcomposeAsyncImage(
+        model = "$TMDB_IMAGE_API_BASE_URL$image",
+        contentDescription = null,
+        modifier =
+            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
+        loading = { GenericLoading() },
+        error = { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) },
+        alignment = Alignment.Center,
+        contentScale = ContentScale.Crop
+    )
 }
 
 // region Previews
@@ -211,31 +213,27 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 @Preview(showSystemUi = true) // TODO: to check
 @Composable
 private fun MoviesHomeContentPreview() {
-  MoviesTheme {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-    MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
-  }
+    MoviesTheme {
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
+        MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
+    }
 }
 
 @UiModePreviews
 @Composable
 private fun MoviesGridPreview() {
-  MoviesTheme {
-    Surface {
-      val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-      MoviesGrid(movies = movies)
+    MoviesTheme {
+        Surface {
+            val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
+            MoviesGrid(movies = movies)
+        }
     }
-  }
 }
 
 @UiModePreviews
 @Composable
 private fun MoviePreview() {
-  MoviesTheme {
-    Surface {
-      with(MediaItemDtoMapper().mapToDomainModel(fakeMoviesDto.results[0])) { Movie(id, imageUrl) }
-    }
-  }
+    MoviesTheme { Surface { with(MediaItemDtoMapper().mapToDomainModel(fakeMoviesDto.results[0])) { Movie(id, imageUrl) } } }
 }
 // endregion
