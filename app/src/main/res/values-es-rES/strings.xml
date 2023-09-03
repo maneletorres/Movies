@@ -5,6 +5,9 @@
     <string name="welcome_message">Bienvenido a Movies App</string>
     <string name="generic_error_message">Este es un mensaje de error genérico.</string>
     <string name="generic_close_message">Cerrar</string>
+    <string name="login_incognito_sign_in">Iniciar sesión como invitado</string>
+    <string name="login_google_sign_in">Iniciar sesión con Google</string>
+    <string name="login_email_sign_in">Iniciar sesión con correo electrónico</string>
     <string name="movies_home_favorites">Favoritos</string>
     <string name="movies_home_search_type">Tipo de búsqueda</string>
     <string name="movies_home_empty_movies">Sin películas</string>
@@ -33,4 +36,7 @@
     <string name="dummy_movie_full_title">Léon: El profesional (1994)</string>
     <string name="dummy_series_full_title">The Last of Us (Serie de TV 2023- )</string>
     <string name="movies_home_up_button_text">¡Arriba!</string>
+    <string name="login_forgotten_password">¿Has olvidado tu contraseña?</string>
+    <string name="sign_in_password">Contraseña</string>
+    <string name="sign_in_email">Correo electrónico</string>
 </resources>

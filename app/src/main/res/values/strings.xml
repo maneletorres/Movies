@@ -7,6 +7,16 @@
     <string name="generic_error_message">This is a generic error message.</string>
     <string name="generic_close_message">Close</string>
 
+    <!-- LoginScreen: -->
+    <string name="login_incognito_sign_in">Sign in as guest</string>
+    <string name="login_google_sign_in">Sign in with Google</string>
+    <string name="login_email_sign_in">Sign in with email</string>
+    <string name="login_forgotten_password">Have you forgotten your password?</string>
+
+    <!-- SignInScreen: -->
+    <string name="sign_in_email">Email</string>
+    <string name="sign_in_password">Password</string>
+
     <!-- MoviesHome: -->
     <!-- -->
     <string name="movies_home_favorites">Favorites</string>
@@ -62,4 +72,8 @@
     <string name="movie_detail_label">Movie detail</string>
     <string name="movie_detail_arrow_back_label">Arrow back</string>
     <string name="movie_detail_error">There was a problem loading the movie detail. Sorry for the inconvenience.</string>
+
+    <!-- Analytics: -->
+    <string name="analytics_google_sign_in" translatable="false">google_sign_in</string>
+    <string name="analytics_email_sign_in" translatable="false">email_sign_in</string>
 </resources>

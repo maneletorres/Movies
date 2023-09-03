@@ -5,6 +5,9 @@
     <string name="welcome_message">Benvingut a Movies App</string>
     <string name="generic_error_message">Aquest és un missatge derror genèric.</string>
     <string name="generic_close_message">Tancar</string>
+    <string name="login_incognito_sign_in">Iniciar sessió com a convidat</string>
+    <string name="login_google_sign_in">Iniciar sessió amb Google</string>
+    <string name="login_email_sign_in">Iniciar sessió amb correu electrònic</string>
     <string name="movies_home_favorites">Preferits</string>
     <string name="movies_home_search_type">Tipus de cerca</string>
     <string name="movies_home_empty_movies">Sense pel·lícules</string>
@@ -33,4 +36,7 @@
     <string name="movie_detail_label">Detall de pel·lícula</string>
     <string name="movie_detail_arrow_back_label">Fletxa del darrere</string>
     <string name="movie_detail_error">Ha passat un problema carregant el detall de la pel·lícula. Disculpeu les molèsties.</string>
+    <string name="login_forgotten_password">Has oblidat la teva contrasenya?</string>
+    <string name="sign_in_password">Contrasenya</string>
+    <string name="sign_in_email">Correu electrònic</string>
 </resources>
