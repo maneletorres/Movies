@@ -36,6 +36,7 @@ dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compil
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
 
 # Timber libraries:
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
@@ -78,6 +79,7 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 firebase = [
     "firebase-analytics",
     "firebase-crashlytics",
+    "firebase-auth"
 ]
 retrofit2 = [
     "com-squareup-retrofit2-converter-moshi",
