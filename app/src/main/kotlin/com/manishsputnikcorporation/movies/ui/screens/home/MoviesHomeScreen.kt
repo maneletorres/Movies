@@ -1,13 +1,39 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -23,25 +49,33 @@ import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
+import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
 import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
+import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Data
+import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
+import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
 import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
 fun MoviesHomeScreen(
+    analyticsManager: AnalyticsManager,
     moviesHomeViewModel: MoviesHomeViewModel,
     onClickMovie: (String) -> Unit = {}
 ) {
   val scaffoldState: ScaffoldState = rememberScaffoldState()
   var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
+
+  analyticsManager.trackScreen(screenName = MoviesHome.route)
+
   val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
   moviesHomeUIState.let {
     when (it) {
@@ -105,8 +139,8 @@ fun MoviesHomeContent(
                     painterResource(
                         id =
                             when (searchType) {
-                              Type.MOVIE -> R.drawable.series_search
-                              Type.TV_SHOW -> R.drawable.movie_search
+                              Type.MOVIE -> R.drawable.ic_series_search
+                              Type.TV_SHOW -> R.drawable.ic_movie_search
                             }),
                     contentDescription = stringResource(id = R.string.movies_home_search_type))
               }

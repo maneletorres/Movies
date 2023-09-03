@@ -24,6 +24,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
+import com.manishsputnikcorporation.movies.ui.navigation.MovieDetail
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewModel.MovieDetailUiState.*
 import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
@@ -32,13 +33,17 @@ import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 
 @Composable
 fun MovieDetailScreen(
+    analyticsManager: AnalyticsManager,
     movieDetailViewModel: MovieDetailViewModel,
     movieId: String?,
     onBackArrowClick: () -> Unit = {}
 ) {
+  analyticsManager.trackScreen(screenName = MovieDetail.route)
+
   val movieDetailUiState by movieDetailViewModel.movieDetailUiState.collectAsState()
   movieDetailUiState.let { state ->
     when {
