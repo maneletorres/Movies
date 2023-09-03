@@ -23,109 +23,109 @@ import retrofit2.Response
 
 class RetrofitServiceExecutorTest {
 
-  // region Setup
-  @MockK lateinit var networkManager: NetworkManager
-  @MockK lateinit var retrofitCall: Call<String>
-  @MockK lateinit var apiResponse: Response<String>
+    // region Setup
+    @MockK lateinit var networkManager: NetworkManager
+    @MockK lateinit var retrofitCall: Call<String>
+    @MockK lateinit var apiResponse: Response<String>
 
-  private lateinit var retrofitServiceExecutor: RetrofitServiceExecutor
+    private lateinit var retrofitServiceExecutor: RetrofitServiceExecutor
 
-  private val successResponseBody = "OK"
-  private val successResponseCode = 200
-  private val successResponseHeaders = mapOf("header" to listOf("success headers"))
+    private val successResponseBody = "OK"
+    private val successResponseCode = 200
+    private val successResponseHeaders = mapOf("header" to listOf("success headers"))
 
-  private val failureResponseBody = "Bad request"
-  private val failureResponseCode = 400
-  private val failureResponseHeaders = mapOf("header" to listOf("failure headers"))
+    private val failureResponseBody = "Bad request"
+    private val failureResponseCode = 400
+    private val failureResponseHeaders = mapOf("header" to listOf("failure headers"))
 
-  private val jsonExceptionMessage = "Generic parse JSON error."
-  private val ioExceptionMessage = "Generic I/O error."
-  private val networkExceptionMessage = "Generic network error."
+    private val jsonExceptionMessage = "Generic parse JSON error."
+    private val ioExceptionMessage = "Generic I/O error."
+    private val networkExceptionMessage = "Generic network error."
 
-  @Before
-  fun setUp() {
-    MockKAnnotations.init(this)
-    retrofitServiceExecutor = RetrofitServiceExecutor(networkManager)
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        retrofitServiceExecutor = RetrofitServiceExecutor(networkManager)
 
-    every { networkManager.checkConnectivity() } returns Unit
-    every { retrofitCall.request().url.toString() } returns "fake-URL"
-    every { retrofitCall.execute() } returns apiResponse
-  }
-  // endregion
+        every { networkManager.checkConnectivity() } returns Unit
+        every { retrofitCall.request().url.toString() } returns "fake-URL"
+        every { retrofitCall.execute() } returns apiResponse
+    }
+    // endregion
 
-  // region Testing
-  @Test
-  fun execute_network_call_successfully() {
-    // Given:
-    every { apiResponse.isSuccessful } returns true
-    every { apiResponse.body() } returns successResponseBody
-    every { apiResponse.code() } returns successResponseCode
-    every { apiResponse.headers().toMultimap() } returns successResponseHeaders
+    // region Testing
+    @Test
+    fun execute_network_call_successfully() {
+        // Given:
+        every { apiResponse.isSuccessful } returns true
+        every { apiResponse.body() } returns successResponseBody
+        every { apiResponse.code() } returns successResponseCode
+        every { apiResponse.headers().toMultimap() } returns successResponseHeaders
 
-    // When:
-    executeNetworkCall()
+        // When:
+        executeNetworkCall()
 
-        // Then:
-        .mapSuccess {
-          assertEquals(it.data, successResponseBody)
-          assertEquals(it.statusCode, successResponseCode)
-          assertEquals(it.headers, successResponseHeaders)
-        }
-        .mapFailure { assert(false) }
-  }
+            // Then:
+            .mapSuccess {
+                assertEquals(it.data, successResponseBody)
+                assertEquals(it.statusCode, successResponseCode)
+                assertEquals(it.headers, successResponseHeaders)
+            }
+            .mapFailure { assert(false) }
+    }
 
-  @Test
-  fun execute_network_call_unsuccessfully() {
-    // Given:
-    every { apiResponse.isSuccessful } returns false
-    every { apiResponse.errorBody()?.string() } returns failureResponseBody
-    every { apiResponse.code() } returns failureResponseCode
-    every { apiResponse.headers().toMultimap() } returns failureResponseHeaders
+    @Test
+    fun execute_network_call_unsuccessfully() {
+        // Given:
+        every { apiResponse.isSuccessful } returns false
+        every { apiResponse.errorBody()?.string() } returns failureResponseBody
+        every { apiResponse.code() } returns failureResponseCode
+        every { apiResponse.headers().toMultimap() } returns failureResponseHeaders
 
-    // When:
-    executeNetworkCall()
+        // When:
+        executeNetworkCall()
 
-        // Then:
-        .mapSuccess { assert(false) }
-        .mapFailure {
-          assertEquals(it.description, failureResponseBody)
-          assertEquals(it.statusCode, failureResponseCode)
-          assertEquals(it.headers, failureResponseHeaders)
-        }
-  }
+            // Then:
+            .mapSuccess { assert(false) }
+            .mapFailure {
+                assertEquals(it.description, failureResponseBody)
+                assertEquals(it.statusCode, failureResponseCode)
+                assertEquals(it.headers, failureResponseHeaders)
+            }
+    }
 
-  @Test(expected = ServiceException::class)
-  fun `GIVEN a network call WHEN throws a JsonDataException, THEN returns a ServiceException`() {
-    // Given:
-    every { retrofitCall.execute() } throws JsonDataException(jsonExceptionMessage)
+    @Test(expected = ServiceException::class)
+    fun `GIVEN a network call WHEN throws a JsonDataException, THEN returns a ServiceException`() {
+        // Given:
+        every { retrofitCall.execute() } throws JsonDataException(jsonExceptionMessage)
 
-    // When:
-    executeNetworkCall()
-  }
+        // When:
+        executeNetworkCall()
+    }
 
-  @Test(expected = ServiceException::class)
-  fun `GIVEN a network call WHEN throws a IOException, THEN returns a ServiceException`() {
-    // Given:
-    every { retrofitCall.execute() } throws IOException(ioExceptionMessage)
+    @Test(expected = ServiceException::class)
+    fun `GIVEN a network call WHEN throws a IOException, THEN returns a ServiceException`() {
+        // Given:
+        every { retrofitCall.execute() } throws IOException(ioExceptionMessage)
 
-    // When:
-    executeNetworkCall()
-  }
+        // When:
+        executeNetworkCall()
+    }
 
-  @Test(expected = NetworkException::class)
-  fun `GIVEN a network call WHEN there is no connectivity, THEN returns a NetworkException`() {
-    // Given:
-    every { networkManager.checkConnectivity() } throws NetworkException(networkExceptionMessage)
+    @Test(expected = NetworkException::class)
+    fun `GIVEN a network call WHEN there is no connectivity, THEN returns a NetworkException`() {
+        // Given:
+        every { networkManager.checkConnectivity() } throws NetworkException(networkExceptionMessage)
 
-    // When:
-    executeNetworkCall()
-  }
-  // endregion
+        // When:
+        executeNetworkCall()
+    }
+    // endregion
 
-  // region Helper methods
-  private fun executeNetworkCall(): Either<ServiceResponse<String>, ServiceError> {
-    val request = RetrofitServiceRequest(retrofitCall)
-    return retrofitServiceExecutor.execute(request)
-  }
-  // endregion
+    // region Helper methods
+    private fun executeNetworkCall(): Either<ServiceResponse<String>, ServiceError> {
+        val request = RetrofitServiceRequest(retrofitCall)
+        return retrofitServiceExecutor.execute(request)
+    }
+    // endregion
 }

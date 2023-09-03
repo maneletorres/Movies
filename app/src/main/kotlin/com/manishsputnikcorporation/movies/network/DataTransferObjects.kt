@@ -12,24 +12,26 @@ data class NetworkMovieContainer(val movies: List<MovieDto>)
 
 fun MoviesDto.asDatabaseModel(): List<DatabaseMovie> =
     results.map {
-      DatabaseMovie(
-          id = it.id.toString(),
-          rank = "", // it.rank, // TODO: to check
-          title = it.title,
-          year = it.releaseDate, // TODO: to extract
-          imageUrl = it.imageUrl,
-          rating = it.rating.toString(),
-          isFavorite = false)
+        DatabaseMovie(
+            id = it.id.toString(),
+            rank = "", // it.rank, // TODO: to check
+            title = it.title,
+            year = it.releaseDate, // TODO: to extract
+            imageUrl = it.imageUrl,
+            rating = it.rating.toString(),
+            isFavorite = false
+        )
     }
 
 fun TVShowsDto.asDatabaseModel(): List<DatabaseTvShow> =
     results.map {
-      DatabaseTvShow(
-          id = it.id.toString(),
-          rank = "", // it.rank, // TODO: to check
-          title = it.title,
-          year = it.releaseDate, // TODO: to extract
-          imageUrl = it.imageUrl,
-          rating = it.rating.toString(),
-          isFavorite = false)
+        DatabaseTvShow(
+            id = it.id.toString(),
+            rank = "", // it.rank, // TODO: to check
+            title = it.title,
+            year = it.releaseDate, // TODO: to extract
+            imageUrl = it.imageUrl,
+            rating = it.rating.toString(),
+            isFavorite = false
+        )
     }

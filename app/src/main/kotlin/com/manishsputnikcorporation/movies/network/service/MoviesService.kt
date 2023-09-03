@@ -11,19 +11,11 @@ import retrofit2.http.Query
 
 interface MoviesService {
 
-  @GET("movie/popular")
-  fun getPopularMovies(
-      @Query("language") lang: String = "en-US",
-      @Query("page") page: Int = 1
-  ): Call<MoviesDto>
+    @GET("movie/popular") fun getPopularMovies(@Query("language") lang: String = "en-US", @Query("page") page: Int = 1): Call<MoviesDto>
 
-  @GET("tv/popular")
-  fun getPopularTVShows(
-      @Query("language") lang: String = "en-US",
-      @Query("page") page: Int = 1
-  ): Call<TVShowsDto>
+    @GET("tv/popular") fun getPopularTVShows(@Query("language") lang: String = "en-US", @Query("page") page: Int = 1): Call<TVShowsDto>
 
-  @GET("movie/{id}") fun getMovie(@Path("id") id: String): Call<MovieDetailDto>
+    @GET("movie/{id}") fun getMovie(@Path("id") id: String): Call<MovieDetailDto>
 
-  @GET("tv/{id}") fun getTVShow(@Path("id") id: String): Call<TVShowDetailDto>
+    @GET("tv/{id}") fun getTVShow(@Path("id") id: String): Call<TVShowDetailDto>
 }

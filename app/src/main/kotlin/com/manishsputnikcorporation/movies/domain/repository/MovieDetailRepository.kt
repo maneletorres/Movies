@@ -7,23 +7,23 @@ import com.manishsputnikcorporation.movies.domain.model.TvShowDetailModel
 import kotlinx.coroutines.flow.Flow
 
 interface MovieDetailRepository {
-  // region Movie
-  fun getMovieDetail(id: String): DomainResponse<MovieDetailModel>
+    // region Movie
+    fun getMovieDetail(id: String): DomainResponse<MovieDetailModel>
 
-  fun isFavoriteMovie(id: String): Flow<Boolean>
+    fun isFavoriteMovie(id: String): Flow<Boolean>
 
-  fun getMovie(id: String): Flow<MediaItemModel>
+    fun getMovie(id: String): Flow<MediaItemModel>
 
-  suspend fun updateMovie(id: String): DomainResponse<Boolean>
-  // endregion
+    suspend fun updateMovie(id: String): DomainResponse<Boolean>
+    // endregion
 
-  // region TVShow
-  fun getTvShowDetail(id: String): DomainResponse<TvShowDetailModel>
+    // region TVShow
+    fun getTvShowDetail(id: String): DomainResponse<TvShowDetailModel>
 
-  fun isFavoriteTvShow(id: String): Flow<Boolean>
+    fun isFavoriteTvShow(id: String): Flow<Boolean>
 
-  fun getTvShow(id: String): Flow<MediaItemModel>
+    fun getTvShow(id: String): Flow<MediaItemModel>
 
-  suspend fun updateTvShow(id: String): DomainResponse<Boolean>
-  // endregion
+    suspend fun updateTvShow(id: String): DomainResponse<Boolean>
+    // endregion
 }

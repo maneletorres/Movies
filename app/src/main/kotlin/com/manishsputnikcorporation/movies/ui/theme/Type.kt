@@ -13,25 +13,22 @@ private val montserrat =
     FontFamily(
         Font(R.font.montserrat_regular),
         Font(R.font.montserrat_medium, FontWeight.W500),
-        Font(R.font.montserrat_semibold, FontWeight.W600))
+        Font(R.font.montserrat_semibold, FontWeight.W600)
+    )
 
 /** https://fonts.google.com/specimen/Domine */
-private val domine =
-    FontFamily(Font(R.font.domine_regular), Font(R.font.domine_bold, FontWeight.Bold))
+private val domine = FontFamily(Font(R.font.domine_regular), Font(R.font.domine_bold, FontWeight.Bold))
 
 val MoviesTypography =
     Typography(
         h4 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 30.sp),
         h5 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 24.sp),
         h6 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 20.sp),
-        subtitle1 =
-            TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 16.sp),
-        subtitle2 =
-            TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 14.sp),
+        subtitle1 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 16.sp),
+        subtitle2 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 14.sp),
         body1 = TextStyle(fontFamily = domine, fontWeight = FontWeight.Normal, fontSize = 16.sp),
         body2 = TextStyle(fontFamily = montserrat, fontSize = 14.sp),
         button = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 14.sp),
-        caption =
-            TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 12.sp),
-        overline =
-            TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 12.sp))
+        caption = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 12.sp),
+        overline = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 12.sp)
+    )

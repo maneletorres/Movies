@@ -15,7 +15,8 @@ private val lightColors =
         secondary = Red700,
         secondaryVariant = Red900,
         onSecondary = Color.White,
-        error = Red800)
+        error = Red800
+    )
 
 private val darkColors =
     darkColors(
@@ -24,13 +25,11 @@ private val darkColors =
         onPrimary = Color.Black,
         secondary = Red300,
         onSecondary = Color.Black,
-        error = Red200)
+        error = Red200
+    )
 
 /** A [MaterialTheme] for MoviesTheme */
 @Composable
 fun MoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-  MaterialTheme(
-      colors = if (darkTheme) darkColors else lightColors,
-      typography = MoviesTypography,
-      content = content)
+    MaterialTheme(colors = if (darkTheme) darkColors else lightColors, typography = MoviesTypography, content = content)
 }

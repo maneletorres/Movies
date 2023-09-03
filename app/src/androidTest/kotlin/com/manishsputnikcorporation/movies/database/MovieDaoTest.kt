@@ -22,150 +22,147 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MovieDaoTest {
 
-  // region Setup
-  private lateinit var movieDao: MovieDao
-  private lateinit var db: MovieRoomDatabase
+    // region Setup
+    private lateinit var movieDao: MovieDao
+    private lateinit var db: MovieRoomDatabase
 
-  @Before
-  fun createDb() {
-    val context: Context = ApplicationProvider.getApplicationContext()
-    db =
-        Room.inMemoryDatabaseBuilder(context, MovieRoomDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-    movieDao = db.movieDao()
-  }
+    @Before
+    fun createDb() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        db = Room.inMemoryDatabaseBuilder(context, MovieRoomDatabase::class.java).allowMainThreadQueries().build()
+        movieDao = db.movieDao()
+    }
 
-  @After
-  @Throws(IOException::class)
-  fun closeDb() {
-    db.close()
-  }
-  // endregion
+    @After
+    @Throws(IOException::class)
+    fun closeDb() {
+        db.close()
+    }
+    // endregion
 
-  // region Testing
-  @Test
-  @Throws(Exception::class)
-  fun insertMovie() = runBlocking {
-    // Given:
-    val fakeMovie = createMovie()
+    // region Testing
+    @Test
+    @Throws(Exception::class)
+    fun insertMovie() = runBlocking {
+        // Given:
+        val fakeMovie = createMovie()
 
-    // When:
-    movieDao.insert(fakeMovie)
+        // When:
+        movieDao.insert(fakeMovie)
 
-    // Then:
-    val movieList = movieDao.getMovies().first()
-    val movie = movieList[0]
-    assertTrue(movieList.size == 1)
-    assertThat(fakeMovie, equalTo(movie))
+        // Then:
+        val movieList = movieDao.getMovies().first()
+        val movie = movieList[0]
+        assertTrue(movieList.size == 1)
+        assertThat(fakeMovie, equalTo(movie))
 
-    // TODO: is this necessary?
-    assertEquals(movie.id, fakeMovie.id)
-    assertEquals(movie.rank, fakeMovie.rank)
-    assertEquals(movie.title, fakeMovie.title)
-    assertEquals(movie.year, fakeMovie.year)
-    assertEquals(movie.imageUrl, fakeMovie.imageUrl)
-    assertEquals(movie.rating, fakeMovie.rating)
-  }
+        // TODO: is this necessary?
+        assertEquals(movie.id, fakeMovie.id)
+        assertEquals(movie.rank, fakeMovie.rank)
+        assertEquals(movie.title, fakeMovie.title)
+        assertEquals(movie.year, fakeMovie.year)
+        assertEquals(movie.imageUrl, fakeMovie.imageUrl)
+        assertEquals(movie.rating, fakeMovie.rating)
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun insertAllMovieList() = runBlocking {
-    // Given:
-    val fakeMovieList = mutableListOf<DatabaseMovie>()
-    for (i in 0..2) fakeMovieList.add(createMovie(i.toString()))
+    @Test
+    @Throws(Exception::class)
+    fun insertAllMovieList() = runBlocking {
+        // Given:
+        val fakeMovieList = mutableListOf<DatabaseMovie>()
+        for (i in 0..2) fakeMovieList.add(createMovie(i.toString()))
 
-    // When:
-    movieDao.insertAll(fakeMovieList)
+        // When:
+        movieDao.insertAll(fakeMovieList)
 
-    // Then:
-    val movieList = movieDao.getMovies().first()
-    assert(movieList.isNotEmpty())
-    assert(movieList.containsAll(fakeMovieList))
-  }
+        // Then:
+        val movieList = movieDao.getMovies().first()
+        assert(movieList.isNotEmpty())
+        assert(movieList.containsAll(fakeMovieList))
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun updateMovie() = runBlocking {
-    // Given:
-    val fakeMovie = createMovie()
-    val updatedFakeMovieTitle = "updated-fake-movie-title"
-    val updatedFakeMovie = fakeMovie.copy(title = updatedFakeMovieTitle)
-    movieDao.insert(fakeMovie)
+    @Test
+    @Throws(Exception::class)
+    fun updateMovie() = runBlocking {
+        // Given:
+        val fakeMovie = createMovie()
+        val updatedFakeMovieTitle = "updated-fake-movie-title"
+        val updatedFakeMovie = fakeMovie.copy(title = updatedFakeMovieTitle)
+        movieDao.insert(fakeMovie)
 
-    // When:
-    movieDao.update(updatedFakeMovie)
+        // When:
+        movieDao.update(updatedFakeMovie)
 
-    // Then:
-    val movie = movieDao.getMovie(fakeMovie.id).first()
-    assert(movie.title == updatedFakeMovieTitle)
-  }
+        // Then:
+        val movie = movieDao.getMovie(fakeMovie.id).first()
+        assert(movie.title == updatedFakeMovieTitle)
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun deleteMovie() = runBlocking {
-    // Given:
-    val fakeMovie1 = createMovie("1")
-    val fakeMovie2 = createMovie("2")
-    movieDao.insertAll(listOf(fakeMovie1, fakeMovie2))
+    @Test
+    @Throws(Exception::class)
+    fun deleteMovie() = runBlocking {
+        // Given:
+        val fakeMovie1 = createMovie("1")
+        val fakeMovie2 = createMovie("2")
+        movieDao.insertAll(listOf(fakeMovie1, fakeMovie2))
 
-    // When:
-    movieDao.delete(fakeMovie1)
+        // When:
+        movieDao.delete(fakeMovie1)
 
-    // Then:
-    val movieList = movieDao.getMovies().first()
-    assert(movieList.isNotEmpty())
-    assertFalse(movieList.contains(fakeMovie1))
-  }
+        // Then:
+        val movieList = movieDao.getMovies().first()
+        assert(movieList.isNotEmpty())
+        assertFalse(movieList.contains(fakeMovie1))
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun getMovie() = runBlocking {
-    // Given:
-    val fakeMovie = createMovie()
-    movieDao.insert(fakeMovie)
+    @Test
+    @Throws(Exception::class)
+    fun getMovie() = runBlocking {
+        // Given:
+        val fakeMovie = createMovie()
+        movieDao.insert(fakeMovie)
 
-    // When:
-    val movie = movieDao.getMovie(fakeMovie.id).first()
+        // When:
+        val movie = movieDao.getMovie(fakeMovie.id).first()
 
-    // Then:
-    assertNotNull(movie)
-    assertThat(fakeMovie, equalTo(movie))
-  }
+        // Then:
+        assertNotNull(movie)
+        assertThat(fakeMovie, equalTo(movie))
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun getMovieList() = runBlocking {
-    // Given:
-    val fakeMovieList = listOf(createMovie("1"), createMovie("2"))
-    movieDao.insertAll(fakeMovieList)
+    @Test
+    @Throws(Exception::class)
+    fun getMovieList() = runBlocking {
+        // Given:
+        val fakeMovieList = listOf(createMovie("1"), createMovie("2"))
+        movieDao.insertAll(fakeMovieList)
 
-    // When:
-    val movieList = movieDao.getMovies().first()
+        // When:
+        val movieList = movieDao.getMovies().first()
 
-    // Then:
-    assert(movieList.isNotEmpty())
-    assert(movieList.containsAll(fakeMovieList))
-  }
+        // Then:
+        assert(movieList.isNotEmpty())
+        assert(movieList.containsAll(fakeMovieList))
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun getFavorites() = runBlocking {
-    // Given:
-    val fakeNotFavoriteMovie = createMovie("1")
-    val fakeDataList =
-        listOf(
-            fakeNotFavoriteMovie,
-            createMovie("2", true),
-        )
-    movieDao.insertAll(fakeDataList)
+    @Test
+    @Throws(Exception::class)
+    fun getFavorites() = runBlocking {
+        // Given:
+        val fakeNotFavoriteMovie = createMovie("1")
+        val fakeDataList =
+            listOf(
+                fakeNotFavoriteMovie,
+                createMovie("2", true),
+            )
+        movieDao.insertAll(fakeDataList)
 
-    // When:
-    val favorites = movieDao.getFavorites().first()
+        // When:
+        val favorites = movieDao.getFavorites().first()
 
-    // Then:
-    assert(favorites.isNotEmpty())
-    assertFalse(favorites.contains(fakeNotFavoriteMovie))
-  }
-  // endregion
+        // Then:
+        assert(favorites.isNotEmpty())
+        assertFalse(favorites.contains(fakeNotFavoriteMovie))
+    }
+    // endregion
 }

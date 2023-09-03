@@ -23,18 +23,9 @@ constructor(
     private val movieDetailRepository: MovieDetailRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider
-) :
-    FlowUseCase<String, Either<MovieDetailModel, DomainError>>(dispatcherProvider),
-    FlowUseCaseExceptionDelegate {
+) : FlowUseCase<String, Either<MovieDetailModel, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: String): Flow<Either<MovieDetailModel, DomainError>> =
-      flow {
-            movieDetailRepository
-                .getMovieDetail(input)
-                .onSuccess { emit(eitherSuccess(it)) }
-                .onFailure { emit(eitherFailure(it)) }
-          }
-          .spreadUnauthorized {
-            eitherFailure(DomainError(EMPTY_STRING, EMPTY_STRING))
-          } // TODO: to check!!
+    override fun prepareFlow(input: String): Flow<Either<MovieDetailModel, DomainError>> =
+        flow { movieDetailRepository.getMovieDetail(input).onSuccess { emit(eitherSuccess(it)) }.onFailure { emit(eitherFailure(it)) } }
+            .spreadUnauthorized { eitherFailure(DomainError(EMPTY_STRING, EMPTY_STRING)) } // TODO: to check!!
 }

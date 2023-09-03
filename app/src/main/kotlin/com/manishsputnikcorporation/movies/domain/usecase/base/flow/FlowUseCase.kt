@@ -9,13 +9,10 @@ import kotlinx.coroutines.flow.flowOn
 
 abstract class FlowUseCase<T, R>(protected open val dispatcherProvider: DispatcherProvider) {
 
-  protected open fun dispatcher(): CoroutineContext = dispatcherProvider.io()
+    protected open fun dispatcher(): CoroutineContext = dispatcherProvider.io()
 
-  @CheckResult fun prepare(input: T) = prepareFlow(input).flowOn(dispatcher())
+    @CheckResult fun prepare(input: T) = prepareFlow(input).flowOn(dispatcher())
 
-  /**
-   * FlowUseCase returns a [Flow] that will be executed in the specified [CoroutineContext] being
-   * [Dispatchers.IO] by default.
-   */
-  protected abstract fun prepareFlow(input: T): Flow<R>
+    /** FlowUseCase returns a [Flow] that will be executed in the specified [CoroutineContext] being [Dispatchers.IO] by default. */
+    protected abstract fun prepareFlow(input: T): Flow<R>
 }
