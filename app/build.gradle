@@ -88,3 +88,9 @@ dependencies {
     // endregion
     // endregion
 }
+
+ktfmt {
+    kotlinLangStyle()
+    maxWidth.set(140)
+    removeUnusedImports.set(true)
+}
