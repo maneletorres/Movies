@@ -25,12 +25,12 @@ constructor(
     dispatcherProvider: DispatcherProvider
 ) : FlowUseCase<Type, Either<Unit, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
-    when (input) {
-          MOVIE -> moviesRepository.refreshPopularMovies()
-          TV_SHOW -> moviesRepository.refreshPopularTVShows()
-        }
-        .onSuccess { emit(eitherSuccess(it)) }
-        .onFailure { emit(eitherFailure(it)) }
-  }
+    override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
+        when (input) {
+                MOVIE -> moviesRepository.refreshPopularMovies()
+                TV_SHOW -> moviesRepository.refreshPopularTVShows()
+            }
+            .onSuccess { emit(eitherSuccess(it)) }
+            .onFailure { emit(eitherFailure(it)) }
+    }
 }

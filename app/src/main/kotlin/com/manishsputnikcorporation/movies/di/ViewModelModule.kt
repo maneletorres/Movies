@@ -21,50 +21,26 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @InstallIn(ViewModelComponent::class)
 abstract class UseCaseModule {
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindFlowUseCaseDelegate(
-      flowUseCaseDelegate: FlowUseCaseDelegate.Default
-  ): FlowUseCaseDelegate
+    @Binds @ViewModelScoped abstract fun bindFlowUseCaseDelegate(flowUseCaseDelegate: FlowUseCaseDelegate.Default): FlowUseCaseDelegate
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindGlobalErrorManager(
-      globalErrorManager: GlobalErrorManagerImpl
-  ): GlobalErrorManager
+    @Binds @ViewModelScoped abstract fun bindGlobalErrorManager(globalErrorManager: GlobalErrorManagerImpl): GlobalErrorManager
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindMoviesRepository(moviesRepository: MoviesRepositoryImpl): MoviesRepository
+    @Binds @ViewModelScoped abstract fun bindMoviesRepository(moviesRepository: MoviesRepositoryImpl): MoviesRepository
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindMovieDetailRepository(
-      movieDetailRepository: MovieDetailRepositoryImpl
-  ): MovieDetailRepository
+    @Binds @ViewModelScoped abstract fun bindMovieDetailRepository(movieDetailRepository: MovieDetailRepositoryImpl): MovieDetailRepository
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindGlobalErrorMapper(globalErrorMapper: GlobalErrorMapperImpl): GlobalErrorMapper
+    @Binds @ViewModelScoped abstract fun bindGlobalErrorMapper(globalErrorMapper: GlobalErrorMapperImpl): GlobalErrorMapper
 
-  @Binds
-  @ViewModelScoped
-  abstract fun bindDispatcherProvider(
-      dispatcherProvider: DefaultDispatcherProvider
-  ): DispatcherProvider
+    @Binds @ViewModelScoped abstract fun bindDispatcherProvider(dispatcherProvider: DefaultDispatcherProvider): DispatcherProvider
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object MapperModule {
 
-  @Provides @ViewModelScoped fun provideMovieDtoMapper(): MediaItemDtoMapper = MediaItemDtoMapper()
+    @Provides @ViewModelScoped fun provideMovieDtoMapper(): MediaItemDtoMapper = MediaItemDtoMapper()
 
-  @Provides
-  @ViewModelScoped
-  fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
+    @Provides @ViewModelScoped fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
 
-  @Provides
-  @ViewModelScoped
-  fun provideTvShowDetailDtoMapper(): TvShowDetailDtoMapper = TvShowDetailDtoMapper()
+    @Provides @ViewModelScoped fun provideTvShowDetailDtoMapper(): TvShowDetailDtoMapper = TvShowDetailDtoMapper()
 }

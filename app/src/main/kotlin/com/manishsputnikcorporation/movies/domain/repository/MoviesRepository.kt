@@ -6,23 +6,23 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
 
-  // val movies: Flow<List<MediaItemModel>>
-  // val tvShows: Flow<List<MediaItemModel>>
+    // val movies: Flow<List<MediaItemModel>>
+    // val tvShows: Flow<List<MediaItemModel>>
 
-  // region Movie
-  fun refreshPopularMovies(): DomainResponse<Unit>
+    // region Movie
+    fun refreshPopularMovies(): DomainResponse<Unit>
 
-  fun getMovies(): Flow<List<MediaItemModel>>
+    fun getMovies(): Flow<List<MediaItemModel>>
 
-  fun getFavoriteMovies(): Flow<List<MediaItemModel>>
-  // endregion
+    fun getFavoriteMovies(): Flow<List<MediaItemModel>>
+    // endregion
 
-  // region TVShow
-  fun refreshPopularTVShows(): DomainResponse<Unit>
+    // region TVShow
+    fun refreshPopularTVShows(): DomainResponse<Unit>
 
-  fun getTvShows(): Flow<List<MediaItemModel>>
+    fun getTvShows(): Flow<List<MediaItemModel>>
 
-  fun getFavoriteTvShows(): Flow<List<MediaItemModel>>
+    fun getFavoriteTvShows(): Flow<List<MediaItemModel>>
 
-  // endregion
+    // endregion
 }

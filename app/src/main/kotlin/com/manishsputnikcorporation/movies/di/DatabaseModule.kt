@@ -19,29 +19,20 @@ import kotlinx.coroutines.SupervisorJob
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-  @ApplicationScope
-  @Provides
-  @Singleton
-  fun provideApplicationScope() = CoroutineScope(SupervisorJob())
+    @ApplicationScope @Provides @Singleton fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
-  @Provides
-  @Singleton
-  fun provideRoomDatabase(
-      @ApplicationContext context: Context,
-      callback: MovieRoomDatabase.Callback
-  ): MovieRoomDatabase =
-      Room.databaseBuilder(context, MovieRoomDatabase::class.java, "movie_database")
-          .fallbackToDestructiveMigration()
-          /** Pre-populate the database (only for test purposes): */
-          // .addCallback(callback)
-          .build()
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(@ApplicationContext context: Context, callback: MovieRoomDatabase.Callback): MovieRoomDatabase =
+        Room.databaseBuilder(context, MovieRoomDatabase::class.java, "movie_database")
+            .fallbackToDestructiveMigration()
+            /** Pre-populate the database (only for test purposes): */
+            // .addCallback(callback)
+            .build()
 
-  @Provides
-  fun provideMovieDao(movieRoomDatabase: MovieRoomDatabase): MovieDao = movieRoomDatabase.movieDao()
+    @Provides fun provideMovieDao(movieRoomDatabase: MovieRoomDatabase): MovieDao = movieRoomDatabase.movieDao()
 
-  @Provides
-  fun provideTvShowDao(movieRoomDatabase: MovieRoomDatabase): TvShowDao =
-      movieRoomDatabase.tvShowDao()
+    @Provides fun provideTvShowDao(movieRoomDatabase: MovieRoomDatabase): TvShowDao = movieRoomDatabase.tvShowDao()
 }
 
 @Retention @Qualifier annotation class ApplicationScope

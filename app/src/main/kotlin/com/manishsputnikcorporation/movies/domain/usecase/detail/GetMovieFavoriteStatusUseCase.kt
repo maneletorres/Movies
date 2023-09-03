@@ -16,6 +16,5 @@ constructor(
     dispatcherProvider: DispatcherProvider
 ) : FlowUseCase<String, Boolean>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: String): Flow<Boolean> =
-      movieDetailRepository.isFavoriteMovie(input)
+    override fun prepareFlow(input: String): Flow<Boolean> = movieDetailRepository.isFavoriteMovie(input)
 }

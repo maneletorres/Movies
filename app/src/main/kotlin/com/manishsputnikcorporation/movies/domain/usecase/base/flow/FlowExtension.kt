@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 
-@JvmName("flattenList")
-fun <T> Flow<List<T>>.flatten(): Flow<List<T>> = flow { emit(toList().flatten()) }
+@JvmName("flattenList") fun <T> Flow<List<T>>.flatten(): Flow<List<T>> = flow { emit(toList().flatten()) }
 
 fun <T> Flow<T>.flatten(): Flow<List<T>> = flow { emit(toList()) }
 

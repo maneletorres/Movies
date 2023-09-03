@@ -82,3 +82,9 @@ dependencies {
     androidTestImplementation libs.bundles.testing.compose
     // endregion
 }
+
+ktfmt {
+    kotlinLangStyle()
+    maxWidth.set(140)
+    removeUnusedImports.set(true)
+}

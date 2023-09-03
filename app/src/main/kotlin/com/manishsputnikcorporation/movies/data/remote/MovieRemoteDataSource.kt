@@ -17,49 +17,43 @@ import retrofit2.Call
 
 interface MovieRemoteDataSource {
 
-  @Throws(NetworkException::class, ServiceException::class)
-  fun getPopularMovies(): Either<MoviesDto, ServiceError>
+    @Throws(NetworkException::class, ServiceException::class) fun getPopularMovies(): Either<MoviesDto, ServiceError>
 
-  @Throws(NetworkException::class, ServiceException::class)
-  fun getPopularTVShows(): Either<TVShowsDto, ServiceError>
+    @Throws(NetworkException::class, ServiceException::class) fun getPopularTVShows(): Either<TVShowsDto, ServiceError>
 
-  @Throws(NetworkException::class, ServiceException::class)
-  fun getMovie(id: String): Either<MovieDetailDto, ServiceError>
+    @Throws(NetworkException::class, ServiceException::class) fun getMovie(id: String): Either<MovieDetailDto, ServiceError>
 
-  @Throws(NetworkException::class, ServiceException::class)
-  fun getTVShow(id: String): Either<TVShowDetailDto, ServiceError>
+    @Throws(NetworkException::class, ServiceException::class) fun getTVShow(id: String): Either<TVShowDetailDto, ServiceError>
 }
 
-class MovieRemoteDataSourceImpl
-@Inject
-constructor(private val serviceExecutor: ServiceExecutor, private val service: MoviesService) :
+class MovieRemoteDataSourceImpl @Inject constructor(private val serviceExecutor: ServiceExecutor, private val service: MoviesService) :
     MovieRemoteDataSource {
 
-  @Throws(NetworkException::class, ServiceException::class)
-  override fun getPopularMovies(): Either<MoviesDto, ServiceError> {
-    val call: Call<MoviesDto> = service.getPopularMovies()
-    val response = serviceExecutor.execute(RetrofitServiceRequest(call))
-    return response.mapSuccess { it.data }
-  }
+    @Throws(NetworkException::class, ServiceException::class)
+    override fun getPopularMovies(): Either<MoviesDto, ServiceError> {
+        val call: Call<MoviesDto> = service.getPopularMovies()
+        val response = serviceExecutor.execute(RetrofitServiceRequest(call))
+        return response.mapSuccess { it.data }
+    }
 
-  @Throws(NetworkException::class, ServiceException::class)
-  override fun getPopularTVShows(): Either<TVShowsDto, ServiceError> {
-    val call: Call<TVShowsDto> = service.getPopularTVShows()
-    val response = serviceExecutor.execute(RetrofitServiceRequest(call))
-    return response.mapSuccess { it.data }
-  }
+    @Throws(NetworkException::class, ServiceException::class)
+    override fun getPopularTVShows(): Either<TVShowsDto, ServiceError> {
+        val call: Call<TVShowsDto> = service.getPopularTVShows()
+        val response = serviceExecutor.execute(RetrofitServiceRequest(call))
+        return response.mapSuccess { it.data }
+    }
 
-  @Throws(NetworkException::class, ServiceException::class)
-  override fun getMovie(id: String): Either<MovieDetailDto, ServiceError> {
-    val call: Call<MovieDetailDto> = service.getMovie(id)
-    val response = serviceExecutor.execute(RetrofitServiceRequest(call))
-    return response.mapSuccess { it.data }
-  }
+    @Throws(NetworkException::class, ServiceException::class)
+    override fun getMovie(id: String): Either<MovieDetailDto, ServiceError> {
+        val call: Call<MovieDetailDto> = service.getMovie(id)
+        val response = serviceExecutor.execute(RetrofitServiceRequest(call))
+        return response.mapSuccess { it.data }
+    }
 
-  @Throws(NetworkException::class, ServiceException::class)
-  override fun getTVShow(id: String): Either<TVShowDetailDto, ServiceError> {
-    val call: Call<TVShowDetailDto> = service.getTVShow(id)
-    val response = serviceExecutor.execute(RetrofitServiceRequest(call))
-    return response.mapSuccess { it.data }
-  }
+    @Throws(NetworkException::class, ServiceException::class)
+    override fun getTVShow(id: String): Either<TVShowDetailDto, ServiceError> {
+        val call: Call<TVShowDetailDto> = service.getTVShow(id)
+        val response = serviceExecutor.execute(RetrofitServiceRequest(call))
+        return response.mapSuccess { it.data }
+    }
 }
