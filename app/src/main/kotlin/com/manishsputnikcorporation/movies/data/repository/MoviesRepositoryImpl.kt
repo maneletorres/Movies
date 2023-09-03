@@ -27,55 +27,51 @@ constructor(
     private val movieRemoteDataSource: MovieRemoteDataSource
 ) : MoviesRepository {
 
-  // TODO: optimize the loadData and getData calls to these!!
-  // override val movies = movieLocalDataSource.getMovies().map { it.asDomainModel() }
-  // override val tvShows = tvShowLocalDataSource.getTvShows().map { it.asDomainModel() }
+    // TODO: optimize the loadData and getData calls to these!!
+    // override val movies = movieLocalDataSource.getMovies().map { it.asDomainModel() }
+    // override val tvShows = tvShowLocalDataSource.getTvShows().map { it.asDomainModel() }
 
-  override fun refreshPopularMovies(): DomainResponse<Unit> =
-      movieRemoteDataSource
-          .getPopularMovies()
-          .mapSuccess { moviesDto ->
-            return insertMovies(moviesDto)
-          }
-          .mapFailure { error ->
-            return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
-          }
+    override fun refreshPopularMovies(): DomainResponse<Unit> =
+        movieRemoteDataSource
+            .getPopularMovies()
+            .mapSuccess { moviesDto ->
+                return insertMovies(moviesDto)
+            }
+            .mapFailure { error ->
+                return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
+            }
 
-  override fun refreshPopularTVShows(): DomainResponse<Unit> =
-      movieRemoteDataSource
-          .getPopularTVShows()
-          .mapSuccess { tvShowsDto ->
-            return insertTvShows(tvShowsDto)
-          }
-          .mapFailure { error ->
-            return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
-          }
+    override fun refreshPopularTVShows(): DomainResponse<Unit> =
+        movieRemoteDataSource
+            .getPopularTVShows()
+            .mapSuccess { tvShowsDto ->
+                return insertTvShows(tvShowsDto)
+            }
+            .mapFailure { error ->
+                return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
+            }
 
-  override fun getMovies(): Flow<List<MediaItemModel>> =
-      movieLocalDataSource.getMovies().map { it.asDomainModel() }
+    override fun getMovies(): Flow<List<MediaItemModel>> = movieLocalDataSource.getMovies().map { it.asDomainModel() }
 
-  override fun getTvShows(): Flow<List<MediaItemModel>> =
-      tvShowLocalDataSource.getTvShows().map { it.asDomainModel() }
+    override fun getTvShows(): Flow<List<MediaItemModel>> = tvShowLocalDataSource.getTvShows().map { it.asDomainModel() }
 
-  override fun getFavoriteMovies(): Flow<List<MediaItemModel>> =
-      movieLocalDataSource.getFavoriteMovies().map { it.asDomainModel() }
+    override fun getFavoriteMovies(): Flow<List<MediaItemModel>> = movieLocalDataSource.getFavoriteMovies().map { it.asDomainModel() }
 
-  override fun getFavoriteTvShows(): Flow<List<MediaItemModel>> =
-      tvShowLocalDataSource.getFavoriteTvShows().map { it.asDomainModel() }
+    override fun getFavoriteTvShows(): Flow<List<MediaItemModel>> = tvShowLocalDataSource.getFavoriteTvShows().map { it.asDomainModel() }
 
-  // region Helper methods
-  private fun insertMovies(movies: MoviesDto): DomainResponse<Unit> =
-      try {
-        eitherSuccess(movieLocalDataSource.insertAllMovies(movies.asDatabaseModel()))
-      } catch (ex: Exception) {
-        eitherFailure(DomainError("Code: ", ex.message.toString()))
-      }
+    // region Helper methods
+    private fun insertMovies(movies: MoviesDto): DomainResponse<Unit> =
+        try {
+            eitherSuccess(movieLocalDataSource.insertAllMovies(movies.asDatabaseModel()))
+        } catch (ex: Exception) {
+            eitherFailure(DomainError("Code: ", ex.message.toString()))
+        }
 
-  private fun insertTvShows(tvShows: TVShowsDto): DomainResponse<Unit> =
-      try {
-        eitherSuccess(tvShowLocalDataSource.insertTvShows(tvShows.asDatabaseModel()))
-      } catch (ex: Exception) {
-        eitherFailure(DomainError("Code: ", ex.message.toString()))
-      }
-  // endregion
+    private fun insertTvShows(tvShows: TVShowsDto): DomainResponse<Unit> =
+        try {
+            eitherSuccess(tvShowLocalDataSource.insertTvShows(tvShows.asDatabaseModel()))
+        } catch (ex: Exception) {
+            eitherFailure(DomainError("Code: ", ex.message.toString()))
+        }
+    // endregion
 }

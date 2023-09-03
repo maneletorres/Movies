@@ -18,9 +18,9 @@ constructor(
     dispatcherProvider: DispatcherProvider
 ) : FlowUseCase<Type, List<MediaItemModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Type): Flow<List<MediaItemModel>> =
-      when (input) {
-        Type.MOVIE -> moviesRepository.getFavoriteMovies()
-        Type.TV_SHOW -> moviesRepository.getFavoriteTvShows()
-      }
+    override fun prepareFlow(input: Type): Flow<List<MediaItemModel>> =
+        when (input) {
+            Type.MOVIE -> moviesRepository.getFavoriteMovies()
+            Type.TV_SHOW -> moviesRepository.getFavoriteTvShows()
+        }
 }

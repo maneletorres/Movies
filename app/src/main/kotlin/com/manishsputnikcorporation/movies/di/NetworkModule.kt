@@ -33,71 +33,42 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-  @Provides @Singleton fun provideBaseUrl() = TMDB_API_BASE_URL
+    @Provides @Singleton fun provideBaseUrl() = TMDB_API_BASE_URL
 
-  @Provides
-  @Singleton
-  fun provideOkHttpClient() =
-      OkHttpClient.Builder()
-          .apply {
-            if (DEBUG) addInterceptor(HttpLoggingInterceptor().setLevel(BODY))
-            addInterceptor(
-                Interceptor {
-                  val newRequest =
-                      it.request()
-                          .newBuilder()
-                          .addHeader("Authorization", "Bearer $BEARER_TOKEN")
-                          .build()
-                  it.proceed(newRequest)
-                })
-          }
-          .build()
+    @Provides
+    @Singleton
+    fun provideOkHttpClient() =
+        OkHttpClient.Builder()
+            .apply {
+                if (DEBUG) addInterceptor(HttpLoggingInterceptor().setLevel(BODY))
+                addInterceptor(
+                    Interceptor {
+                        val newRequest = it.request().newBuilder().addHeader("Authorization", "Bearer $BEARER_TOKEN").build()
+                        it.proceed(newRequest)
+                    }
+                )
+            }
+            .build()
 
-  @Provides
-  @Singleton
-  fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
-      Retrofit.Builder()
-          .baseUrl(baseUrl)
-          .addConverterFactory(MoshiConverterFactory.create())
-          .client(okHttpClient)
-          .build()
+    @Provides
+    @Singleton
+    fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(MoshiConverterFactory.create()).client(okHttpClient).build()
 
-  @Provides
-  @Singleton
-  fun provideMoviesService(retrofit: Retrofit): MoviesService =
-      retrofit.create(MoviesService::class.java)
+    @Provides @Singleton fun provideMoviesService(retrofit: Retrofit): MoviesService = retrofit.create(MoviesService::class.java)
 
-  @Provides
-  @Singleton
-  fun provideNetworkManager(@ApplicationContext context: Context): NetworkManager =
-      NetworkManagerImpl(context)
+    @Provides @Singleton fun provideNetworkManager(@ApplicationContext context: Context): NetworkManager = NetworkManagerImpl(context)
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceModule {
 
-  @Binds
-  @Singleton
-  abstract fun bindServiceExecutor(
-      retrofitServicesExecutor: RetrofitServiceExecutor
-  ): ServiceExecutor
+    @Binds @Singleton abstract fun bindServiceExecutor(retrofitServicesExecutor: RetrofitServiceExecutor): ServiceExecutor
 
-  @Binds
-  @Singleton
-  abstract fun bindMovieLocalDataSource(
-      movieLocalDataSource: MovieLocalDataSourceImpl
-  ): MovieLocalDataSource
+    @Binds @Singleton abstract fun bindMovieLocalDataSource(movieLocalDataSource: MovieLocalDataSourceImpl): MovieLocalDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindTvShowLocalDataSource(
-      movieLocalDataSource: TvShowLocalDataSourceImpl
-  ): TvShowLocalDataSource
+    @Binds @Singleton abstract fun bindTvShowLocalDataSource(movieLocalDataSource: TvShowLocalDataSourceImpl): TvShowLocalDataSource
 
-  @Binds
-  @Singleton
-  abstract fun bindMovieRemoteDataSource(
-      movieRemoteDataSource: MovieRemoteDataSourceImpl
-  ): MovieRemoteDataSource
+    @Binds @Singleton abstract fun bindMovieRemoteDataSource(movieRemoteDataSource: MovieRemoteDataSourceImpl): MovieRemoteDataSource
 }

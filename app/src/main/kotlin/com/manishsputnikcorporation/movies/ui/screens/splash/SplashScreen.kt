@@ -26,42 +26,37 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(onNavigation: () -> Unit = {}) {
-  LaunchedEffect(key1 = true) {
-    // TODO: to implement resource load
-    delay(3000)
-    onNavigation()
-  }
+    LaunchedEffect(key1 = true) {
+        // TODO: to implement resource load
+        delay(3000)
+        onNavigation()
+    }
 
-  Splash()
+    Splash()
 }
 
 @Composable
 fun Splash() {
-  Surface {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
-          Image(
-              painter = painterResource(id = R.drawable.ic_launcher_foreground),
-              contentDescription = stringResource(id = R.string.logo_description),
-              modifier =
-                  Modifier.size(150.dp, 150.dp)
-                      .clip(CircleShape)
-                      .border(2.dp, Color.Black, CircleShape)
-                      .background(Color.Gray),
-              contentScale = ContentScale.Crop)
-          Spacer(modifier = Modifier.height(8.dp))
-          Text(
-              text = stringResource(id = R.string.welcome_message),
-              fontSize = 30.sp,
-              fontWeight = FontWeight.Bold)
+    Surface {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = stringResource(id = R.string.logo_description),
+                modifier = Modifier.size(150.dp, 150.dp).clip(CircleShape).border(2.dp, Color.Black, CircleShape).background(Color.Gray),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = stringResource(id = R.string.welcome_message), fontSize = 30.sp, fontWeight = FontWeight.Bold)
         }
-  }
+    }
 }
 
 @UiModePreviews
 @Composable
 fun SplashScreenPreview() {
-  MoviesTheme { Splash() }
+    MoviesTheme { Splash() }
 }

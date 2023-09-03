@@ -13,27 +13,23 @@ import com.manishsputnikcorporation.movies.utils.extensions.navigateSingleTopTo
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
-  NavHost(
-      navController = navController, startDestination = SplashScreen.route, modifier = modifier) {
+    NavHost(navController = navController, startDestination = SplashScreen.route, modifier = modifier) {
         composable(route = SplashScreen.route) {
-          SplashScreen {
-            navController.apply {
-              popBackStack()
-              navigateSingleTopTo(MoviesHome.route)
+            SplashScreen {
+                navController.apply {
+                    popBackStack()
+                    navigateSingleTopTo(MoviesHome.route)
+                }
             }
-          }
         }
         composable(route = MoviesHome.route) {
-          MoviesHomeScreen(moviesHomeViewModel = hiltViewModel()) { movieId ->
-            navController.navigateSingleTopTo("${MovieDetail.route}/$movieId")
-          }
+            MoviesHomeScreen(moviesHomeViewModel = hiltViewModel()) { movieId ->
+                navController.navigateSingleTopTo("${MovieDetail.route}/$movieId")
+            }
         }
-        composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) {
-            navBackStackEntry ->
-          val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
-          MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId) {
-            navController.popBackStack()
-          }
+        composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
+            val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
+            MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId) { navController.popBackStack() }
         }
-      }
+    }
 }

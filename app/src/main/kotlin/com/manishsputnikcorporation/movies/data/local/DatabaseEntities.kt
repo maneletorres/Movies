@@ -19,14 +19,7 @@ data class DatabaseMovie(
 ) : DatabaseEntity
 
 fun DatabaseMovie.asDomainModel(): MediaItemModel =
-    MediaItemModel(
-        id = id,
-        rank = rank,
-        title = title,
-        year = year,
-        imageUrl = imageUrl,
-        rating = rating,
-        isFavorite = isFavorite)
+    MediaItemModel(id = id, rank = rank, title = title, year = year, imageUrl = imageUrl, rating = rating, isFavorite = isFavorite)
 
 @Entity(tableName = "tv_shows")
 data class DatabaseTvShow(
@@ -40,19 +33,12 @@ data class DatabaseTvShow(
 ) : DatabaseEntity
 
 fun DatabaseTvShow.asDomainModel(): MediaItemModel =
-    MediaItemModel(
-        id = id,
-        rank = rank,
-        title = title,
-        year = year,
-        imageUrl = imageUrl,
-        rating = rating,
-        isFavorite = isFavorite)
+    MediaItemModel(id = id, rank = rank, title = title, year = year, imageUrl = imageUrl, rating = rating, isFavorite = isFavorite)
 
 fun <T : DatabaseEntity> List<T>.asDomainModel(): List<MediaItemModel> = map {
-  when (it) {
-    is DatabaseMovie -> it.asDomainModel()
-    is DatabaseTvShow -> it.asDomainModel()
-    else -> throw Exception() // TODO: to enhance this mechanism!
-  }
+    when (it) {
+        is DatabaseMovie -> it.asDomainModel()
+        is DatabaseTvShow -> it.asDomainModel()
+        else -> throw Exception() // TODO: to enhance this mechanism!
+    }
 }

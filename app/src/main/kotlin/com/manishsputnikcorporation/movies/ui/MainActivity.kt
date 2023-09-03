@@ -12,17 +12,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    setContent { MoviesApp() }
-  }
+        setContent { MoviesApp() }
+    }
 }
 
 @Composable
 fun MoviesApp() {
-  MoviesTheme {
-    val navController = rememberNavController()
-    AppNavigation(navController)
-  }
+    MoviesTheme {
+        val navController = rememberNavController()
+        AppNavigation(navController)
+    }
 }
