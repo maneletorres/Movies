@@ -15,10 +15,10 @@ import com.manishsputnikcorporation.movies.utils.eitherFailure
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapFailure
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class MovieDetailRepositoryImpl
 @Inject
@@ -40,8 +40,11 @@ constructor(
           .mapFailure { error ->
             return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
           }
+
   override fun isFavoriteMovie(id: String): Flow<Boolean> = movieLocalDataSource.isFavoriteMovie(id)
+
   override fun getMovie(id: String) = movieLocalDataSource.getMovie(id).map { it.asDomainModel() }
+
   override suspend fun updateMovie(id: String): DomainResponse<Boolean> {
     val movie = movieLocalDataSource.getMovie(id).first()
     val updatedMovieFavoriteStatus: Boolean = !movie.isFavorite
