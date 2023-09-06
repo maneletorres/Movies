@@ -3,9 +3,12 @@
     <string name="logo_description">Movies logo</string>
     <string name="welcome_message">Welcome to Movies App</string>
 
-    <!-- Generic: -->
-    <string name="generic_error_message">This is a generic error message.</string>
-    <string name="generic_close_message">Close</string>
+    <!-- Common: -->
+    <string name="close_message">Close</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <!-- Dummy: -->
+    <string name="dummy_error_message">This is a generic error message.</string>
 
     <!-- LoginScreen: -->
     <string name="login_incognito_sign_in">Sign in as guest</string>

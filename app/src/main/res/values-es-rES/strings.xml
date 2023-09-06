@@ -3,8 +3,8 @@
     <string name="app_name">Movies</string>
     <string name="logo_description">Logo de movies</string>
     <string name="welcome_message">Bienvenido a Movies App</string>
-    <string name="generic_error_message">Este es un mensaje de error genérico.</string>
-    <string name="generic_close_message">Cerrar</string>
+    <string name="dummy_error_message">Este es un mensaje de error genérico.</string>
+    <string name="close_message">Cerrar</string>
     <string name="login_incognito_sign_in">Iniciar sesión como invitado</string>
     <string name="login_google_sign_in">Iniciar sesión con Google</string>
     <string name="login_email_sign_in">Iniciar sesión con correo electrónico</string>

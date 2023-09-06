@@ -38,6 +38,7 @@ import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.ui.navigation.LoginScreen
 import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.navigation.RecoverPasswordScreen
+import com.manishsputnikcorporation.movies.ui.screens.common.comingSoon
 import com.manishsputnikcorporation.movies.ui.screens.splash.MoviesLogo
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
@@ -55,6 +56,7 @@ fun LoginScreen(
 ) {
     analyticsManager.trackScreen(screenName = LoginScreen.route)
 
+    val context = LocalContext.current
     Surface {
         Column(modifier = modifier) {
             val scope = rememberCoroutineScope()
@@ -66,11 +68,10 @@ fun LoginScreen(
                     }
                 },
                 onGoogleSignInClick = {
-                    // TODO: to implement!
-                    // startForResult.launch(googleSignInClient?.signInIntent)
+                    comingSoon(context)
                 },
                 onEmailSignInClick = {
-                    // TODO: to implement!
+                    comingSoon(context)
                 },
                 onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) }
             )

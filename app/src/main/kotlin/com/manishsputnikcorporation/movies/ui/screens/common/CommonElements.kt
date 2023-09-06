@@ -1,8 +1,13 @@
-package com.manishsputnikcorporation.movies.ui.screens.generic
+package com.manishsputnikcorporation.movies.ui.screens.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -12,13 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 
 @Composable
-fun GenericLoading(modifier: Modifier = Modifier) {
+fun Loading(modifier: Modifier = Modifier) {
     Surface(contentColor = MaterialTheme.colors.primary) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
     }
@@ -34,7 +39,7 @@ fun EmptyContent(@StringRes message: Int) {
 }
 
 @Composable
-fun GenericPlaceholder(modifier: Modifier = Modifier) {
+fun Placeholder(modifier: Modifier = Modifier) {
     Box(modifier = Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(
             painter = painterResource(id = R.drawable.ic_placeholder),
@@ -45,21 +50,21 @@ fun GenericPlaceholder(modifier: Modifier = Modifier) {
 }
 
 // region Previews
-@Preview
+@UiModePreviews
 @Composable
-private fun MoviesHomeLoadingPreview() {
-    MoviesTheme { GenericLoading() }
+private fun LoadingPreview() {
+    MoviesTheme { Loading() }
 }
 
-@Preview
+@UiModePreviews
 @Composable
-private fun MoviesHomeErrorPreview() {
-    MoviesTheme { EmptyContent(message = R.string.generic_error_message) }
+private fun EmptyContentPreview() {
+    MoviesTheme { EmptyContent(message = R.string.dummy_error_message) }
 }
 
-@Preview
+@UiModePreviews
 @Composable
-private fun MoviePlaceholderPreview() {
-    MoviesTheme { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) }
+private fun PlaceholderPreview() {
+    MoviesTheme { Placeholder(modifier = Modifier.width(50.dp).height(50.dp)) }
 }
 // endregion

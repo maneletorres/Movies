@@ -50,9 +50,10 @@ import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
-import com.manishsputnikcorporation.movies.ui.screens.generic.EmptyContent
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericLoading
-import com.manishsputnikcorporation.movies.ui.screens.generic.GenericPlaceholder
+import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
+import com.manishsputnikcorporation.movies.ui.screens.common.Loading
+import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
+import com.manishsputnikcorporation.movies.ui.screens.common.comingSoon
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Data
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
@@ -76,7 +77,7 @@ fun MoviesHomeScreen(analyticsManager: AnalyticsManager, moviesHomeViewModel: Mo
     moviesHomeUIState.let {
         when (it) {
             Idle -> Unit
-            Loading -> GenericLoading()
+            Loading -> Loading()
             is Data ->
                 MoviesHomeContent(
                     scaffoldState,
@@ -99,7 +100,7 @@ fun MoviesHomeScreen(analyticsManager: AnalyticsManager, moviesHomeViewModel: Mo
                 is MoviesHomeViewModel.Event.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = context.resources.getString(R.string.movies_home_error, event.searchType),
-                        actionLabel = context.resources.getString(R.string.generic_close_message),
+                        actionLabel = context.resources.getString(R.string.close_message),
                         duration = SnackbarDuration.Long
                     )
                 }
@@ -152,7 +153,9 @@ fun MoviesHomeContent(
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
-                    modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(bottom = 8.dp, end = 8.dp),
                     onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }
                 ) {
                     Text(stringResource(id = R.string.movies_home_up_button_text))
@@ -163,7 +166,9 @@ fun MoviesHomeContent(
     ) { contentPadding ->
         Box(
             modifier =
-                modifier.padding(contentPadding).semantics {
+            modifier
+                .padding(contentPadding)
+                .semantics {
                     contentDescription = "Movies Home Screen" // TODO:
                 }
         ) {
@@ -200,9 +205,14 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
         modifier =
-            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
-        loading = { GenericLoading() },
-        error = { GenericPlaceholder(modifier = Modifier.width(50.dp).height(50.dp)) },
+        Modifier
+            .height(200.dp)
+            .clickable { onClickMovie(id) }
+            .semantics { contentDescription = "Movie Detail" }, // TODO: to check
+        loading = { Loading() },
+        error = { Placeholder(modifier = Modifier
+            .width(50.dp)
+            .height(50.dp)) },
         alignment = Alignment.Center,
         contentScale = ContentScale.Crop
     )

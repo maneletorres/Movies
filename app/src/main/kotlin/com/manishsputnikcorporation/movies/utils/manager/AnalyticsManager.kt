@@ -15,12 +15,6 @@ class AnalyticsManager(context: Context) {
     }
 
     @SuppressLint("ComposableNaming")
-    fun trackButtonClick(buttonName: String) {
-        val params = Bundle().apply { putString("button_name", buttonName) }
-        trackEvent(eventName = "button_clicked", params = params)
-    }
-
-    @SuppressLint("ComposableNaming")
     @Composable
     fun trackScreen(screenName: String) {
         DisposableEffect(Unit) {
@@ -28,11 +22,15 @@ class AnalyticsManager(context: Context) {
                 val params =
                     Bundle().apply {
                         putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-                        putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenName)
                     }
                 trackEvent(eventName = FirebaseAnalytics.Event.SCREEN_VIEW, params = params)
             }
         }
+    }
+
+    fun trackButtonClick(buttonName: String) {
+        val params = Bundle().apply { putString("button_name", buttonName) }
+        trackEvent(eventName = "button_clicked", params = params)
     }
 
     fun trackError(errorType: String) {
