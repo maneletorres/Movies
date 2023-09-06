@@ -24,6 +24,8 @@
     <!-- -->
     <string name="movies_home_favorites">Favorites</string>
     <string name="movies_home_search_type">Search type</string>
+    <string name="movies_home_more_options">More options</string>
+    <string name="movies_home_sign_off">Sign off</string>
     <string name="movies_home_empty_movies">No movies</string>
     <string name="movies_home_empty_series">No series</string>
     <string name="movies_home_empty_favorites">No favorites</string>

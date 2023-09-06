@@ -39,4 +39,7 @@
     <string name="login_forgotten_password">¿Has olvidado tu contraseña?</string>
     <string name="sign_in_password">Contraseña</string>
     <string name="sign_in_email">Correo electrónico</string>
+    <string name="coming_soon">Próximamente</string>
+    <string name="movies_home_more_options">Más opciones</string>
+    <string name="movies_home_sign_off">Cerrar sesión</string>
 </resources>

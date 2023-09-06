@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -11,6 +12,8 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -23,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -119,6 +123,7 @@ fun MoviesHomeContent(
     onClickSearchType: () -> Unit = {},
     onClickMovie: (String) -> Unit = {},
 ) {
+    val context = LocalContext.current
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
@@ -128,6 +133,7 @@ fun MoviesHomeContent(
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
+                    var expanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { onClickFavorites() }) {
                         Icon(imageVector = Icons.Filled.Favorite, contentDescription = stringResource(id = R.string.movies_home_favorites))
                     }
@@ -142,6 +148,17 @@ fun MoviesHomeContent(
                             ),
                             contentDescription = stringResource(id = R.string.movies_home_search_type)
                         )
+                    }
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = stringResource(id = R.string.movies_home_more_options)
+                        )
+                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                            DropdownMenuItem(onClick = { signOff(context) }) {
+                                Text(text = stringResource(id = R.string.movies_home_sign_off))
+                            }
+                        }
                     }
                 }
             )
@@ -217,6 +234,12 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         contentScale = ContentScale.Crop
     )
 }
+
+// region Helper methods
+private fun signOff(context: Context) {
+    comingSoon(context)
+}
+// endregion
 
 // region Previews
 @UiModePreviews

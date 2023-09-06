@@ -39,4 +39,7 @@
     <string name="login_forgotten_password">Has oblidat la teva contrasenya?</string>
     <string name="sign_in_password">Contrasenya</string>
     <string name="sign_in_email">Correu electrònic</string>
+    <string name="coming_soon">Properament</string>
+    <string name="movies_home_more_options">Més opcions</string>
+    <string name="movies_home_sign_off">Tancar sessió</string>
 </resources>
