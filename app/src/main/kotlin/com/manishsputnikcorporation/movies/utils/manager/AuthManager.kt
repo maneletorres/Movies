@@ -12,9 +12,9 @@ class AuthManager {
     suspend fun signInAnonymously(): AuthRes<FirebaseUser> {
         return try {
             val result = auth.signInAnonymously().await()
-            AuthRes.Success(result.user ?: throw Exception("Error to log in"))
+            AuthRes.Success(result.user ?: throw Exception("sign_in_error"))
         } catch (e: Exception) {
-            AuthRes.Error(e.message ?: "Error to login in")
+            AuthRes.Error(e.message ?: "sign_in_error")
         }
     }
 }

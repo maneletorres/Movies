@@ -162,7 +162,7 @@ private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: 
             onNavigation.invoke(MoviesHome.route, LoginScreen.route)
         }
         is AuthRes.Error -> {
-            analyticsManager.trackError("Incognito sign in error: ${result.errorMessage}")
+            analyticsManager.trackError(result.errorMessage)
         }
     }
 }

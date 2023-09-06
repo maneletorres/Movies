@@ -35,8 +35,8 @@ class AnalyticsManager(context: Context) {
         }
     }
 
-    fun trackError(error: String) {
-        val params = Bundle().apply { putString("error", error) }
-        trackEvent(eventName = "error", params = params)
+    fun trackError(errorType: String) {
+        val params = Bundle().apply { putString("error_type", errorType) }
+        trackEvent(eventName = "error_triggered", params = params)
     }
 }
