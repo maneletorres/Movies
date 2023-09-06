@@ -19,10 +19,7 @@ class AnalyticsManager(context: Context) {
     fun trackScreen(screenName: String) {
         DisposableEffect(Unit) {
             onDispose {
-                val params =
-                    Bundle().apply {
-                        putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-                    }
+                val params = Bundle().apply { putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName) }
                 trackEvent(eventName = FirebaseAnalytics.Event.SCREEN_VIEW, params = params)
             }
         }

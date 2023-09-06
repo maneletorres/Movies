@@ -67,12 +67,8 @@ fun LoginScreen(
                         incognitoSignIn(analyticsManager = analyticsManager, authManager = authManager, onNavigation = onNavigation)
                     }
                 },
-                onGoogleSignInClick = {
-                    comingSoon(context)
-                },
-                onEmailSignInClick = {
-                    comingSoon(context)
-                },
+                onGoogleSignInClick = { comingSoon(context) },
+                onEmailSignInClick = { comingSoon(context) },
                 onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) }
             )
         }

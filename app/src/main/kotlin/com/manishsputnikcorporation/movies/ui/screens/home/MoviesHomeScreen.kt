@@ -170,9 +170,7 @@ fun MoviesHomeContent(
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .padding(bottom = 8.dp, end = 8.dp),
+                    modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
                     onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }
                 ) {
                     Text(stringResource(id = R.string.movies_home_up_button_text))
@@ -183,9 +181,7 @@ fun MoviesHomeContent(
     ) { contentPadding ->
         Box(
             modifier =
-            modifier
-                .padding(contentPadding)
-                .semantics {
+                modifier.padding(contentPadding).semantics {
                     contentDescription = "Movies Home Screen" // TODO:
                 }
         ) {
@@ -222,14 +218,9 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
         modifier =
-        Modifier
-            .height(200.dp)
-            .clickable { onClickMovie(id) }
-            .semantics { contentDescription = "Movie Detail" }, // TODO: to check
+            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
         loading = { Loading() },
-        error = { Placeholder(modifier = Modifier
-            .width(50.dp)
-            .height(50.dp)) },
+        error = { Placeholder(modifier = Modifier.width(50.dp).height(50.dp)) },
         alignment = Alignment.Center,
         contentScale = ContentScale.Crop
     )
