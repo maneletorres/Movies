@@ -11,7 +11,12 @@ import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class MovieDetailViewModel
@@ -53,6 +58,7 @@ constructor(
                 .launchIn(viewModelScope)
         }
     }
+
     private fun getMovieFavoriteStatus(id: String) {
         getMovieFavoriteStatusUseCase
             .safePrepare(id)

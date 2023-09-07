@@ -40,8 +40,11 @@ constructor(
             .mapFailure { error ->
                 return eitherFailure(DomainError(error.statusCode.toString(), error.description ?: ""))
             }
+
     override fun isFavoriteMovie(id: String): Flow<Boolean> = movieLocalDataSource.isFavoriteMovie(id)
+
     override fun getMovie(id: String) = movieLocalDataSource.getMovie(id).map { it.asDomainModel() }
+
     override suspend fun updateMovie(id: String): DomainResponse<Boolean> {
         val movie = movieLocalDataSource.getMovie(id).first()
         val updatedMovieFavoriteStatus: Boolean = !movie.isFavorite

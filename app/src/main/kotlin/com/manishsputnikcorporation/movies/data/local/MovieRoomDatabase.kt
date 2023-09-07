@@ -1,6 +1,7 @@
 package com.manishsputnikcorporation.movies.data.local
 
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
 import com.manishsputnikcorporation.movies.data.local.dao.TvShowDao
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 abstract class MovieRoomDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
+
     abstract fun tvShowDao(): TvShowDao
 
     class Callback

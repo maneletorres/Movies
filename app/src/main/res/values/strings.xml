@@ -3,14 +3,34 @@
     <string name="logo_description">Movies logo</string>
     <string name="welcome_message">Welcome to Movies App</string>
 
-    <!-- Generic: -->
-    <string name="generic_error_message">This is a generic error message.</string>
-    <string name="generic_close_message">Close</string>
+    <!-- Common: -->
+    <string name="close_message">Close</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <!-- Dialog: -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_accept">Accept</string>
+    <string name="sign_out_dialog_description">Are you sure you want to sign out?</string>
+
+    <!-- Dummy: -->
+    <string name="dummy_error_message">This is a generic error message.</string>
+
+    <!-- LoginScreen: -->
+    <string name="login_incognito_sign_in">Sign in as guest</string>
+    <string name="login_google_sign_in">Sign in with Google</string>
+    <string name="login_email_sign_in">Sign in with email</string>
+    <string name="login_forgotten_password">Have you forgotten your password?</string>
+
+    <!-- SignInScreen: -->
+    <string name="sign_in_email">Email</string>
+    <string name="sign_in_password">Password</string>
 
     <!-- MoviesHome: -->
     <!-- -->
     <string name="movies_home_favorites">Favorites</string>
     <string name="movies_home_search_type">Search type</string>
+    <string name="movies_home_more_options">More options</string>
+    <string name="movies_home_sign_out">Sign out</string>
     <string name="movies_home_empty_movies">No movies</string>
     <string name="movies_home_empty_series">No series</string>
     <string name="movies_home_empty_favorites">No favorites</string>
@@ -62,4 +82,8 @@
     <string name="movie_detail_label">Movie detail</string>
     <string name="movie_detail_arrow_back_label">Arrow back</string>
     <string name="movie_detail_error">There was a problem loading the movie detail. Sorry for the inconvenience.</string>
+
+    <!-- Analytics: -->
+    <string name="analytics_google_sign_in" translatable="false">google_sign_in</string>
+    <string name="analytics_email_sign_in" translatable="false">email_sign_in</string>
 </resources>

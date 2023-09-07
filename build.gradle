@@ -3,10 +3,6 @@ buildscript {
     ext {
         composeCompilerVersion = '1.5.3'
     }
-
-    dependencies {
-        classpath libs.navigation.safe.args
-    }
 }
 
 plugins {
