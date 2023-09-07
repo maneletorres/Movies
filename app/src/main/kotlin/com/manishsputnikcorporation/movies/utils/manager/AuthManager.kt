@@ -21,6 +21,8 @@ class AuthManager {
     fun signOut() {
         auth.signOut()
     }
+
+    fun getCurrentUser(): FirebaseUser? = auth.currentUser
 }
 
 sealed class AuthRes<out T> {

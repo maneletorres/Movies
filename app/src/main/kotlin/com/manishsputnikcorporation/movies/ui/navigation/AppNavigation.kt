@@ -22,8 +22,10 @@ import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
     val analyticsManager = AnalyticsManager(LocalContext.current)
     val authManager = AuthManager()
+    val currentUser = authManager.getCurrentUser()
+    val startDestination = if (currentUser != null) MoviesHome.route else SplashScreen.route
 
-    NavHost(navController = navController, startDestination = SplashScreen.route, modifier = modifier) {
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         composable(route = SplashScreen.route) {
             SplashScreen(analyticsManager = analyticsManager) {
                 navController.apply {
