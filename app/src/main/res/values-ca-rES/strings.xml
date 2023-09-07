@@ -3,6 +3,9 @@
     <string name="app_name">Movies</string>
     <string name="logo_description">Logo de Movies</string>
     <string name="welcome_message">Benvingut a Movies App</string>
+    <string name="dialog_cancel">Cancel·lar</string>
+    <string name="dialog_accept">Acceptar</string>
+    <string name="sign_out_dialog_description">Estàs segur que vols tancar la sessió?</string>
     <string name="dummy_error_message">Aquest és un missatge derror genèric.</string>
     <string name="close_message">Tancar</string>
     <string name="login_incognito_sign_in">Iniciar sessió com a convidat</string>
@@ -41,5 +44,5 @@
     <string name="sign_in_email">Correu electrònic</string>
     <string name="coming_soon">Properament</string>
     <string name="movies_home_more_options">Més opcions</string>
-    <string name="movies_home_sign_off">Tancar sessió</string>
+    <string name="movies_home_sign_out">Tancar sessió</string>
 </resources>

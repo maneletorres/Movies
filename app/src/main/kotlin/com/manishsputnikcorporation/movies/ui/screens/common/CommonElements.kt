@@ -2,16 +2,22 @@ package com.manishsputnikcorporation.movies.ui.screens.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +47,29 @@ fun EmptyContent(@StringRes message: Int) {
 @Composable
 fun Placeholder(modifier: Modifier = Modifier) {
     Box(modifier = Modifier.height(200.dp).fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_placeholder),
-            contentDescription = null,
-            modifier = modifier.width(50.dp).height(50.dp)
-        )
+        Image(painter = painterResource(id = R.drawable.ic_placeholder), contentDescription = null, modifier = modifier.size(50.dp))
     }
+}
+
+@Composable
+fun AlertDialog(
+    @StringRes dialogTitle: Int,
+    @StringRes dialogText: Int,
+    onDismissRequest: () -> Unit = {},
+    onConfirmation: () -> Unit = {}
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        buttons = {
+            Row(modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.End) {
+                TextButton(onClick = { onDismissRequest() }) { Text(text = stringResource(id = R.string.dialog_cancel)) }
+                Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { onConfirmation() }) { Text(text = stringResource(id = R.string.dialog_accept)) }
+            }
+        },
+        title = { Text(text = stringResource(id = dialogTitle)) },
+        text = { Text(text = stringResource(id = dialogText)) }
+    )
 }
 
 // region Previews
@@ -65,6 +88,12 @@ private fun EmptyContentPreview() {
 @UiModePreviews
 @Composable
 private fun PlaceholderPreview() {
-    MoviesTheme { Placeholder(modifier = Modifier.width(50.dp).height(50.dp)) }
+    MoviesTheme { Placeholder(modifier = Modifier.size(50.dp)) }
+}
+
+@UiModePreviews
+@Composable
+private fun AlertDialogPreview() {
+    MoviesTheme { AlertDialog(dialogTitle = R.string.movies_home_sign_out, dialogText = R.string.sign_out_dialog_description) }
 }
 // endregion

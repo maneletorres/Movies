@@ -17,6 +17,10 @@ class AuthManager {
             AuthRes.Error(e.message ?: "sign_in_error")
         }
     }
+
+    fun signOut() {
+        auth.signOut()
+    }
 }
 
 sealed class AuthRes<out T> {

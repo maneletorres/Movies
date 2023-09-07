@@ -3,6 +3,9 @@
     <string name="app_name">Movies</string>
     <string name="logo_description">Logo de movies</string>
     <string name="welcome_message">Bienvenido a Movies App</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_accept">Aceptar</string>
+    <string name="sign_out_dialog_description">¿Estás seguro de que quieres cerrar sesión?</string>
     <string name="dummy_error_message">Este es un mensaje de error genérico.</string>
     <string name="close_message">Cerrar</string>
     <string name="login_incognito_sign_in">Iniciar sesión como invitado</string>
@@ -41,5 +44,5 @@
     <string name="sign_in_email">Correo electrónico</string>
     <string name="coming_soon">Próximamente</string>
     <string name="movies_home_more_options">Más opciones</string>
-    <string name="movies_home_sign_off">Cerrar sesión</string>
+    <string name="movies_home_sign_out">Cerrar sesión</string>
 </resources>

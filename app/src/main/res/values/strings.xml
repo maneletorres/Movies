@@ -7,6 +7,11 @@
     <string name="close_message">Close</string>
     <string name="coming_soon">Coming soon</string>
 
+    <!-- Dialog: -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_accept">Accept</string>
+    <string name="sign_out_dialog_description">Are you sure you want to sign out?</string>
+
     <!-- Dummy: -->
     <string name="dummy_error_message">This is a generic error message.</string>
 
@@ -25,7 +30,7 @@
     <string name="movies_home_favorites">Favorites</string>
     <string name="movies_home_search_type">Search type</string>
     <string name="movies_home_more_options">More options</string>
-    <string name="movies_home_sign_off">Sign off</string>
+    <string name="movies_home_sign_out">Sign out</string>
     <string name="movies_home_empty_movies">No movies</string>
     <string name="movies_home_empty_series">No series</string>
     <string name="movies_home_empty_favorites">No favorites</string>

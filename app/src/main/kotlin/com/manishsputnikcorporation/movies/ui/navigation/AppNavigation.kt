@@ -13,6 +13,7 @@ import com.manishsputnikcorporation.movies.ui.screens.auth.SignInScreen
 import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailScreen
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.SplashScreen
+import com.manishsputnikcorporation.movies.utils.extensions.navigateInclusiveTo
 import com.manishsputnikcorporation.movies.utils.extensions.navigateSingleTopTo
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
@@ -34,11 +35,8 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
 
         // region Auth screens:
         composable(route = LoginScreen.route) {
-            LoginScreen(
-                analyticsManager = analyticsManager,
-                authManager = authManager,
-            ) { screenToNavigate, screenToPopUp ->
-                navController.navigate(screenToNavigate) { screenToPopUp?.let { popUpTo(it) { inclusive = true } } }
+            LoginScreen(analyticsManager = analyticsManager, authManager = authManager) { nextScreen, previousScreen ->
+                navController.navigateInclusiveTo(nextScreen, previousScreen)
             }
         }
         composable(route = SignInScreen.route) { SignInScreen(analyticsManager = analyticsManager) { navController.popBackStack() } }
@@ -46,9 +44,15 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         // endregion
 
         composable(route = MoviesHome.route) {
-            MoviesHomeScreen(analyticsManager = analyticsManager, moviesHomeViewModel = hiltViewModel()) { movieId ->
-                navController.navigateSingleTopTo("${MovieDetail.route}/$movieId")
-            }
+            MoviesHomeScreen(
+                analyticsManager = analyticsManager,
+                moviesHomeViewModel = hiltViewModel(),
+                onClickSignOut = {
+                    authManager.signOut()
+                    navController.navigateInclusiveTo(LoginScreen.route, MoviesHome.route)
+                },
+                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") }
+            )
         }
         composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
             val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)

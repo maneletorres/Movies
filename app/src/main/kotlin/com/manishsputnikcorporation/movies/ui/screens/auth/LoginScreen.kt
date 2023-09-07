@@ -52,7 +52,7 @@ fun LoginScreen(
     analyticsManager: AnalyticsManager,
     authManager: AuthManager,
     modifier: Modifier = Modifier,
-    onNavigation: (String, String?) -> Unit = { _, _ -> }
+    onNavigation: (String, String) -> Unit = { _, _ -> }
 ) {
     analyticsManager.trackScreen(screenName = LoginScreen.route)
 
@@ -152,7 +152,7 @@ fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit
 }
 
 // region Helper methods
-private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: AnalyticsManager, onNavigation: (String, String?) -> Unit) {
+private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: AnalyticsManager, onNavigation: (String, String) -> Unit) {
     when (val result = authManager.signInAnonymously()) {
         is AuthRes.Success -> {
             analyticsManager.trackButtonClick("incognito_sign_in")
@@ -166,7 +166,7 @@ private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: 
 
 private fun onForgottenPasswordClick(
     analyticsManager: AnalyticsManager,
-    onNavigation: (String, String?) -> Unit = { _, _ -> },
+    onNavigation: (String, String) -> Unit = { _, _ -> },
 ) {
     analyticsManager.trackButtonClick("forgotten_password")
     onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)

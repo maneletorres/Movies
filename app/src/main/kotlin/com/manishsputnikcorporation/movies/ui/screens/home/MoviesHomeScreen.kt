@@ -1,12 +1,11 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -54,10 +53,10 @@ import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
+import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
 import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
-import com.manishsputnikcorporation.movies.ui.screens.common.comingSoon
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Data
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
@@ -71,7 +70,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(analyticsManager: AnalyticsManager, moviesHomeViewModel: MoviesHomeViewModel, onClickMovie: (String) -> Unit = {}) {
+fun MoviesHomeScreen(
+    analyticsManager: AnalyticsManager,
+    moviesHomeViewModel: MoviesHomeViewModel,
+    onClickSignOut: () -> Unit = {},
+    onClickMovie: (String) -> Unit = {}
+) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
 
@@ -92,6 +96,7 @@ fun MoviesHomeScreen(analyticsManager: AnalyticsManager, moviesHomeViewModel: Mo
                         searchType = searchType.toggleSearchType()
                         moviesHomeViewModel.loadData(searchType) // TODO: to review!
                     },
+                    onClickSignOut = onClickSignOut,
                     onClickMovie = { movieId -> onClickMovie(movieId) }
                 )
         }
@@ -121,11 +126,25 @@ fun MoviesHomeContent(
     modifier: Modifier = Modifier,
     onClickFavorites: () -> Unit = {},
     onClickSearchType: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {},
+    onClickSignOut: () -> Unit = {},
+    onClickMovie: (String) -> Unit = {}
 ) {
-    val context = LocalContext.current
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
+
+    // region Sign out
+    var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+    val onDismissRequest: () -> Unit = {
+        expanded = false
+        showDialog = false
+    }
+    val onSignOutConfirmed: () -> Unit = {
+        expanded = false
+        showDialog = false
+        onClickSignOut()
+    }
+    // endregion
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -133,7 +152,6 @@ fun MoviesHomeContent(
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 actions = {
-                    var expanded by remember { mutableStateOf(false) }
                     IconButton(onClick = { onClickFavorites() }) {
                         Icon(imageVector = Icons.Filled.Favorite, contentDescription = stringResource(id = R.string.movies_home_favorites))
                     }
@@ -155,8 +173,8 @@ fun MoviesHomeContent(
                             contentDescription = stringResource(id = R.string.movies_home_more_options)
                         )
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                            DropdownMenuItem(onClick = { signOff(context) }) {
-                                Text(text = stringResource(id = R.string.movies_home_sign_off))
+                            DropdownMenuItem(onClick = { showDialog = true }) {
+                                Text(text = stringResource(id = R.string.movies_home_sign_out))
                             }
                         }
                     }
@@ -179,12 +197,7 @@ fun MoviesHomeContent(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { contentPadding ->
-        Box(
-            modifier =
-                modifier.padding(contentPadding).semantics {
-                    contentDescription = "Movies Home Screen" // TODO:
-                }
-        ) {
+        Box(modifier = modifier.padding(contentPadding)) {
             if (movies.isEmpty())
                 EmptyContent(
                     when (searchType) {
@@ -193,6 +206,15 @@ fun MoviesHomeContent(
                     }
                 )
             else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
+
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = { onDismissRequest() },
+                    onConfirmation = { onSignOutConfirmed() },
+                    dialogTitle = R.string.movies_home_sign_out,
+                    dialogText = R.string.sign_out_dialog_description
+                )
+            }
         }
     }
 }
@@ -220,17 +242,11 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         modifier =
             Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
         loading = { Loading() },
-        error = { Placeholder(modifier = Modifier.width(50.dp).height(50.dp)) },
+        error = { Placeholder(modifier = Modifier.size(50.dp)) },
         alignment = Alignment.Center,
         contentScale = ContentScale.Crop
     )
 }
-
-// region Helper methods
-private fun signOff(context: Context) {
-    comingSoon(context)
-}
-// endregion
 
 // region Previews
 @UiModePreviews
