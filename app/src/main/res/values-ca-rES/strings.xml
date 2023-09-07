@@ -3,8 +3,14 @@
     <string name="app_name">Movies</string>
     <string name="logo_description">Logo de Movies</string>
     <string name="welcome_message">Benvingut a Movies App</string>
-    <string name="generic_error_message">Aquest és un missatge derror genèric.</string>
-    <string name="generic_close_message">Tancar</string>
+    <string name="dialog_cancel">Cancel·lar</string>
+    <string name="dialog_accept">Acceptar</string>
+    <string name="sign_out_dialog_description">Estàs segur que vols tancar la sessió?</string>
+    <string name="dummy_error_message">Aquest és un missatge derror genèric.</string>
+    <string name="close_message">Tancar</string>
+    <string name="login_incognito_sign_in">Iniciar sessió com a convidat</string>
+    <string name="login_google_sign_in">Iniciar sessió amb Google</string>
+    <string name="login_email_sign_in">Iniciar sessió amb correu electrònic</string>
     <string name="movies_home_favorites">Preferits</string>
     <string name="movies_home_search_type">Tipus de cerca</string>
     <string name="movies_home_empty_movies">Sense pel·lícules</string>
@@ -33,4 +39,10 @@
     <string name="movie_detail_label">Detall de pel·lícula</string>
     <string name="movie_detail_arrow_back_label">Fletxa del darrere</string>
     <string name="movie_detail_error">Ha passat un problema carregant el detall de la pel·lícula. Disculpeu les molèsties.</string>
+    <string name="login_forgotten_password">Has oblidat la teva contrasenya?</string>
+    <string name="sign_in_password">Contrasenya</string>
+    <string name="sign_in_email">Correu electrònic</string>
+    <string name="coming_soon">Properament</string>
+    <string name="movies_home_more_options">Més opcions</string>
+    <string name="movies_home_sign_out">Tancar sessió</string>
 </resources>
