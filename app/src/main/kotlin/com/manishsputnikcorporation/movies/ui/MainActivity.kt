@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.manishsputnikcorporation.movies.ui.navigation.AppNavigation
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
@@ -23,6 +24,6 @@ class MainActivity : ComponentActivity() {
 fun MoviesApp() {
     MoviesTheme {
         val navController = rememberNavController()
-        AppNavigation(navController)
+        AppNavigation(mainViewModel = hiltViewModel(), navController = navController)
     }
 }

@@ -21,6 +21,7 @@ navigation-ui-ktx-version = "2.7.2"
 mockk-version = "1.13.7"
 hilt-version = "1.0.0"
 compose-material-version = "1.5.1"
+compose-material3-version = "1.1.2"
 compose-ui-version = "1.5.1"
 room-version = "2.5.2"
 
@@ -60,6 +61,7 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 
 # Jetpack Compose libraries:
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material-version" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3-version" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-version" }
 
 # Room:
@@ -100,6 +102,7 @@ navigation = [
 ]
 compose = [
     "androidx-compose-material",
+    "androidx-compose-material3",
     "androidx-compose-ui-tooling",
 ]
 room = [

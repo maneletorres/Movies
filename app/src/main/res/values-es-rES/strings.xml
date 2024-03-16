@@ -11,6 +11,7 @@
     <string name="login_incognito_sign_in">Iniciar sesión como invitado</string>
     <string name="login_google_sign_in">Iniciar sesión con Google</string>
     <string name="login_email_sign_in">Iniciar sesión con correo electrónico</string>
+    <string name="movies_home_default_profile_photo_description">Foto de perfil por defecto</string>
     <string name="movies_home_favorites">Favoritos</string>
     <string name="movies_home_search_type">Tipo de búsqueda</string>
     <string name="movies_home_empty_movies">Sin películas</string>
@@ -45,4 +46,12 @@
     <string name="coming_soon">Próximamente</string>
     <string name="movies_home_more_options">Más opciones</string>
     <string name="movies_home_sign_out">Cerrar sesión</string>
+    <string name="movies_home_generic_greeting">Bienvenido</string>
+    <string name="movies_home_custom_greeting">Hola %s</string>
+    <string name="movies_home_generic_name">Anónimo</string>
+    <string name="password_recovery_email_sent">Correo electrónico de recuperación de contraseña enviado correctamente</string>
+    <string name="password_recovery_email_error">Error al enviar email de recuperación de contraseña</string>
+    <string name="auth_password_recovery_error">Error al recuperar la contraseña</string>
+    <string name="sign_in_incorrect_email">La dirección de correo electrónico no es correcta</string>
+    <string name="sign_in_incorrect_password">Las contraseñas deben tener al menos 6 caracteres</string>
 </resources>

@@ -11,6 +11,7 @@
     <string name="login_incognito_sign_in">Iniciar sessió com a convidat</string>
     <string name="login_google_sign_in">Iniciar sessió amb Google</string>
     <string name="login_email_sign_in">Iniciar sessió amb correu electrònic</string>
+    <string name="movies_home_default_profile_photo_description">Foto de perfil per defecte</string>
     <string name="movies_home_favorites">Preferits</string>
     <string name="movies_home_search_type">Tipus de cerca</string>
     <string name="movies_home_empty_movies">Sense pel·lícules</string>
@@ -45,4 +46,12 @@
     <string name="coming_soon">Properament</string>
     <string name="movies_home_more_options">Més opcions</string>
     <string name="movies_home_sign_out">Tancar sessió</string>
+    <string name="movies_home_generic_greeting">Benvingut</string>
+    <string name="movies_home_custom_greeting">Hola %s</string>
+    <string name="movies_home_generic_name">Anònim</string>
+    <string name="password_recovery_email_sent">El correu electrònic de recuperació de la contrasenya s\'ha enviat correctament</string>
+    <string name="password_recovery_email_error">Error en enviar correu electrònic de recuperació de contrasenya</string>
+    <string name="auth_password_recovery_error">Error en recuperar la contrasenya</string>
+    <string name="sign_in_incorrect_email">L\'adreça de correu electrònic no és correcta</string>
+    <string name="sign_in_incorrect_password">Les contrasenyes han de tenir almenys 6 caràcters</string>
 </resources>

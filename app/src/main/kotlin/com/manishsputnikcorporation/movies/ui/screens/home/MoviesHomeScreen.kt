@@ -1,16 +1,23 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.FabPosition
@@ -24,6 +31,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.rememberScaffoldState
@@ -39,20 +47,23 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
-import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
@@ -65,21 +76,15 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
 import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(
-    analyticsManager: AnalyticsManager,
-    moviesHomeViewModel: MoviesHomeViewModel,
-    onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {}
-) {
+fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
 
-    analyticsManager.trackScreen(screenName = MoviesHome.route)
+    moviesHomeViewModel.trackScreen()
 
     val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
     moviesHomeUIState.let {
@@ -90,6 +95,7 @@ fun MoviesHomeScreen(
                 MoviesHomeContent(
                     scaffoldState,
                     searchType,
+                    user = it.user,
                     movies = it.movieList,
                     onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
                     onClickSearchType = {
@@ -122,6 +128,7 @@ fun MoviesHomeScreen(
 fun MoviesHomeContent(
     scaffoldState: ScaffoldState,
     searchType: Type,
+    user: FirebaseUser?,
     movies: List<MediaItemModel>,
     modifier: Modifier = Modifier,
     onClickFavorites: () -> Unit = {},
@@ -150,7 +157,40 @@ fun MoviesHomeContent(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
+                title = {
+                    Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
+                        if (user?.photoUrl != null) {
+                            // TODO: Google case
+                        } else {
+                            Image(
+                                imageVector = Icons.Default.AccountBox,
+                                contentDescription = stringResource(id = R.string.movies_home_default_profile_photo_description),
+                                modifier =
+                                    Modifier
+                                        // .padding(end = 8.dp) // TODO
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                        Column {
+                            val displayName = user?.displayName
+                            val email = user?.email
+
+                            val greetingText =
+                                if (displayName.isNullOrEmpty()) {
+                                    stringResource(id = R.string.movies_home_generic_greeting)
+                                } else {
+                                    stringResource(id = R.string.movies_home_custom_greeting, displayName)
+                                }
+                            Text(text = greetingText, fontSize = 20.sp, maxLines = 1, overflow = Ellipsis)
+
+                            val nameText = if (email.isNullOrEmpty()) stringResource(id = R.string.movies_home_generic_name) else email
+                            Text(text = nameText, fontSize = 12.sp, maxLines = 1, overflow = Ellipsis)
+                        }
+                    }
+                    // TODO: Text(text = stringResource(id = R.string.app_name))
+                },
                 actions = {
                     IconButton(onClick = { onClickFavorites() }) {
                         Icon(imageVector = Icons.Filled.Favorite, contentDescription = stringResource(id = R.string.movies_home_favorites))
@@ -256,7 +296,7 @@ private fun MoviesHomeContentPreview() {
     MoviesTheme {
         val scaffoldState: ScaffoldState = rememberScaffoldState()
         val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-        MoviesHomeContent(scaffoldState, Type.MOVIE, movies)
+        MoviesHomeContent(scaffoldState = scaffoldState, searchType = Type.MOVIE, user = null, movies = movies)
     }
 }
 

@@ -18,7 +18,7 @@ object LoginScreen : MoviesDestination {
     override val route: String = "login_screen"
 }
 
-object SignInScreen : MoviesDestination {
+object SignUpScreen : MoviesDestination {
     override val route: String = "sign_in_screen"
 }
 

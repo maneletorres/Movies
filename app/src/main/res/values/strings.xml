@@ -21,12 +21,21 @@
     <string name="login_email_sign_in">Sign in with email</string>
     <string name="login_forgotten_password">Have you forgotten your password?</string>
 
-    <!-- SignInScreen: -->
+    <!-- SignUpScreen: -->
     <string name="sign_in_email">Email</string>
     <string name="sign_in_password">Password</string>
+    <string name="sign_in_incorrect_email">The email address is not correct</string>
+    <string name="sign_in_incorrect_password">Passwords must have at least 6 characters</string>
+
+    <!-- PasswordRecoveryScreen: -->
+    <string name="password_recovery_email_sent">Password recovery email sent successfully</string>
+    <string name="password_recovery_email_error">Error sending password recovery email</string>
 
     <!-- MoviesHome: -->
-    <!-- -->
+    <string name="movies_home_default_profile_photo_description">Default profile photo</string>
+    <string name="movies_home_generic_greeting">Welcome</string>
+    <string name="movies_home_custom_greeting">Hi %s</string>
+    <string name="movies_home_generic_name">Anonymous</string>
     <string name="movies_home_favorites">Favorites</string>
     <string name="movies_home_search_type">Search type</string>
     <string name="movies_home_more_options">More options</string>
@@ -86,4 +95,7 @@
     <!-- Analytics: -->
     <string name="analytics_google_sign_in" translatable="false">google_sign_in</string>
     <string name="analytics_email_sign_in" translatable="false">email_sign_in</string>
+
+    <!-- Authentication: -->
+    <string name="auth_password_recovery_error">Error recovering password</string>
 </resources>
