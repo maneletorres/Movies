@@ -1,29 +1,28 @@
 [versions]
 # Plugin versions:
-android-version = "8.1.1"
-kotlin-version = "1.9.10"
-ksp-version = "1.9.10-1.0.13"
-google-services-version = "4.3.15"
-firebase-crashlytics-version = "2.9.9"
-dagger-hilt-version = "2.48"
-gradle-versions-version = "0.47.0"
-version-catalog-update-version = "0.8.1"
-ktfmt-version = "0.13.0"
-
+android-version = "8.4.0"
+kotlin-version = "1.9.23"
+ksp-version = "1.9.23-1.0.20"
+google-services-version = "4.4.1"
+firebase-crashlytics-version = "3.0.1"
+dagger-hilt-version = "2.51.1"
+gradle-versions-version = "0.51.0"
+version-catalog-update-version = "0.8.4"
+ktfmt-version = "0.18.0"
 # Library versions:
-firebase-bom-version = "32.2.3"
+firebase-bom-version = "33.0.0"
 timber-version = "5.0.1"
 retrofit2-version = "2.9.0"
-okhttp3-version = "4.11.0"
-coil-kt-version = "2.4.0"
+okhttp3-version = "4.12.0"
+coil-kt-version = "2.6.0"
 adapter-delegates4-version = "4.3.2"
-navigation-ui-ktx-version = "2.7.2"
+navigation-ui-ktx-version = "2.7.7"
 mockk-version = "1.13.7"
-hilt-version = "1.0.0"
-compose-material-version = "1.5.1"
-compose-ui-version = "1.5.1"
-room-version = "2.5.2"
-
+hilt-version = "1.2.0"
+compose-material-version = "1.6.7"
+compose-material3-version = "1.2.1"
+compose-ui-version = "1.6.7"
+room-version = "2.6.1"
 # Testing library versions:
 junit-version = "4.13.2"
 
@@ -78,8 +77,8 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 [bundles]
 firebase = [
     "firebase-analytics",
+    "firebase-auth",
     "firebase-crashlytics",
-    "firebase-auth"
 ]
 retrofit2 = [
     "com-squareup-retrofit2-converter-moshi",
