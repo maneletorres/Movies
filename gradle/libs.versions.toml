@@ -1,27 +1,26 @@
 [versions]
 # Plugin versions:
-android-version = "8.4.0"
-kotlin-version = "1.9.23"
-ksp-version = "1.9.23-1.0.20"
-google-services-version = "4.4.1"
-firebase-crashlytics-version = "3.0.1"
+android-version = "8.5.1"
+kotlin-version = "2.0.0"
+ksp-version = "2.0.0-1.0.23"
+google-services-version = "4.4.2"
+firebase-crashlytics-version = "3.0.2"
 dagger-hilt-version = "2.51.1"
 gradle-versions-version = "0.51.0"
 version-catalog-update-version = "0.8.4"
-ktfmt-version = "0.18.0"
+ktfmt-version = "0.19.0"
 # Library versions:
-firebase-bom-version = "33.0.0"
+firebase-bom-version = "33.1.2"
 timber-version = "5.0.1"
-retrofit2-version = "2.9.0"
+retrofit2-version = "2.11.0"
 okhttp3-version = "4.12.0"
-coil-kt-version = "2.6.0"
+coil-kt-version = "2.7.0"
 adapter-delegates4-version = "4.3.2"
 navigation-ui-ktx-version = "2.7.7"
-mockk-version = "1.13.7"
+mockk-version = "1.13.12"
 hilt-version = "1.2.0"
-compose-material-version = "1.6.7"
-compose-material3-version = "1.2.1"
-compose-ui-version = "1.6.7"
+compose-material-version = "1.6.8"
+compose-ui-version = "1.6.8"
 room-version = "2.6.1"
 # Testing library versions:
 junit-version = "4.13.2"
@@ -117,7 +116,8 @@ testing-compose = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-version" }
 android-library = { id = "com.android.library", version.ref = "android-version" }
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-version" }
