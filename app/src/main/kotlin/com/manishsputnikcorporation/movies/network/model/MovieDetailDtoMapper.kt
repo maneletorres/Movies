@@ -16,8 +16,7 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
                 plot = overview,
                 image = image,
                 releaseDate = releaseDate,
-                runtimeStr = runtime.toString()
-            )
+                runtimeStr = runtime.toString())
         }
     }
 
@@ -31,8 +30,7 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
                 image = image,
                 releaseDate = releaseDate,
                 runtime = runtimeStr?.let { timeToInt(it) } ?: 0,
-                overview = plot
-            )
+                overview = plot)
         }
     }
 

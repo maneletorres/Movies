@@ -45,8 +45,7 @@ object RetrofitModule {
                     Interceptor {
                         val newRequest = it.request().newBuilder().addHeader("Authorization", "Bearer $BEARER_TOKEN").build()
                         it.proceed(newRequest)
-                    }
-                )
+                    })
             }
             .build()
 

@@ -15,6 +15,7 @@ interface MovieDetailRepository {
     fun getMovie(id: String): Flow<MediaItemModel>
 
     suspend fun updateMovie(id: String): DomainResponse<Boolean>
+
     // endregion
 
     // region TVShow

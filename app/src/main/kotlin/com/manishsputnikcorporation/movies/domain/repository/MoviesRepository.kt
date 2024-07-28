@@ -15,6 +15,7 @@ interface MoviesRepository {
     fun getMovies(): Flow<List<MediaItemModel>>
 
     fun getFavoriteMovies(): Flow<List<MediaItemModel>>
+
     // endregion
 
     // region TVShow

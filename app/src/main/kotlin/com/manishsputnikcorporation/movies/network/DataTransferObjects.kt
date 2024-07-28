@@ -19,8 +19,7 @@ fun MoviesDto.asDatabaseModel(): List<DatabaseMovie> =
             year = it.releaseDate, // TODO: to extract
             imageUrl = it.imageUrl,
             rating = it.rating.toString(),
-            isFavorite = false
-        )
+            isFavorite = false)
     }
 
 fun TVShowsDto.asDatabaseModel(): List<DatabaseTvShow> =
@@ -32,6 +31,5 @@ fun TVShowsDto.asDatabaseModel(): List<DatabaseTvShow> =
             year = it.releaseDate, // TODO: to extract
             imageUrl = it.imageUrl,
             rating = it.rating.toString(),
-            isFavorite = false
-        )
+            isFavorite = false)
     }
