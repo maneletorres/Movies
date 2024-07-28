@@ -53,8 +53,7 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
                     authManager.signOut()
                     navController.navigateInclusiveTo(LoginScreen.route, MoviesHome.route)
                 },
-                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") }
-            )
+                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") })
         }
         composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
             val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)

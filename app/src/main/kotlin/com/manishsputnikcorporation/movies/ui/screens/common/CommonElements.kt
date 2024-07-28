@@ -68,8 +68,7 @@ fun AlertDialog(
             }
         },
         title = { Text(text = stringResource(id = dialogTitle)) },
-        text = { Text(text = stringResource(id = dialogText)) }
-    )
+        text = { Text(text = stringResource(id = dialogText)) })
 }
 
 // region Previews

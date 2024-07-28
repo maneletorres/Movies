@@ -16,8 +16,7 @@ class TvShowDetailDtoMapper : DomainMapper<TVShowDetailDto, TvShowDetailModel> {
                 plot = overview,
                 image = image,
                 releaseDate = releaseDate,
-                runtimeStr = runtime.map { it.toString() }
-            )
+                runtimeStr = runtime.map { it.toString() })
         }
     }
 
@@ -30,8 +29,7 @@ class TvShowDetailDtoMapper : DomainMapper<TVShowDetailDto, TvShowDetailModel> {
                 image = image,
                 releaseDate = releaseDate,
                 runtime = runtimeStr.map { timeToInt(it) },
-                overview = plot
-            )
+                overview = plot)
         }
     }
 

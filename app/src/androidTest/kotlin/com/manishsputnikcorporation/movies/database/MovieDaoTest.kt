@@ -38,6 +38,7 @@ class MovieDaoTest {
     fun closeDb() {
         db.close()
     }
+
     // endregion
 
     // region Testing
