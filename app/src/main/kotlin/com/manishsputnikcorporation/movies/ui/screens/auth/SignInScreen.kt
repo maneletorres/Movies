@@ -55,44 +55,40 @@ fun SignInScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = 
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val emailText = stringResource(id = R.string.sign_in_email)
-        val passwordText = stringResource(id = R.string.sign_in_password)
+        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            val emailText = stringResource(id = R.string.sign_in_email)
+            val passwordText = stringResource(id = R.string.sign_in_password)
 
-        SignInTextField(
-            value = email,
-            label = emailText,
-            placeholder = emailText,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }
-        ) {
-            email = it
+            SignInTextField(
+                value = email,
+                label = emailText,
+                placeholder = emailText,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }) {
+                    email = it
+                }
+            Spacer(modifier = Modifier.height(8.dp))
+            SignInTextField(
+                value = password,
+                label = passwordText,
+                placeholder = passwordText,
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
+                    password = it
+                }
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(modifier = Modifier.padding(horizontal = 40.dp)) {
+                Button(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(50.dp), onClick = { /*TODO*/ }) {
+                    Text(text = "Sign up")
+                }
+            }
+            Spacer(modifier = Modifier.height(40.dp))
+            ClickableText(
+                text = AnnotatedString(text = "Do you have an account yet?"),
+                onClick = { onNavigation.invoke() },
+                style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline))
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        SignInTextField(
-            value = password,
-            label = passwordText,
-            placeholder = passwordText,
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }
-        ) {
-            password = it
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-            Button(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(50.dp), onClick = { /*TODO*/}) { Text(text = "Sign up") }
-        }
-        Spacer(modifier = Modifier.height(40.dp))
-        ClickableText(
-            text = AnnotatedString(text = "Do you have an account yet?"),
-            onClick = { onNavigation.invoke() },
-            style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline)
-        )
-    }
 }
 
 @Composable
@@ -114,8 +110,7 @@ fun SignInTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions
-    )
+        keyboardOptions = keyboardOptions)
 }
 
 @Composable
@@ -125,8 +120,7 @@ fun LogoutDialog(onConfirmLogOut: () -> Unit = {}, onDismiss: () -> Unit = {}) {
         title = { Text(text = "Close session") },
         text = { Text(text = "Are you sure you want to close session?") },
         confirmButton = { Button(onClick = onConfirmLogOut) { Text(text = "Accept") } },
-        dismissButton = { Button(onClick = onDismiss) { Text(text = "Cancel") } }
-    )
+        dismissButton = { Button(onClick = onDismiss) { Text(text = "Cancel") } })
 }
 
 // region Preview
@@ -153,10 +147,9 @@ fun SignInTextFieldPreview() {
                 placeholder = stringResource(id = R.string.sign_in_email),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }
-            ) {
-                password = it
-            }
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
+                    password = it
+                }
         }
     }
 }

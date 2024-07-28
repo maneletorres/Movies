@@ -51,6 +51,7 @@ class RetrofitServiceExecutorTest {
         every { retrofitCall.request().url.toString() } returns "fake-URL"
         every { retrofitCall.execute() } returns apiResponse
     }
+
     // endregion
 
     // region Testing
@@ -120,6 +121,7 @@ class RetrofitServiceExecutorTest {
         // When:
         executeNetworkCall()
     }
+
     // endregion
 
     // region Helper methods

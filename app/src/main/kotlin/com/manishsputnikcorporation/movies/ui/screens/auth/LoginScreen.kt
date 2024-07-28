@@ -69,8 +69,7 @@ fun LoginScreen(
                 },
                 onGoogleSignInClick = { comingSoon(context) },
                 onEmailSignInClick = { comingSoon(context) },
-                onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) }
-            )
+                onForgottenPasswordClick = { onForgottenPasswordClick(analyticsManager, onNavigation) })
         }
     }
 }
@@ -87,8 +86,7 @@ fun BottomContent(
         ProviderButtonList(
             onIncognitoSignInClick = onIncognitoSignInClick,
             onGoogleSignInClick = onGoogleSignInClick,
-            onEmailSignInClick = onEmailSignInClick
-        )
+            onEmailSignInClick = onEmailSignInClick)
         Spacer(modifier = Modifier.height(8.dp))
         ClickableText(
             text = AnnotatedString(text = stringResource(id = R.string.login_forgotten_password)),
@@ -99,11 +97,9 @@ fun BottomContent(
                     color = if (isSystemInDarkTheme()) Color.White else Color.Black,
                     fontSize = 12.sp,
                     fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline
-                )
-        ) {
-            onForgottenPasswordClick()
-        }
+                    textDecoration = TextDecoration.Underline)) {
+                onForgottenPasswordClick()
+            }
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -118,22 +114,18 @@ fun ProviderButtonList(
     Column(modifier = modifier, verticalArrangement = spacedBy(8.dp)) {
         ProviderButton(
             textRes = R.string.login_incognito_sign_in,
-            leadingIcon = { Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null) }
-        ) {
-            onIncognitoSignInClick.invoke()
-        }
+            leadingIcon = { Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null) }) {
+                onIncognitoSignInClick.invoke()
+            }
         ProviderButton(
             textRes = R.string.login_google_sign_in,
-            leadingIcon = { Image(painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null) }
-        ) {
-            onGoogleSignInClick.invoke()
-        }
+            leadingIcon = { Image(painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null) }) {
+                onGoogleSignInClick.invoke()
+            }
         ProviderButton(
-            textRes = R.string.login_email_sign_in,
-            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }
-        ) {
-            onEmailSignInClick.invoke()
-        }
+            textRes = R.string.login_email_sign_in, leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }) {
+                onEmailSignInClick.invoke()
+            }
     }
 }
 
@@ -143,12 +135,11 @@ fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit
         onClick = { onClick.invoke() },
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         shape = RoundedCornerShape(6.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.White)
-    ) {
-        leadingIcon.invoke()
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = stringResource(id = textRes))
-    }
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.White)) {
+            leadingIcon.invoke()
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(id = textRes))
+        }
 }
 
 // region Helper methods
@@ -171,6 +162,7 @@ private fun onForgottenPasswordClick(
     analyticsManager.trackButtonClick("forgotten_password")
     onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)
 }
+
 // endregion
 
 // region Preview

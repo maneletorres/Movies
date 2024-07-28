@@ -56,6 +56,7 @@ constructor(
             eitherFailure(DomainError("Code: ", ex.message.toString()))
         }
     }
+
     // endregion
 
     // region TVShow

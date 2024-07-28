@@ -70,8 +70,7 @@ fun MovieDetailScreen(
                 MovieDetailContent(
                     state = state,
                     onBackArrowClick = { onBackArrowClick() },
-                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } }
-                )
+                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } })
         }
     }
 }
@@ -95,47 +94,43 @@ fun MovieDetailContent(
                             contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
                         )
                     }
-                }
-            )
+                })
         },
         bottomBar = {
             // TODO: implement when new features are introduced
-        }
-    ) {
-        when {
-            state.isLoading -> Loading()
-            state.movieDetailData.movieDetailModel != null -> {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    modifier =
-                        modifier
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                            .fillMaxHeight()
-                            .semantics { contentDescription = "Movie Detail Screen" }
-                ) {
-                    state.movieDetailData.movieDetailModel.let {
-                        MovieOverview(
-                            image = it.image,
-                            title = it.title,
-                            releaseDate = it.releaseDate,
-                            runtime = it.runtimeStr,
-                            isFavorite = state.movieDetailData.isFavorite
-                        ) {
-                            onFavoriteMovieClick()
+        }) {
+            when {
+                state.isLoading -> Loading()
+                state.movieDetailData.movieDetailModel != null -> {
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier =
+                            modifier
+                                .verticalScroll(rememberScrollState())
+                                .padding(horizontal = 16.dp, vertical = 16.dp)
+                                .fillMaxHeight()
+                                .semantics { contentDescription = "Movie Detail Screen" }) {
+                            state.movieDetailData.movieDetailModel.let {
+                                MovieOverview(
+                                    image = it.image,
+                                    title = it.title,
+                                    releaseDate = it.releaseDate,
+                                    runtime = it.runtimeStr,
+                                    isFavorite = state.movieDetailData.isFavorite) {
+                                        onFavoriteMovieClick()
+                                    }
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = it.plot,
+                                    modifier = modifier.fillMaxWidth(),
+                                    style = MaterialTheme.typography.body1,
+                                )
+                            }
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = it.plot,
-                            modifier = modifier.fillMaxWidth(),
-                            style = MaterialTheme.typography.body1,
-                        )
-                    }
                 }
+                state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
             }
-            state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
         }
-    }
 }
 
 @Composable
@@ -156,8 +151,7 @@ fun MovieOverview(
             isFavorite = isFavorite,
             releaseDate = releaseDate,
             runtime = runtime,
-            onFavoriteMovieClick = onFavoriteMovieClick
-        )
+            onFavoriteMovieClick = onFavoriteMovieClick)
         Spacer(modifier = Modifier.width(8.dp))
     }
 }
@@ -171,8 +165,7 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
             loading = { Loading() },
             error = { Placeholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,
-            contentScale = ContentScale.Fit
-        )
+            contentScale = ContentScale.Fit)
     }
 }
 
@@ -200,8 +193,7 @@ fun MovieFavorite(isFavorite: Boolean, onFavoriteMovieClick: () -> Unit = {}) {
     IconButton(modifier = Modifier.then(Modifier.size(24.dp)), onClick = { onFavoriteMovieClick() }) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie)
-        )
+            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie))
     }
 }
 

@@ -21,6 +21,7 @@ inline fun <T, E> Either<T, E>.onFailure(action: (E) -> Unit): Either<T, E> {
     if (this is Either.Failure) action(error)
     return this
 }
+
 // endregion
 
 // region Transformers
@@ -56,6 +57,7 @@ inline fun <T, E1, E2> Either<T, E1>.mapFailure(action: (E1) -> E2): Either<T, E
         is Either.Failure -> Either.Failure(action(error))
     }
 }
+
 // endregion
 
 // region Concat
@@ -82,6 +84,7 @@ inline fun <T1, E1, T2, E2> Either<T1, E1>.then(onSuccess: (T1) -> Either<T2, E2
         is Either.Failure -> onFailure(error)
     }
 }
+
 // endregion
 
 // region Retrieve
@@ -97,6 +100,7 @@ inline fun <T, E> Either<T, E>.getOrElse(action: () -> T): T {
 
     return if (this is Either.Success) data else action()
 }
+
 // endregion
 
 // region Checks
