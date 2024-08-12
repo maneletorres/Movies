@@ -115,7 +115,6 @@ testing-compose = [
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-version" }
-android-library = { id = "com.android.library", version.ref = "android-version" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
