@@ -99,11 +99,9 @@ fun BottomContent(
                     color = if (isSystemInDarkTheme()) Color.White else Color.Black,
                     fontSize = 12.sp,
                     fontFamily = FontFamily.Default,
-                    textDecoration = TextDecoration.Underline
-                )
-        ) {
-            onForgottenPasswordClick()
-        }
+                    textDecoration = TextDecoration.Underline)) {
+                onForgottenPasswordClick()
+            }
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -150,6 +148,29 @@ fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit
         Text(text = stringResource(id = textRes))
     }
 }
+
+// region Helper methods
+private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: AnalyticsManager, onNavigation: (String, String) -> Unit) {
+    when (val result = authManager.signInAnonymously()) {
+        is AuthRes.Success -> {
+            analyticsManager.trackButtonClick("incognito_sign_in")
+            onNavigation.invoke(MoviesHome.route, LoginScreen.route)
+        }
+        is AuthRes.Error -> {
+            analyticsManager.trackError(result.errorMessage)
+        }
+    }
+}
+
+private fun onForgottenPasswordClick(
+    analyticsManager: AnalyticsManager,
+    onNavigation: (String, String) -> Unit = { _, _ -> },
+) {
+    analyticsManager.trackButtonClick("forgotten_password")
+    onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)
+}
+
+// endregion
 
 // region Preview
 @UiModePreviews

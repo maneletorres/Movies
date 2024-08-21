@@ -55,9 +55,7 @@ constructor(
                     it.onSuccess { movieDetailModel: MovieDetailModel ->
                             _movieDetailUiState.update { state ->
                                 state.copy(
-                                    isLoading = false,
-                                    movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel)
-                                )
+                                    isLoading = false, movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel))
                             }
                         }
                         .onFailure { _movieDetailUiState.update { state -> state.copy(isLoading = false, isFailed = true) } }
@@ -89,6 +87,7 @@ constructor(
     private fun updateFavoriteStatus(favoriteStatus: Boolean) {
         _movieDetailUiState.update { state -> state.copy(movieDetailData = state.movieDetailData.copy(isFavorite = favoriteStatus)) }
     }
+
     // endregion
 
     // region State & Events

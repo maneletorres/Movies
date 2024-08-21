@@ -55,8 +55,7 @@ fun MoviesLogo(@StringRes textRes: Int, modifier: Modifier = Modifier) {
             painter = painterResource(id = R.drawable.ic_launcher_foreground),
             contentDescription = stringResource(id = R.string.logo_description),
             modifier = Modifier.size(150.dp, 150.dp).clip(CircleShape).border(2.dp, Color.Black, CircleShape).background(Color.Gray),
-            contentScale = ContentScale.Crop
-        )
+            contentScale = ContentScale.Crop)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = stringResource(textRes), fontSize = 30.sp, fontWeight = FontWeight.Bold)
     }

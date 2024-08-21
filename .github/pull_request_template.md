@@ -5,9 +5,9 @@
 Jira ticket number:
 
 ## Pull request checklist
-Please check if your PR fulfkills the following requeriments:
+Please check if your PR fulfills the following requeriments:
 - [ ] Build was run locally and finish successfully
-- [ ] Lint, SonarLint and Ktlint has passed locally
+- [ ] Lint, SonarLint and Ktfmt has passed locally
 
 # Type of change
 - [ ] Epic

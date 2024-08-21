@@ -30,7 +30,6 @@ class GlobalErrorManagerImpl @Inject constructor(private val defaultErrorMapper:
         dismissAction: (() -> Unit)?
     ) {
         _event.emit(
-            GlobalErrorHandlerModel(defaultErrorMapper.map(throwable), onGenericError, onUnauthorized, onNetworkAvailable, dismissAction)
-        )
+            GlobalErrorHandlerModel(defaultErrorMapper.map(throwable), onGenericError, onUnauthorized, onNetworkAvailable, dismissAction))
     }
 }
