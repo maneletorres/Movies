@@ -14,13 +14,13 @@ import com.manishsputnikcorporation.movies.utils.extensions.onFailure
 import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel

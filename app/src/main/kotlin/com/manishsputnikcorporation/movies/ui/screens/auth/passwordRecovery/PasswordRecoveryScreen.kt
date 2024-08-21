@@ -49,29 +49,26 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
         Column(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            var email by remember { mutableStateOf("") }
+            horizontalAlignment = Alignment.CenterHorizontally) {
+                var email by remember { mutableStateOf("") }
 
-            Text(text = "Forgot your password", style = TextStyle(fontSize = 40.sp))
-            Spacer(modifier = Modifier.height(50.dp))
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(text = "Email") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-                Button(
-                    onClick = { passwordRecoveryViewModel.onRecoverPasswordClicked(email) },
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier.fillMaxWidth().height(50.dp)
-                ) {
-                    Text(text = "Recover password")
+                Text(text = "Forgot your password", style = TextStyle(fontSize = 40.sp))
+                Spacer(modifier = Modifier.height(50.dp))
+                TextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text(text = "Email") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+                Spacer(modifier = Modifier.height(30.dp))
+                Box(modifier = Modifier.padding(horizontal = 40.dp)) {
+                    Button(
+                        onClick = { passwordRecoveryViewModel.onRecoverPasswordClicked(email) },
+                        shape = RoundedCornerShape(50.dp),
+                        modifier = Modifier.fillMaxWidth().height(50.dp)) {
+                            Text(text = "Recover password")
+                        }
                 }
             }
-        }
     }
 
     val context = LocalContext.current

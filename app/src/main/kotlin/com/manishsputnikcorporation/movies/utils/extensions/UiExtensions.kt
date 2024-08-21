@@ -19,6 +19,5 @@ suspend fun ScaffoldState.showSnackBar(context: Context, @StringRes message: Int
     snackbarHostState.showSnackbar(
         message = context.getString(message),
         actionLabel = context.resources.getString(R.string.close_message),
-        duration = SnackbarDuration.Long
-    )
+        duration = SnackbarDuration.Long)
 }

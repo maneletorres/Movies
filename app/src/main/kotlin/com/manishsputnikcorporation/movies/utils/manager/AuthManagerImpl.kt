@@ -35,15 +35,11 @@ class AuthManagerImpl(val context: Context) : AuthManager {
 
     override suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> =
         manageAuthResult(
-            authResult = auth.createUserWithEmailAndPassword(email, password),
-            errorMessage = "create_user_with_email_and_password_error"
-        )
+            authResult = auth.createUserWithEmailAndPassword(email, password), errorMessage = "create_user_with_email_and_password_error")
 
     override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> =
         manageAuthResult(
-            authResult = auth.signInWithEmailAndPassword(email, password),
-            errorMessage = "sign_in_with_email_and_password_error"
-        )
+            authResult = auth.signInWithEmailAndPassword(email, password), errorMessage = "sign_in_with_email_and_password_error")
 
     override suspend fun recoverPassword(email: String): AuthRes<Unit> =
         try {

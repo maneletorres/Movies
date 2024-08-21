@@ -10,11 +10,11 @@ import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthRes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class PasswordRecoveryViewModel @Inject constructor(private val analyticsManager: AnalyticsManager, private val authManager: AuthManager) :

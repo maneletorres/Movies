@@ -167,8 +167,7 @@ fun MoviesHomeContent(
                                     Modifier
                                         // .padding(end = 8.dp) // TODO
                                         .size(40.dp)
-                                        .clip(CircleShape)
-                            )
+                                        .clip(CircleShape))
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                         Column {
