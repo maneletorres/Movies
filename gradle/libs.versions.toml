@@ -31,10 +31,10 @@ dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref =
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt-version" }
 
 # Firebase libraries:
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
-firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom",version.ref = "firebase-bom-version" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 
 # Timber libraries:
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
