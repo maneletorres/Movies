@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,13 +41,15 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel, onNavigation: () -> Unit = {}) {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 
     passwordRecoveryViewModel.trackScreen()
 
-    Scaffold(scaffoldState = scaffoldState) { contentPadding ->
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { contentPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(contentPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally) {
                 var email by remember { mutableStateOf("") }
@@ -64,7 +66,9 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
                     Button(
                         onClick = { passwordRecoveryViewModel.onRecoverPasswordClicked(email) },
                         shape = RoundedCornerShape(50.dp),
-                        modifier = Modifier.fillMaxWidth().height(50.dp)) {
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)) {
                             Text(text = "Recover password")
                         }
                 }
@@ -76,11 +80,11 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
         passwordRecoveryViewModel.event.collectLatest { event ->
             when (event) {
                 is SuccessfulPasswordRecovery -> {
-                    scaffoldState.showSnackBar(context, R.string.password_recovery_email_sent)
+                    snackbarHostState.showSnackBar(context, R.string.password_recovery_email_sent)
                     onNavigation()
                 }
                 is FailedPasswordRecovery -> {
-                    scaffoldState.showSnackBar(context, R.string.password_recovery_email_error)
+                    snackbarHostState.showSnackBar(context, R.string.password_recovery_email_error)
                 }
             }
         }

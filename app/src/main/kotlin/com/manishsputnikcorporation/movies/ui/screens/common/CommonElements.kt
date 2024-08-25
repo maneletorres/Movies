@@ -12,12 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,14 +31,14 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 
 @Composable
 fun Loading(modifier: Modifier = Modifier) {
-    Surface(contentColor = MaterialTheme.colors.primary) {
+    Surface(contentColor = MaterialTheme.colorScheme.primary) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
     }
 }
 
 @Composable
 fun EmptyContent(@StringRes message: Int) {
-    Surface(contentColor = MaterialTheme.colors.primary) {
+    Surface(contentColor = MaterialTheme.colorScheme.primary) {
         Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
             Text(text = stringResource(id = message))
         }
@@ -51,6 +52,7 @@ fun Placeholder(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertDialog(
     @StringRes dialogTitle: Int,
@@ -58,17 +60,16 @@ fun AlertDialog(
     onDismissRequest: () -> Unit = {},
     onConfirmation: () -> Unit = {}
 ) {
-    AlertDialog(
+    BasicAlertDialog(
         onDismissRequest = { onDismissRequest() },
-        buttons = {
+        content = {
             Row(modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = { onDismissRequest() }) { Text(text = stringResource(id = R.string.dialog_cancel)) }
                 Spacer(modifier = Modifier.width(8.dp))
                 TextButton(onClick = { onConfirmation() }) { Text(text = stringResource(id = R.string.dialog_accept)) }
             }
-        },
-        title = { Text(text = stringResource(id = dialogTitle)) },
-        text = { Text(text = stringResource(id = dialogText)) })
+        }
+    )
 }
 
 // region Previews

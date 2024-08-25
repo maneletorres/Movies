@@ -2,8 +2,8 @@ package com.manishsputnikcorporation.movies.utils.extensions
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarDuration
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.MOVIE
@@ -15,9 +15,9 @@ fun Type.toggleSearchType(): Type =
         TV_SHOW -> MOVIE
     }
 
-suspend fun ScaffoldState.showSnackBar(context: Context, @StringRes message: Int) {
-    snackbarHostState.showSnackbar(
+suspend fun SnackbarHostState.showSnackBar(context: Context, @StringRes message: Int) =
+    showSnackbar(
         message = context.getString(message),
         actionLabel = context.resources.getString(R.string.close_message),
-        duration = SnackbarDuration.Long)
-}
+        duration = SnackbarDuration.Long
+    )

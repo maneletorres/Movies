@@ -12,19 +12,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -66,7 +64,9 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
 
     Scaffold { contentPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(contentPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
                 val emailText = stringResource(id = R.string.sign_in_email)
@@ -134,12 +134,12 @@ fun SignUpTextField(
         leadingIcon = leadingIcon,
         trailingIcon = {
             if (isError) {
-                Icon(imageVector = Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colors.error)
+                Icon(imageVector = Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.error)
             }
         },
-        supportingText = {
+        label = {
             if (isError) {
-                Text(text = errorText, modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.error)
+                Text(text = errorText, modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
             }
         },
         isError = isError,

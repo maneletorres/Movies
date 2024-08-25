@@ -1,6 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -18,9 +18,9 @@ private val domine = FontFamily(Font(R.font.domine_regular), Font(R.font.domine_
 
 val MoviesTypography =
     Typography(
-        h4 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 30.sp),
-        h5 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 24.sp),
-        h6 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 20.sp),
+        headlineSmall = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 30.sp),
+        headlineMedium = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 24.sp),
+        headlineLarge = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 20.sp),
         subtitle1 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 16.sp),
         subtitle2 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 14.sp),
         body1 = TextStyle(fontFamily = domine, fontWeight = FontWeight.Normal, fontSize = 16.sp),

@@ -14,18 +14,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -68,6 +69,7 @@ fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: Strin
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MovieDetailContent(
@@ -91,7 +93,7 @@ fun MovieDetailContent(
         },
         bottomBar = {
             // TODO: implement when new features are introduced
-        }) {
+        }) { contentPadding ->
             when {
                 state.isLoading -> Loading()
                 state.movieDetailData.movieDetailModel != null -> {
@@ -173,7 +175,7 @@ fun MovieInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h6)
+            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.headlineLarge)
             MovieFavorite(isFavorite, onFavoriteMovieClick)
         }
         MovieSecondaryInfo(year = releaseDate, runtime = runtime)

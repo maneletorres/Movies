@@ -18,23 +18,24 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,6 +60,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
@@ -81,7 +83,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
 
     moviesHomeViewModel.trackScreen()
@@ -93,7 +95,7 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
             Loading -> Loading()
             is Data ->
                 MoviesHomeContent(
-                    scaffoldState,
+                    snackbarHostState,
                     searchType,
                     user = it.user,
                     movies = it.movieList,
@@ -112,7 +114,7 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
         moviesHomeViewModel.event.collectLatest { event ->
             when (event) {
                 is MoviesHomeViewModel.Event.Error -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
+                    snackbarHostState.showSnackbar(
                         message = context.resources.getString(R.string.movies_home_error, event.searchType),
                         actionLabel = context.resources.getString(R.string.close_message),
                         duration = SnackbarDuration.Long)
@@ -122,9 +124,10 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesHomeContent(
-    scaffoldState: ScaffoldState,
+    snackbarHostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
     movies: List<MediaItemModel>,
@@ -152,7 +155,7 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -164,10 +167,10 @@ fun MoviesHomeContent(
                                 imageVector = Icons.Default.AccountBox,
                                 contentDescription = stringResource(id = R.string.movies_home_default_profile_photo_description),
                                 modifier =
-                                    Modifier
-                                        // .padding(end = 8.dp) // TODO
-                                        .size(40.dp)
-                                        .clip(CircleShape))
+                                Modifier
+                                    // .padding(end = 8.dp) // TODO
+                                    .size(40.dp)
+                                    .clip(CircleShape))
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                         Column {
@@ -207,9 +210,12 @@ fun MoviesHomeContent(
                             imageVector = Icons.Filled.MoreVert,
                             contentDescription = stringResource(id = R.string.movies_home_more_options))
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                            DropdownMenuItem(onClick = { showDialog = true }) {
-                                Text(text = stringResource(id = R.string.movies_home_sign_out))
-                            }
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = stringResource(id = R.string.movies_home_sign_out))
+                                },
+                                onClick = { showDialog = true }
+                            )
                         }
                     }
                 })
@@ -221,7 +227,9 @@ fun MoviesHomeContent(
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
-                    modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(bottom = 8.dp, end = 8.dp),
                     onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
                         Text(stringResource(id = R.string.movies_home_up_button_text))
                     }
@@ -269,7 +277,10 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
         modifier =
-            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
+        Modifier
+            .height(200.dp)
+            .clickable { onClickMovie(id) }
+            .semantics { contentDescription = "Movie Detail" }, // TODO: to check
         loading = { Loading() },
         error = { Placeholder(modifier = Modifier.size(50.dp)) },
         alignment = Alignment.Center,
@@ -282,9 +293,9 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 @Composable
 private fun MoviesHomeContentPreview() {
     MoviesTheme {
-        val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
         val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-        MoviesHomeContent(scaffoldState = scaffoldState, searchType = Type.MOVIE, user = null, movies = movies)
+        MoviesHomeContent(snackbarHostState = snackbarHostState, searchType = Type.MOVIE, user = null, movies = movies)
     }
 }
 
