@@ -9,5 +9,5 @@ data class TVShowDetailDto(
     @field:Json(name = "poster_path") val image: String,
     @field:Json(name = "first_air_date") val releaseDate: String,
     @field:Json(name = "episode_run_time") val runtime: List<Int>,
-    val overview: String
+    val overview: String,
 )

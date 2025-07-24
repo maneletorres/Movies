@@ -39,7 +39,8 @@ fun RecoverPasswordScreen() {
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "Email") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        )
         Spacer(modifier = Modifier.height(30.dp))
         Box(modifier = Modifier.padding(horizontal = 40.dp)) {
             Button(onClick = {}, shape = RoundedCornerShape(50.dp), modifier = Modifier.fillMaxWidth().height(50.dp)) {

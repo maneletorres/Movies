@@ -20,11 +20,7 @@ interface TvShowLocalDataSource {
     suspend fun updateTvShow(movie: DatabaseTvShow)
 }
 
-class TvShowLocalDataSourceImpl
-@Inject
-constructor(
-    private val tvShowDao: TvShowDao,
-) : TvShowLocalDataSource {
+class TvShowLocalDataSourceImpl @Inject constructor(private val tvShowDao: TvShowDao) : TvShowLocalDataSource {
 
     override fun insertTvShows(tvShows: List<DatabaseTvShow>) = tvShowDao.insertAll(tvShows)
 

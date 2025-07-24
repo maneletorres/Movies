@@ -15,7 +15,7 @@ data class DatabaseMovie(
     @ColumnInfo(name = "year") val year: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
     @ColumnInfo(name = "rating") val rating: String,
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean,
 ) : DatabaseEntity
 
 fun DatabaseMovie.asDomainModel(): MediaItemModel =
@@ -29,7 +29,7 @@ data class DatabaseTvShow(
     @ColumnInfo(name = "year") val year: String,
     @ColumnInfo(name = "image_url") val imageUrl: String,
     @ColumnInfo(name = "rating") val rating: String,
-    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean,
 ) : DatabaseEntity
 
 fun DatabaseTvShow.asDomainModel(): MediaItemModel =

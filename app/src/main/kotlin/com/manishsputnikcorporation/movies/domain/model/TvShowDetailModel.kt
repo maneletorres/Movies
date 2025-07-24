@@ -13,5 +13,5 @@ data class TvShowDetailModel(
     val plot: String,
     val image: String,
     val releaseDate: String,
-    val runtimeStr: List<String>
+    val runtimeStr: List<String>,
 ) : Identifiable, Parcelable

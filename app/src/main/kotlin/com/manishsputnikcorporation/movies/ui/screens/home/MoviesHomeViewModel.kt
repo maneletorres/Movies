@@ -32,7 +32,7 @@ constructor(
     private val loadDataUseCase: LoadDataUseCase,
     private val getDataUseCase: GetDataUseCase,
     private val getFavoriteDataUseCase: GetFavoriteDataUseCase,
-    private val safeFlowUseCase: FlowUseCaseDelegate
+    private val safeFlowUseCase: FlowUseCaseDelegate,
 ) : ViewModel(), FlowUseCaseDelegate by safeFlowUseCase {
 
     //  val moviesHomeUIState: StateFlow<MoviesHomeUiState> =

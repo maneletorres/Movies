@@ -56,7 +56,7 @@ fun AlertDialog(
     @StringRes dialogTitle: Int,
     @StringRes dialogText: Int,
     onDismissRequest: () -> Unit = {},
-    onConfirmation: () -> Unit = {}
+    onConfirmation: () -> Unit = {},
 ) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
@@ -68,7 +68,8 @@ fun AlertDialog(
             }
         },
         title = { Text(text = stringResource(id = dialogTitle)) },
-        text = { Text(text = stringResource(id = dialogText)) })
+        text = { Text(text = stringResource(id = dialogText)) },
+    )
 }
 
 // region Previews
