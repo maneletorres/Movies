@@ -2,7 +2,7 @@ package com.manishsputnikcorporation.movies.utils.enums
 
 enum class Type(val type: String) {
     MOVIE("Movie"),
-    TV_SHOW("TVSeries")
+    TV_SHOW("TVSeries"),
 }
 
 fun String.toType(): Type =

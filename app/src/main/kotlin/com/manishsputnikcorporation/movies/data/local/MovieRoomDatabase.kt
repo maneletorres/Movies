@@ -23,7 +23,7 @@ abstract class MovieRoomDatabase : RoomDatabase() {
 
     class Callback
     @Inject
-    constructor(private val database: Provider<MovieRoomDatabase>, @ApplicationScope private val applicationScope: CoroutineScope) :
+    constructor(private val database: Provider<MovieRoomDatabase>, @param:ApplicationScope private val applicationScope: CoroutineScope) :
         RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {

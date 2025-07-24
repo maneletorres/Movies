@@ -20,7 +20,7 @@ class SetMovieFavoriteStatusUseCase
 constructor(
     private val movieDetailRepository: MovieDetailRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<String, Either<Boolean, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
     override fun prepareFlow(input: String): Flow<Either<Boolean, DomainError>> = flow {

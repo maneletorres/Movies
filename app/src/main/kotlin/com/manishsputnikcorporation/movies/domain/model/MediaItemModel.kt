@@ -12,5 +12,5 @@ data class MediaItemModel(
     val year: String,
     val imageUrl: String,
     val rating: String, // TODO: to put a FAB in the item. Bottom right
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
 ) : Identifiable, Parcelable

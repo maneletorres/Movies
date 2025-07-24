@@ -27,7 +27,7 @@ constructor(
     private val tvShowLocalDataSource: TvShowLocalDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource,
     private val movieDetailMapper: MovieDetailDtoMapper,
-    private val tvShowDetailMapper: TvShowDetailDtoMapper
+    private val tvShowDetailMapper: TvShowDetailDtoMapper,
 ) : MovieDetailRepository {
 
     // region Movie

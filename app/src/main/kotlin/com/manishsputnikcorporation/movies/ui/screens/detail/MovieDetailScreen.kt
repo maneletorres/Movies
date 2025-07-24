@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -58,7 +59,7 @@ fun MovieDetailScreen(
     analyticsManager: AnalyticsManager,
     movieDetailViewModel: MovieDetailViewModel,
     movieId: String?,
-    onBackArrowClick: () -> Unit = {}
+    onBackArrowClick: () -> Unit = {},
 ) {
     analyticsManager.trackScreen(screenName = MovieDetail.route)
 
@@ -70,7 +71,8 @@ fun MovieDetailScreen(
                 MovieDetailContent(
                     state = state,
                     onBackArrowClick = { onBackArrowClick() },
-                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } })
+                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } },
+                )
         }
     }
 }
@@ -81,9 +83,10 @@ fun MovieDetailContent(
     state: MovieDetailUiState,
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {},
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.movie_detail_label)) },
@@ -94,43 +97,43 @@ fun MovieDetailContent(
                             contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
                         )
                     }
-                })
+                },
+            )
         },
         bottomBar = {
             // TODO: implement when new features are introduced
-        }) {
-            when {
-                state.isLoading -> Loading()
-                state.movieDetailData.movieDetailModel != null -> {
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier =
-                            modifier
-                                .verticalScroll(rememberScrollState())
-                                .padding(horizontal = 16.dp, vertical = 16.dp)
-                                .fillMaxHeight()
-                                .semantics { contentDescription = "Movie Detail Screen" }) {
-                            state.movieDetailData.movieDetailModel.let {
-                                MovieOverview(
-                                    image = it.image,
-                                    title = it.title,
-                                    releaseDate = it.releaseDate,
-                                    runtime = it.runtimeStr,
-                                    isFavorite = state.movieDetailData.isFavorite) {
-                                        onFavoriteMovieClick()
-                                    }
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = it.plot,
-                                    modifier = modifier.fillMaxWidth(),
-                                    style = MaterialTheme.typography.body1,
-                                )
-                            }
+        },
+    ) {
+        when {
+            state.isLoading -> Loading()
+            state.movieDetailData.movieDetailModel != null -> {
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier =
+                        modifier
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                            .fillMaxHeight()
+                            .semantics { contentDescription = "Movie Detail Screen" },
+                ) {
+                    state.movieDetailData.movieDetailModel.let {
+                        MovieOverview(
+                            image = it.image,
+                            title = it.title,
+                            releaseDate = it.releaseDate,
+                            runtime = it.runtimeStr,
+                            isFavorite = state.movieDetailData.isFavorite,
+                        ) {
+                            onFavoriteMovieClick()
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = it.plot, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                    }
                 }
-                state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
             }
+            state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
         }
+    }
 }
 
 @Composable
@@ -141,7 +144,7 @@ fun MovieOverview(
     runtime: String?,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         MovieImage(imageUrl = image)
@@ -151,7 +154,8 @@ fun MovieOverview(
             isFavorite = isFavorite,
             releaseDate = releaseDate,
             runtime = runtime,
-            onFavoriteMovieClick = onFavoriteMovieClick)
+            onFavoriteMovieClick = onFavoriteMovieClick,
+        )
         Spacer(modifier = Modifier.width(8.dp))
     }
 }
@@ -165,7 +169,8 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
             loading = { Loading() },
             error = { Placeholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,
-            contentScale = ContentScale.Fit)
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 
@@ -176,7 +181,7 @@ fun MovieInfo(
     releaseDate: String,
     runtime: String?,
     modifier: Modifier = Modifier,
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
@@ -193,17 +198,15 @@ fun MovieFavorite(isFavorite: Boolean, onFavoriteMovieClick: () -> Unit = {}) {
     IconButton(modifier = Modifier.then(Modifier.size(24.dp)), onClick = { onFavoriteMovieClick() }) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie))
+            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie),
+        )
     }
 }
 
 @Composable
 fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(
-            text = year,
-            style = MaterialTheme.typography.subtitle1,
-        )
+        Text(text = year, style = MaterialTheme.typography.subtitle1)
         runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
     }
 }

@@ -24,7 +24,7 @@ class MoviesRepositoryImpl
 constructor(
     private val movieLocalDataSource: MovieLocalDataSource,
     private val tvShowLocalDataSource: TvShowLocalDataSource,
-    private val movieRemoteDataSource: MovieRemoteDataSource
+    private val movieRemoteDataSource: MovieRemoteDataSource,
 ) : MoviesRepository {
 
     // TODO: optimize the loadData and getData calls to these!!

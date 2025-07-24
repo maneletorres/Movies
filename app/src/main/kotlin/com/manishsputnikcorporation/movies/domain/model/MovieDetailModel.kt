@@ -13,5 +13,5 @@ data class MovieDetailModel(
     val plot: String,
     val image: String,
     val releaseDate: String,
-    val runtimeStr: String?
+    val runtimeStr: String?,
 ) : Identifiable, Parcelable

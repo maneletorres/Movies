@@ -151,11 +151,7 @@ class MovieDaoTest {
     fun getFavorites() = runBlocking {
         // Given:
         val fakeNotFavoriteMovie = createMovie("1")
-        val fakeDataList =
-            listOf(
-                fakeNotFavoriteMovie,
-                createMovie("2", true),
-            )
+        val fakeDataList = listOf(fakeNotFavoriteMovie, createMovie("2", true))
         movieDao.insertAll(fakeDataList)
 
         // When:

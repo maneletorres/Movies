@@ -25,7 +25,7 @@ object DatabaseModule {
     @Singleton
     fun provideRoomDatabase(@ApplicationContext context: Context, callback: MovieRoomDatabase.Callback): MovieRoomDatabase =
         Room.databaseBuilder(context, MovieRoomDatabase::class.java, "movie_database")
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = false)
             /** Pre-populate the database (only for test purposes): */
             // .addCallback(callback)
             .build()

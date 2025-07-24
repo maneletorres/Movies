@@ -15,11 +15,18 @@ private val lightColors =
         secondary = Red700,
         secondaryVariant = Red900,
         onSecondary = Color.White,
-        error = Red800)
+        error = Red800,
+    )
 
 private val darkColors =
     darkColors(
-        primary = Red300, primaryVariant = Red700, onPrimary = Color.Black, secondary = Red300, onSecondary = Color.Black, error = Red200)
+        primary = Red300,
+        primaryVariant = Red700,
+        onPrimary = Color.Black,
+        secondary = Red300,
+        onSecondary = Color.Black,
+        error = Red200,
+    )
 
 /** A [MaterialTheme] for MoviesTheme */
 @Composable

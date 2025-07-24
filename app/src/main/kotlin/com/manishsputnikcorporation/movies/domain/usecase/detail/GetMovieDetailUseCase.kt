@@ -22,7 +22,7 @@ class GetMovieDetailUseCase
 constructor(
     private val movieDetailRepository: MovieDetailRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<String, Either<MovieDetailModel, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
     override fun prepareFlow(input: String): Flow<Either<MovieDetailModel, DomainError>> =

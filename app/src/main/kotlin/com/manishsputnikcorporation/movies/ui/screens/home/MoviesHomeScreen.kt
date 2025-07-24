@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -74,7 +75,7 @@ fun MoviesHomeScreen(
     analyticsManager: AnalyticsManager,
     moviesHomeViewModel: MoviesHomeViewModel,
     onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
 ) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
@@ -97,7 +98,8 @@ fun MoviesHomeScreen(
                         moviesHomeViewModel.loadData(searchType) // TODO: to review!
                     },
                     onClickSignOut = onClickSignOut,
-                    onClickMovie = { movieId -> onClickMovie(movieId) })
+                    onClickMovie = { movieId -> onClickMovie(movieId) },
+                )
         }
     }
 
@@ -109,7 +111,8 @@ fun MoviesHomeScreen(
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = context.resources.getString(R.string.movies_home_error, event.searchType),
                         actionLabel = context.resources.getString(R.string.close_message),
-                        duration = SnackbarDuration.Long)
+                        duration = SnackbarDuration.Long,
+                    )
                 }
             }
         }
@@ -125,7 +128,7 @@ fun MoviesHomeContent(
     onClickFavorites: () -> Unit = {},
     onClickSearchType: () -> Unit = {},
     onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
@@ -145,6 +148,7 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
@@ -160,20 +164,24 @@ fun MoviesHomeContent(
                                     when (searchType) {
                                         Type.MOVIE -> R.drawable.ic_series_search
                                         Type.TV_SHOW -> R.drawable.ic_movie_search
-                                    }),
-                            contentDescription = stringResource(id = R.string.movies_home_search_type))
+                                    }
+                            ),
+                            contentDescription = stringResource(id = R.string.movies_home_search_type),
+                        )
                     }
                     IconButton(onClick = { expanded = true }) {
                         Icon(
                             imageVector = Icons.Filled.MoreVert,
-                            contentDescription = stringResource(id = R.string.movies_home_more_options))
+                            contentDescription = stringResource(id = R.string.movies_home_more_options),
+                        )
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                             DropdownMenuItem(onClick = { showDialog = true }) {
                                 Text(text = stringResource(id = R.string.movies_home_sign_out))
                             }
                         }
                     }
-                })
+                },
+            )
         },
         bottomBar = {
             // TODO: implement when new features are introduced
@@ -183,30 +191,34 @@ fun MoviesHomeContent(
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
                     modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
-                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                        Text(stringResource(id = R.string.movies_home_up_button_text))
-                    }
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End) { contentPadding ->
-            Box(modifier = modifier.padding(contentPadding)) {
-                if (movies.isEmpty())
-                    EmptyContent(
-                        when (searchType) {
-                            Type.MOVIE -> R.string.movies_home_empty_movies
-                            Type.TV_SHOW -> R.string.movies_home_empty_series
-                        })
-                else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
-
-                if (showDialog) {
-                    AlertDialog(
-                        onDismissRequest = { onDismissRequest() },
-                        onConfirmation = { onSignOutConfirmed() },
-                        dialogTitle = R.string.movies_home_sign_out,
-                        dialogText = R.string.sign_out_dialog_description)
+                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } },
+                ) {
+                    Text(stringResource(id = R.string.movies_home_up_button_text))
                 }
             }
+        },
+        floatingActionButtonPosition = FabPosition.End,
+    ) { contentPadding ->
+        Box(modifier = modifier.padding(contentPadding)) {
+            if (movies.isEmpty())
+                EmptyContent(
+                    when (searchType) {
+                        Type.MOVIE -> R.string.movies_home_empty_movies
+                        Type.TV_SHOW -> R.string.movies_home_empty_series
+                    }
+                )
+            else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
+
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = { onDismissRequest() },
+                    onConfirmation = { onSignOutConfirmed() },
+                    dialogTitle = R.string.movies_home_sign_out,
+                    dialogText = R.string.sign_out_dialog_description,
+                )
+            }
         }
+    }
 }
 
 @Composable
@@ -214,7 +226,7 @@ fun MoviesGrid(
     movies: List<MediaItemModel>,
     modifier: Modifier = Modifier,
     gridState: LazyGridState = rememberLazyGridState(),
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
         items(movies, key = { it.id }) { movie ->
@@ -234,7 +246,8 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         loading = { Loading() },
         error = { Placeholder(modifier = Modifier.size(50.dp)) },
         alignment = Alignment.Center,
-        contentScale = ContentScale.Crop)
+        contentScale = ContentScale.Crop,
+    )
 }
 
 // region Previews

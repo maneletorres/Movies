@@ -13,7 +13,7 @@ interface GlobalErrorManager {
         onGenericError: (suspend () -> Unit)? = null,
         onUnauthorized: (suspend () -> Unit)? = null,
         onNetworkAvailable: (suspend () -> Unit)? = null,
-        dismissAction: (() -> Unit)? = null
+        dismissAction: (() -> Unit)? = null,
     )
 }
 
@@ -27,9 +27,10 @@ class GlobalErrorManagerImpl @Inject constructor(private val defaultErrorMapper:
         onGenericError: (suspend () -> Unit)?,
         onUnauthorized: (suspend () -> Unit)?,
         onNetworkAvailable: (suspend () -> Unit)?,
-        dismissAction: (() -> Unit)?
+        dismissAction: (() -> Unit)?,
     ) {
         _event.emit(
-            GlobalErrorHandlerModel(defaultErrorMapper.map(throwable), onGenericError, onUnauthorized, onNetworkAvailable, dismissAction))
+            GlobalErrorHandlerModel(defaultErrorMapper.map(throwable), onGenericError, onUnauthorized, onNetworkAvailable, dismissAction)
+        )
     }
 }
