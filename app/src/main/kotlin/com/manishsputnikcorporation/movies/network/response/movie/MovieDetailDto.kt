@@ -1,7 +1,9 @@
 package com.manishsputnikcorporation.movies.network.response.movie
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class MovieDetailDto(
     @field:Json(name = "imdb_id") val imdbId: String,
     @field:Json(name = "id") val id: Int,
@@ -10,5 +12,5 @@ data class MovieDetailDto(
     @field:Json(name = "poster_path") val image: String,
     @field:Json(name = "release_date") val releaseDate: String,
     val runtime: Int,
-    val overview: String
+    val overview: String,
 )

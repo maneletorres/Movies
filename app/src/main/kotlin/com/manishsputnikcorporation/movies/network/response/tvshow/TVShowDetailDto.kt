@@ -1,7 +1,9 @@
 package com.manishsputnikcorporation.movies.network.response.tvshow
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class TVShowDetailDto(
     val id: Int,
     @field:Json(name = "name") val title: String,

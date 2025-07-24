@@ -6,8 +6,6 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.TYPE_WIFI
 import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
-import android.net.NetworkInfo
-import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.LOLLIPOP_MR1
 import android.os.Build.VERSION_CODES.M
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
@@ -43,44 +41,30 @@ class NetworkManagerImpl @Inject constructor(private val context: Context) : Net
 
         /** Returns if there is any active network given a [context]. */
         private fun isInternetAvailable(context: Context): Boolean {
-            return if (SDK_INT >= M) {
-                with(getActiveNetwork(context)) {
-                    val activeNetwork = activeNetwork ?: return false
-                    val networkCapabilities = getNetworkCapabilities(activeNetwork) ?: return false
-                    when {
-                        networkCapabilities.hasTransport(TRANSPORT_WIFI) -> true
-                        networkCapabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                        networkCapabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                        else -> false
-                    }
+            with(getActiveNetwork(context)) {
+                val activeNetwork = activeNetwork ?: return false
+                val networkCapabilities = getNetworkCapabilities(activeNetwork) ?: return false
+                return when {
+                    networkCapabilities.hasTransport(TRANSPORT_WIFI) -> true
+                    networkCapabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+                    networkCapabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+                    else -> false
                 }
-            } else {
-                with(getActiveNetworkInfo(context)) { this != null && isConnectedOrConnecting }
             }
         }
 
-        /** Returns if the active network has [TRANSPORT_WIFI] from [M] or is [TYPE_WIFI] up to [LOLLIPOP_MR1] given a [context]. */
+        /** Returns if the active network has [TRANSPORT_WIFI] or is [TYPE_WIFI] up to [LOLLIPOP_MR1] given a [context]. */
         private fun isWiFiConnected(context: Context): Boolean {
-            if (SDK_INT >= M) {
-                with(getActiveNetwork(context)) {
-                    val activeNetwork = activeNetwork ?: return false
-                    val networkCapabilities = getNetworkCapabilities(activeNetwork) ?: return false
-                    return networkCapabilities.hasTransport(TRANSPORT_WIFI)
-                }
-            } else {
-                with(getActiveNetworkInfo(context)) {
-                    return this != null && type == TYPE_WIFI
-                }
+            with(getActiveNetwork(context)) {
+                val activeNetwork = activeNetwork ?: return false
+                val networkCapabilities = getNetworkCapabilities(activeNetwork) ?: return false
+                return networkCapabilities.hasTransport(TRANSPORT_WIFI)
             }
         }
 
         // region Helper methods
         /** Returns the [ConnectivityManager] given a [Context]. */
         private fun getActiveNetwork(context: Context) = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        /** Returns the active [NetworkInfo] given a [Context]. */
-        private fun getActiveNetworkInfo(context: Context) =
-            (context.getSystemService(CONNECTIVITY_SERVICE) as? ConnectivityManager)?.activeNetworkInfo
         // endregion
     }
 }
