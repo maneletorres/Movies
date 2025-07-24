@@ -49,15 +49,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
+    kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
+    buildFeatures { buildConfig = true }
     packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
