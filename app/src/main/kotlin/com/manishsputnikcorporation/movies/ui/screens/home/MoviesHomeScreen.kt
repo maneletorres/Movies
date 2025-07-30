@@ -67,8 +67,6 @@ import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
-import com.manishsputnikcorporation.movies.ui.navigation.MovieDetail
-import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
@@ -81,16 +79,11 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
 import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(
-    moviesHomeViewModel: MoviesHomeViewModel,
-    onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {},
-) {
+fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
@@ -181,10 +174,11 @@ fun MoviesHomeContent(
                                 imageVector = Icons.Default.AccountBox,
                                 contentDescription = stringResource(id = R.string.movies_home_default_profile_photo_description),
                                 modifier =
-                                Modifier
-                                    // .padding(end = 8.dp) // TODO
-                                    .size(40.dp)
-                                    .clip(CircleShape))
+                                    Modifier
+                                        // .padding(end = 8.dp) // TODO
+                                        .size(40.dp)
+                                        .clip(CircleShape),
+                            )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                         Column {
@@ -229,9 +223,7 @@ fun MoviesHomeContent(
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                             DropdownMenuItem(
                                 onClick = { showDialog = true },
-                                content = {
-                                    Text(text = stringResource(id = R.string.movies_home_sign_out))
-                                }
+                                content = { Text(text = stringResource(id = R.string.movies_home_sign_out)) },
                             )
                         }
                     }
@@ -245,12 +237,11 @@ fun MoviesHomeContent(
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .padding(bottom = 8.dp, end = 8.dp),
-                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } }) {
-                        Text(stringResource(id = R.string.movies_home_up_button_text))
-                    }
+                    modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
+                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } },
+                ) {
+                    Text(stringResource(id = R.string.movies_home_up_button_text))
+                }
             }
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -298,10 +289,7 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
         modifier =
-        Modifier
-            .height(200.dp)
-            .clickable { onClickMovie(id) }
-            .semantics { contentDescription = "Movie Detail" }, // TODO: to check
+            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
         loading = { Loading() },
         error = { Placeholder(modifier = Modifier.size(50.dp)) },
         alignment = Alignment.Center,
@@ -322,7 +310,7 @@ private fun MoviesHomeContentPreview() {
             snackbarHostState = snackbarHostState,
             searchType = Type.MOVIE,
             user = null,
-            movies = movies
+            movies = movies,
         )
     }
 }

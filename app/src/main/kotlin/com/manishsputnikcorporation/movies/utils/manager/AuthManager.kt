@@ -1,12 +1,12 @@
-//package com.manishsputnikcorporation.movies.utils.manager
+// package com.manishsputnikcorporation.movies.utils.manager
 //
-//import com.google.firebase.Firebase
-//import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.auth.FirebaseUser
-//import com.google.firebase.auth.auth
-//import kotlinx.coroutines.tasks.await
+// import com.google.firebase.Firebase
+// import com.google.firebase.auth.FirebaseAuth
+// import com.google.firebase.auth.FirebaseUser
+// import com.google.firebase.auth.auth
+// import kotlinx.coroutines.tasks.await
 //
-//class AuthManager {
+// class AuthManager {
 //    private val auth: FirebaseAuth by lazy { Firebase.auth }
 //    suspend fun signInAnonymously(): AuthRes<FirebaseUser> {
 //        return try {
@@ -22,10 +22,10 @@
 //    }
 //
 //    fun getCurrentUser(): FirebaseUser? = auth.currentUser
-//}
+// }
 //
-//sealed class AuthRes<out T> {
+// sealed class AuthRes<out T> {
 //    data class Success<T>(val data: T) : AuthRes<T>()
 //
 //    data class Error(val errorMessage: String) : AuthRes<Nothing>()
-//}
+// }

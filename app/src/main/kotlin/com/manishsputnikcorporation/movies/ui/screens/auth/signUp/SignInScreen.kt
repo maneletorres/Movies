@@ -28,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -43,7 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 
 @Composable
 fun SignInScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}) {
@@ -133,11 +131,7 @@ fun LogoutDialog(onConfirmLogOut: () -> Unit = {}, onDismiss: () -> Unit = {}) {
 @UiModePreviews
 @Composable
 fun SignInScreenPreview() {
-    MoviesTheme {
-        Surface {
-            SignInScreen(signUpViewModel = hiltViewModel())
-        }
-    }
+    MoviesTheme { Surface { SignInScreen(signUpViewModel = hiltViewModel()) } }
 }
 
 @UiModePreviews

@@ -53,11 +53,7 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 
 @Composable
-fun MovieDetailScreen(
-    movieDetailViewModel: MovieDetailViewModel,
-    movieId: String?,
-    onBackArrowClick: () -> Unit = {},
-) {
+fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: String?, onBackArrowClick: () -> Unit = {}) {
     movieDetailViewModel.trackScreen()
 
     val movieDetailUiState by movieDetailViewModel.movieDetailUiState.collectAsState()
@@ -99,39 +95,38 @@ fun MovieDetailContent(
         },
         bottomBar = {
             // TODO: implement when new features are introduced
-        }) { contentPadding ->
-            when {
-                state.isLoading -> Loading()
-                state.movieDetailData.movieDetailModel != null -> {
-                    Column(
-                        horizontalAlignment = Alignment.Start,
-                        modifier =
-                            modifier
-                                .verticalScroll(rememberScrollState())
-                                .padding(horizontal = 16.dp, vertical = 16.dp)
-                                .fillMaxHeight()
-                                .semantics { contentDescription = "Movie Detail Screen" }) {
-                            state.movieDetailData.movieDetailModel.let {
-                                MovieOverview(
-                                    image = it.image,
-                                    title = it.title,
-                                    releaseDate = it.releaseDate,
-                                    runtime = it.runtimeStr,
-                                    isFavorite = state.movieDetailData.isFavorite) {
-                                        onFavoriteMovieClick()
-                                    }
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = it.plot,
-                                    modifier = modifier.fillMaxWidth(),
-                                    style = MaterialTheme.typography.body1,
-                                )
-                            }
+        },
+    ) { contentPadding ->
+        when {
+            state.isLoading -> Loading()
+            state.movieDetailData.movieDetailModel != null -> {
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier =
+                        modifier
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                            .fillMaxHeight()
+                            .semantics { contentDescription = "Movie Detail Screen" },
+                ) {
+                    state.movieDetailData.movieDetailModel.let {
+                        MovieOverview(
+                            image = it.image,
+                            title = it.title,
+                            releaseDate = it.releaseDate,
+                            runtime = it.runtimeStr,
+                            isFavorite = state.movieDetailData.isFavorite,
+                        ) {
+                            onFavoriteMovieClick()
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = it.plot, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                    }
                 }
-                state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
             }
+            state.isFailed -> EmptyContent(message = R.string.movie_detail_error)
         }
+    }
 }
 
 @Composable

@@ -66,55 +66,56 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
 
     Scaffold { contentPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-                val emailText = stringResource(id = R.string.sign_in_email)
-                val passwordText = stringResource(id = R.string.sign_in_password)
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            val emailText = stringResource(id = R.string.sign_in_email)
+            val passwordText = stringResource(id = R.string.sign_in_password)
 
-                SignUpTextField(
-                    value = email,
-                    isError = isEmailError,
-                    placeholder = emailText,
-                    errorText = stringResource(id = R.string.sign_in_incorrect_email),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
-                ) {
-                    email = it
-                    // isEmailError = !isValidEmail(email)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                SignUpTextField(
-                    value = password,
-                    isError = isPasswordError,
-                    placeholder = passwordText,
-                    errorText = stringResource(id = R.string.sign_in_incorrect_password),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
-                        password = it
-                        // isPasswordError = !isValidPassword(password)
-                    }
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-                    Button(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(50.dp), onClick = { /*TODO*/ }) {
-                        Text(text = "Sign up")
-                    }
-                }
-                Spacer(modifier = Modifier.height(40.dp))
-                CompositionLocalProvider(LocalContentAlpha provides if (enabled) ContentAlpha.high else ContentAlpha.disabled) {
-                    ClickableText(
-                        text = AnnotatedString(text = "Do you have an account yet?"),
-                        onClick = {
-                            if (enabled) {
-                                scope.launch { signUpViewModel.createUser(email, password, onNavigation) }
-                            }
-                        },
-                        style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline))
+            SignUpTextField(
+                value = email,
+                isError = isEmailError,
+                placeholder = emailText,
+                errorText = stringResource(id = R.string.sign_in_incorrect_email),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
+            ) {
+                email = it
+                // isEmailError = !isValidEmail(email)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            SignUpTextField(
+                value = password,
+                isError = isPasswordError,
+                placeholder = passwordText,
+                errorText = stringResource(id = R.string.sign_in_incorrect_password),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
+            ) {
+                password = it
+                // isPasswordError = !isValidPassword(password)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(modifier = Modifier.padding(horizontal = 40.dp)) {
+                Button(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(50.dp), onClick = { /*TODO*/ }) {
+                    Text(text = "Sign up")
                 }
             }
+            Spacer(modifier = Modifier.height(40.dp))
+            CompositionLocalProvider(LocalContentAlpha provides if (enabled) ContentAlpha.high else ContentAlpha.disabled) {
+                ClickableText(
+                    text = AnnotatedString(text = "Do you have an account yet?"),
+                    onClick = {
+                        if (enabled) {
+                            scope.launch { signUpViewModel.createUser(email, password, onNavigation) }
+                        }
+                    },
+                    style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline),
+                )
+            }
+        }
     }
 }
 
@@ -127,7 +128,7 @@ fun SignUpTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     leadingIcon: @Composable (() -> Unit)? = null,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
 ) {
     OutlinedTextField(
         value = value,
@@ -147,7 +148,8 @@ fun SignUpTextField(
         isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
-        keyboardActions = KeyboardActions { onValueChange(value) })
+        keyboardActions = KeyboardActions { onValueChange(value) },
+    )
 }
 
 // region Preview
@@ -171,10 +173,11 @@ fun SignUpTextFieldPreview() {
                 errorText = stringResource(id = R.string.sign_in_incorrect_password),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) }) {
-                    password = it
-                    isPasswordError = !isValidPassword(password)
-                }
+                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
+            ) {
+                password = it
+                isPasswordError = !isValidPassword(password)
+            }
         }
     }
 }

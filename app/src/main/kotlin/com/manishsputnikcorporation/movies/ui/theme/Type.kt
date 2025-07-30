@@ -19,7 +19,8 @@ private val montserrat =
 /** https://fonts.google.com/specimen/Domine */
 private val domine = FontFamily(Font(R.font.domine_regular), Font(R.font.domine_bold, FontWeight.Bold))
 
-val MoviesTypography = Typography(
+val MoviesTypography =
+    Typography(
         h4 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 34.sp),
         h5 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 24.sp),
         h6 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Medium, fontSize = 20.sp),

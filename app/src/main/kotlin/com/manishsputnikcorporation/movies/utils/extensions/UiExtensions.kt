@@ -19,5 +19,5 @@ suspend fun SnackbarHostState.showSnackBar(context: Context, @StringRes message:
     showSnackbar(
         message = context.getString(message),
         actionLabel = context.resources.getString(R.string.close_message),
-        duration = SnackbarDuration.Long
+        duration = SnackbarDuration.Long,
     )

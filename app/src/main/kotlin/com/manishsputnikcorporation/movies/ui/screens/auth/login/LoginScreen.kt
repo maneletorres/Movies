@@ -53,7 +53,8 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigation: (String, String) -
     LoginScreenContent(
         onIncognitoSignUp = { scope.launch { loginViewModel.incognitoSignIn(onNavigation = onNavigation) } },
         onEmailSignUpClick = { loginViewModel.navigateToSignUpScreen(onNavigation) },
-        onForgottenPasswordClick = { loginViewModel.navigateToPasswordRecoveryScreen(onNavigation) })
+        onForgottenPasswordClick = { loginViewModel.navigateToPasswordRecoveryScreen(onNavigation) },
+    )
 }
 
 @Composable
@@ -62,7 +63,7 @@ fun LoginScreenContent(
     onIncognitoSignUp: () -> Unit = {},
     onGoogleSignUpClick: () -> Unit = {},
     onEmailSignUpClick: () -> Unit = {},
-    onForgottenPasswordClick: () -> Unit = {}
+    onForgottenPasswordClick: () -> Unit = {},
 ) {
     Surface {
         Column(modifier = modifier) {
@@ -71,7 +72,8 @@ fun LoginScreenContent(
                 onIncognitoSignUpClick = { onIncognitoSignUp() },
                 onGoogleSignUpClick = { onGoogleSignUpClick() },
                 onEmailSignUpClick = { onEmailSignUpClick() },
-                onForgottenPasswordClick = { onForgottenPasswordClick() })
+                onForgottenPasswordClick = { onForgottenPasswordClick() },
+            )
         }
     }
 }
@@ -117,18 +119,22 @@ fun ProviderButtonList(
     Column(modifier = modifier, verticalArrangement = spacedBy(8.dp)) {
         ProviderButton(
             textRes = R.string.login_incognito_sign_in,
-            leadingIcon = { Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null) }) {
-                onIncognitoSignInClick()
-            }
+            leadingIcon = { Icon(painter = painterResource(id = R.drawable.ic_incognito), contentDescription = null) },
+        ) {
+            onIncognitoSignInClick()
+        }
         ProviderButton(
             textRes = R.string.login_google_sign_in,
-            leadingIcon = { Image(painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null) }) {
-                onGoogleSignInClick()
-            }
+            leadingIcon = { Image(painter = painterResource(id = R.drawable.ic_logo_google), contentDescription = null) },
+        ) {
+            onGoogleSignInClick()
+        }
         ProviderButton(
-            textRes = R.string.login_email_sign_in, leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) }) {
-                onEmailSignInClick()
-            }
+            textRes = R.string.login_email_sign_in,
+            leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
+        ) {
+            onEmailSignInClick()
+        }
     }
 }
 
