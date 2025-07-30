@@ -2,8 +2,8 @@ package com.manishsputnikcorporation.movies.utils.extensions
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.MOVIE

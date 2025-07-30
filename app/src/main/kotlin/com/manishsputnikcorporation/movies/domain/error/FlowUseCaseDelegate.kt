@@ -14,7 +14,7 @@ interface FlowUseCaseDelegate {
         onGenericError: (suspend () -> Unit)? = null,
         onUnauthorized: (suspend () -> Unit)? = null,
         onNetworkAvailable: (suspend () -> Unit)? = null,
-        dismissAction: (() -> Unit)? = null
+        dismissAction: (() -> Unit)? = null,
     ): Flow<R> =
         prepare(input).catch {
             Timber.e(this@safePrepare.javaClass.simpleName, it.toString())

@@ -11,22 +11,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,7 +53,11 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 
 @Composable
-fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: String?, onBackArrowClick: () -> Unit = {}) {
+fun MovieDetailScreen(
+    movieDetailViewModel: MovieDetailViewModel,
+    movieId: String?,
+    onBackArrowClick: () -> Unit = {},
+) {
     movieDetailViewModel.trackScreen()
 
     val movieDetailUiState by movieDetailViewModel.movieDetailUiState.collectAsState()
@@ -64,21 +68,22 @@ fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: Strin
                 MovieDetailContent(
                     state = state,
                     onBackArrowClick = { onBackArrowClick() },
-                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } })
+                    onFavoriteMovieClick = { movieId?.let { movieDetailViewModel.setMovieFavoriteStatus(it) } },
+                )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MovieDetailContent(
     state: MovieDetailUiState,
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {},
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(id = R.string.movie_detail_label)) },
@@ -89,7 +94,8 @@ fun MovieDetailContent(
                             contentDescription = stringResource(id = R.string.movie_detail_arrow_back_label),
                         )
                     }
-                })
+                },
+            )
         },
         bottomBar = {
             // TODO: implement when new features are introduced
@@ -136,7 +142,7 @@ fun MovieOverview(
     runtime: String?,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         MovieImage(imageUrl = image)
@@ -146,7 +152,8 @@ fun MovieOverview(
             isFavorite = isFavorite,
             releaseDate = releaseDate,
             runtime = runtime,
-            onFavoriteMovieClick = onFavoriteMovieClick)
+            onFavoriteMovieClick = onFavoriteMovieClick,
+        )
         Spacer(modifier = Modifier.width(8.dp))
     }
 }
@@ -160,7 +167,8 @@ private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
             loading = { Loading() },
             error = { Placeholder(modifier = Modifier.width(25.dp).height(25.dp)) },
             alignment = Alignment.Center,
-            contentScale = ContentScale.Fit)
+            contentScale = ContentScale.Fit,
+        )
     }
 }
 
@@ -171,11 +179,11 @@ fun MovieInfo(
     releaseDate: String,
     runtime: String?,
     modifier: Modifier = Modifier,
-    onFavoriteMovieClick: () -> Unit = {}
+    onFavoriteMovieClick: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.headlineLarge)
+            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h1)
             MovieFavorite(isFavorite, onFavoriteMovieClick)
         }
         MovieSecondaryInfo(year = releaseDate, runtime = runtime)
@@ -188,17 +196,15 @@ fun MovieFavorite(isFavorite: Boolean, onFavoriteMovieClick: () -> Unit = {}) {
     IconButton(modifier = Modifier.then(Modifier.size(24.dp)), onClick = { onFavoriteMovieClick() }) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie))
+            contentDescription = stringResource(id = R.string.movie_detail_favorite_movie),
+        )
     }
 }
 
 @Composable
 fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(
-            text = year,
-            style = MaterialTheme.typography.subtitle1,
-        )
+        Text(text = year, style = MaterialTheme.typography.subtitle1)
         runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
     }
 }

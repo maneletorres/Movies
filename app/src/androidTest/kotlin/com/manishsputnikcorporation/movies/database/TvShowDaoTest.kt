@@ -151,11 +151,7 @@ class TvShowDaoTest {
     fun getFavorites() = runBlocking {
         // Given:
         val fakeNotFavoriteTvShow = createTvShow("1")
-        val fakeDataList =
-            listOf(
-                fakeNotFavoriteTvShow,
-                createTvShow("3", true),
-            )
+        val fakeDataList = listOf(fakeNotFavoriteTvShow, createTvShow("3", true))
         tvShowDao.insertAll(fakeDataList)
 
         // When:

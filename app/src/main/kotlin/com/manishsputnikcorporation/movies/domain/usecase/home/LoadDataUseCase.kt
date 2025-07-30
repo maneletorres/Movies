@@ -22,7 +22,7 @@ class LoadDataUseCase
 constructor(
     private val moviesRepository: MoviesRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<Type, Either<Unit, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
     override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {

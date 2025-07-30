@@ -20,11 +20,7 @@ interface MovieLocalDataSource {
     suspend fun updateMovie(movie: DatabaseMovie)
 }
 
-class MovieLocalDataSourceImpl
-@Inject
-constructor(
-    private val movieDao: MovieDao,
-) : MovieLocalDataSource {
+class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDao) : MovieLocalDataSource {
 
     override fun insertAllMovies(movies: List<DatabaseMovie>) = movieDao.insertAll(movies)
 

@@ -1,64 +1,78 @@
 [versions]
-android = "8.5.2"
-androidxComposeBom = "2024.06.00"
-daggerHilt = "2.52"
-firebaseBom = "33.1.2"
-firebaseCrashlytics = "3.0.2"
-googleServices = "4.4.2"
-hilt = "1.2.0"
-kotlin = "2.0.10"
-ksp = "2.0.10-1.0.24"
-ktfmt = "0.19.0"
-retrofit2Bom = "2.11.0" # since 2.10.0 contains an error
-room = "2.6.1"
-okhttp3Bom = "4.12.0"
-timber = "5.0.1"
-
-gradle-versions-version = "0.51.0"
-version-catalog-update-version = "0.8.4"
+# Plugin versions:
+android-version = "8.11.1"
+kotlin-version = "2.2.0"
+ksp-version = "2.2.0-2.0.2"
+google-services-version = "4.4.3"
+firebase-crashlytics-version = "3.0.5"
+dagger-hilt-version = "2.57"
+gradle-versions-version = "0.52.0"
+version-catalog-update-version = "1.0.0"
+ktfmt-version = "0.23.0"
+# Library versions:
+androidx-bom-version = "2025.07.00"
+firebase-bom-version = "34.0.0"
+timber-version = "5.0.1"
+retrofit2-bom-version = "3.0.0"
+okhttp3-bom = "5.1.0"
 coil-kt-version = "2.7.0"
 adapter-delegates4-version = "4.3.2"
-navigation-ui-ktx-version = "2.7.7"
-mockk = "1.13.12"
-composeMaterial = "1.6.8"
-compose-ui-version = "1.6.8"
+navigation-ui-ktx-version = "2.9.2"
+mockk-version = "1.14.5"
+moshi-version = "1.15.2"
+hilt-version = "1.2.0"
+compose-material-version = "1.8.3"
+compose-material-icons-core-version = "1.7.8"
+compose-ui-version = "1.8.3"
+room-version = "2.7.2"
+# Testing library versions:
 junit-version = "4.13.2"
 
 [libraries]
-# androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "composeMaterial" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
-androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
-androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx-version" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-com-hannesdorfmann-adapterdelegates4 = { module = "com.hannesdorfmann:adapterdelegates4", version.ref = "adapter-delegates4-version" }
-com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-
-com-squareup-retrofit2-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit2Bom" }
+# Dependency injection (DI) libraries:
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt-version" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt-version" }
+# Firebase libraries:
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+# Timber libraries:
+com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
+# Retrofit libraries:
+com-squareup-retrofit2-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit2-bom-version" }
 com-squareup-retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit" }
 com-squareup-retrofit2-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi" }
-
-com-squareup-okhttp3-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp3Bom" }
+com-squareup-moshi-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi-version" }
+# OkHttp libraries:
+com-squareup-okhttp3-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp3-bom" }
 com-squareup-okhttp3-okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 com-squareup-okhttp3-okhttp-urlconnection = { group = "com.squareup.okhttp3", name = "okhttp-urlconnection" }
 com-squareup-okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
-
-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
-dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
-
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+# UI libraries:
 io-coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt-version" }
+com-hannesdorfmann-adapterdelegates4 = { module = "com.hannesdorfmann:adapterdelegates4", version.ref = "adapter-delegates4-version" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-bom-version" }
+# Material3 libraries:
+# TODO: to check!
+androidx-compose-material3 = { module = "androidx:androidx.compose.material3" }
+# Navigation libraries:
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-version" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx-version" }
+# Jetpack Compose libraries:
+androidx-compose-material = { module = "androidx.compose.material:material" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+# Room:
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-version" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-version" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
+# Testing libraries:
 junit = { module = "junit:junit", version.ref = "junit-version" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-ui-ktx-version" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk-version" }
+# Compose testing libraries:
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-version" }
 
 [bundles]
 firebase = [
@@ -84,7 +98,8 @@ navigation = [
     "androidx-navigation-ui-ktx",
 ]
 compose = [
-    "androidx-compose-material3",
+    "androidx-compose-material",
+    "androidx-compose-material-icons-core",
     "androidx-compose-ui-tooling",
 ]
 room = [
@@ -101,13 +116,13 @@ testing-compose = [
 ]
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "android" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+android-application = { id = "com.android.application", version.ref = "android-version" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-version" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt-version" }
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update-version" }
-ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt-version" }

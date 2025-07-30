@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -18,24 +19,25 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -60,12 +62,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
 import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
+import com.manishsputnikcorporation.movies.ui.navigation.MovieDetail
+import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
@@ -78,11 +81,17 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
 import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
+fun MoviesHomeScreen(
+    moviesHomeViewModel: MoviesHomeViewModel,
+    onClickSignOut: () -> Unit = {},
+    onClickMovie: (String) -> Unit = {},
+) {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
 
@@ -95,8 +104,9 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
             Loading -> Loading()
             is Data ->
                 MoviesHomeContent(
-                    snackbarHostState,
-                    searchType,
+                    scaffoldState = scaffoldState,
+                    snackbarHostState = snackbarHostState,
+                    searchType = searchType,
                     user = it.user,
                     movies = it.movieList,
                     onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
@@ -105,7 +115,8 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
                         moviesHomeViewModel.loadData(searchType) // TODO: to review!
                     },
                     onClickSignOut = onClickSignOut,
-                    onClickMovie = { movieId -> onClickMovie(movieId) })
+                    onClickMovie = { movieId -> onClickMovie(movieId) },
+                )
         }
     }
 
@@ -117,16 +128,17 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
                     snackbarHostState.showSnackbar(
                         message = context.resources.getString(R.string.movies_home_error, event.searchType),
                         actionLabel = context.resources.getString(R.string.close_message),
-                        duration = SnackbarDuration.Long)
+                        duration = SnackbarDuration.Long,
+                    )
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoviesHomeContent(
+    scaffoldState: ScaffoldState,
     snackbarHostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
@@ -135,7 +147,7 @@ fun MoviesHomeContent(
     onClickFavorites: () -> Unit = {},
     onClickSearchType: () -> Unit = {},
     onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
@@ -155,6 +167,8 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
+        scaffoldState = scaffoldState,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
@@ -202,23 +216,27 @@ fun MoviesHomeContent(
                                     when (searchType) {
                                         Type.MOVIE -> R.drawable.ic_series_search
                                         Type.TV_SHOW -> R.drawable.ic_movie_search
-                                    }),
-                            contentDescription = stringResource(id = R.string.movies_home_search_type))
+                                    }
+                            ),
+                            contentDescription = stringResource(id = R.string.movies_home_search_type),
+                        )
                     }
                     IconButton(onClick = { expanded = true }) {
                         Icon(
                             imageVector = Icons.Filled.MoreVert,
-                            contentDescription = stringResource(id = R.string.movies_home_more_options))
+                            contentDescription = stringResource(id = R.string.movies_home_more_options),
+                        )
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                             DropdownMenuItem(
-                                text = {
+                                onClick = { showDialog = true },
+                                content = {
                                     Text(text = stringResource(id = R.string.movies_home_sign_out))
-                                },
-                                onClick = { showDialog = true }
+                                }
                             )
                         }
                     }
-                })
+                },
+            )
         },
         bottomBar = {
             // TODO: implement when new features are introduced
@@ -235,25 +253,28 @@ fun MoviesHomeContent(
                     }
             }
         },
-        floatingActionButtonPosition = FabPosition.End) { contentPadding ->
-            Box(modifier = modifier.padding(contentPadding)) {
-                if (movies.isEmpty())
-                    EmptyContent(
-                        when (searchType) {
-                            Type.MOVIE -> R.string.movies_home_empty_movies
-                            Type.TV_SHOW -> R.string.movies_home_empty_series
-                        })
-                else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
+        floatingActionButtonPosition = FabPosition.End,
+    ) { contentPadding ->
+        Box(modifier = modifier.padding(contentPadding)) {
+            if (movies.isEmpty())
+                EmptyContent(
+                    when (searchType) {
+                        Type.MOVIE -> R.string.movies_home_empty_movies
+                        Type.TV_SHOW -> R.string.movies_home_empty_series
+                    }
+                )
+            else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
 
-                if (showDialog) {
-                    AlertDialog(
-                        onDismissRequest = { onDismissRequest() },
-                        onConfirmation = { onSignOutConfirmed() },
-                        dialogTitle = R.string.movies_home_sign_out,
-                        dialogText = R.string.sign_out_dialog_description)
-                }
+            if (showDialog) {
+                AlertDialog(
+                    onDismissRequest = { onDismissRequest() },
+                    onConfirmation = { onSignOutConfirmed() },
+                    dialogTitle = R.string.movies_home_sign_out,
+                    dialogText = R.string.sign_out_dialog_description,
+                )
             }
         }
+    }
 }
 
 @Composable
@@ -261,7 +282,7 @@ fun MoviesGrid(
     movies: List<MediaItemModel>,
     modifier: Modifier = Modifier,
     gridState: LazyGridState = rememberLazyGridState(),
-    onClickMovie: (String) -> Unit = {}
+    onClickMovie: (String) -> Unit = {},
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
         items(movies, key = { it.id }) { movie ->
@@ -284,7 +305,8 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         loading = { Loading() },
         error = { Placeholder(modifier = Modifier.size(50.dp)) },
         alignment = Alignment.Center,
-        contentScale = ContentScale.Crop)
+        contentScale = ContentScale.Crop,
+    )
 }
 
 // region Previews
@@ -295,7 +317,13 @@ private fun MoviesHomeContentPreview() {
     MoviesTheme {
         val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
         val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-        MoviesHomeContent(snackbarHostState = snackbarHostState, searchType = Type.MOVIE, user = null, movies = movies)
+        MoviesHomeContent(
+            scaffoldState = rememberScaffoldState(),
+            snackbarHostState = snackbarHostState,
+            searchType = Type.MOVIE,
+            user = null,
+            movies = movies
+        )
     }
 }
 

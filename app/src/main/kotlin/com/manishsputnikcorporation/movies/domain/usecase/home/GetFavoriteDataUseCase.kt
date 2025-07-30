@@ -15,7 +15,7 @@ class GetFavoriteDataUseCase
 constructor(
     private val moviesRepository: MoviesRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<Type, List<MediaItemModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
     override fun prepareFlow(input: Type): Flow<List<MediaItemModel>> =

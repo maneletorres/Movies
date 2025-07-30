@@ -55,7 +55,9 @@ constructor(
                     it.onSuccess { movieDetailModel: MovieDetailModel ->
                             _movieDetailUiState.update { state ->
                                 state.copy(
-                                    isLoading = false, movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel))
+                                    isLoading = false,
+                                    movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel),
+                                )
                             }
                         }
                         .onFailure { _movieDetailUiState.update { state -> state.copy(isLoading = false, isFailed = true) } }
@@ -95,7 +97,7 @@ constructor(
         val isIdle: Boolean = true,
         val isLoading: Boolean = false,
         val movieDetailData: MovieDetailData = MovieDetailData(),
-        val isFailed: Boolean = false
+        val isFailed: Boolean = false,
     ) {
 
         data class MovieDetailData(val movieDetailModel: MovieDetailModel? = null, val isFavorite: Boolean = false)

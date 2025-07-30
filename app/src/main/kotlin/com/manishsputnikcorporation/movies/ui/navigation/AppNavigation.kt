@@ -2,6 +2,7 @@ package com.manishsputnikcorporation.movies.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,6 +16,8 @@ import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.SplashScreen
 import com.manishsputnikcorporation.movies.utils.extensions.navigateInclusiveTo
 import com.manishsputnikcorporation.movies.utils.extensions.navigateSingleTopTo
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
+import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 
 @Composable
 fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController, modifier: Modifier = Modifier) {
@@ -52,11 +55,14 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
                     mainViewModel.signOut()
                     navController.navigateInclusiveTo(LoginScreen.route, MoviesHome.route)
                 },
-                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") })
+                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") },
+            )
         }
         composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
             val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
-            MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId) { navController.popBackStack() }
+            MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId = movieId) {
+                navController.popBackStack()
+            }
         }
     }
 }

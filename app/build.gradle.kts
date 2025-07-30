@@ -1,6 +1,7 @@
 import java.io.FileInputStream
 import java.io.IOException
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -16,19 +17,17 @@ plugins {
 
 android {
     namespace = "com.manishsputnikcorporation.movies"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.manishsputnikcorporation.movies"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
-        versionName ="1.0"
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables { useSupportLibrary = true }
 
         val localProperties = Properties()
         try {
@@ -47,21 +46,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+    kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
+    buildFeatures { buildConfig = true }
+    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
 }
 
 dependencies {
@@ -83,7 +73,7 @@ dependencies {
     // region Retrofit
     implementation(platform(libs.com.squareup.retrofit2.bom))
     implementation(libs.bundles.retrofit2)
-    // endregion
+    ksp(libs.com.squareup.moshi.moshi.kotlin.codegen)
 
     // region OkHttp
     implementation(platform(libs.com.squareup.okhttp3.bom))

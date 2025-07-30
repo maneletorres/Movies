@@ -15,7 +15,8 @@ class MediaItemDtoMapper : DomainMapper<MovieDto, MediaItemModel> {
                 year = releaseDate, // TODO: to extract info from releaseData
                 imageUrl = imageUrl,
                 rating = rating.toString(),
-                isFavorite = false)
+                isFavorite = false,
+            )
         }
     }
 
@@ -28,7 +29,8 @@ class MediaItemDtoMapper : DomainMapper<MovieDto, MediaItemModel> {
                 overview = "", // TODO: to study if delete
                 releaseDate = year, // TODO: to check & to study if delete
                 imageUrl = imageUrl,
-                rating = rating.toDouble())
+                rating = rating.toDouble(),
+            )
         }
     }
 }
