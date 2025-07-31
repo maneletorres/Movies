@@ -55,9 +55,14 @@ android {
 }
 
 dependencies {
-    // region Dependency injection (DI) libraries:
+    // region Hilt:
     runtimeOnly(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.android.compiler)
+    // endregion
+
+    // region Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
     // endregion
 
     // region Firebase:
@@ -65,21 +70,30 @@ dependencies {
     implementation(libs.bundles.firebase)
     // endregion
 
-    implementation(libs.com.jakewharton.timber)
+    // region Retrofit
+    implementation(platform(libs.com.squareup.retrofit2.bom))
     implementation(libs.bundles.retrofit2)
     ksp(libs.com.squareup.moshi.moshi.kotlin.codegen)
+
+    // region OkHttp
+    implementation(platform(libs.com.squareup.okhttp3.bom))
     implementation(libs.bundles.okhttp3)
-    implementation(libs.bundles.ui)
-    implementation(libs.bundles.navigation)
-    implementation(libs.bundles.compose)
+    // endregion
 
     // region Room:
     implementation(libs.bundles.room)
     ksp(libs.androidx.room.compiler)
     // endregion
 
+    implementation(libs.com.jakewharton.timber)
+    implementation(libs.bundles.ui)
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.compose)
+
     // region Testing libraries:
     testImplementation(libs.bundles.testing)
+
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.bundles.testing.compose)
     // endregion
 }

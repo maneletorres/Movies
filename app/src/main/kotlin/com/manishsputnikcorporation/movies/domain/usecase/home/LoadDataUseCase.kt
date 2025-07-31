@@ -30,7 +30,7 @@ constructor(
                 MOVIE -> moviesRepository.refreshPopularMovies()
                 TV_SHOW -> moviesRepository.refreshPopularTVShows()
             }
-            .onSuccess { emit(eitherSuccess(it)) }
-            .onFailure { emit(eitherFailure(it)) }
+            .onSuccess { emit(value = eitherSuccess(data = it)) }
+            .onFailure { emit(value = eitherFailure(error = it)) }
     }
 }

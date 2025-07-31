@@ -43,7 +43,6 @@ import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
-import com.manishsputnikcorporation.movies.ui.navigation.MovieDetail
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
 import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
@@ -52,16 +51,10 @@ import com.manishsputnikcorporation.movies.ui.screens.detail.MovieDetailViewMode
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 
 @Composable
-fun MovieDetailScreen(
-    analyticsManager: AnalyticsManager,
-    movieDetailViewModel: MovieDetailViewModel,
-    movieId: String?,
-    onBackArrowClick: () -> Unit = {},
-) {
-    analyticsManager.trackScreen(screenName = MovieDetail.route)
+fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: String?, onBackArrowClick: () -> Unit = {}) {
+    movieDetailViewModel.trackScreen()
 
     val movieDetailUiState by movieDetailViewModel.movieDetailUiState.collectAsState()
     movieDetailUiState.let { state ->
@@ -103,7 +96,7 @@ fun MovieDetailContent(
         bottomBar = {
             // TODO: implement when new features are introduced
         },
-    ) {
+    ) { contentPadding ->
         when {
             state.isLoading -> Loading()
             state.movieDetailData.movieDetailModel != null -> {
@@ -185,7 +178,7 @@ fun MovieInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h6)
+            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h5)
             MovieFavorite(isFavorite, onFavoriteMovieClick)
         }
         MovieSecondaryInfo(year = releaseDate, runtime = runtime)
