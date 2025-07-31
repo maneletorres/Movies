@@ -92,6 +92,8 @@ dependencies {
 
     // region Testing libraries:
     testImplementation(libs.bundles.testing)
+
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.bundles.testing.compose)
     // endregion
 }

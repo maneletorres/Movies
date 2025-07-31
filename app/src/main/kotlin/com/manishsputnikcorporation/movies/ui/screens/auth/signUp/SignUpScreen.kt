@@ -204,7 +204,6 @@ fun SignUpTextFieldPreview() {
     MoviesTheme {
         Surface {
             var password by rememberSaveable { mutableStateOf("") }
-            var isPasswordError by rememberSaveable { mutableStateOf(false) }
             SignUpTextField(
                 value = password,
                 isError = false,
@@ -215,7 +214,6 @@ fun SignUpTextFieldPreview() {
                 leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             ) {
                 password = it
-                isPasswordError = !isValidPassword(password)
             }
         }
     }
