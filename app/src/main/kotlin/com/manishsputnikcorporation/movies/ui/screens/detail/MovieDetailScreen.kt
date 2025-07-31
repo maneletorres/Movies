@@ -178,7 +178,7 @@ fun MovieInfo(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h1)
+            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h5)
             MovieFavorite(isFavorite, onFavoriteMovieClick)
         }
         MovieSecondaryInfo(year = releaseDate, runtime = runtime)

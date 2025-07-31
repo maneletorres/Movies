@@ -33,12 +33,12 @@ class PasswordRecoveryViewModel @Inject constructor(private val analyticsManager
             when (val res = authManager.recoverPassword(email)) {
                 is AuthRes.Success -> {
                     val bundle = Bundle().apply { putString("email", email) }
-                    analyticsManager.trackEvent("successful_password_recovery", bundle)
-                    _event.send(Event.SuccessfulPasswordRecovery)
+                    analyticsManager.trackEvent(eventName = "successful_password_recovery", params = bundle)
+                    _event.send(element = Event.PasswordRecoverySuccessful)
                 }
                 is AuthRes.Error -> {
-                    analyticsManager.trackError("failed_password_recovery: $email - ${res.errorMessage}")
-                    _event.send(Event.FailedPasswordRecovery)
+                    analyticsManager.trackError(errorType = "failed_password_recovery: $email - ${res.errorMessage}")
+                    _event.send(element = Event.PasswordRecoveryFailed)
                 }
             }
         }
@@ -46,8 +46,8 @@ class PasswordRecoveryViewModel @Inject constructor(private val analyticsManager
 
     sealed interface Event {
 
-        data object SuccessfulPasswordRecovery : Event
+        data object PasswordRecoverySuccessful : Event
 
-        data object FailedPasswordRecovery : Event
+        data object PasswordRecoveryFailed : Event
     }
 }

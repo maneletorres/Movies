@@ -26,6 +26,8 @@
     <string name="sign_in_password">Password</string>
     <string name="sign_in_incorrect_email">The email address is not correct</string>
     <string name="sign_in_incorrect_password">Passwords must have at least 6 characters</string>
+    <string name="sign_in_user_creation_failed">User creation from email and password failed</string>
+    <string name="sign_in_with_email_and_password_failed">Sign in with email and password failed</string>
 
     <!-- PasswordRecoveryScreen: -->
     <string name="password_recovery_email_sent">Password recovery email sent successfully</string>
@@ -96,6 +98,4 @@
     <string name="analytics_google_sign_in" translatable="false">google_sign_in</string>
     <string name="analytics_email_sign_in" translatable="false">email_sign_in</string>
 
-    <!-- Authentication: -->
-    <string name="auth_password_recovery_error">Error recovering password</string>
 </resources>

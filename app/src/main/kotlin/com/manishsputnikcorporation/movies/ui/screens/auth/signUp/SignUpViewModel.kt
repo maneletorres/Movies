@@ -11,41 +11,53 @@ import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(private val analyticsManager: AnalyticsManager, private val authManager: AuthManager) :
     ViewModel() {
 
-    // TODO: difference between sign in (Login/Iniciar sesión) with sign up (Registrarse)
+    private val _event: Channel<Event> = Channel()
+    val event: Flow<Event> = _event.receiveAsFlow()
 
     @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = SignUpScreen.route)
 
-    // TODO: el flujo debería de ser con 1 único click: si el usuario existe, adelante, sino, crea
-    // la cuenta y adelante
     suspend fun createUser(email: String, password: String, onNavigation: () -> Unit) {
-        analyticsManager.trackButtonClick("create_user")
+        analyticsManager.trackButtonClick(buttonName = "create_user")
         when (val result = authManager.createUserWithEmailAndPassword(email, password)) {
             is AuthRes.Success -> {
-                analyticsManager.trackEvent(FirebaseAnalytics.Event.SIGN_UP, Bundle())
+                analyticsManager.trackEvent(eventName = FirebaseAnalytics.Event.SIGN_UP, params = Bundle())
                 signIn(email, password, onNavigation)
             }
             is AuthRes.Error -> {
-                // TODO: show Snackbar
-                analyticsManager.trackError(result.errorMessage)
+                val errorMessage = result.errorMessage
+                analyticsManager.trackError(errorType = result.errorMessage)
+                _event.send(element = Event.UserCreationFailed(errorMessage = errorMessage))
             }
         }
     }
 
-    private suspend fun signIn(email: String, password: String, onNavigation: () -> Unit) {
+    suspend fun signIn(email: String, password: String, onNavigation: () -> Unit) {
         when (val result = authManager.signInWithEmailAndPassword(email, password)) {
             is AuthRes.Success -> {
-                analyticsManager.trackEvent(FirebaseAnalytics.Event.LOGIN, Bundle())
+                analyticsManager.trackEvent(eventName = FirebaseAnalytics.Event.LOGIN, params = Bundle())
                 onNavigation()
             }
             is AuthRes.Error -> {
-                // TODO: show Snackbar
-                analyticsManager.trackError(result.errorMessage)
+                val errorMessage = result.errorMessage
+                analyticsManager.trackError(errorType = errorMessage)
+                _event.send(element = Event.SignInFailed(errorMessage = errorMessage))
             }
         }
     }
+
+    // region States & Events
+    sealed interface Event {
+        data class UserCreationFailed(val errorMessage: String) : Event
+
+        data class SignInFailed(val errorMessage: String) : Event
+    }
+    // endregion
 }

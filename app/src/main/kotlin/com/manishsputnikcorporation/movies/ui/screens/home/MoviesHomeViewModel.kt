@@ -16,8 +16,6 @@ import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.M
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
 import com.manishsputnikcorporation.movies.utils.enums.Type
-import com.manishsputnikcorporation.movies.utils.extensions.onFailure
-import com.manishsputnikcorporation.movies.utils.extensions.onSuccess
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,12 +24,13 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class MoviesHomeViewModel
@@ -58,47 +57,33 @@ constructor(
 
     init {
         loadData()
-        loadUserPhotoUrl()
     }
 
     @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = MoviesHome.route)
 
     fun loadData(type: Type = Type.MOVIE) {
         loadDataUseCase
-            .safePrepare(type)
+            .safePrepare(input = type)
             .onStart { _moviesHomeUiState.update { Loading } }
-            .onEach {
-                getData(type)
-                it.onSuccess {
-                        // Nothing to do
-                    }
-                    .onFailure { _event.send(Event.Error(type.name.lowercase())) }
-            }
+            .onCompletion { getData(type) }
+            .catch { _event.send(element = Event.Error(searchType = type.name.lowercase())) }
             .launchIn(viewModelScope)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun getData(type: Type) {
+        val user = authManager.getCurrentUser()
         getDataUseCase
-            .safePrepare(type)
-            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
+            .safePrepare(input = type)
+            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieList = movieModelList, user = user) } }
             .launchIn(viewModelScope)
     }
 
     fun getFavorites(type: Type) {
         getFavoriteDataUseCase
-            .safePrepare(type)
-            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieModelList) } }
+            .safePrepare(input = type)
+            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieList = movieModelList) } }
             .launchIn(viewModelScope)
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun loadUserPhotoUrl() {
-        viewModelScope.launch {
-            _moviesHomeUiState.update {
-                Data(movieList = listOf(), authManager.getCurrentUser()) // TODO: it.copy
-            }
-        }
     }
 
     // region State & Events

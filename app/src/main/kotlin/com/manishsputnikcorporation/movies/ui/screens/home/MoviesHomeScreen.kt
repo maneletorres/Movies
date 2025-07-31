@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -34,7 +32,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.rememberScaffoldState
@@ -85,8 +83,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
-    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
-    var searchType by rememberSaveable { mutableStateOf(Type.MOVIE) }
+    val hotState: SnackbarHostState = remember { SnackbarHostState() }
+    var searchType by rememberSaveable { mutableStateOf(value = Type.MOVIE) }
 
     moviesHomeViewModel.trackScreen()
 
@@ -98,7 +96,7 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
             is Data ->
                 MoviesHomeContent(
                     scaffoldState = scaffoldState,
-                    snackbarHostState = snackbarHostState,
+                    hostState = hotState,
                     searchType = searchType,
                     user = it.user,
                     movies = it.movieList,
@@ -114,11 +112,11 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
     }
 
     val context = LocalContext.current
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = Unit) {
         moviesHomeViewModel.event.collectLatest { event ->
             when (event) {
                 is MoviesHomeViewModel.Event.Error -> {
-                    snackbarHostState.showSnackbar(
+                    hotState.showSnackbar(
                         message = context.resources.getString(R.string.movies_home_error, event.searchType),
                         actionLabel = context.resources.getString(R.string.close_message),
                         duration = SnackbarDuration.Long,
@@ -132,7 +130,7 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
 @Composable
 fun MoviesHomeContent(
     scaffoldState: ScaffoldState,
-    snackbarHostState: SnackbarHostState,
+    hostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
     movies: List<MediaItemModel>,
@@ -162,7 +160,7 @@ fun MoviesHomeContent(
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         scaffoldState = scaffoldState,
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = hostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -171,15 +169,10 @@ fun MoviesHomeContent(
                             // TODO: Google case
                         } else {
                             Image(
-                                imageVector = Icons.Default.AccountBox,
+                                imageVector = Icons.Default.AccountCircle,
                                 contentDescription = stringResource(id = R.string.movies_home_default_profile_photo_description),
-                                modifier =
-                                    Modifier
-                                        // .padding(end = 8.dp) // TODO
-                                        .size(40.dp)
-                                        .clip(CircleShape),
+                                modifier = Modifier.padding(end = 8.dp).size(size = 40.dp).clip(CircleShape),
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
                         }
                         Column {
                             val displayName = user?.displayName
@@ -205,13 +198,14 @@ fun MoviesHomeContent(
                     }
                     IconButton(onClick = { onClickSearchType() }) {
                         Icon(
-                            painterResource(
-                                id =
-                                    when (searchType) {
-                                        Type.MOVIE -> R.drawable.ic_series_search
-                                        Type.TV_SHOW -> R.drawable.ic_movie_search
-                                    }
-                            ),
+                            painter =
+                                painterResource(
+                                    id =
+                                        when (searchType) {
+                                            Type.MOVIE -> R.drawable.ic_series_search
+                                            Type.TV_SHOW -> R.drawable.ic_movie_search
+                                        }
+                                ),
                             contentDescription = stringResource(id = R.string.movies_home_search_type),
                         )
                     }
@@ -238,15 +232,15 @@ fun MoviesHomeContent(
                 val coroutineScope = rememberCoroutineScope()
                 FloatingActionButton(
                     modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp, end = 8.dp),
-                    onClick = { coroutineScope.launch { gridState.scrollToItem(0) } },
+                    onClick = { coroutineScope.launch { gridState.scrollToItem(index = 0) } },
                 ) {
-                    Text(stringResource(id = R.string.movies_home_up_button_text))
+                    Text(text = stringResource(id = R.string.movies_home_up_button_text))
                 }
             }
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { contentPadding ->
-        Box(modifier = modifier.padding(contentPadding)) {
+        Box(modifier = modifier.padding(paddingValues = contentPadding)) {
             if (movies.isEmpty())
                 EmptyContent(
                     when (searchType) {
@@ -276,9 +270,9 @@ fun MoviesGrid(
     onClickMovie: (String) -> Unit = {},
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
-        items(movies, key = { it.id }) { movie ->
+        items(items = movies, key = { it.id }) { movie ->
             val rememberedMovie = rememberSaveable { movie } // TODO: to check
-            with(rememberedMovie) { Movie(id, imageUrl) { movieId -> onClickMovie(movieId) } }
+            with(receiver = rememberedMovie) { Movie(id, image = imageUrl) { movieId -> onClickMovie(movieId) } }
         }
     }
 }
@@ -289,9 +283,11 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
         modifier =
-            Modifier.height(200.dp).clickable { onClickMovie(id) }.semantics { contentDescription = "Movie Detail" }, // TODO: to check
+            Modifier.height(height = 200.dp)
+                .clickable { onClickMovie(id) }
+                .semantics { contentDescription = "Movie Detail" }, // TODO: to check
         loading = { Loading() },
-        error = { Placeholder(modifier = Modifier.size(50.dp)) },
+        error = { Placeholder(modifier = Modifier.size(size = 50.dp)) },
         alignment = Alignment.Center,
         contentScale = ContentScale.Crop,
     )
@@ -303,11 +299,11 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 @Composable
 private fun MoviesHomeContentPreview() {
     MoviesTheme {
-        val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+        val hostState: SnackbarHostState = remember { SnackbarHostState() }
         val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
         MoviesHomeContent(
             scaffoldState = rememberScaffoldState(),
-            snackbarHostState = snackbarHostState,
+            hostState = hostState,
             searchType = Type.MOVIE,
             user = null,
             movies = movies,

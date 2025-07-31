@@ -7,7 +7,6 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.manishsputnikcorporation.movies.R
 import kotlinx.coroutines.tasks.await
 
 interface AuthManager {
@@ -33,37 +32,41 @@ class AuthManagerImpl(val context: Context) : AuthManager {
     override suspend fun signInAnonymously(): AuthRes<FirebaseUser> =
         manageAuthResult(authResult = auth.signInAnonymously(), errorMessage = "sign_in_anonymously_error")
 
-    override suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> =
-        manageAuthResult(
-            authResult = auth.createUserWithEmailAndPassword(email, password),
-            errorMessage = "create_user_with_email_and_password_error",
-        )
+    override suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> {
+        val errorMessage = "create_user_with_email_and_password_error"
+        return try {
+            manageAuthResult(authResult = auth.createUserWithEmailAndPassword(email, password), errorMessage = errorMessage)
+        } catch (e: Exception) {
+            AuthRes.Error(errorMessage = e.message ?: errorMessage)
+        }
+    }
 
-    override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> =
-        manageAuthResult(
-            authResult = auth.signInWithEmailAndPassword(email, password),
-            errorMessage = "sign_in_with_email_and_password_error",
-        )
+    override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthRes<FirebaseUser> {
+        val errorMessage = "sign_in_with_email_and_password_error"
+        return try {
+            manageAuthResult(authResult = auth.signInWithEmailAndPassword(email, password), errorMessage = errorMessage)
+        } catch (e: Exception) {
+            AuthRes.Error(errorMessage = e.message ?: errorMessage)
+        }
+    }
 
     override suspend fun recoverPassword(email: String): AuthRes<Unit> =
         try {
             auth.sendPasswordResetEmail(email).await()
-            AuthRes.Success(Unit)
+            AuthRes.Success(data = Unit)
         } catch (e: Exception) {
-            AuthRes.Error(e.message ?: context.getString(R.string.auth_password_recovery_error))
+            AuthRes.Error(errorMessage = e.message ?: "password_recovery_error")
         }
 
-    override fun signOut() {
-        auth.signOut()
-    }
+    override fun signOut() = auth.signOut()
 
     // region Helper methods
     private suspend fun manageAuthResult(authResult: Task<AuthResult>, errorMessage: String) =
         try {
             val firebaseUser = authResult.await().user
-            AuthRes.Success(firebaseUser ?: throw Exception(errorMessage))
+            AuthRes.Success(data = firebaseUser ?: throw Exception(errorMessage))
         } catch (e: Exception) {
-            AuthRes.Error(e.message ?: errorMessage)
+            AuthRes.Error(errorMessage = e.message ?: errorMessage)
         }
     // endregion
 }

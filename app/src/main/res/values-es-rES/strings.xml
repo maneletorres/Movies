@@ -49,9 +49,10 @@
     <string name="movies_home_generic_greeting">Bienvenido</string>
     <string name="movies_home_custom_greeting">Hola %s</string>
     <string name="movies_home_generic_name">Anónimo</string>
+    <string name="sign_in_with_email_and_password_failed">Error al iniciar sesión con correo electrónico y contraseña</string>
     <string name="password_recovery_email_sent">Correo electrónico de recuperación de contraseña enviado correctamente</string>
     <string name="password_recovery_email_error">Error al enviar email de recuperación de contraseña</string>
-    <string name="auth_password_recovery_error">Error al recuperar la contraseña</string>
     <string name="sign_in_incorrect_email">La dirección de correo electrónico no es correcta</string>
     <string name="sign_in_incorrect_password">Las contraseñas deben tener al menos 6 caracteres</string>
+    <string name="sign_in_user_creation_failed">Error al crear usuario</string>
 </resources>
