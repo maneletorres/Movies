@@ -17,8 +17,8 @@ interface FlowUseCaseDelegate {
         dismissAction: (() -> Unit)? = null,
     ): Flow<R> =
         prepare(input).catch {
-            Timber.e(this@safePrepare.javaClass.simpleName, it.toString())
-            globalErrorManager.emitError(it, onGenericError, onUnauthorized, onNetworkAvailable, dismissAction)
+            Timber.e(message = this@safePrepare.javaClass.simpleName, it.toString())
+            globalErrorManager.emitError(throwable = it, onGenericError, onUnauthorized, onNetworkAvailable, dismissAction)
         }
 
     class Default @Inject constructor(override val globalErrorManager: GlobalErrorManager) : FlowUseCaseDelegate

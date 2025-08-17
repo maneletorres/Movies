@@ -7,12 +7,12 @@ import androidx.compose.material.SnackbarHostState
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.MOVIE
-import com.manishsputnikcorporation.movies.utils.enums.Type.TV_SHOW
+import com.manishsputnikcorporation.movies.utils.enums.Type.TV
 
 fun Type.toggleSearchType(): Type =
     when (this) {
-        MOVIE -> TV_SHOW
-        TV_SHOW -> MOVIE
+        MOVIE -> TV
+        TV -> MOVIE
     }
 
 suspend fun SnackbarHostState.showSnackBar(context: Context, @StringRes message: Int) =

@@ -1,137 +1,126 @@
 package com.manishsputnikcorporation.movies.data.local
 
-import com.manishsputnikcorporation.movies.common_test.getDatabaseMovieList
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
+import com.manishsputnikcorporation.movies.data.local.datasource.MovieLocalDataSource
+import com.manishsputnikcorporation.movies.data.local.datasource.MovieLocalDataSourceImpl
 import com.manishsputnikcorporation.movies.di.annotations.TestDatabase
-import com.manishsputnikcorporation.movies.utils.enums.Type
-import com.manishsputnikcorporation.movies.utils.enums.Type.*
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseMovie
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseMovies
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.io.IOException
 import javax.inject.Inject
-import junitparams.JUnitParamsRunner
-import junitparams.Parameters
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(JUnitParamsRunner::class)
+@RunWith(AndroidJUnit4::class)
 @HiltAndroidTest
 class MovieLocalDataSourceImplTest {
 
-  // region Setup
-  @get:Rule var hiltRule = HiltAndroidRule(this)
+    // region Setup
+    @get:Rule val instantExecutorRule = InstantTaskExecutorRule()
 
-  @Inject @TestDatabase lateinit var db: MovieRoomDatabase
-  private lateinit var movieDao: MovieDao
-  private lateinit var localDataSource: MovieLocalDataSource
+    @Inject @TestDatabase lateinit var db: MediaDatabase
+    private lateinit var movieDao: MovieDao
+    private lateinit var localDataSource: MovieLocalDataSource
 
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    movieDao = db.movieDao()
-    localDataSource = MovieLocalDataSourceImpl(movieDao)
-  }
+    @Before
+    fun setup() {
+        db = Room.inMemoryDatabaseBuilder(context = ApplicationProvider.getApplicationContext(), klass = MediaDatabase::class.java).build()
+        movieDao = db.movieDao()
+        localDataSource = MovieLocalDataSourceImpl(movieDao)
+    }
 
-  @After
-  @Throws(IOException::class)
-  fun tearDown() {
-    db.close()
-  }
-  // endregion
+    @After
+    @Throws(IOException::class)
+    fun tearDown() {
+        db.close()
+    }
 
-  // region Testing
-  @Test
-  fun insertAll() = runTest {
-    // Given:
-    val fakeEntityList = getDatabaseMovieList()
+    // endregion
 
-    // When:
-    val result = localDataSource.insertAll(fakeEntityList)
+    // region Testing
+    @Test
+    @Throws(Exception::class)
+    fun insertAll() = runTest {
+        localDataSource.insertAll(movies = fakeDatabaseMovies)
 
-    // Then:
-    assertEquals(Unit, result)
-  }
+        movieDao.getMovies().test {
+            val databaseMovies: List<DatabaseMovie> = awaitItem()
+            assertTrue(databaseMovies.isNotEmpty())
+            assertTrue(databaseMovies.containsAll(elements = fakeDatabaseMovies))
+        }
+    }
 
-  @Test
-  @Parameters(method = "searchTypeScenario")
-  fun getMovies(searchType: Type) = runTest {
-    // Given:
-    val fakeEntityList = getDatabaseMovieList(searchType)
-    movieDao.insertAll(fakeEntityList)
+    @Test
+    @Throws(Exception::class)
+    fun getMovies() = runTest {
+        movieDao.insertAll(movies = fakeDatabaseMovies)
 
-    // When:
-    val result = localDataSource.getMovies(searchType).first()
+        localDataSource.getMovies().test {
+            val databaseMovies: List<DatabaseMovie> = awaitItem()
+            assertTrue(databaseMovies.isNotEmpty())
+            assertTrue(databaseMovies.containsAll(elements = fakeDatabaseMovies))
+        }
+    }
 
-    // Then:
-    assert(result.isNotEmpty())
-    assert(fakeEntityList.containsAll(result))
-  }
+    @Test
+    @Throws(Exception::class)
+    fun getFavoriteMovies() = runTest {
+        movieDao.insertAll(movies = fakeDatabaseMovies.map { it.copy(isFavorite = true) })
 
-  @Test
-  fun getFavorites() = runTest {
-    // Given:
-    val fakeEntityList = getDatabaseMovieList()
-    movieDao.insertAll(fakeEntityList)
+        localDataSource.getFavoriteMovies().test {
+            val favoriteDatabaseMovies: List<DatabaseMovie> = awaitItem()
+            assertTrue(favoriteDatabaseMovies.isNotEmpty())
+            assertTrue(favoriteDatabaseMovies.containsAll(elements = fakeDatabaseMovies.filter { it.isFavorite }))
+        }
+    }
 
-    // When:
-    val result = localDataSource.getFavorites().first()
+    @Test
+    @Throws(Exception::class)
+    fun isFavoriteMovie() = runTest {
+        movieDao.insert(movie = fakeDatabaseMovie.copy(isFavorite = true))
 
-    // Then:
-    assert(result.isNotEmpty())
-    assert(result.all { it.isFavorite })
-    assert(fakeEntityList.containsAll(result))
-  }
+        localDataSource.isFavoriteMovie(id = fakeDatabaseMovie.id).test { assertTrue(awaitItem()) }
+    }
 
-  @Test
-  @Parameters(method = "isFavoriteScenario")
-  fun isFavoriteMovie(isFavorite: Boolean) = runTest {
-    // Given:
-    val fakeEntity = getDatabaseMovieList(isFavorite = isFavorite).first()
-    movieDao.insert(fakeEntity)
+    @Test
+    @Throws(Exception::class)
+    fun getMovie() = runTest {
+        movieDao.insert(movie = fakeDatabaseMovie)
 
-    // When:
-    val result = localDataSource.isFavoriteMovie(fakeEntity.id).first()
+        localDataSource.getMovie(id = fakeDatabaseMovie.id).test {
+            val databaseMovie: DatabaseMovie = awaitItem()
+            assertNotNull(databaseMovie)
+            assertEquals(fakeDatabaseMovie, databaseMovie)
+        }
+    }
 
-    // Then:
-    assertEquals(isFavorite, result)
-  }
+    @Test
+    @Throws(Exception::class)
+    fun updateMovie() = runTest {
+        movieDao.insert(movie = fakeDatabaseMovie)
 
-  @Test
-  fun getMovie() = runTest {
-    // Given:
-    val fakeEntity = getDatabaseMovieList().first()
-    movieDao.insert(fakeEntity)
+        val updatedDatabaseMovie = fakeDatabaseMovie.copy(title = "updated-movie-title")
 
-    // When:
-    val result = localDataSource.getMovie(fakeEntity.id).first()
+        localDataSource.updateMovie(movie = updatedDatabaseMovie)
 
-    // Then:
-    assertEquals(fakeEntity, result)
-  }
-
-  @Test
-  fun updateMovie() = runTest {
-    // Given:
-    val fakeEntity = getDatabaseMovieList().first()
-
-    // When:
-    val result = localDataSource.updateMovie(fakeEntity)
-
-    // Then:
-    assertEquals(Unit, result)
-  }
-  // endregion
-
-  // region Helper methods
-  fun isFavoriteScenario() = listOf(true, false)
-
-  fun searchTypeScenario() = listOf(MOVIE, SERIES)
-  // endregion
+        movieDao.getMovie(id = updatedDatabaseMovie.id).test {
+            val databaseMovie: DatabaseMovie = awaitItem()
+            assertNotNull(databaseMovie)
+            assertEquals(updatedDatabaseMovie.title, databaseMovie.title)
+        }
+    }
+    // endregion
 }

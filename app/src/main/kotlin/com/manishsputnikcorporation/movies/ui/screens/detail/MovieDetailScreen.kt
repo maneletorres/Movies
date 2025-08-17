@@ -53,13 +53,13 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 
 @Composable
-fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: String?, onBackArrowClick: () -> Unit = {}) {
+fun MovieDetailScreen(movieDetailViewModel: MovieDetailViewModel, movieId: Int?, onBackArrowClick: () -> Unit = {}) {
     movieDetailViewModel.trackScreen()
 
     val movieDetailUiState by movieDetailViewModel.movieDetailUiState.collectAsState()
     movieDetailUiState.let { state ->
         when {
-            state.isIdle -> movieDetailViewModel.loadData(movieId)
+            state.isIdle -> movieId?.let { movieDetailViewModel.loadData(id = movieId) }
             else ->
                 MovieDetailContent(
                     state = state,
@@ -82,7 +82,7 @@ fun MovieDetailContent(
         modifier = Modifier.systemBarsPadding(),
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(id = R.string.movie_detail_label)) },
+                title = { Text(text = stringResource(id = R.string.movie_detail_label)) },
                 navigationIcon = {
                     IconButton(onClick = { onBackArrowClick() }) {
                         Icon(
@@ -104,23 +104,23 @@ fun MovieDetailContent(
                     horizontalAlignment = Alignment.Start,
                     modifier =
                         modifier
-                            .verticalScroll(rememberScrollState())
+                            .verticalScroll(state = rememberScrollState())
                             .padding(horizontal = 16.dp, vertical = 16.dp)
                             .fillMaxHeight()
                             .semantics { contentDescription = "Movie Detail Screen" },
                 ) {
                     state.movieDetailData.movieDetailModel.let {
                         MovieOverview(
-                            image = it.image,
+                            image = it.posterPath,
                             title = it.title,
                             releaseDate = it.releaseDate,
-                            runtime = it.runtimeStr,
+                            runtime = it.runtime,
                             isFavorite = state.movieDetailData.isFavorite,
                         ) {
                             onFavoriteMovieClick()
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = it.plot, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                        Spacer(modifier = Modifier.height(height = 8.dp))
+                        Text(text = it.overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
                     }
                 }
             }
@@ -134,14 +134,14 @@ fun MovieOverview(
     image: String,
     title: String,
     releaseDate: String,
-    runtime: String?,
+    runtime: Int?,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
     onFavoriteMovieClick: () -> Unit = {},
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
-        MovieImage(imageUrl = image)
-        Spacer(modifier = Modifier.width(8.dp))
+        MovieImage(posterPath = image)
+        Spacer(modifier = Modifier.width(width = 8.dp))
         MovieInfo(
             title = title,
             isFavorite = isFavorite,
@@ -149,18 +149,21 @@ fun MovieOverview(
             runtime = runtime,
             onFavoriteMovieClick = onFavoriteMovieClick,
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(width = 8.dp))
     }
 }
 
 @Composable
-private fun MovieImage(imageUrl: String, modifier: Modifier = Modifier) {
-    Card(border = BorderStroke(1.dp, colorResource(id = R.color.black)), modifier = modifier.height(100.dp).width(75.dp)) {
+private fun MovieImage(posterPath: String, modifier: Modifier = Modifier) {
+    Card(
+        border = BorderStroke(width = 1.dp, color = colorResource(id = R.color.black)),
+        modifier = modifier.height(height = 100.dp).width(width = 75.dp),
+    ) {
         SubcomposeAsyncImage(
-            model = "$TMDB_IMAGE_API_BASE_URL$imageUrl",
+            model = "$TMDB_IMAGE_API_BASE_URL$posterPath",
             contentDescription = null,
             loading = { Loading() },
-            error = { Placeholder(modifier = Modifier.width(25.dp).height(25.dp)) },
+            error = { Placeholder(modifier = Modifier.width(width = 25.dp).height(height = 25.dp)) },
             alignment = Alignment.Center,
             contentScale = ContentScale.Fit,
         )
@@ -172,13 +175,13 @@ fun MovieInfo(
     title: String,
     isFavorite: Boolean,
     releaseDate: String,
-    runtime: String?,
+    runtime: Int?,
     modifier: Modifier = Modifier,
     onFavoriteMovieClick: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.h5)
+            Text(text = title, modifier = Modifier.weight(weight = 1f), style = MaterialTheme.typography.h5)
             MovieFavorite(isFavorite, onFavoriteMovieClick)
         }
         MovieSecondaryInfo(year = releaseDate, runtime = runtime)
@@ -188,7 +191,7 @@ fun MovieInfo(
 
 @Composable
 fun MovieFavorite(isFavorite: Boolean, onFavoriteMovieClick: () -> Unit = {}) {
-    IconButton(modifier = Modifier.then(Modifier.size(24.dp)), onClick = { onFavoriteMovieClick() }) {
+    IconButton(modifier = Modifier.then(other = Modifier.size(size = 24.dp)), onClick = { onFavoriteMovieClick() }) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
             contentDescription = stringResource(id = R.string.movie_detail_favorite_movie),
@@ -197,7 +200,7 @@ fun MovieFavorite(isFavorite: Boolean, onFavoriteMovieClick: () -> Unit = {}) {
 }
 
 @Composable
-fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modifier) {
+fun MovieSecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(text = year, style = MaterialTheme.typography.subtitle1)
         runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
@@ -209,8 +212,8 @@ fun MovieSecondaryInfo(year: String, runtime: String?, modifier: Modifier = Modi
 @Composable
 private fun MovieDetailContentPreview() {
     MoviesTheme {
-        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)
-        MovieDetailContent(state = MovieDetailUiState(movieDetailData = MovieDetailData(movieDetail)))
+        val movieDetail = MovieDetailDtoMapper().mapToDomainModel(model = fakeMovieDetailDto)
+        MovieDetailContent(state = MovieDetailUiState(movieDetailData = MovieDetailData(movieDetailModel = movieDetail)))
     }
 }
 
@@ -219,8 +222,8 @@ private fun MovieDetailContentPreview() {
 private fun MovieOverviewPreview() {
     MoviesTheme {
         Surface {
-            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-                MovieOverview(image = image, title = title, releaseDate = releaseDate, runtime = runtimeStr, isFavorite = false)
+            with(receiver = MovieDetailDtoMapper().mapToDomainModel(model = fakeMovieDetailDto)) {
+                MovieOverview(image = posterPath, title = title, releaseDate = releaseDate, runtime = runtime, isFavorite = false)
             }
         }
     }
@@ -231,8 +234,8 @@ private fun MovieOverviewPreview() {
 private fun MovieInfoPreview() {
     MoviesTheme {
         Surface {
-            with(MovieDetailDtoMapper().mapToDomainModel(fakeMovieDetailDto)) {
-                MovieInfo(title = title, isFavorite = true, releaseDate = releaseDate, runtime = runtimeStr)
+            with(receiver = MovieDetailDtoMapper().mapToDomainModel(model = fakeMovieDetailDto)) {
+                MovieInfo(title = title, isFavorite = true, releaseDate = releaseDate, runtime = runtime)
             }
         }
     }

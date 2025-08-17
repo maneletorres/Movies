@@ -13,16 +13,11 @@ val fakeDomainError = eitherFailure(DomainError("fakeErrorCode", "fakeErrorMessa
 
 val fakeFlowDomainError = flow { emit(fakeDomainError) }
 
-val fakeCustomError = eitherFailure(error = ServiceError(
-    description = "fakeCustomErrorRaw",
-    statusCode = 0,
-    headers = emptyMap()
-))
+val fakeCustomError = eitherFailure(error = ServiceError(description = "fakeCustomErrorRaw", statusCode = 0, headers = emptyMap()))
 
 fun getDomainMovieList(searchType: Type): Flow<List<Model>> = flow {
     when (searchType) {
         Type.MOVIE -> listOf(fakeMovieModel)
         Type.TV -> listOf(fakeTVModel)
     }
-
 }

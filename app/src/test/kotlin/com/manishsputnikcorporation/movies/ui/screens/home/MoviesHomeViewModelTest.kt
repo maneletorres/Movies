@@ -1,184 +1,204 @@
 package com.manishsputnikcorporation.movies.ui.screens.home
 
 import app.cash.turbine.test
-import com.manishsputnikcorporation.movies.MainCoroutinesRule
-import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.Event.*
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
-import com.manishsputnikcorporation.movies.utils.fakeFlowDomainError
-import com.manishsputnikcorporation.movies.utils.getDomainMovieList
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModels
+import com.manishsputnikcorporation.movies.utils.fake.fakeTVModels
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
+import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import io.mockk.*
-import junitparams.JUnitParamsRunner
-import junitparams.Parameters
+import kotlin.test.assertTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(JUnitParamsRunner::class)
-internal class MoviesHomeViewModelTest {
+@RunWith(Parameterized::class)
+internal class MoviesHomeViewModelTest(private val searchType: Type) {
 
-  // region Setup
-  @get:Rule val coroutineTestRule = MainCoroutinesRule()
-
-  private lateinit var viewModel: MoviesHomeViewModel
-  private val loadDataUseCase: LoadDataUseCase = mockk()
-  private val getDataUseCase: GetDataUseCase = mockk()
-  private val getFavoriteDataUseCase: GetFavoriteDataUseCase = mockk()
-  private val safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate = mockk()
-
-  @Before
-  fun setUp() {
-    viewModel =
-        MoviesHomeViewModel(
-            loadDataUseCase, getDataUseCase, getFavoriteDataUseCase, safeFlowUseCaseDelegate)
-  }
-
-  @After
-  fun tearDown() {
-    unmockkAll()
-  }
-  // endregion
-
-  // region Testing
-  @Test
-  fun `on certain search type as input WHEN load data ends successfully THEN returns a success response`() {
-    coroutineTestRule.runTest {
-      with(safeFlowUseCaseDelegate) {
-        // Given:
-        every { loadDataUseCase.safePrepare(any()) } returns flow { emit(eitherSuccess(Unit)) }
-        every { getDataUseCase.safePrepare(any()) } returns flow { emit(emptyList()) }
-
-        viewModel.moviesHomeUiState.test {
-          // When:
-          viewModel.loadData()
-
-          // Then:
-          assert(awaitItem() is Idle)
-          assert(awaitItem() is Loading)
-          assert(awaitItem() is Data)
-          cancelAndConsumeRemainingEvents()
-        }
-
-        verify(exactly = 1) {
-          loadDataUseCase.safePrepare(any())
-          getDataUseCase.safePrepare(any())
-        }
-        confirmVerified(
-            getDataUseCase) // TODO: doesn't work. It needs confirmVerified loadDataUseCase too!
-      }
+    // region Setup
+    companion object {
+        @JvmStatic @Parameterized.Parameters fun data() = listOf(MOVIE, TV)
     }
-  }
 
-  @Test
-  fun `on certain search type as input WHEN load data ends unsuccessfully THEN returns an Error event`() {
-    coroutineTestRule.runTest {
-      with(safeFlowUseCaseDelegate) {
-        // Given:
-        every { loadDataUseCase.safePrepare(any()) } returns fakeFlowDomainError
-        every { getDataUseCase.safePrepare(any()) } returns flow { emit(emptyList()) }
+    private lateinit var analyticsManager: AnalyticsManager
+    private lateinit var authManager: AuthManager
+    private lateinit var loadDataUseCase: LoadDataUseCase
+    private lateinit var getDataUseCase: GetDataUseCase
+    private lateinit var getFavoriteDataUseCase: GetFavoriteDataUseCase
+    private lateinit var safeFlowUseCaseDelegate: FlowUseCaseDelegate
+    private lateinit var viewModel: MoviesHomeViewModel
 
-        viewModel.event.test {
-          viewModel.moviesHomeUiState.test {
-            // When:
-            viewModel.loadData()
-
-            // Then:
-            assert(awaitItem() is Idle)
-            assert(awaitItem() is Loading)
-            cancelAndConsumeRemainingEvents()
-          }
-          assert(awaitItem() is Error)
-        }
-
-        verify(exactly = 1) {
-          loadDataUseCase.safePrepare(any())
-          getDataUseCase.safePrepare(any())
-        }
-        confirmVerified(
-            getDataUseCase) // TODO: doesn't work. It needs confirmVerified loadDataUseCase too!
-      }
+    @Before
+    fun setUp() {
+        analyticsManager = mockk(relaxed = true)
+        authManager = mockk(relaxed = true)
+        loadDataUseCase = mockk(relaxed = true)
+        getDataUseCase = mockk(relaxed = true)
+        getFavoriteDataUseCase = mockk(relaxed = true)
+        safeFlowUseCaseDelegate = mockk(relaxed = true)
+        viewModel =
+            MoviesHomeViewModel(
+                analyticsManager = analyticsManager,
+                authManager = authManager,
+                loadDataUseCase = loadDataUseCase,
+                getDataUseCase = getDataUseCase,
+                getFavoriteDataUseCase = getFavoriteDataUseCase,
+                safeFlowUseCase = safeFlowUseCaseDelegate,
+            )
     }
-  }
 
-  @Test
-  @Parameters(method = "searchTypeScenario")
-  fun `on certain search type as input WHEN get data ends THEN returns the corresponding list`(
-      searchType: Type
-  ) {
-    coroutineTestRule.runTest {
-      with(safeFlowUseCaseDelegate) {
-        // Given:
-        val fakeList = getDomainMovieList(searchType)
-        every { getDataUseCase.safePrepare(searchType) } returns fakeList
+    @After
+    fun tearDown() {
+        unmockkAll()
+        Dispatchers.resetMain()
+    }
 
-        viewModel.moviesHomeUiState.test {
-          // When:
-          viewModel.getData(searchType)
+    // endregion
 
-          // Then:
-          assert(awaitItem() is Idle)
-          awaitItem().apply {
-            assert(this is Data)
-            with((this as Data).movieList) {
-              assertEquals(fakeList.first(), this)
-              assert(all { it.type == searchType })
+    // region Testing
+    @Test
+    fun `WHEN loadData is called successfully THEN getData is called AND returns a Data status with the media model list`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            val expected = getExpectedFakeData()
+            coEvery { loadDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = eitherSuccess(data = Unit)) }
+            coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
+
+            viewModel.moviesHomeUiState.test {
+                viewModel.loadData(type = searchType)
+
+                assertTrue(awaitItem() is Idle)
+                assertTrue(awaitItem() is Loading)
+                with(receiver = awaitItem()) {
+                    assertTrue(this is Data)
+                    assertEquals(expected, mediaModelList)
+                }
+                coVerify(exactly = 1) { authManager.getCurrentUser() }
+                confirmVerified(authManager)
+                cancelAndConsumeRemainingEvents()
             }
-          }
-          cancelAndConsumeRemainingEvents()
         }
-
-        verify(exactly = 1) { getDataUseCase.safePrepare(searchType) }
-        confirmVerified(getDataUseCase)
-      }
     }
-  }
 
-  @Test
-  fun `WHEN get favorites ends THEN returns the favorite list`() {
-    coroutineTestRule.runTest {
-      with(safeFlowUseCaseDelegate) {
-        // Given:
-        val fakeList = getDomainMovieList()
-        every { getFavoriteDataUseCase.safePrepare<Unit, List<MovieModel>>() } returns fakeList
+    @Test
+    fun `WHEN loadData is called unsuccessfully THEN an error event is sent`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            coEvery { loadDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
 
-        viewModel.moviesHomeUiState.test {
-          // When:
-          viewModel.getFavorites()
+            viewModel.moviesHomeUiState.test {
+                viewModel.loadData(type = searchType)
 
-          // Then:
-          assert(awaitItem() is Idle)
-          awaitItem().apply {
-            assert(this is Data)
-            with((this as Data).movieList) {
-              assertEquals(fakeList.first(), this)
-              assert(all { it.isFavorite })
+                assertTrue(awaitItem() is Idle)
+                assertTrue(awaitItem() is Loading)
+
+                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+
+                coVerify(exactly = 0) { authManager.getCurrentUser() }
+                confirmVerified(authManager)
+                cancelAndConsumeRemainingEvents()
             }
-          }
-          cancelAndConsumeRemainingEvents()
         }
-
-        verify(exactly = 1) { getFavoriteDataUseCase.safePrepare<Unit, List<MovieModel>>() }
-        confirmVerified(getFavoriteDataUseCase)
-      }
     }
-  }
-  // endregion
 
-  // region Helper methods
-  @SuppressWarnings("unused") private fun searchTypeScenario() = listOf(MOVIE, SERIES)
-  // endregion
+    @Test
+    fun `WHEN getData is called successfully THEN returns a Data status with the media model list`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            val expected = getExpectedFakeData()
+            coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
+
+            viewModel.moviesHomeUiState.test {
+                viewModel.getData(type = searchType)
+
+                assertTrue(awaitItem() is Idle)
+                with(receiver = awaitItem()) {
+                    assertTrue(this is Data)
+                    assertEquals(expected, mediaModelList)
+                }
+                coVerify(exactly = 1) { authManager.getCurrentUser() }
+                confirmVerified(authManager)
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN getData is called unsuccessfully THEN returns an error event is sent`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
+
+            viewModel.moviesHomeUiState.test {
+                viewModel.getData(type = searchType)
+
+                assertTrue(awaitItem() is Idle)
+
+                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+
+                coVerify(exactly = 0) { authManager.getCurrentUser() }
+                confirmVerified(authManager)
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN getFavorites is called successfully THEN returns a Data status with the favorite media model list`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            val expected = getExpectedFakeData()
+            coEvery { getFavoriteDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
+
+            viewModel.moviesHomeUiState.test {
+                viewModel.getFavorites(type = searchType)
+
+                assertTrue(awaitItem() is Idle)
+                with(receiver = awaitItem()) {
+                    assertTrue(this is Data)
+                    assertEquals(expected, mediaModelList)
+                }
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `WHEN getFavorites is called unsuccessfully THEN returns an error event is sent`() = runTest {
+        with(receiver = safeFlowUseCaseDelegate) {
+            coEvery { getFavoriteDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
+
+            viewModel.moviesHomeUiState.test {
+                viewModel.getFavorites(type = searchType)
+
+                assertTrue(awaitItem() is Idle)
+
+                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
+
+    // endregion
+
+    // region Helper methods
+    private fun getExpectedFakeData(): List<Model> =
+        when (searchType) {
+            MOVIE -> fakeMovieModels
+            TV -> fakeTVModels
+        }
+    // endregion
 }

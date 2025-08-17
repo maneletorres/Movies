@@ -1,4 +1,4 @@
-package com.manishsputnikcorporation.movies.network.response.tvshow
+package com.manishsputnikcorporation.movies.network.response.tv
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

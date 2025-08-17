@@ -4,7 +4,7 @@ import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
 import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
 
-class MediaItemDtoMapper : DomainMapper<MovieDto, MovieModel> {
+class TVDtoMapper : DomainMapper<MovieDto, MovieModel> {
 
     override fun mapToDomainModel(model: MovieDto): MovieModel {
         with(receiver = model) {
@@ -12,11 +12,11 @@ class MediaItemDtoMapper : DomainMapper<MovieDto, MovieModel> {
                 id = id ?: 0,
                 originalTitle = originalTitle.orEmpty(),
                 overview = overview.orEmpty(),
-                popularity = popularity ?: 0f,
-                posterPath = imageUrl.orEmpty(),
+                popularity = popularity ?: 0.0,
+                posterPath = posterPath.orEmpty(),
                 releaseDate = releaseDate.orEmpty(),
                 title = title.orEmpty(),
-                rating = rating ?: 0f,
+                rating = rating ?: 0.0,
                 isFavorite = false,
             )
         }
@@ -29,7 +29,7 @@ class MediaItemDtoMapper : DomainMapper<MovieDto, MovieModel> {
                 originalTitle = originalTitle,
                 overview = overview,
                 popularity = popularity,
-                imageUrl = posterPath,
+                posterPath = posterPath,
                 releaseDate = releaseDate,
                 title = title,
                 rating = rating,

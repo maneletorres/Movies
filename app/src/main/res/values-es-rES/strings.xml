@@ -20,7 +20,7 @@
     <string name="movies_home_error">Ha ocurrido un problema cargando la lista de %s. Disculpe las molestias.</string>
     <string name="movie_detail_favorite_movie">Película favorita</string>
     <string name="dummy_movie_title">El profesional (Léon)</string>
-    <string name="dummy_movie_plot">Mathilda, de 12 años, es acogida a regañadientes por Léon, un asesino profesional, después de que su familia es asesinada. Se forma una relación inusual cuando ella se convierte en su protegida y se entera del asesino... Leer todo</string>
+    <string name="dummy_movie_overview">Mathilda, de 12 años, es acogida a regañadientes por Léon, un asesino profesional, después de que su familia es asesinada. Se forma una relación inusual cuando ella se convierte en su protegida y se entera del asesino... Leer todo</string>
     <string name="movie_detail_label">Detalle de película</string>
     <string name="movie_detail_arrow_back_label">Flecha de atrás</string>
     <string name="movie_detail_error">Ha ocurrido un problema cargando el detalle de la película. Disculpe las molestias.</string>
@@ -34,7 +34,7 @@
     <string name="dummy_movie_name_19">Desaparecida sin rastro</string>
     <string name="dummy_movie_name_20">La mujer rey</string>
     <string name="dummy_movie_name_13">La familia Monster</string>
-    <string name="dummy_series_plot">Veinte años después de la destrucción de la civilización moderna a causa de un hongo -el cordyceps- que se adueña del cuerpo de los humanos, uno de los supervivientes, Joel, recibe el encargo de sacar a la joven Ellie de una opresiva zona de cuarentena. Juntos cruzan Estados Unidos ayudándose mutuamente para intentar sobrevivir... Adaptación del aclamado videojuego homónimo de Naughty Dog.</string>
+    <string name="dummy_series_overview">Veinte años después de la destrucción de la civilización moderna a causa de un hongo -el cordyceps- que se adueña del cuerpo de los humanos, uno de los supervivientes, Joel, recibe el encargo de sacar a la joven Ellie de una opresiva zona de cuarentena. Juntos cruzan Estados Unidos ayudándose mutuamente para intentar sobrevivir... Adaptación del aclamado videojuego homónimo de Naughty Dog.</string>
     <string name="dummy_movie_name_14">Yo me encargo de la cerveza</string>
     <string name="dummy_movie_name_16">La chica que lo tenía todo</string>
     <string name="dummy_movie_full_title">Léon: El profesional (1994)</string>

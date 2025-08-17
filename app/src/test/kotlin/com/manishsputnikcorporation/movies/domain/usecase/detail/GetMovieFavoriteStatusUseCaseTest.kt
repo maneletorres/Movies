@@ -1,10 +1,9 @@
 package com.manishsputnikcorporation.movies.domain.usecase.detail
 
 import com.manishsputnikcorporation.movies.MainCoroutinesRule
+import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
-import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.error.SafeFlowUseCaseDelegate.Default
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
 import io.mockk.*
@@ -16,66 +15,69 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class GetMovieFavoriteStatusUseCaseTest {
 
-  // region Setup
-  @get:Rule val coroutineTestRule = MainCoroutinesRule()
+    // region Setup
+    @get:Rule val coroutineTestRule = MainCoroutinesRule()
 
-  private val repository: MovieDetailRepository = mockk()
-  private val globalErrorMapper: GlobalErrorMapper = mockk()
-  private val globalErrorManager: GlobalErrorManager = mockk()
-  private val safeFlowUseCaseDelegate: SafeFlowUseCaseDelegate = Default(globalErrorManager)
-  private val useCaseToTest: GetMovieFavoriteStatusUseCase =
-      GetMovieFavoriteStatusUseCase(
-          repository, globalErrorMapper, coroutineTestRule.testDispatcherProvider)
+    private lateinit var repository: MovieDetailRepository
+    private lateinit var globalErrorMapper: GlobalErrorMapper
+    private lateinit var globalErrorManager: GlobalErrorManager
+    private lateinit var safeFlowUseCaseDelegate: FlowUseCaseDelegate
+    private lateinit var useCaseToTest: GetMovieFavoriteStatusUseCase
 
-  private val fakeId = fakeMovieDetailModel.id
+    private val fakeMovieDetailModelId = fakeMovieDetailModel.id
 
-  @After
-  fun tearDown() {
-    unmockkAll()
-    Dispatchers.resetMain()
-  }
-  // endregion
-
-  // region Testing
-  @Test
-  fun `with ID as input, WHEN the movie is favorite, THEN the use case returns a true`() = runTest {
-    // Given:
-    every { repository.isFavoriteMovie(fakeId) } returns flow { emit(true) }
-
-    // When:
-    coroutineTestRule.runTest {
-      with(safeFlowUseCaseDelegate) {
-        useCaseToTest.safePrepare(fakeId).collect { isFavorite -> assertTrue(isFavorite) }
-      }
+    @Before
+    fun setUp() {
+        repository = mockk(relaxed = true)
+        globalErrorMapper = mockk(relaxed = true)
+        globalErrorManager = mockk(relaxed = true)
+        safeFlowUseCaseDelegate = FlowUseCaseDelegate.Default(globalErrorManager)
+        useCaseToTest =
+            GetMovieFavoriteStatusUseCase(
+                movieDetailRepository = repository,
+                globalErrorMapper = globalErrorMapper,
+                dispatcherProvider = coroutineTestRule.testDispatcherProvider,
+            )
     }
 
-    // Then:
-    verify(exactly = 1) { repository.isFavoriteMovie(fakeId) }
-    confirmVerified(repository)
-  }
+    @After
+    fun tearDown() {
+        unmockkAll()
+        Dispatchers.resetMain()
+    }
 
-  @Test
-  fun `with ID as input, WHEN the movie isn't favorite, THEN the use case returns a false`() =
-      runTest {
-        // Given:
-        every { repository.isFavoriteMovie(fakeId) } returns flow { emit(false) }
+    // endregion
 
-        // When:
-        coroutineTestRule.runTest {
-          with(safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(fakeId).collect { isFavorite -> assertFalse(isFavorite) }
-          }
+    // region Testing
+    @Test
+    fun `WHEN use case is called successfully AND the movie is favorite THEN returns true`() = runTest {
+        every { repository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = true) }
+
+        with(receiver = safeFlowUseCaseDelegate) {
+            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { isFavorite -> assertTrue(isFavorite) }
         }
 
-        // Then:
-        verify(exactly = 1) { repository.isFavoriteMovie(fakeId) }
+        coVerify(exactly = 1) { repository.isFavoriteMovie(fakeMovieDetailModelId) }
         confirmVerified(repository)
-      }
-  // endregion
+    }
+
+    @Test
+    fun `WHEN use case is called successfully AND the movie is not favorite THEN returns false`() = runTest {
+        every { repository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = false) }
+
+        with(receiver = safeFlowUseCaseDelegate) {
+            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { isFavorite -> assertFalse(isFavorite) }
+        }
+
+        coVerify(exactly = 1) { repository.isFavoriteMovie(fakeMovieDetailModelId) }
+        confirmVerified(repository)
+    }
+    // endregion
 }

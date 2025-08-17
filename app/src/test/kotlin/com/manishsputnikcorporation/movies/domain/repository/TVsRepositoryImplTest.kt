@@ -1,115 +1,104 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
-import com.manishsputnikcorporation.movies.data.local.datasource.MovieLocalDataSource
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.data.repository.MoviesRepositoryImpl
+import app.cash.turbine.test
+import com.manishsputnikcorporation.movies.data.local.datasource.TVLocalDataSource
+import com.manishsputnikcorporation.movies.data.local.toTVModel
+import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSource
+import com.manishsputnikcorporation.movies.data.repository.TVsRepositoryImpl
+import com.manishsputnikcorporation.movies.domain.model.TVModel
+import com.manishsputnikcorporation.movies.network.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
-import com.manishsputnikcorporation.movies.utils.enums.Type
-import com.manishsputnikcorporation.movies.utils.enums.Type.*
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
-import com.manishsputnikcorporation.movies.utils.fake.fakeTVListDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseTVs
+import com.manishsputnikcorporation.movies.utils.fake.fakeTVsDto
 import com.manishsputnikcorporation.movies.utils.fakeCustomError
 import io.mockk.*
-import junitparams.JUnitParamsRunner
-import junitparams.Parameters
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-// TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
-@OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(JUnitParamsRunner::class)
-internal class MoviesRepositoryImplTest {
+internal class TVsRepositoryImplTest {
 
-  // region Setup
-  private val movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
-  private val movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
-  private val moviesRepository = MoviesRepositoryImpl(movieLocalDataSource, movieRemoteDataSource)
+    // region Setup
+    private lateinit var tvLocalDataSource: TVLocalDataSource
+    private lateinit var tvRemoteDataSource: TVRemoteDataSource
+    private lateinit var tvsRepository: TVsRepositoryImpl
 
-  @After
-  fun tearDown() {
-    unmockkAll()
-  }
-  // endregion
+    @Before
+    fun setUp() {
+        tvLocalDataSource = mockk(relaxed = true)
+        tvRemoteDataSource = mockk(relaxed = true)
+        tvsRepository = TVsRepositoryImpl(tvLocalDataSource = tvLocalDataSource, tvRemoteDataSource = tvRemoteDataSource)
+    }
 
-  // region Testing
-  @Test
-  fun `on refreshMostPopularMovies WHEN remote data doesn't contain an error THEN returns a success response`() {
-    every { movieRemoteDataSource.getPopularMovies() } returns eitherSuccess(fakeMovieListDto)
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
 
-    val result = moviesRepository.refreshPopularMovies()
+    // endregion
 
-    assert(result.isSuccess)
-    verify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
-    verify(exactly = 1) { moviesRepository.insertMovies(movies = fakeMovieListDto, MOVIE) }
-    confirmVerified(movieRemoteDataSource)
-  }
+    // region Testing
+    @Test
+    fun `WHEN refreshPopularTVs is called AND remote data doesn't contain an error THEN returns a success response`() {
+        every { tvRemoteDataSource.getPopularTVs() } returns eitherSuccess(data = fakeTVsDto)
 
-  @Test
-  fun `on refreshMostPopularMovies WHEN remote data contains an error THEN returns a failure response`() {
-    every { movieRemoteDataSource.getPopularMovies() } returns fakeCustomError
+        val result = tvsRepository.refreshPopularTVs()
 
-    val result = moviesRepository.refreshPopularMovies()
+        assertTrue(result.isSuccess)
+        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        verify(exactly = 1) { tvLocalDataSource.insertAll(tvs = fakeTVsDto.asDatabaseModel()) }
+        confirmVerified(tvRemoteDataSource, tvLocalDataSource)
+    }
 
-    assert(result.isFailure)
-    verify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
-    verify(exactly = 0) { moviesRepository.insertMovies(movies = fakeMovieListDto, MOVIE) }
-    confirmVerified(movieRemoteDataSource)
-  }
+    @Test
+    fun `WHEN refreshPopularTV is called AND remote data contains an error THEN returns a failure response`() {
+        every { tvRemoteDataSource.getPopularTVs() } returns fakeCustomError
 
-  @Test
-  fun `on refreshMostPopularTVs WHEN remote data doesn't contain an error THEN returns a success response`() {
-    every { movieRemoteDataSource.getMostPopularTVs() } returns eitherSuccess(data = fakeTVListDto)
+        val result = tvsRepository.refreshPopularTVs()
 
-    val result = moviesRepository.refreshMostPopularTVs()
+        assertTrue(result.isFailure)
+        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        verify(exactly = 0) { tvLocalDataSource.insertAll(tvs = any()) }
+        confirmVerified(tvRemoteDataSource, tvLocalDataSource)
+    }
 
-    assert(result.isSuccess)
-    verify(exactly = 1) { movieRemoteDataSource.getMostPopularTVs() }
-    verify(exactly = 1) { moviesRepository.insertMovies(movies = fakeTVListDto, SERIES) }
-    confirmVerified(movieRemoteDataSource)
-  }
+    @Test
+    fun `WHEN getTVs is called THEN returns the TV list`() = runTest {
+        every { tvLocalDataSource.getTVs() } returns flow { emit(value = fakeDatabaseTVs) }
+        val expected = fakeDatabaseTVs.map { it.toTVModel() }
 
-  @Test
-  fun `on refreshMostPopularTVs WHEN remote data contains an error THEN returns a failure response`() {
-    every { movieRemoteDataSource.getMostPopularTVs() } returns fakeCustomError
+        tvsRepository.getTVs().test {
+            val result: List<TVModel> = awaitItem()
+            awaitComplete()
 
-    val result = moviesRepository.refreshMostPopularTVs()
+            assertTrue(result.isNotEmpty())
+            assertEquals(expected, result)
+            coVerify(exactly = 1) { tvLocalDataSource.getTVs() }
+            confirmVerified(tvLocalDataSource)
+        }
+    }
 
-    assert(result.isFailure)
-    verify(exactly = 1) { movieRemoteDataSource.getMostPopularTVs() }
-    verify(exactly = 0) { moviesRepository.insertMovies(movies = fakeTVListDto, SERIES) }
-    confirmVerified(movieRemoteDataSource)
-  }
+    @Test
+    fun `WHEN getFavoriteTVs is called THEN returns the favorite TV list`() = runTest {
+        val favoriteDatabaseTVs = fakeDatabaseTVs.filter { it.isFavorite }
+        every { tvLocalDataSource.getFavoriteTVs() } returns flow { emit(value = favoriteDatabaseTVs) }
+        val expected = favoriteDatabaseTVs.map { it.toTVModel() }
 
-  @Test
-  @Parameters(method = "searchTypeScenario")
-  fun `on getData THEN returns a list of the corresponding Type`(searchType: Type) = runTest {
-    every { movieLocalDataSource.getMovies() } returns flowDatabaseMovieList(searchType)
+        tvsRepository.getFavoriteTVs().test {
+            val result: List<TVModel> = awaitItem()
+            awaitComplete()
 
-    val result = moviesRepository.getMovies().first()
-
-    assert(result.isNotEmpty())
-    verify(exactly = 1) { moviesRepository.getMovies() }
-    verify(exactly = 1) { movieLocalDataSource.getMovies() }
-    confirmVerified(movieLocalDataSource)
-  }
-
-  @Test
-  fun `on getFavorites THEN returns the list of favorites`() = runTest {
-    every { movieLocalDataSource.getFavoriteMovies() } returns flowDatabaseMovieList()
-
-    val result = moviesRepository.getFavoriteMovies().first()
-
-    assert(result.isNotEmpty())
-    assert(result.all { it.isFavorite })
-    verify(exactly = 1) { moviesRepository.getFavoriteMovies() }
-    verify(exactly = 1) { movieLocalDataSource.getFavoriteMovies() }
-    confirmVerified(movieLocalDataSource)
-  }
-  // endregion
+            assertTrue(result.isNotEmpty())
+            assertEquals(expected, result)
+            coVerify(exactly = 1) { tvLocalDataSource.getFavoriteTVs() }
+            confirmVerified(tvLocalDataSource)
+        }
+    }
+    // endregion
 }

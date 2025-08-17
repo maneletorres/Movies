@@ -1,53 +1,42 @@
 package com.manishsputnikcorporation.movies.mappers
 
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
 import com.manishsputnikcorporation.movies.utils.extensions.isContentEquals
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieListDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDto
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModel
-import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import javax.inject.Inject
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
 class MovieDtoMapperTest {
 
-  // region Setup
-  @get:Rule val hiltRule = HiltAndroidRule(this)
+    // region Setup
+    @Inject lateinit var mapper: MovieDtoMapper
 
-  @Inject lateinit var mapper: MovieDtoMapper
+    @Before
+    fun setup() {
+        mapper = MovieDtoMapper()
+    }
 
-  @Before
-  fun setup() {
-    hiltRule.inject()
-  }
-  // endregion
+    // endregion
 
-  // region Testing
-  @Test
-  fun map_movie_dto_to_movie_model() {
-    // Given:
-    val fakeMovieDto = fakeMovieListDto.items[0]
+    // region Testing
+    @Test
+    fun `WHEN mapToDomainModel is called on a MovieDto THEN returns the corresponding MovieModel`() {
+        val result: MovieModel = mapper.mapToDomainModel(model = fakeMovieDto)
 
-    // When:
-    val result = mapper.mapToDomainModel(fakeMovieDto)
+        assert(result.isContentEquals(movieDto = fakeMovieDto))
+    }
 
-    // Then:
-    assert(fakeMovieDto.isContentEquals(result))
-  }
+    @Test
+    fun `WHEN mapToDomainModel is called on a MovieModel THEN returns the corresponding MovieDto`() {
+        val result: MovieDto = mapper.mapFromDomainModel(domainModel = fakeMovieModel)
 
-  @Test
-  fun map_movie_model_to_movie_dto() {
-    // Given:
-    val fakeMovieModel = fakeMovieModel
-
-    // When:
-    val result = mapper.mapFromDomainModel(fakeMovieModel)
-
-    // Then:
-    assert(result.isContentEquals(fakeMovieModel))
-  }
-  // endregion
+        assert(result.isContentEquals(movieModel = fakeMovieModel))
+    }
+    // endregion
 }

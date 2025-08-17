@@ -57,16 +57,12 @@ class RetrofitServiceExecutorTest {
     // region Testing
     @Test
     fun execute_network_call_successfully() {
-        // Given:
         every { apiResponse.isSuccessful } returns true
         every { apiResponse.body() } returns successResponseBody
         every { apiResponse.code() } returns successResponseCode
         every { apiResponse.headers().toMultimap() } returns successResponseHeaders
 
-        // When:
         executeNetworkCall()
-
-            // Then:
             .mapSuccess {
                 assertEquals(it.data, successResponseBody)
                 assertEquals(it.statusCode, successResponseCode)
@@ -77,16 +73,12 @@ class RetrofitServiceExecutorTest {
 
     @Test
     fun execute_network_call_unsuccessfully() {
-        // Given:
         every { apiResponse.isSuccessful } returns false
         every { apiResponse.errorBody()?.string() } returns failureResponseBody
         every { apiResponse.code() } returns failureResponseCode
         every { apiResponse.headers().toMultimap() } returns failureResponseHeaders
 
-        // When:
         executeNetworkCall()
-
-            // Then:
             .mapSuccess { assert(false) }
             .mapFailure {
                 assertEquals(it.description, failureResponseBody)
@@ -97,28 +89,22 @@ class RetrofitServiceExecutorTest {
 
     @Test(expected = ServiceException::class)
     fun `GIVEN a network call WHEN throws a JsonDataException, THEN returns a ServiceException`() {
-        // Given:
         every { retrofitCall.execute() } throws JsonDataException(jsonExceptionMessage)
 
-        // When:
         executeNetworkCall()
     }
 
     @Test(expected = ServiceException::class)
     fun `GIVEN a network call WHEN throws a IOException, THEN returns a ServiceException`() {
-        // Given:
         every { retrofitCall.execute() } throws IOException(ioExceptionMessage)
 
-        // When:
         executeNetworkCall()
     }
 
     @Test(expected = NetworkException::class)
     fun `GIVEN a network call WHEN there is no connectivity, THEN returns a NetworkException`() {
-        // Given:
         every { networkManager.checkConnectivity() } throws NetworkException(networkExceptionMessage)
 
-        // When:
         executeNetworkCall()
     }
 

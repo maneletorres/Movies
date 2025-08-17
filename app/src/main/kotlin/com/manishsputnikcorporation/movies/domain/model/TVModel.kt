@@ -1,18 +1,18 @@
 package com.manishsputnikcorporation.movies.domain.model
 
 import android.os.Parcelable
-import com.manishsputnikcorporation.movies.domain.model.base.Identifiable
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TvItemModel(
+data class TVModel(
     override val id: Int,
+    override val overview: String,
+    override val popularity: Double,
+    override val posterPath: String,
+    override val releaseDate: String,
+    override val rating: Double,
+    override val isFavorite: Boolean,
     val originalName: String,
-    val overview: String,
-    val popularity: Float,
-    val imageUrl: String,
-    val releaseDate: String,
-    val title: String,
-    val rating: Float,
-    val isFavorite: Boolean,
-) : Identifiable, Parcelable
+    val name: String,
+) : Model, Parcelable

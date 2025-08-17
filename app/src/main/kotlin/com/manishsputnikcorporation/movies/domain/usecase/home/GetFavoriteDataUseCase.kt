@@ -1,8 +1,9 @@
 package com.manishsputnikcorporation.movies.domain.usecase.home
 
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
-import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
+import com.manishsputnikcorporation.movies.domain.repository.TVsRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCaseExceptionDelegate
@@ -14,13 +15,14 @@ class GetFavoriteDataUseCase
 @Inject
 constructor(
     private val moviesRepository: MoviesRepository,
+    private val tvsRepository: TVsRepository,
     override val globalErrorMapper: GlobalErrorMapper,
     dispatcherProvider: DispatcherProvider,
-) : FlowUseCase<Type, List<MediaItemModel>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
+) : FlowUseCase<Type, List<Model>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-    override fun prepareFlow(input: Type): Flow<List<MediaItemModel>> =
+    override fun prepareFlow(input: Type): Flow<List<Model>> =
         when (input) {
             Type.MOVIE -> moviesRepository.getFavoriteMovies()
-            Type.TV_SHOW -> moviesRepository.getFavoriteTvShows()
+            Type.TV -> tvsRepository.getFavoriteTVs()
         }
 }

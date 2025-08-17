@@ -1,36 +1,36 @@
-package com.manishsputnikcorporation.movies.database
+package com.manishsputnikcorporation.movies.data.local
 
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.manishsputnikcorporation.movies.data.local.DatabaseTv
-import com.manishsputnikcorporation.movies.data.local.MovieRoomDatabase
-import com.manishsputnikcorporation.movies.data.local.dao.TvShowDao
-import com.manishsputnikcorporation.movies.utils.createTvShow
+import app.cash.turbine.test
+import com.manishsputnikcorporation.movies.data.local.dao.TVDao
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseTV
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseTVs
 import java.io.IOException
-import junit.framework.TestCase
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class TvShowDaoTest {
+class TvDaoTest {
 
     // region Setup
-    private lateinit var tvShowDao: TvShowDao
-    private lateinit var db: MovieRoomDatabase
+    private lateinit var db: MediaDatabase
+    private lateinit var tvDao: TVDao
 
     @Before
     fun createDb() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        db = Room.inMemoryDatabaseBuilder(context, MovieRoomDatabase::class.java).allowMainThreadQueries().build()
-        tvShowDao = db.tvShowDao()
+        db = Room.inMemoryDatabaseBuilder(context = context, klass = MediaDatabase::class.java).allowMainThreadQueries().build()
+        tvDao = db.tvDao()
     }
 
     @After
@@ -44,121 +44,103 @@ class TvShowDaoTest {
     // region Testing
     @Test
     @Throws(Exception::class)
-    fun insertTvShow() = runBlocking {
-        // Given:
-        val fakeTvShow = createTvShow()
+    fun insertTV() = runTest {
+        tvDao.insert(tv = fakeDatabaseTV)
 
-        // When:
-        tvShowDao.insert(fakeTvShow)
-
-        // Then:
-        val tvShowList = tvShowDao.getTvShows().first()
-        val tvShow = tvShowList[0]
-        TestCase.assertTrue(tvShowList.size == 1)
-        MatcherAssert.assertThat(fakeTvShow, CoreMatchers.equalTo(tvShow))
-
-        // TODO: is this necessary?
-        TestCase.assertEquals(tvShow.id, fakeTvShow.id)
-        TestCase.assertEquals(tvShow.title, fakeTvShow.title)
-        TestCase.assertEquals(tvShow.year, fakeTvShow.year)
-        TestCase.assertEquals(tvShow.imageUrl, fakeTvShow.imageUrl)
-        TestCase.assertEquals(tvShow.rating, fakeTvShow.rating)
+        tvDao.getTV(id = fakeDatabaseTV.id).test {
+            val databaseTV = awaitItem()
+            assertNotNull(databaseTV)
+            assertEquals(fakeDatabaseTV, databaseTV)
+        }
     }
 
     @Test
     @Throws(Exception::class)
-    fun insertAllTvShowList() = runBlocking {
-        // Given:
-        val fakeTvShowList = mutableListOf<DatabaseTv>()
-        for (i in 0..2) fakeTvShowList.add(createTvShow(i.toString()))
+    fun insertAllTVs() = runTest {
+        tvDao.insertAll(tvs = fakeDatabaseTVs)
 
-        // When:
-        tvShowDao.insertAll(fakeTvShowList)
-
-        // Then:
-        val tvShowList = tvShowDao.getTvShows().first()
-        assert(tvShowList.isNotEmpty())
-        assert(tvShowList.containsAll(fakeTvShowList))
+        tvDao.getTVs().test {
+            val databaseTVs = awaitItem()
+            assert(databaseTVs.isNotEmpty())
+            assert(databaseTVs.containsAll(elements = fakeDatabaseTVs))
+        }
     }
 
     @Test
     @Throws(Exception::class)
-    fun updateTvShow() = runBlocking {
-        // Given:
-        val fakeTvShow = createTvShow()
-        val updatedFakeTvShowTitle = "updated-fake-tv-show-title"
-        val updatedFakeTvShow = fakeTvShow.copy(title = updatedFakeTvShowTitle)
-        tvShowDao.insert(fakeTvShow)
+    fun updateTV() = runTest {
+        tvDao.insert(fakeDatabaseTV)
+        val updatedFakeTV = fakeDatabaseTV.copy(name = "updated-TV-name")
+        tvDao.update(updatedFakeTV)
 
-        // When:
-        tvShowDao.update(updatedFakeTvShow)
-
-        // Then:
-        val tvShow = tvShowDao.getTvShow(fakeTvShow.id).first()
-        assert(tvShow.title == updatedFakeTvShowTitle)
+        tvDao.getTV(id = fakeDatabaseTV.id).test { assert(awaitItem().name == updatedFakeTV.name) }
     }
 
     @Test
     @Throws(Exception::class)
-    fun deleteTvShow() = runBlocking {
-        // Given:
-        val fakeTvShow1 = createTvShow("1")
-        val fakeTvShow2 = createTvShow("2")
-        tvShowDao.insertAll(listOf(fakeTvShow1, fakeTvShow2))
+    fun deleteTV() = runTest {
+        tvDao.insertAll(fakeDatabaseTVs)
+        tvDao.delete(tv = fakeDatabaseTV)
 
-        // When:
-        tvShowDao.delete(fakeTvShow1)
-
-        // Then:
-        val tvShowList = tvShowDao.getTvShows().first()
-        assert(tvShowList.isNotEmpty())
-        TestCase.assertFalse(tvShowList.contains(fakeTvShow1))
+        tvDao.getTVs().test {
+            val databaseTVs = awaitItem()
+            assertNotNull(databaseTVs)
+            assertTrue(databaseTVs.isNotEmpty())
+            assertFalse(databaseTVs.contains(fakeDatabaseTV))
+        }
     }
 
     @Test
     @Throws(Exception::class)
-    fun getTvShow() = runBlocking {
-        // Given:
-        val fakeTvShow = createTvShow()
-        tvShowDao.insert(fakeTvShow)
+    fun getTV() = runTest {
+        tvDao.insert(fakeDatabaseTV)
 
-        // When:
-        val tvShow = tvShowDao.getTvShow(fakeTvShow.id).first()
-
-        // Then:
-        TestCase.assertNotNull(tvShow)
-        MatcherAssert.assertThat(fakeTvShow, CoreMatchers.equalTo(tvShow))
+        tvDao.getTV(id = fakeDatabaseTV.id).test {
+            val databaseTV = awaitItem()
+            assertNotNull(databaseTV)
+            assertEquals(fakeDatabaseTV, databaseTV)
+        }
     }
 
     @Test
     @Throws(Exception::class)
-    fun getTvShowList() = runBlocking {
-        // Given:
-        val fakeTvShowList = listOf(createTvShow("1"), createTvShow("2"))
-        tvShowDao.insertAll(fakeTvShowList)
+    fun isFavoriteTV() = runTest {
+        tvDao.insert(fakeDatabaseTV)
 
-        // When:
-        val tvShowList = tvShowDao.getTvShows().first()
-
-        // Then:
-        assert(tvShowList.isNotEmpty())
-        assert(tvShowList.containsAll(fakeTvShowList))
+        tvDao.isFavoriteTV(id = fakeDatabaseTV.id).test { assertEquals(fakeDatabaseTV.isFavorite, awaitItem()) }
     }
 
     @Test
     @Throws(Exception::class)
-    fun getFavorites() = runBlocking {
-        // Given:
-        val fakeNotFavoriteTvShow = createTvShow("1")
-        val fakeDataList = listOf(fakeNotFavoriteTvShow, createTvShow("3", true))
-        tvShowDao.insertAll(fakeDataList)
+    fun isNotFavoriteTV() = runTest {
+        tvDao.insert(fakeDatabaseTV.copy(isFavorite = false))
 
-        // When:
-        val favorites = tvShowDao.getFavorites().first()
+        tvDao.isFavoriteTV(id = fakeDatabaseTV.id).test { assertFalse(awaitItem()) }
+    }
 
-        // Then:
-        assert(favorites.isNotEmpty())
-        TestCase.assertFalse(favorites.contains(fakeNotFavoriteTvShow))
+    @Test
+    @Throws(Exception::class)
+    fun getTVs() = runTest {
+        tvDao.insertAll(tvs = fakeDatabaseTVs)
+
+        tvDao.getTVs().test {
+            val tvs = awaitItem()
+            assert(tvs.isNotEmpty())
+            assert(tvs.containsAll(elements = fakeDatabaseTVs))
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getFavorites() = runTest {
+        tvDao.insertAll(tvs = fakeDatabaseTVs)
+
+        tvDao.getFavorites().test {
+            val favorites = awaitItem()
+            assert(favorites.isNotEmpty())
+            assert(favorites.containsAll(elements = fakeDatabaseTVs.filter { it.isFavorite }))
+            assertFalse(favorites.containsAll(elements = fakeDatabaseTVs.filterNot { it.isFavorite }))
+        }
     }
     // endregion
 }

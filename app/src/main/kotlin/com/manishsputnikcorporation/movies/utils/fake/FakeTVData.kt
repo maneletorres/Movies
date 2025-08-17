@@ -1,20 +1,24 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
+import com.manishsputnikcorporation.movies.data.local.DatabaseTV
+import com.manishsputnikcorporation.movies.domain.model.TVModel
 import com.manishsputnikcorporation.movies.network.response.tv.TVDetailDto
 import com.manishsputnikcorporation.movies.network.response.tv.TVDto
 import com.manishsputnikcorporation.movies.network.response.tv.TVsDto
 
-val fakeTVDto = TVDto(
-    id = 2734,
-    originalName = "Law & Order: Special Victims Unit",
-    overview =
-        "In the criminal justice system, sexually-based offenses are considered especially heinous. In New York City, the dedicated detectives who investigate these vicious felonies are members of an elite squad known as the Special Victims Unit. These are their stories.",
-    popularity = 0.0,
-    posterPath = "/ywBt4WKADdMVgxTR1rS2uFwMYTH.jpg",
-    releaseDate = "1999-09-20",
-    name = "Law & Order: Special Victims Unit",
-    rating = 8.0,
-)
+// region DTO
+val fakeTVDto =
+    TVDto(
+        id = 60059,
+        overview =
+            "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+        popularity = 34.4233,
+        posterPath = "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+        releaseDate = "2015-02-08",
+        rating = 8.696,
+        originalName = "Better Call Saul",
+        name = "Better Call Saul",
+    )
 
 val fakeTVsDto =
     TVsDto(
@@ -49,14 +53,64 @@ val fakeTVsDto =
 
 val fakeTVDetailDto =
     TVDetailDto(
-        id = 278,
-        imdbId = "tt0111161",
-        originalTitle = "The Shawshank Redemption",
-        overview = "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
-        popularity = 33.283,
-        posterPath = "https://m.media-amazon.com/images/M/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-        releaseDate = "1994-09-23",
-        runtime = 142,
-        title = "The Shawshank Redemption",
-        rating = 8.712
+        id = 60059,
+        overview =
+            "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+        popularity = 34.4233,
+        posterPath = "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+        releaseDate = "2015-02-08",
+        rating = 8.696,
+        originalName = "Better Call Saul",
+        name = "Better Call Saul",
     )
+// endregion
+
+// region Database
+val fakeDatabaseTV =
+    DatabaseTV(
+        id = 60059,
+        originalName = "Better Call Saul",
+        overview =
+            "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+        popularity = 34.4233,
+        posterPath = "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+        releaseDate = "2015-02-08",
+        name = "Better Call Saul",
+        rating = 8.696,
+        isFavorite = true,
+    )
+
+val fakeDatabaseTVs: List<DatabaseTV> =
+    listOf(
+        fakeDatabaseTV,
+        DatabaseTV(
+            id = 1396,
+            originalName = "Breaking Bad",
+            overview =
+                "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
+            popularity = 101.7799,
+            posterPath = "/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+            releaseDate = "2008-01-20",
+            name = "Breaking Bad",
+            rating = 8.9,
+            isFavorite = false,
+        ),
+    )
+// endregion
+
+// region Model
+val fakeTVModel =
+    TVModel(
+        id = 60059,
+        overview =
+            "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+        popularity = 34.4233,
+        posterPath = "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+        releaseDate = "2015-02-08",
+        rating = 8.696,
+        isFavorite = true,
+        originalName = "Better Call Saul",
+        name = "Better Call Saul",
+    )
+val fakeTVModels = listOf(fakeTVModel)
+// endregion

@@ -5,13 +5,13 @@ import com.manishsputnikcorporation.movies.domain.model.base.Identifiable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TvShowDetailModel(
-    override val id: String,
-    val title: String,
-    val originalTitle: String,
-    val fullTitle: String,
-    val plot: String,
-    val image: String,
+data class TvDetailModel(
+    override val id: Int,
+    val originalName: String,
+    val overview: String,
+    val popularity: Double,
+    val posterPath: String,
     val releaseDate: String,
-    val runtimeStr: List<String>,
+    val name: String,
+    val rating: Double,
 ) : Identifiable, Parcelable

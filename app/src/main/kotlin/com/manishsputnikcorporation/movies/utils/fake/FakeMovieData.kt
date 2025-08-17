@@ -1,22 +1,27 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
+import com.manishsputnikcorporation.movies.data.local.DatabaseMovie
+import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
+import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
 import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
 import com.manishsputnikcorporation.movies.network.response.movie.MoviesDto
-import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 
-val fakeMovieDto = MovieDto(
-    id = 569094,
-    originalTitle = "Spider-Man: Across the Spider-Verse",
-    overview =
-        "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse’s very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-    popularity = 20.8535,
-    posterPath = "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
-    releaseDate = "2023-05-31",
-    title = "Spider-Man: Across the Spider-Verse",
-    rating = 8.5,
-)
+// region DTO
+val fakeMovieDto =
+    MovieDto(
+        id = 680,
+        originalTitle = "Pulp Fiction",
+        overview =
+            "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        popularity = 19.6767,
+        posterPath = "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        releaseDate = "1994-09-10",
+        title = "Pulp Fiction",
+        rating = 8.487,
+    )
 
+// TODO: meter nombres reales de pelis reales con info real
 val fakeMoviesDto =
     MoviesDto(
         page = 1,
@@ -128,28 +133,82 @@ val fakeMoviesDto =
 
 val fakeMovieDetailDto =
     MovieDetailDto(
-        id = 278,
-        imdbId = "tt0111161",
-        originalTitle = "The Shawshank Redemption",
-        overview = "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
-        popularity = 33.283,
-        posterPath = "https://m.media-amazon.com/images/M/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-        releaseDate = "1994-09-23",
-        runtime = 142,
-        title = "The Shawshank Redemption",
-        rating = 8.712
+        id = 680,
+        imdbId = "tt0110912",
+        originalTitle = "Pulp Fiction",
+        overview =
+            "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        popularity = 19.6767,
+        posterPath = "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        releaseDate = "1994-09-10",
+        runtime = 154,
+        title = "Pulp Fiction",
+        rating = 8.487,
     )
+// endregion
+
+// region Database
+val fakeDatabaseMovie =
+    DatabaseMovie(
+        id = 680,
+        originalTitle = "Pulp Fiction",
+        overview =
+            "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        popularity = 19.6767,
+        posterPath = "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        releaseDate = "1994-09-10",
+        title = "Pulp Fiction",
+        rating = 8.487,
+        isFavorite = true,
+    )
+
+val fakeDatabaseMovies =
+    listOf(
+        fakeDatabaseMovie,
+        DatabaseMovie(
+            id = 78,
+            originalTitle = "Blade Runner",
+            overview =
+                "In the smog-choked dystopian Los Angeles of 2019, blade runner Rick Deckard is called out of retirement to terminate a quartet of replicants who have escaped to Earth seeking their creator for a way to extend their short life spans.",
+            popularity = 9.5075,
+            posterPath = "/qTcATCpiFDcgY8snQIfS2j0bFP7.jpg",
+            releaseDate = "1982-06-25",
+            title = "Blade Runner",
+            rating = 7.941,
+            isFavorite = false,
+        ),
+    )
+// endregion
+
+// region Model
+val fakeMovieModel =
+    MovieModel(
+        id = 680,
+        originalTitle = "Pulp Fiction",
+        overview =
+            "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        popularity = 19.6767,
+        posterPath = "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        releaseDate = "1994-09-10",
+        title = "Pulp Fiction",
+        rating = 8.487,
+        isFavorite = true,
+    )
+
+val fakeMovieModels = listOf(fakeMovieModel)
 
 val fakeMovieDetailModel =
     MovieDetailModel(
-        id = 278,
-        imdbId = "tt0111161",
-        originalTitle = "The Shawshank Redemption",
-        overview = "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
-        popularity = 33.283,
-        posterPath = "https://m.media-amazon.com/images/M/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
-        releaseDate = "1994-09-23",
-        runtime = 142,
-        title = "The Shawshank Redemption",
-        rating = 8.712
+        id = 680,
+        imdbId = "tt0110912",
+        originalTitle = "Pulp Fiction",
+        overview =
+            "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        popularity = 19.6767,
+        posterPath = "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        releaseDate = "1994-09-10",
+        runtime = 154,
+        title = "Pulp Fiction",
+        rating = 8.487,
     )
+// endregion

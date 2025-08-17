@@ -1,10 +1,16 @@
 package com.manishsputnikcorporation.movies.di
 
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-
-@Module
-@InstallIn(SingletonComponent::class)
-class FakeModule {
-}
+// @Module
+// @InstallIn(SingletonComponent::class)
+// object FakeRetrofitModule {
+//
+// }
+//
+// @Module
+// @InstallIn(SingletonComponent::class)
+// abstract class FakeDataSourceModule {
+//
+//    @Binds @Singleton abstract fun bindServiceExecutor(retrofitServicesExecutor: RetrofitServiceExecutor): ServiceExecutor
+//
+//    @Binds @Singleton abstract fun bindMovieRemoteDataSource(movieRemoteDataSource: MovieRemoteDataSourceImpl): MovieRemoteDataSource
+// }

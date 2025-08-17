@@ -9,13 +9,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MoviesService {
+interface RemoteApiService {
 
     @GET("movie/popular") fun getPopularMovies(@Query("language") lang: String = "en-US", @Query("page") page: Int = 1): Call<MoviesDto>
 
     @GET("tv/popular") fun getPopularTVs(@Query("language") lang: String = "en-US", @Query("page") page: Int = 1): Call<TVsDto>
 
-    @GET("movie/{id}") fun getMovie(@Path("id") id: String): Call<MovieDetailDto>
+    @GET("movie/{id}") fun getMovie(@Path("id") id: Int): Call<MovieDetailDto>
 
-    @GET("tv/{id}") fun getTV(@Path("id") id: String): Call<TVDetailDto>
+    @GET("tv/{id}") fun getTV(@Path("id") id: Int): Call<TVDetailDto>
 }

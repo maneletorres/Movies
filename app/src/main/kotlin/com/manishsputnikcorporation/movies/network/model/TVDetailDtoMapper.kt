@@ -2,21 +2,21 @@ package com.manishsputnikcorporation.movies.network.model
 
 import com.manishsputnikcorporation.movies.domain.model.TvDetailModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
-import com.manishsputnikcorporation.movies.network.response.tvshow.TVDetailDto
+import com.manishsputnikcorporation.movies.network.response.tv.TVDetailDto
 
-class TvShowDetailDtoMapper : DomainMapper<TVDetailDto, TvDetailModel> {
+class TVDetailDtoMapper : DomainMapper<TVDetailDto, TvDetailModel> {
 
     override fun mapToDomainModel(model: TVDetailDto): TvDetailModel {
         with(receiver = model) {
             return TvDetailModel(
-                id = id.toString(),
-                title = title.orEmpty(),
-                originalTitle = originalTitle.orEmpty(),
-                fullTitle = title.orEmpty(),
-                plot = overview.orEmpty(),
-                image = image.orEmpty(),
+                id = id ?: 0,
+                originalName = originalName.orEmpty(),
+                overview = overview.orEmpty(),
+                popularity = popularity ?: 0.0,
+                posterPath = posterPath.orEmpty(),
                 releaseDate = releaseDate.orEmpty(),
-                runtimeStr = runtime?.map { it.toString() }.orEmpty(),
+                name = name.orEmpty(),
+                rating = rating ?: 0.0,
             )
         }
     }
@@ -24,28 +24,15 @@ class TvShowDetailDtoMapper : DomainMapper<TVDetailDto, TvDetailModel> {
     override fun mapFromDomainModel(domainModel: TvDetailModel): TVDetailDto {
         with(receiver = domainModel) {
             return TVDetailDto(
-                id = id.toInt(),
-                title = title,
-                originalTitle = originalTitle,
-                image = image,
+                id = id,
+                originalName = originalName,
+                overview = overview,
+                popularity = popularity,
+                posterPath = posterPath,
                 releaseDate = releaseDate,
-                runtime = runtimeStr.map { timeToInt(it) },
-                overview = plot,
+                name = name,
+                rating = rating,
             )
         }
     }
-
-    // region Helper methods
-    private fun intToTime(time: Int): String {
-        val hours = time / 60
-        val minutes = time % 60
-        return String.format("%02d %02d", hours, minutes)
-    }
-
-    private fun timeToInt(time: String): Int {
-        val hours = time.substring(0, 2).toInt()
-        val minutes = time.substring(3, 5).toInt()
-        return hours * 60 + minutes
-    }
-    // endregion
 }

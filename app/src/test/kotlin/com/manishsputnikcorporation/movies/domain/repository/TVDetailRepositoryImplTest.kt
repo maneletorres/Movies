@@ -1,18 +1,18 @@
 package com.manishsputnikcorporation.movies.domain.repository
 
 import app.cash.turbine.test
-import com.manishsputnikcorporation.movies.data.local.datasource.MovieLocalDataSource
-import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
-import com.manishsputnikcorporation.movies.data.repository.MovieDetailRepositoryImpl
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
+import com.manishsputnikcorporation.movies.data.local.datasource.TVLocalDataSource
+import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSource
+import com.manishsputnikcorporation.movies.data.repository.TVDetailRepositoryImpl
+import com.manishsputnikcorporation.movies.domain.model.TVModel
+import com.manishsputnikcorporation.movies.network.model.TVDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
-import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseMovie
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModel
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseTV
+import com.manishsputnikcorporation.movies.utils.fake.fakeTVDetailDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeTVModel
 import com.manishsputnikcorporation.movies.utils.fakeCustomError
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -21,140 +21,141 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import io.mockk.verify
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 
-// TODO: to change this unit test class by androidTests, using Hilt DI and Fakes instead of mocks.
-internal class MovieDetailRepositoryImplTest {
+internal class TVDetailRepositoryImplTest {
 
-  // region Setup
-  private lateinit var movieLocalDataSource: MovieLocalDataSource
-  private lateinit var movieRemoteDataSource: MovieRemoteDataSource
-  private lateinit var movieDetailMapper: MovieDetailDtoMapper
-  private lateinit var movieDetailRepository: MovieDetailRepositoryImpl
-  
-  private companion object {
-    val fakeDatabaseMovieId = fakeDatabaseMovie.id
-  }
+    // region Setup
+    private lateinit var tvLocalDataSource: TVLocalDataSource
+    private lateinit var tvRemoteDataSource: TVRemoteDataSource
+    private lateinit var tvDetailMapper: TVDetailDtoMapper
+    private lateinit var tvDetailRepository: TVDetailRepositoryImpl
 
-  @Before
-  fun setUp() {
-    movieLocalDataSource = mockk(relaxed = true)
-    movieRemoteDataSource = mockk(relaxed = true)
-    movieDetailMapper = mockk(relaxed = true)
-    movieDetailRepository = MovieDetailRepositoryImpl(
-      movieLocalDataSource = movieLocalDataSource,
-      movieRemoteDataSource = movieRemoteDataSource,
-      movieDetailMapper = movieDetailMapper
-    )
-  }
-
-  @After
-  fun tearDown() {
-    unmockkAll()
-  }
-  // endregion
-
-  // region Testing
-  @Test
-  fun `WHEN getMovieDetail is called AND remote data doesn't contain an error THEN returns a success response`() {
-    every { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) } returns eitherSuccess(data = fakeMovieDetailDto)
-    
-    val result = movieDetailRepository.getMovieDetail(id = fakeDatabaseMovieId)
-
-    assert(result.isSuccess)
-    verify(exactly = 1) { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) }
-    verify(exactly = 1) { movieDetailMapper.mapToDomainModel(model = fakeMovieDetailDto) }
-    confirmVerified(movieRemoteDataSource, movieDetailMapper)
-  }
-
-  @Test
-  fun `WHEN getMovieDetail is called AND remote data contains an error THEN returns a failure response`() {
-    every { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) } returns fakeCustomError
-
-    val result = movieDetailRepository.getMovieDetail(id = fakeDatabaseMovieId)
-
-    assert(result.isFailure)
-    verify(exactly = 1) { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) }
-    verify(exactly = 0) { movieDetailMapper.mapToDomainModel(model = any()) }
-    confirmVerified(movieRemoteDataSource, movieDetailMapper)
-  }
-
-  @Test
-  fun `WHEN isFavoriteMovie is called AND the movie ID belongs to a favorite movie THEN returns true`() = runTest {
-    every { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) } returns flow { emit(value = true) }
-
-    movieDetailRepository.isFavoriteMovie(id = fakeDatabaseMovieId).test {
-      val result: Boolean = awaitItem()
-      awaitComplete()
-
-      assertTrue(result)
-      coVerify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
-      confirmVerified(movieLocalDataSource)
-    }
-  }
-
-  @Test
-  fun `WHEN isFavoriteMovie is called AND the movie ID doesn't belong to a favorite movie THEN returns a false`() = runTest {
-      every { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) } returns flow { emit(value = false) }
-
-      movieDetailRepository.isFavoriteMovie(id = fakeDatabaseMovieId).test {
-        val result: Boolean = awaitItem()
-        awaitComplete()
-
-        assertFalse(result)
-        coVerify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
-        confirmVerified(movieLocalDataSource)
-      }
+    private companion object {
+        val fakeDatabaseTVId = fakeDatabaseTV.id
     }
 
-  @Test
-  fun `WHEN getMovie is called THEN returns the corresponding movie`() = runTest {
-    every { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) } returns flow { emit(value = fakeDatabaseMovie) }
-
-    movieDetailRepository.getMovie(id = fakeDatabaseMovieId).test {
-      val result: MovieModel = awaitItem()
-      awaitComplete()
-
-      assertEquals(fakeMovieModel, result)
-      coVerify(exactly = 1) { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) }
-      confirmVerified(movieLocalDataSource)
+    @Before
+    fun setUp() {
+        tvLocalDataSource = mockk(relaxed = true)
+        tvRemoteDataSource = mockk(relaxed = true)
+        tvDetailMapper = mockk(relaxed = true)
+        tvDetailRepository =
+            TVDetailRepositoryImpl(
+                tvLocalDataSource = tvLocalDataSource,
+                tvRemoteDataSource = tvRemoteDataSource,
+                tvDetailMapper = tvDetailMapper,
+            )
     }
-  }
 
-  @Test
-  fun `WHEN updateMovie is called AND the database update process is successful THEN returns a success response`() = runTest {
-    val updatedMovie = fakeDatabaseMovie.copy(isFavorite = !fakeDatabaseMovie.isFavorite)
-    every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(value = fakeDatabaseMovie) }
-    coEvery { movieLocalDataSource.updateMovie(movie = updatedMovie) } returns Unit
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
 
-    val result = movieDetailRepository.updateMovie(fakeDatabaseMovieId)
+    // endregion
 
-    assert(result.isSuccess)
-    result.mapSuccess { updatedMovieFavoriteStatus -> assertEquals(updatedMovie.isFavorite, updatedMovieFavoriteStatus) }
-    verify(exactly = 1) { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) }
-    coVerify(exactly = 1) { movieLocalDataSource.updateMovie(movie = updatedMovie) }
-    confirmVerified(movieLocalDataSource)
-  }
+    // region Testing
+    @Test
+    fun `WHEN getTVDetail is called AND remote data doesn't contain an error THEN returns a success response`() {
+        every { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) } returns eitherSuccess(data = fakeTVDetailDto)
 
-  @Test
-  fun `WHEN updateMovie is called AND the database update process is unsuccessful THEN returns a failure response`() = runTest {
-    val updatedMovie = fakeDatabaseMovie.copy(isFavorite = !fakeDatabaseMovie.isFavorite)
-    every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(value = fakeDatabaseMovie) }
-    coEvery { movieLocalDataSource.updateMovie(movie = updatedMovie) } throws Exception()
+        val result = tvDetailRepository.getTVDetail(id = fakeDatabaseTVId)
 
-    val result = movieDetailRepository.updateMovie(fakeDatabaseMovieId)
+        assert(result.isSuccess)
+        verify(exactly = 1) { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) }
+        verify(exactly = 1) { tvDetailMapper.mapToDomainModel(model = fakeTVDetailDto) }
+        confirmVerified(tvRemoteDataSource, tvDetailMapper)
+    }
 
-    assert(result.isFailure)
-    verify(exactly = 1) { movieLocalDataSource.getMovie(fakeDatabaseMovieId) }
-    coVerify(exactly = 1) { movieLocalDataSource.updateMovie(movie = updatedMovie) }
-    confirmVerified(movieLocalDataSource)
-  }
-  // endregion
+    @Test
+    fun `WHEN getTVDetail is called AND remote data contains an error THEN returns a failure response`() {
+        every { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) } returns fakeCustomError
+
+        val result = tvDetailRepository.getTVDetail(id = fakeDatabaseTVId)
+
+        assert(result.isFailure)
+        verify(exactly = 1) { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) }
+        verify(exactly = 0) { tvDetailMapper.mapToDomainModel(model = any()) }
+        confirmVerified(tvRemoteDataSource, tvDetailMapper)
+    }
+
+    @Test
+    fun `WHEN isFavoriteTV is called AND the TV ID belongs to a favorite TV THEN returns true`() = runTest {
+        every { tvLocalDataSource.isFavoriteTV(id = fakeDatabaseTVId) } returns flow { emit(value = true) }
+
+        tvDetailRepository.isFavoriteTV(id = fakeDatabaseTVId).test {
+            val result: Boolean = awaitItem()
+            awaitComplete()
+
+            assertTrue(result)
+            coVerify(exactly = 1) { tvLocalDataSource.isFavoriteTV(id = fakeDatabaseTVId) }
+            confirmVerified(tvLocalDataSource)
+        }
+    }
+
+    @Test
+    fun `WHEN isFavoriteTV is called AND the TV ID doesn't belong to a favorite TV THEN returns a false`() = runTest {
+        every { tvLocalDataSource.isFavoriteTV(id = fakeDatabaseTVId) } returns flow { emit(value = false) }
+
+        tvDetailRepository.isFavoriteTV(id = fakeDatabaseTVId).test {
+            val result: Boolean = awaitItem()
+            awaitComplete()
+
+            assertFalse(result)
+            coVerify(exactly = 1) { tvLocalDataSource.isFavoriteTV(id = fakeDatabaseTVId) }
+            confirmVerified(tvLocalDataSource)
+        }
+    }
+
+    @Test
+    fun `WHEN getTV is called THEN returns the corresponding TV`() = runTest {
+        every { tvLocalDataSource.getTV(id = fakeDatabaseTVId) } returns flow { emit(value = fakeDatabaseTV) }
+
+        tvDetailRepository.getTV(id = fakeDatabaseTVId).test {
+            val result: TVModel = awaitItem()
+            awaitComplete()
+
+            assertEquals(fakeTVModel, result)
+            coVerify(exactly = 1) { tvLocalDataSource.getTV(id = fakeDatabaseTVId) }
+            confirmVerified(tvLocalDataSource)
+        }
+    }
+
+    @Test
+    fun `WHEN updateTV is called AND the database update process is successful THEN returns a success response`() = runTest {
+        val updatedTV = fakeDatabaseTV.copy(isFavorite = !fakeDatabaseTV.isFavorite)
+        every { tvLocalDataSource.getTV(fakeDatabaseTVId) } returns flow { emit(value = fakeDatabaseTV) }
+        coEvery { tvLocalDataSource.updateTV(tv = updatedTV) } returns Unit
+
+        val result = tvDetailRepository.updateTV(fakeDatabaseTVId)
+
+        assert(result.isSuccess)
+        result.mapSuccess { updatedTVFavoriteStatus -> assertEquals(updatedTV.isFavorite, updatedTVFavoriteStatus) }
+        verify(exactly = 1) { tvLocalDataSource.getTV(id = fakeDatabaseTVId) }
+        coVerify(exactly = 1) { tvLocalDataSource.updateTV(tv = updatedTV) }
+        confirmVerified(tvLocalDataSource)
+    }
+
+    @Test
+    fun `WHEN updateTV is called AND the database update process is unsuccessful THEN returns a failure response`() = runTest {
+        val updatedTV = fakeDatabaseTV.copy(isFavorite = !fakeDatabaseTV.isFavorite)
+        every { tvLocalDataSource.getTV(fakeDatabaseTVId) } returns flow { emit(value = fakeDatabaseTV) }
+        coEvery { tvLocalDataSource.updateTV(tv = updatedTV) } throws Exception()
+
+        val result = tvDetailRepository.updateTV(fakeDatabaseTVId)
+
+        assert(result.isFailure)
+        verify(exactly = 1) { tvLocalDataSource.getTV(fakeDatabaseTVId) }
+        coVerify(exactly = 1) { tvLocalDataSource.updateTV(tv = updatedTV) }
+        confirmVerified(tvLocalDataSource)
+    }
+    // endregion
 }

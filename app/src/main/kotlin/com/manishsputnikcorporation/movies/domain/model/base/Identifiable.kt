@@ -1,7 +1,16 @@
 package com.manishsputnikcorporation.movies.domain.model.base
 
 interface Identifiable {
-    val id: String
+    val id: Int
 }
 
-data class CustomIdentifiable(override val id: String) : Identifiable
+interface Model : Identifiable {
+    val overview: String
+    val popularity: Double
+    val posterPath: String
+    val releaseDate: String
+    val rating: Double
+    val isFavorite: Boolean
+}
+
+data class CustomIdentifiable(override val id: Int) : Identifiable

@@ -1,297 +1,87 @@
 {
-  "id": "tt14209916",
-  "title": "Cocaine Bear",
-  "originalTitle": "",
-  "fullTitle": "Cocaine Bear (2023)",
-  "type": "Movie",
-  "year": "2023",
-  "image": "https://m.media-amazon.com/images/M/MV5BODAwZDQ5ZjEtZDI1My00MTFiLTg0ZjUtOGE2YTBkOTdjODFhXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_Ratio0.6762_AL_.jpg",
-  "releaseDate": "2023-02-24",
-  "runtimeMins": "95",
-  "runtimeStr": "1h 35min",
-  "plot": "An oddball group of cops, criminals, tourists and teens converge on a Georgia forest where a huge black bear goes on a murderous rampage after unintentionally ingesting cocaine.",
-  "plotLocal": "",
-  "plotLocalIsRtl": false,
-  "awards": "",
-  "directors": "Elizabeth Banks",
-  "directorList": [
+  "adult": false,
+  "backdrop_path": "/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
+  "belongs_to_collection": null,
+  "budget": 8000000,
+  "genres": [
     {
-      "id": "nm0006969",
-      "name": "Elizabeth Banks"
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
     }
   ],
-  "writers": "Jimmy Warden",
-  "writerList": [
+  "homepage": "https://www.miramax.com/movie/pulp-fiction/",
+  "id": 680,
+  "imdb_id": "tt0110912",
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_title": "Pulp Fiction",
+  "overview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+  "popularity": 20.174,
+  "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+  "production_companies": [
     {
-      "id": "nm1843538",
-      "name": "Jimmy Warden"
+      "id": 14,
+      "logo_path": "/m6AHu84oZQxvq7n1rsvMNJIAsMu.png",
+      "name": "Miramax",
+      "origin_country": "US"
+    },
+    {
+      "id": 59,
+      "logo_path": "/b1tj5EWcFQLYaQrw1D9V4s8kUgN.png",
+      "name": "A Band Apart",
+      "origin_country": "US"
+    },
+    {
+      "id": 216,
+      "logo_path": "/iKPzC6YxqNAk6fMoTtFhIF5p6yw.png",
+      "name": "Jersey Films",
+      "origin_country": "US"
     }
   ],
-  "stars": "Keri Russell, Alden Ehrenreich, O'Shea Jackson Jr.",
-  "starList": [
+  "production_countries": [
     {
-      "id": "nm0005392",
-      "name": "Keri Russell"
-    },
-    {
-      "id": "nm2403277",
-      "name": "Alden Ehrenreich"
-    },
-    {
-      "id": "nm6578009",
-      "name": "O'Shea Jackson Jr."
+      "iso_3166_1": "US",
+      "name": "United States of America"
     }
   ],
-  "actorList": [
+  "release_date": "1994-09-10",
+  "revenue": 213928762,
+  "runtime": 154,
+  "spoken_languages": [
     {
-      "id": "nm0005392",
-      "image": "https://m.media-amazon.com/images/M/MV5BYjcxNjIxOWYtMWY0MS00ZmU4LWE1NGQtYzQ0ZGQ4MmUzZWJiXkEyXkFqcGdeQXVyNTIwMzYwNg@@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Keri Russell",
-      "asCharacter": "Sari"
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
     },
     {
-      "id": "nm2403277",
-      "image": "https://m.media-amazon.com/images/M/MV5BNjY5ODY0MDE5Nl5BMl5BanBnXkFtZTgwODg2NDM4ODE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Alden Ehrenreich",
-      "asCharacter": "Eddie"
+      "english_name": "Spanish",
+      "iso_639_1": "es",
+      "name": "Español"
     },
     {
-      "id": "nm6578009",
-      "image": "https://m.media-amazon.com/images/M/MV5BMzExMTU2NTQ2OF5BMl5BanBnXkFtZTgwMjQ0MzEzNzE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "O'Shea Jackson Jr.",
-      "asCharacter": "Daveed"
-    },
-    {
-      "id": "nm0000501",
-      "image": "https://m.media-amazon.com/images/M/MV5BMTU3NzM5MjUwMF5BMl5BanBnXkFtZTYwNDM2NDky._V1_Ratio1.0000_AL_.jpg",
-      "name": "Ray Liotta",
-      "asCharacter": "Syd"
-    },
-    {
-      "id": "nm0926086",
-      "image": "https://m.media-amazon.com/images/M/MV5BMzc5Mzk4OTQ1Nl5BMl5BanBnXkFtZTcwNzgxNTk0Mg@@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Isiah Whitlock Jr.",
-      "asCharacter": "Bob"
-    },
-    {
-      "id": "nm7737419",
-      "image": "https://m.media-amazon.com/images/M/MV5BNjVmZTBkOGYtZGZmMC00NTkwLWI0MWYtMDExY2NkMzhiMjYwXkEyXkFqcGdeQXVyMjQxMTA0Njk@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Brooklynn Prince",
-      "asCharacter": "Dee Dee"
-    },
-    {
-      "id": "nm8087548",
-      "image": "https://m.media-amazon.com/images/M/MV5BNjI0NjFjMTMtMTVmOS00ZTRmLTlmMmQtZDI1MzA5OGQxZjdmXkEyXkFqcGdeQXVyNjU5MjQxNDE@._V1_Ratio1.1571_AL_.jpg",
-      "name": "Christian Convery",
-      "asCharacter": "Henry"
-    },
-    {
-      "id": "nm0553269",
-      "image": "https://m.media-amazon.com/images/M/MV5BMjA3MDg3OTE2NF5BMl5BanBnXkFtZTgwMTI5MDg0MDE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Margo Martindale",
-      "asCharacter": "Ranger Liz"
-    },
-    {
-      "id": "nm0272479",
-      "image": "https://m.media-amazon.com/images/M/MV5BMTczODUyNDMwNF5BMl5BanBnXkFtZTgwNjQ1OTE2MDE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Jesse Tyler Ferguson",
-      "asCharacter": "Peter"
-    },
-    {
-      "id": "nm1970465",
-      "image": "https://m.media-amazon.com/images/M/MV5BNjk2MjhlMTItMjAxMS00NmFkLTg1ZjItZDY5ZWUyMmY0MzE2XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_Ratio1.3857_AL_.jpg",
-      "name": "Kristofer Hivju",
-      "asCharacter": "Olaf (Kristoffer)"
-    },
-    {
-      "id": "nm4142492",
-      "image": "https://m.media-amazon.com/images/M/MV5BNDMzODM5NjYwNF5BMl5BanBnXkFtZTgwNDM5MTQ0NDE@._V1_Ratio1.5000_AL_.jpg",
-      "name": "Hannah Hoekstra",
-      "asCharacter": "Elsa"
-    },
-    {
-      "id": "nm8707040",
-      "image": "https://m.media-amazon.com/images/M/MV5BYTc4MGExZWMtZGU1Ni00MmU2LWJkYTYtNDRhMGNmYTYxMGJjXkEyXkFqcGdeQXVyNzEyODIyNzA@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Ayoola Smart",
-      "asCharacter": "Officer Reba"
-    },
-    {
-      "id": "nm6396597",
-      "image": "https://m.media-amazon.com/images/M/MV5BMmVmOGFkM2ItOThkMS00N2M3LWE1ZmMtZWM4ZmY2NzU3MzRjXkEyXkFqcGdeQXVyMTU1NTMyNTg@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Aaron Holliday",
-      "asCharacter": "Kid (Stache)"
-    },
-    {
-      "id": "nm12528125",
-      "image": "https://m.media-amazon.com/images/M/MV5BNzA5ODFlNjgtZjc4OS00ZGUyLTkyMDctZGUxZGU0YzFhMGZiXkEyXkFqcGdeQXVyOTczNzExODE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "J.B. Moore",
-      "asCharacter": "Vest"
-    },
-    {
-      "id": "nm6954568",
-      "image": "https://m.media-amazon.com/images/M/MV5BYjI5MTU5NzktYjQ1OS00NzRhLWExMDgtYWMyNmM3Y2ZlZDBhXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Leo Hanna",
-      "asCharacter": "Ponytail"
-    },
-    {
-      "id": "nm5366148",
-      "image": "https://m.media-amazon.com/images/M/MV5BMjE5ODMxODc2Nl5BMl5BanBnXkFtZTgwNjk5MTYzOTE@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Kahyun Kim",
-      "asCharacter": "Beth"
-    },
-    {
-      "id": "nm10006028",
-      "image": "https://m.media-amazon.com/images/M/MV5BN2QyYTcyZTAtYzEyMS00YWJjLWIzM2QtZTIwMTczODc1NWVhXkEyXkFqcGdeQXVyMTM1MjYxMzA4._V1_Ratio1.0000_AL_.jpg",
-      "name": "Scott Seiss",
-      "asCharacter": "Tom"
-    },
-    {
-      "id": "nm0722629",
-      "image": "https://m.media-amazon.com/images/M/MV5BMTMwOTc5MTI2OV5BMl5BanBnXkFtZTcwMjU0MDk4NA@@._V1_Ratio1.0000_AL_.jpg",
-      "name": "Matthew Rhys",
-      "asCharacter": "Thornton"
+      "english_name": "French",
+      "iso_639_1": "fr",
+      "name": "Français"
     }
   ],
-  "fullCast": null,
-  "genres": "Comedy, Thriller",
-  "genreList": [
-    {
-      "key": "Comedy",
-      "value": "Comedy"
-    },
-    {
-      "key": "Thriller",
-      "value": "Thriller"
-    }
-  ],
-  "companies": "Universal Pictures, Brownstone Productions (II), Lord Miller",
-  "companyList": [
-    {
-      "id": "co0005073",
-      "name": "Universal Pictures"
-    },
-    {
-      "id": "co0283926",
-      "name": "Brownstone Productions (II)"
-    },
-    {
-      "id": "co0191864",
-      "name": "Lord Miller"
-    }
-  ],
-  "countries": "USA",
-  "countryList": [
-    {
-      "key": "USA",
-      "value": "USA"
-    }
-  ],
-  "languages": "English",
-  "languageList": [
-    {
-      "key": "English",
-      "value": "English"
-    }
-  ],
-  "contentRating": "R",
-  "imDbRating": "6.4",
-  "imDbRatingVotes": "15718",
-  "metacriticRating": "54",
-  "ratings": null,
-  "wikipedia": null,
-  "posters": null,
-  "images": null,
-  "trailer": null,
-  "boxOffice": {
-    "budget": "$35,000,000 (estimated)",
-    "openingWeekendUSA": "$23,260,790",
-    "grossUSA": "$43,689,110",
-    "cumulativeWorldwideGross": "$54,594,110"
-  },
-  "tagline": null,
-  "keywords": "black bear,murderous rampage,animal attack,dark comedy,black comedy",
-  "keywordList": [
-    "black bear",
-    "murderous rampage",
-    "animal attack",
-    "dark comedy",
-    "black comedy"
-  ],
-  "similars": [
-    {
-      "id": "tt10954600",
-      "title": "Ant-Man and the Wasp: Quantumania",
-      "image": "https://m.media-amazon.com/images/M/MV5BODZhNzlmOGItMWUyYS00Y2Q5LWFlNzMtM2I2NDFkM2ZkYmE1XkEyXkFqcGdeQXVyMTU5OTA4NTIz._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "6.5"
-    },
-    {
-      "id": "tt11145118",
-      "title": "Creed III",
-      "image": "https://m.media-amazon.com/images/M/MV5BYTc0ZmJiNmItYTYwOC00YTAzLTgxY2MtMzZhNzg4MjczN2RlXkEyXkFqcGdeQXVyMTUwMzM0Njgz._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.4"
-    },
-    {
-      "id": "tt15679400",
-      "title": "Knock at the Cabin",
-      "image": "https://m.media-amazon.com/images/M/MV5BZDA0MzcxZTgtMTAzZC00MGJkLTg3YzItZjMzNjkwOTVlODNlXkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "6.1"
-    },
-    {
-      "id": "tt7985704",
-      "title": "Operation Fortune: Ruse de guerre",
-      "image": "https://m.media-amazon.com/images/M/MV5BNjcxOTJhZTEtMWFiYi00NTkwLTlkMzktZDQwMGQ0ZjM3YWU2XkEyXkFqcGdeQXVyMTAxNzQ1NzI@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "6.7"
-    },
-    {
-      "id": "tt8760708",
-      "title": "M3GAN",
-      "image": "https://m.media-amazon.com/images/M/MV5BMDk4MTdhYzEtODk3OS00ZDBjLWFhNTQtMDI2ODdjNzQzZTA3XkEyXkFqcGdeQXVyMjMxOTE0ODA@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "6.4"
-    },
-    {
-      "id": "tt10855768",
-      "title": "Missing",
-      "image": "https://m.media-amazon.com/images/M/MV5BMjAzYjUwNWUtYTYxOS00MTkzLWJkOTUtOTE4MTE4ODRmNGNhXkEyXkFqcGdeQXVyMTA3MDk2NDg2._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.3"
-    },
-    {
-      "id": "tt3076658",
-      "title": "Creed",
-      "image": "https://m.media-amazon.com/images/M/MV5BNmZkYjQzY2QtNjdkNC00YjkzLTk5NjUtY2MyNDNiYTBhN2M2XkEyXkFqcGdeQXVyMjMwNDgzNjc@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.6"
-    },
-    {
-      "id": "tt6343314",
-      "title": "Creed II",
-      "image": "https://m.media-amazon.com/images/M/MV5BYmEyNWZhM2YtZDAyNi00ZjYzLWI2ZWMtOWM4ZmI1MDE0OWNmXkEyXkFqcGdeQXVyMjMwNDgzNjc@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.1"
-    },
-    {
-      "id": "tt10098448",
-      "title": "Jesus Revolution",
-      "image": "https://m.media-amazon.com/images/M/MV5BZjQ4M2JiMTEtNDhiMi00OWM1LTkwMWEtODdjYTQxNWQyOTFiXkEyXkFqcGdeQXVyMjMxOTE0ODA@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.8"
-    },
-    {
-      "id": "tt1630029",
-      "title": "Avatar: The Way of Water",
-      "image": "https://m.media-amazon.com/images/M/MV5BYjhiNjBlODctY2ZiOC00YjVlLWFlNzAtNTVhNzM1YjI1NzMxXkEyXkFqcGdeQXVyMjQxNTE1MDA@._V1_Ratio0.7053_AL_.jpg",
-      "imDbRating": "7.8"
-    },
-    {
-      "id": "tt10365998",
-      "title": "Infinity Pool",
-      "image": "https://m.media-amazon.com/images/M/MV5BZDQxZTY0ZDItY2Y0Yy00OTIzLTkwYTgtNmNkODhiYTk4MzUwXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "6.1"
-    },
-    {
-      "id": "tt10293938",
-      "title": "Outer Banks",
-      "image": "https://m.media-amazon.com/images/M/MV5BM2Q3MmQzODctZDJhMi00NGMyLWI4M2YtZDkwODdiOGZkMGRjXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_Ratio0.6763_AL_.jpg",
-      "imDbRating": "7.6"
-    }
-  ],
-  "tvSeriesInfo": null,
-  "tvEpisodeInfo": null,
-  "errorMessage": ""
+  "status": "Released",
+  "tagline": "Violence. Redemption. Cheeseburgers",
+  "title": "Pulp Fiction",
+  "video": false,
+  "vote_average": 8.487,
+  "vote_count": 28968
 }

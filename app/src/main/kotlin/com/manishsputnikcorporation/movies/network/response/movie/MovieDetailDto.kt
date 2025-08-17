@@ -5,12 +5,14 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MovieDetailDto(
-    @field:Json(name = "imdb_id") val imdbId: String,
-    @field:Json(name = "id") val id: Int,
-    val title: String,
-    @field:Json(name = "original_title") val originalTitle: String,
-    @field:Json(name = "poster_path") val image: String,
-    @field:Json(name = "release_date") val releaseDate: String,
-    val runtime: Int,
-    val overview: String,
+    val id: Int?,
+    @field:Json(name = "imdb_id") val imdbId: String?,
+    @field:Json(name = "original_title") val originalTitle: String?,
+    val overview: String?,
+    val popularity: Double?,
+    @field:Json(name = "poster_path") val posterPath: String?,
+    @field:Json(name = "release_date") val releaseDate: String?,
+    val runtime: Int?,
+    val title: String?,
+    @field:Json(name = "vote_average") val rating: Double?,
 )

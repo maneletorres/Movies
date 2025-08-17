@@ -6,6 +6,13 @@ plugins {
     alias(libs.plugins.dagger.hilt) apply false
     alias(libs.plugins.gradle.versions)
     alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.androidx.room.gradle.plugin)
+    }
 }
 
 // region Gradle versions plugin configuration:
