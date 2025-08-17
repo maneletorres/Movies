@@ -1,293 +1,146 @@
 package com.manishsputnikcorporation.movies.data.local
 
-import com.manishsputnikcorporation.movies.di.annotations.TestDatabase
-import com.manishsputnikcorporation.movies.utils.createMovie
-import com.manishsputnikcorporation.movies.utils.createSeries
-import com.manishsputnikcorporation.movies.utils.enums.Type
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
+import android.content.Context
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
+import com.manishsputnikcorporation.movies.data.local.dao.MovieDao
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseMovie
+import com.manishsputnikcorporation.movies.utils.fake.fakeDatabaseMovies
 import java.io.IOException
-import javax.inject.Inject
-import junit.framework.TestCase.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNotNull
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
-@HiltAndroidTest
-@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class MovieDaoTest {
 
-  // region Setup
-  @get:Rule var hiltRule = HiltAndroidRule(this)
+    // region Setup
+    lateinit var db: MediaDatabase
+    private lateinit var movieDao: MovieDao
 
-  @Inject @TestDatabase lateinit var db: MovieRoomDatabase
-  private lateinit var movieDao: MovieDao
+    @Before
+    fun createDb() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        db = Room.inMemoryDatabaseBuilder(context = context, klass = MediaDatabase::class.java).allowMainThreadQueries().build()
+        movieDao = db.movieDao()
+    }
 
-  @Before
-  fun setup() {
-    hiltRule.inject()
-    movieDao = db.movieDao()
-  }
+    @After
+    @Throws(IOException::class)
+    fun tearDown() {
+        db.close()
+    }
 
-  @After
-  @Throws(IOException::class)
-  fun tearDown() {
-    db.close()
-  }
-  // endregion
+    // endregion
 
-  // region Testing
-  @Test
-  @Throws(Exception::class)
-  fun insertMovie() = runTest {
-    // Given:
-    val fakeMovie = createMovie()
+    // region Testing
+    @Test
+    @Throws(Exception::class)
+    fun insertMovie() = runTest {
+        movieDao.insert(fakeDatabaseMovie)
 
-    // When:
-    movieDao.insert(fakeMovie)
+        movieDao.getMovie(id = fakeDatabaseMovie.id).test {
+            val databaseMovie = awaitItem()
+            assertNotNull(databaseMovie)
+            assertEquals(fakeDatabaseMovie, databaseMovie)
+        }
+    }
 
-    // Then:
-    val movieList = movieDao.getMovies(Type.MOVIE).first()
-    val movie = movieList[0]
-    assertTrue(movieList.size == 1)
-    assertThat(fakeMovie, equalTo(movie))
-  }
+    @Test
+    @Throws(Exception::class)
+    fun insertAllMovies() = runTest {
+        movieDao.insertAll(movies = fakeDatabaseMovies)
 
-  @Test
-  @Throws(Exception::class)
-  fun insertSeries() = runTest {
-    // Given:
-    val fakeSeries = createSeries()
+        movieDao.getMovies().test {
+            val databaseMovies = awaitItem()
+            assert(databaseMovies.isNotEmpty())
+            assert(databaseMovies.containsAll(elements = fakeDatabaseMovies))
+        }
+    }
 
-    // When:
-    movieDao.insert(fakeSeries)
+    @Test
+    @Throws(Exception::class)
+    fun updateMovie() = runTest {
+        movieDao.insert(fakeDatabaseMovie)
+        val updatedFakeMovie = fakeDatabaseMovie.copy(title = "updated-fake-movie-title")
+        movieDao.update(updatedFakeMovie)
 
-    // Then:
-    val seriesList = movieDao.getMovies(Type.SERIES).first()
-    val series = seriesList[0]
-    assertTrue(seriesList.size == 1)
-    assertThat(fakeSeries, equalTo(series))
-  }
+        movieDao.getMovie(id = fakeDatabaseMovie.id).test { assert(awaitItem().title == updatedFakeMovie.title) }
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun insertAllMovieList() = runTest {
-    // Given:
-    val fakeMovieList = mutableListOf<DatabaseMovie>()
-    for (i in 0..2) fakeMovieList.add(createMovie(i.toString()))
+    @Test
+    @Throws(Exception::class)
+    fun deleteMovie() = runTest {
+        movieDao.insertAll(fakeDatabaseMovies)
+        movieDao.delete(movie = fakeDatabaseMovie)
 
-    // When:
-    movieDao.insertAll(fakeMovieList)
+        movieDao.getMovies().test {
+            val databaseMovies = awaitItem()
+            assertNotNull(databaseMovies)
+            assertTrue(databaseMovies.isNotEmpty())
+            assertFalse(databaseMovies.contains(fakeDatabaseMovie))
+        }
+    }
 
-    // Then:
-    val movieList = movieDao.getMovies(Type.MOVIE).first()
-    assert(movieList.isNotEmpty())
-    assert(movieList.containsAll(fakeMovieList))
-  }
+    @Test
+    @Throws(Exception::class)
+    fun getMovie() = runTest {
+        movieDao.insert(fakeDatabaseMovie)
 
-  @Test
-  @Throws(Exception::class)
-  fun insertAllSeriesList() = runTest {
-    // Given:
-    val fakeSeriesList = mutableListOf<DatabaseMovie>()
-    for (i in 0..2) fakeSeriesList.add(createSeries(i.toString()))
+        movieDao.getMovie(id = fakeDatabaseMovie.id).test {
+            val databaseMovie = awaitItem()
+            assertNotNull(databaseMovie)
+            assertEquals(fakeDatabaseMovie, databaseMovie)
+        }
+    }
 
-    // When:
-    movieDao.insertAll(fakeSeriesList)
+    @Test
+    @Throws(Exception::class)
+    fun isFavoriteMovie() = runTest {
+        movieDao.insert(fakeDatabaseMovie)
 
-    // Then:
-    val seriesList = movieDao.getMovies(Type.SERIES).first()
-    assert(seriesList.isNotEmpty())
-    assert(seriesList.containsAll(fakeSeriesList))
-  }
+        movieDao.isFavoriteMovie(id = fakeDatabaseMovie.id).test { assertEquals(fakeDatabaseMovie.isFavorite, awaitItem()) }
+    }
 
-  @Test
-  @Throws(Exception::class)
-  fun updateMovie() = runTest {
-    // Given:
-    val fakeMovie = createMovie()
-    val updatedFakeMovieTitle = "updated-fake-movie-title"
-    val updatedFakeMovie = fakeMovie.copy(title = updatedFakeMovieTitle)
-    movieDao.insert(fakeMovie)
+    @Test
+    @Throws(Exception::class)
+    fun isNotFavoriteMovie() = runTest {
+        movieDao.insert(fakeDatabaseMovie.copy(isFavorite = false))
 
-    // When:
-    movieDao.update(updatedFakeMovie)
+        movieDao.isFavoriteMovie(id = fakeDatabaseMovie.id).test { assertFalse(awaitItem()) }
+    }
 
-    // Then:
-    val movie = movieDao.getMovie(fakeMovie.id).first()
-    assert(movie.title == updatedFakeMovieTitle)
-  }
+    @Test
+    @Throws(Exception::class)
+    fun getMovies() = runTest {
+        movieDao.insertAll(movies = fakeDatabaseMovies)
 
-  @Test
-  @Throws(Exception::class)
-  fun updateSeries() = runTest {
-    // Given:
-    val fakeSeries = createSeries()
-    val updatedFakeSeriesTitle = "updated-fake-series-title"
-    val updatedFakeSeries = fakeSeries.copy(title = updatedFakeSeriesTitle)
-    movieDao.insert(fakeSeries)
+        movieDao.getMovies().test {
+            val movieList = awaitItem()
+            assert(movieList.isNotEmpty())
+            assert(movieList.containsAll(elements = fakeDatabaseMovies))
+        }
+    }
 
-    // When:
-    movieDao.update(updatedFakeSeries)
+    @Test
+    @Throws(Exception::class)
+    fun getFavorites() = runTest {
+        movieDao.insertAll(movies = fakeDatabaseMovies)
 
-    // Then:
-    val series = movieDao.getMovie(fakeSeries.id).first()
-    assert(series.title == updatedFakeSeriesTitle)
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun deleteMovie() = runTest {
-    // Given:
-    val fakeMovie1 = createMovie("1")
-    val fakeMovie2 = createMovie("2")
-    movieDao.insertAll(listOf(fakeMovie1, fakeMovie2))
-
-    // When:
-    movieDao.delete(fakeMovie1)
-
-    // Then:
-    val movieList = movieDao.getMovies(Type.MOVIE).first()
-    assert(movieList.size == 1)
-    assertFalse(movieList.contains(fakeMovie1))
-    assert(movieList.contains(fakeMovie2))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun deleteSeries() = runTest {
-    // Given:
-    val fakeSeries1 = createSeries("1")
-    val fakeSeries2 = createSeries("2")
-    movieDao.insertAll(listOf(fakeSeries1, fakeSeries2))
-
-    // When:
-    movieDao.delete(fakeSeries1)
-
-    // Then:
-    val seriesList = movieDao.getMovies(Type.SERIES).first()
-    assert(seriesList.size == 1)
-    assertFalse(seriesList.contains(fakeSeries1))
-    assert(seriesList.contains(fakeSeries2))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun getMovie() = runTest {
-    // Given:
-    val fakeMovie = createMovie()
-    movieDao.insert(fakeMovie)
-
-    // When:
-    val movie = movieDao.getMovie(fakeMovie.id).first()
-
-    // Then:
-    assertNotNull(movie)
-    assertThat(fakeMovie, equalTo(movie))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun getSeries() = runTest {
-    // Given:
-    val fakeSeries = createSeries()
-    movieDao.insert(fakeSeries)
-
-    // When:
-    val series = movieDao.getMovie(fakeSeries.id).first()
-
-    // Then:
-    assertNotNull(series)
-    assertThat(fakeSeries, equalTo(series))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun isFavoriteMovie() = runTest {
-    // Given:
-    val fakeMovie = createMovie(isFavorite = true)
-    movieDao.insert(fakeMovie)
-
-    // When:
-    val isFavoriteMovie = movieDao.isFavoriteMovie(fakeMovie.id).first()
-
-    // Then:
-    assertTrue(isFavoriteMovie)
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun isNotFavoriteMovie() = runTest {
-    // Given:
-    val fakeMovie = createMovie()
-    movieDao.insert(fakeMovie)
-
-    // When:
-    val isFavoriteMovie = movieDao.isFavoriteMovie(fakeMovie.id).first()
-
-    // Then:
-    assertFalse(isFavoriteMovie)
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun getMovieList() = runTest {
-    // Given:
-    val fakeSeries = createSeries("3")
-    val fakeMovieList = listOf(createMovie("1"), createMovie("2"))
-    movieDao.insertAll(fakeMovieList.plus(fakeSeries))
-
-    // When:
-    val movieList = movieDao.getMovies(Type.MOVIE).first()
-
-    // Then:
-    assert(movieList.size == 2)
-    assert(movieList.containsAll(fakeMovieList))
-    assertFalse(movieList.contains(fakeSeries))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun getSeriesList() = runTest {
-    // Given:
-    val fakeMovie = createMovie("3")
-    val fakeSeriesList = listOf(createSeries("1"), createSeries("2"))
-    movieDao.insertAll(fakeSeriesList.plus(fakeMovie))
-
-    // When:
-    val seriesList = movieDao.getMovies(Type.SERIES).first()
-
-    // Then:
-    assert(seriesList.size == 2)
-    assert(seriesList.containsAll(fakeSeriesList))
-    assertFalse(seriesList.contains(fakeMovie))
-  }
-
-  @Test
-  @Throws(Exception::class)
-  fun getFavorites() = runTest {
-    // Given:
-    val fakeNotFavoriteMovie = createMovie("1")
-    val fakeDataList =
-        listOf(
-            createMovie("2", true),
-            createSeries("3", true),
-        )
-    movieDao.insertAll(fakeDataList.plus(fakeNotFavoriteMovie))
-
-    // When:
-    val favorites = movieDao.getFavorites().first()
-
-    // Then:
-    assert(favorites.isNotEmpty())
-    assert(favorites.containsAll(fakeDataList))
-    assertFalse(favorites.contains(fakeNotFavoriteMovie))
-  }
-  // endregion
+        movieDao.getFavorites().test {
+            val favorites = awaitItem()
+            assert(favorites.isNotEmpty())
+            assert(favorites.containsAll(elements = fakeDatabaseMovies.filter { it.isFavorite }))
+            assertFalse(favorites.containsAll(elements = fakeDatabaseMovies.filterNot { it.isFavorite }))
+        }
+    }
+    // endregion
 }

@@ -2,33 +2,45 @@ package com.manishsputnikcorporation.movies.utils.extensions
 
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.network.response.MovieDetailDto
-import com.manishsputnikcorporation.movies.network.response.MovieDto
-import com.manishsputnikcorporation.movies.utils.enums.toType
+import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
+import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
 
 fun MovieDto.isContentEquals(movieModel: MovieModel): Boolean =
-    movieModel.let {
-      return id == it.id &&
-          rank == it.rank &&
-          title == it.title &&
-          year == it.year &&
-          imageUrl == it.imageUrl &&
-          rating == it.rating &&
-          type == it.type
-    }
+    id == movieModel.id &&
+        originalTitle == movieModel.originalTitle &&
+        overview == movieModel.overview &&
+        popularity == movieModel.popularity &&
+        posterPath == movieModel.posterPath &&
+        releaseDate == movieModel.releaseDate &&
+        title == movieModel.title &&
+        rating == movieModel.rating
 
-fun MovieDetailDto.isContentEquals(movieDetailModel: MovieDetailModel): Boolean {
-  movieDetailModel.let {
-    return id == it.id &&
-        title == it.title &&
-        originalTitle == it.originalTitle &&
-        fullTitle == it.fullTitle &&
-        type.toType() == it.type &&
-        year == it.year &&
-        plot == it.plot &&
-        image == it.image &&
-        releaseDate == it.releaseDate &&
-        runtimeStr == it.runtimeStr &&
-        directors == it.directors
-  }
-}
+fun MovieModel.isContentEquals(movieDto: MovieDto): Boolean =
+    id == movieDto.id &&
+        originalTitle == movieDto.originalTitle &&
+        overview == movieDto.overview &&
+        popularity == movieDto.popularity &&
+        posterPath == movieDto.posterPath &&
+        releaseDate == movieDto.releaseDate &&
+        title == movieDto.title &&
+        rating == movieDto.rating
+
+fun MovieDetailDto.isContentEquals(movieModel: MovieDetailModel): Boolean =
+    id == movieModel.id &&
+        originalTitle == movieModel.originalTitle &&
+        overview == movieModel.overview &&
+        popularity == movieModel.popularity &&
+        posterPath == movieModel.posterPath &&
+        releaseDate == movieModel.releaseDate &&
+        title == movieModel.title &&
+        rating == movieModel.rating
+
+fun MovieDetailModel.isContentEquals(movieDetailModel: MovieDetailDto): Boolean =
+    id == movieDetailModel.id &&
+        originalTitle == movieDetailModel.originalTitle &&
+        overview == movieDetailModel.overview &&
+        popularity == movieDetailModel.popularity &&
+        posterPath == movieDetailModel.posterPath &&
+        releaseDate == movieDetailModel.releaseDate &&
+        title == movieDetailModel.title &&
+        rating == movieDetailModel.rating

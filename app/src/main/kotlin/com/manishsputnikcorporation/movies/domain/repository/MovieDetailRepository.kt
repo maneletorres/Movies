@@ -6,11 +6,11 @@ import com.manishsputnikcorporation.movies.domain.model.MovieModel
 import kotlinx.coroutines.flow.Flow
 
 interface MovieDetailRepository {
-  fun getMovieDetail(id: String): DomainResponse<MovieDetailModel>
+    fun getMovieDetail(id: Int): DomainResponse<MovieDetailModel>
 
-  fun isFavoriteMovie(id: String): Flow<Boolean>
+    fun isFavoriteMovie(id: Int): Flow<Boolean>
 
-  fun getMovie(id: String): Flow<MovieModel>
+    fun getMovie(id: Int): Flow<MovieModel>
 
-  suspend fun updateMovie(id: String): DomainResponse<Boolean>
+    suspend fun updateMovie(id: Int): DomainResponse<Boolean>
 }

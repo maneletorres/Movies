@@ -1,18 +1,18 @@
 package com.manishsputnikcorporation.movies.domain.model
 
 import android.os.Parcelable
-import com.manishsputnikcorporation.movies.domain.id.Identifiable
-import com.manishsputnikcorporation.movies.utils.enums.Type
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MovieModel(
-    override val id: String,
-    val rank: String,
+    override val id: Int,
+    override val overview: String,
+    override val popularity: Double,
+    override val posterPath: String,
+    override val releaseDate: String,
+    override val rating: Double,
+    override val isFavorite: Boolean,
+    val originalTitle: String,
     val title: String,
-    val year: String,
-    val imageUrl: String,
-    val rating: String, // TODO: to put a FAB in the item. Bottom right
-    val type: Type,
-    val isFavorite: Boolean
-) : Identifiable, Parcelable
+) : Model, Parcelable

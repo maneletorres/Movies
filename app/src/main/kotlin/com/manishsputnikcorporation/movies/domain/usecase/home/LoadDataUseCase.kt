@@ -3,6 +3,7 @@ package com.manishsputnikcorporation.movies.domain.usecase.home
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.repository.MoviesRepository
+import com.manishsputnikcorporation.movies.domain.repository.TVsRepository
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.base.flow.FlowUseCaseExceptionDelegate
@@ -21,16 +22,17 @@ class LoadDataUseCase
 @Inject
 constructor(
     private val moviesRepository: MoviesRepository,
+    private val tVsRepository: TVsRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
+    dispatcherProvider: DispatcherProvider,
 ) : FlowUseCase<Type, Either<Unit, DomainError>>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
-    when (input) {
-          MOVIE -> moviesRepository.refreshMostPopularMovies()
-          SERIES -> moviesRepository.refreshMostPopularTVs()
-        }
-        .onSuccess { emit(eitherSuccess(it)) }
-        .onFailure { emit(eitherFailure(it)) }
-  }
+    override fun prepareFlow(input: Type): Flow<Either<Unit, DomainError>> = flow {
+        when (input) {
+                MOVIE -> moviesRepository.refreshPopularMovies()
+                TV -> tVsRepository.refreshPopularTVs()
+            }
+            .onSuccess { emit(value = eitherSuccess(data = it)) }
+            .onFailure { emit(value = eitherFailure(error = it)) }
+    }
 }

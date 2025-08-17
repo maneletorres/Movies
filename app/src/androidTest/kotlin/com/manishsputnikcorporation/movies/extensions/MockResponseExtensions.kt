@@ -9,21 +9,21 @@ import okhttp3.mockwebserver.MockResponse
 fun MockResponse.fromJson(jsonFile: String): MockResponse = setBody(readJsonFile(jsonFile))
 
 fun readJsonFile(jsonFilePath: String): String {
-  val context = InstrumentationRegistry.getInstrumentation().context
+    val context = InstrumentationRegistry.getInstrumentation().context
 
-  var br: BufferedReader? = null
-  try {
-    br = BufferedReader(InputStreamReader(context.assets.open(jsonFilePath), UTF_8))
-    var line: String?
-    val text = StringBuilder()
+    var br: BufferedReader? = null
+    try {
+        br = BufferedReader(InputStreamReader(context.assets.open(jsonFilePath), UTF_8))
+        var line: String?
+        val text = StringBuilder()
 
-    do {
-      line = br.readLine()
-      line?.let { text.append(line) }
-    } while (line != null)
-    br.close()
-    return text.toString()
-  } finally {
-    br?.close()
-  }
+        do {
+            line = br.readLine()
+            line?.let { text.append(line) }
+        } while (line != null)
+        br.close()
+        return text.toString()
+    } finally {
+        br?.close()
+    }
 }

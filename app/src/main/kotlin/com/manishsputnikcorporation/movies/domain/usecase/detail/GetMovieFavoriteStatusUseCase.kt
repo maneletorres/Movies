@@ -13,9 +13,8 @@ class GetMovieFavoriteStatusUseCase
 constructor(
     private val movieDetailRepository: MovieDetailRepository,
     override val globalErrorMapper: GlobalErrorMapper,
-    dispatcherProvider: DispatcherProvider
-) : FlowUseCase<String, Boolean>(dispatcherProvider), FlowUseCaseExceptionDelegate {
+    dispatcherProvider: DispatcherProvider,
+) : FlowUseCase<Int, Boolean>(dispatcherProvider), FlowUseCaseExceptionDelegate {
 
-  override fun prepareFlow(input: String): Flow<Boolean> =
-      movieDetailRepository.isFavoriteMovie(input)
+    override fun prepareFlow(input: Int): Flow<Boolean> = movieDetailRepository.isFavoriteMovie(id = input)
 }
