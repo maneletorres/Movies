@@ -19,4 +19,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Movies"
-include(":app")
+include(
+    ":app",
+    ":shared-test-util"
+)

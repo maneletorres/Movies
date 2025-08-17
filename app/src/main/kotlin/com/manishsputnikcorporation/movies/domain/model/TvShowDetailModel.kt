@@ -1,12 +1,12 @@
 package com.manishsputnikcorporation.movies.domain.model
 
 import android.os.Parcelable
-import com.manishsputnikcorporation.movies.domain.id.Identifiable
+import com.manishsputnikcorporation.movies.domain.model.base.Identifiable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TvShowDetailModel(
-    override val id: String,
+    override val id: Int,
     val title: String,
     val originalTitle: String,
     val fullTitle: String,

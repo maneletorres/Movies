@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
-import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
@@ -49,15 +49,11 @@ constructor(
     //          .map { movieModelList -> Data(movieModelList) }
     //          .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), Loading)
 
-    private val _moviesHomeUiState = MutableStateFlow<MoviesHomeUiState>(Idle)
+    private val _moviesHomeUiState = MutableStateFlow<MoviesHomeUiState>(value = Idle)
     val moviesHomeUiState: StateFlow<MoviesHomeUiState> = _moviesHomeUiState
 
     private val _event: Channel<Event> = Channel()
     val event: Flow<Event> = _event.receiveAsFlow()
-
-    init {
-        loadData()
-    }
 
     @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = MoviesHome.route)
 
@@ -65,24 +61,27 @@ constructor(
         loadDataUseCase
             .safePrepare(input = type)
             .onStart { _moviesHomeUiState.update { Loading } }
-            .onCompletion { getData(type) }
+            .onCompletion { throwable -> if (throwable == null) getData(type) }
             .catch { _event.send(element = Event.Error(searchType = type.name.lowercase())) }
             .launchIn(viewModelScope)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun getData(type: Type) {
-        val user = authManager.getCurrentUser()
         getDataUseCase
             .safePrepare(input = type)
-            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieList = movieModelList, user = user) } }
+            .onEach { mediaModelList ->
+                _moviesHomeUiState.update { Data(mediaModelList = mediaModelList, user = authManager.getCurrentUser()) }
+            }
+            .catch { _event.send(element = Event.Error(searchType = type.name.lowercase())) }
             .launchIn(viewModelScope)
     }
 
     fun getFavorites(type: Type) {
         getFavoriteDataUseCase
             .safePrepare(input = type)
-            .onEach { movieModelList -> _moviesHomeUiState.update { Data(movieList = movieModelList) } }
+            .onEach { mediaModelList -> _moviesHomeUiState.update { Data(mediaModelList = mediaModelList) } }
+            .catch { _event.send(element = Event.Error(searchType = type.name.lowercase())) }
             .launchIn(viewModelScope)
     }
 
@@ -93,7 +92,7 @@ constructor(
 
         data object Loading : MoviesHomeUiState
 
-        data class Data(val movieList: List<MediaItemModel>, val user: FirebaseUser? = null) : MoviesHomeUiState
+        data class Data(val mediaModelList: List<Model>, val user: FirebaseUser? = null) : MoviesHomeUiState
     }
 
     sealed interface Event {

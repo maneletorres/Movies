@@ -1,5 +1,6 @@
 import java.io.FileInputStream
 import java.io.IOException
+import java.util.Locale
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -13,6 +14,8 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ktfmt)
     id("kotlin-parcelize")
+    id("androidx.room")
+    jacoco
 }
 
 android {
@@ -21,12 +24,12 @@ android {
 
     defaultConfig {
         applicationId = "com.manishsputnikcorporation.movies"
-        minSdk = 24
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.manishsputnikcorporation.movies.HiltTestRunner"
         vectorDrawables { useSupportLibrary = true }
 
         val localProperties = Properties()
@@ -39,6 +42,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -46,12 +53,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_17) } }
+    kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_21) } }
     buildFeatures { buildConfig = true }
-    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
+        }
+    }
+    sourceSets { getByName("androidTest").assets.srcDir("$projectDir/schemas") }
 }
 
 dependencies {
@@ -86,20 +100,64 @@ dependencies {
     // endregion
 
     implementation(libs.com.jakewharton.timber)
-    implementation(libs.bundles.ui)
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.compose)
 
     // region Testing libraries:
-    testImplementation(libs.bundles.testing)
+    testImplementation(project(":shared-test-util"))
+    testImplementation(kotlin("test"))
+    testImplementation(libs.bundles.unit.testing)
 
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.bundles.testing.compose)
+    androidTestImplementation(project(":shared-test-util"))
+    androidTestImplementation(kotlin("test"))
+    androidTestImplementation(libs.bundles.android.testing)
     // endregion
 }
+
+room { schemaDirectory("$projectDir/schemas") }
 
 ktfmt {
     kotlinLangStyle()
     maxWidth.set(140)
     removeUnusedImports.set(true)
 }
+
+// region Jacoco
+val exclusions = listOf("**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*", "**/*Test*.*")
+
+tasks.withType(Test::class) {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
+}
+
+android {
+    applicationVariants.all(
+        closureOf<com.android.build.gradle.internal.api.BaseVariantImpl> {
+            val variant =
+                this@closureOf.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
+            val unitTests = "test${variant}UnitTest"
+            val androidTests = "connected${variant}AndroidTest"
+
+            tasks.register<JacocoReport>("Jacoco${variant}CodeCoverage") {
+                dependsOn(listOf(unitTests, androidTests))
+                group = "Reporting"
+                description = "Execute ui and unit tests, generate and combine Jacoco coverage report"
+                reports {
+                    xml.required.set(true)
+                    html.required.set(true)
+                }
+                sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
+                classDirectories.setFrom(
+                    files(
+                        fileTree(layout.buildDirectory.dir("intermediates/javac/")) { exclude(exclusions) },
+                        fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) { exclude(exclusions) },
+                    )
+                )
+                executionData.setFrom(files(fileTree(layout.buildDirectory) { include(listOf("**/*.exec", "**/*.ec")) }))
+            }
+        }
+    )
+} // endregion

@@ -1,6 +1,8 @@
 package com.manishsputnikcorporation.movies.ui.screens.detail
 
 import android.annotation.SuppressLint
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.Companion.PRIVATE
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,44 +40,38 @@ constructor(
 
     @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = MovieDetail.route)
 
-    fun loadData(id: String?) {
-        id?.let {
-            // TODO: to merge these two methods!
-            getMovieDetail(it)
-            getMovieFavoriteStatus(it)
-        }
+    fun loadData(id: Int) {
+        getMovieDetail(id = id)
+        getMovieFavoriteStatus(id = id)
     }
 
-    private fun getMovieDetail(id: String?) {
-        id?.let {
-            getMovieDetailUseCase
-                .safePrepare(id)
-                .onStart { _movieDetailUiState.update { state -> state.copy(isIdle = false, isLoading = true) } }
-                .onEach {
-                    it.onSuccess { movieDetailModel: MovieDetailModel ->
-                            _movieDetailUiState.update { state ->
-                                state.copy(
-                                    isLoading = false,
-                                    movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel),
-                                )
-                            }
+    @VisibleForTesting(otherwise = PRIVATE)
+    fun getMovieDetail(id: Int) {
+        getMovieDetailUseCase
+            .safePrepare(input = id)
+            .onStart { _movieDetailUiState.update { state -> state.copy(isIdle = false, isLoading = true) } }
+            .onEach {
+                it.onSuccess { movieDetailModel: MovieDetailModel ->
+                        _movieDetailUiState.update { state ->
+                            state.copy(isLoading = false, movieDetailData = state.movieDetailData.copy(movieDetailModel = movieDetailModel))
                         }
-                        .onFailure { _movieDetailUiState.update { state -> state.copy(isLoading = false, isFailed = true) } }
-                }
-                .launchIn(viewModelScope)
-        }
+                    }
+                    .onFailure { _movieDetailUiState.update { state -> state.copy(isLoading = false, isFailed = true) } }
+            }
+            .launchIn(viewModelScope)
     }
 
-    private fun getMovieFavoriteStatus(id: String) {
+    @VisibleForTesting(otherwise = PRIVATE)
+    fun getMovieFavoriteStatus(id: Int) {
         getMovieFavoriteStatusUseCase
-            .safePrepare(id)
+            .safePrepare(input = id)
             .onEach { favoriteStatus -> updateFavoriteStatus(favoriteStatus) }
             .launchIn(viewModelScope)
     }
 
-    fun setMovieFavoriteStatus(id: String) {
+    fun setMovieFavoriteStatus(id: Int) {
         setMovieFavoriteStatusUseCase
-            .safePrepare(id)
+            .safePrepare(input = id)
             .onEach {
                 it.onSuccess { favoriteStatus -> updateFavoriteStatus(favoriteStatus) }
                     .onFailure {

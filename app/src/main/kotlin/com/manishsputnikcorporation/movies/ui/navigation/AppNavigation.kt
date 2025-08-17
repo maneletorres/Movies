@@ -26,7 +26,7 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
             SplashScreen(splashViewModel = hiltViewModel()) {
                 navController.apply {
                     popBackStack()
-                    navigateSingleTopTo(LoginScreen.route)
+                    navigateSingleTopTo(route = LoginScreen.route)
                 }
             }
         }
@@ -34,14 +34,16 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
         // region Auth screens:
         composable(route = LoginScreen.route) {
             LoginScreen(loginViewModel = hiltViewModel()) { nextScreen, previousScreen ->
-                navController.navigateInclusiveTo(nextScreen, previousScreen)
+                navController.navigateInclusiveTo(nextScreenRoute = nextScreen, previousScreenRoute = previousScreen)
             }
         }
         composable(route = SignUpScreen.route) {
-            SignUpScreen(signUpViewModel = hiltViewModel()) { navController.navigateInclusiveTo(MoviesHome.route, LoginScreen.route) }
+            SignUpScreen(signUpViewModel = hiltViewModel()) {
+                navController.navigateInclusiveTo(nextScreenRoute = MoviesHome.route, previousScreenRoute = LoginScreen.route)
+            }
         }
         composable(route = RecoverPasswordScreen.route) {
-            PasswordRecoveryScreen(passwordRecoveryViewModel = hiltViewModel()) { navController.navigate(LoginScreen.route) }
+            PasswordRecoveryScreen(passwordRecoveryViewModel = hiltViewModel()) { navController.navigate(route = LoginScreen.route) }
         }
         // endregion
 
@@ -50,13 +52,13 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
                 moviesHomeViewModel = hiltViewModel(),
                 onClickSignOut = {
                     mainViewModel.signOut()
-                    navController.navigateInclusiveTo(LoginScreen.route, MoviesHome.route)
+                    navController.navigateInclusiveTo(nextScreenRoute = LoginScreen.route, previousScreenRoute = MoviesHome.route)
                 },
-                onClickMovie = { movieId -> navController.navigateSingleTopTo("${MovieDetail.route}/$movieId") },
+                onClickMovie = { movieId -> navController.navigateSingleTopTo(route = "${MovieDetail.route}/$movieId") },
             )
         }
         composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
-            val movieId = navBackStackEntry.arguments?.getString(MovieDetail.movieIdArg)
+            val movieId = navBackStackEntry.arguments?.getInt(MovieDetail.MOVIE_ID_ARG)
             MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId = movieId) { navController.popBackStack() }
         }
     }

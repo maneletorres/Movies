@@ -56,7 +56,7 @@
     <string name="dummy_movie_full_title">Léon: The Professional (1994)</string>
     <string name="dummy_movie_year" translatable="false">1994</string>
     <string name="dummy_movie_runtime" translatable="false">1h 50 min</string>
-    <string name="dummy_movie_plot">12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all</string>
+    <string name="dummy_movie_overview">12-year-old Mathilda is reluctantly taken in by Léon, a professional assassin, after her family is murdered. An unusual relationship forms as she becomes his protégée and learns the assassin… Read all</string>
     <string name="dummy_movie_directors" translatable="false">Luc Besson</string>
     <string name="dummy_movie_name_1">Hocus Pocus 2</string>
     <string name="dummy_movie_name_2" translatable="false">Blonde</string>
@@ -85,7 +85,7 @@
     <!-- Dummy series data: -->
     <string name="dummy_series_title" translatable="false">The Last of Us</string>
     <string name="dummy_series_full_title">The Last of Us (TV Series 2023– )</string>
-    <string name="dummy_series_plot">After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl who may be humanity\'s last hope.</string>
+    <string name="dummy_series_overview">After a global pandemic destroys civilization, a hardened survivor takes charge of a 14-year-old girl who may be humanity\'s last hope.</string>
     <string name="dummy_series_name_2" translatable="false">You</string>
     <string name="dummy_series_name_3" translatable="false">Poker Face</string>
 

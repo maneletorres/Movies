@@ -62,8 +62,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.domain.model.MediaItemModel
-import com.manishsputnikcorporation.movies.network.model.MediaItemDtoMapper
+import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
@@ -76,16 +75,18 @@ import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
-import com.manishsputnikcorporation.movies.utils.fake.fakeMoviesDto
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModel
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModels
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (String) -> Unit = {}) {
+fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (Int) -> Unit = {}) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val hotState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(value = Type.MOVIE) }
 
+    moviesHomeViewModel.loadData()
     moviesHomeViewModel.trackScreen()
 
     val moviesHomeUIState by moviesHomeViewModel.moviesHomeUiState.collectAsState()
@@ -99,7 +100,7 @@ fun MoviesHomeScreen(moviesHomeViewModel: MoviesHomeViewModel, onClickSignOut: (
                     hostState = hotState,
                     searchType = searchType,
                     user = it.user,
-                    movies = it.movieList,
+                    movies = it.mediaModelList,
                     onClickFavorites = { moviesHomeViewModel.getFavorites(searchType) },
                     onClickSearchType = {
                         searchType = searchType.toggleSearchType()
@@ -133,12 +134,12 @@ fun MoviesHomeContent(
     hostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
-    movies: List<MediaItemModel>,
+    movies: List<Model>,
     modifier: Modifier = Modifier,
     onClickFavorites: () -> Unit = {},
     onClickSearchType: () -> Unit = {},
     onClickSignOut: () -> Unit = {},
-    onClickMovie: (String) -> Unit = {},
+    onClickMovie: (Int) -> Unit = {},
 ) {
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
@@ -203,7 +204,7 @@ fun MoviesHomeContent(
                                     id =
                                         when (searchType) {
                                             Type.MOVIE -> R.drawable.ic_series_search
-                                            Type.TV_SHOW -> R.drawable.ic_movie_search
+                                            Type.TV -> R.drawable.ic_movie_search
                                         }
                                 ),
                             contentDescription = stringResource(id = R.string.movies_home_search_type),
@@ -245,7 +246,7 @@ fun MoviesHomeContent(
                 EmptyContent(
                     when (searchType) {
                         Type.MOVIE -> R.string.movies_home_empty_movies
-                        Type.TV_SHOW -> R.string.movies_home_empty_series
+                        Type.TV -> R.string.movies_home_empty_series
                     }
                 )
             else MoviesGrid(movies, gridState = gridState) { movieId -> onClickMovie(movieId) }
@@ -264,21 +265,21 @@ fun MoviesHomeContent(
 
 @Composable
 fun MoviesGrid(
-    movies: List<MediaItemModel>,
+    movies: List<Model>,
     modifier: Modifier = Modifier,
     gridState: LazyGridState = rememberLazyGridState(),
-    onClickMovie: (String) -> Unit = {},
+    onClickMovie: (Int) -> Unit = {},
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
         items(items = movies, key = { it.id }) { movie ->
             val rememberedMovie = rememberSaveable { movie } // TODO: to check
-            with(receiver = rememberedMovie) { Movie(id, image = imageUrl) { movieId -> onClickMovie(movieId) } }
+            with(receiver = rememberedMovie) { Movie(id = id, image = posterPath) { movieId -> onClickMovie(movieId) } }
         }
     }
 }
 
 @Composable
-fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
+fun Movie(id: Int, image: String, onClickMovie: (Int) -> Unit = {}) {
     SubcomposeAsyncImage(
         model = "$TMDB_IMAGE_API_BASE_URL$image",
         contentDescription = null,
@@ -300,13 +301,12 @@ fun Movie(id: String, image: String, onClickMovie: (String) -> Unit = {}) {
 private fun MoviesHomeContentPreview() {
     MoviesTheme {
         val hostState: SnackbarHostState = remember { SnackbarHostState() }
-        val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
         MoviesHomeContent(
             scaffoldState = rememberScaffoldState(),
             hostState = hostState,
             searchType = Type.MOVIE,
             user = null,
-            movies = movies,
+            movies = fakeMovieModels,
         )
     }
 }
@@ -314,17 +314,12 @@ private fun MoviesHomeContentPreview() {
 @UiModePreviews
 @Composable
 private fun MoviesGridPreview() {
-    MoviesTheme {
-        Surface {
-            val movies = fakeMoviesDto.results.map { MediaItemDtoMapper().mapToDomainModel(it) }
-            MoviesGrid(movies = movies)
-        }
-    }
+    MoviesTheme { Surface { MoviesGrid(movies = fakeMovieModels) } }
 }
 
 @UiModePreviews
 @Composable
 private fun MoviePreview() {
-    MoviesTheme { Surface { with(MediaItemDtoMapper().mapToDomainModel(fakeMoviesDto.results[0])) { Movie(id, imageUrl) } } }
+    MoviesTheme { Surface { with(receiver = fakeMovieModel) { Movie(id, posterPath) } } }
 }
 // endregion
