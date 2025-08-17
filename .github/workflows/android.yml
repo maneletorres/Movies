@@ -16,6 +16,37 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Load fake bearer token
+        run: echo "BEARER_TOKEN=\"${{ secrets.BEARER_TOKEN }}\"" > ./local.properties
+
+      - name: Create fake google-services.json
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "google-services.json"
+          json: '{
+                "project_info": {
+                  "project_number": "",
+                  "project_id": ""
+                },
+                "client": [
+                  {
+                    "client_info": {
+                      "mobilesdk_app_id": "${{ secrets.MOBILESDK_APP_ID }}",
+                      "android_client_info": {
+                        "package_name": "${{ secrets.PACKAGE_NAME }}"
+                      }
+                    },
+                    "api_key": [
+                      {
+                        "current_key": ""
+                      }
+                    ]
+                  }
+                ]
+              }'
+          dir: './app/'
+
       - name: Build with Gradle
         run: ./gradlew build
 

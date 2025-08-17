@@ -7,5 +7,5 @@ data class GlobalErrorHandlerModel(
     val onGenericError: (suspend () -> Unit)? = null,
     val onUnauthorized: (suspend () -> Unit)? = null,
     val onNetworkAvailable: (suspend () -> Unit)? = null,
-    val dismissAction: (() -> Unit)? = null
+    val dismissAction: (() -> Unit)? = null,
 )
