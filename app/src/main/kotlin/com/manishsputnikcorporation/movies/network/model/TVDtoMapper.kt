@@ -1,37 +1,37 @@
 package com.manishsputnikcorporation.movies.network.model
 
-import com.manishsputnikcorporation.movies.domain.model.MovieModel
+import com.manishsputnikcorporation.movies.domain.model.TVModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
-import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
+import com.manishsputnikcorporation.movies.network.response.tv.TVDto
 
-class TVDtoMapper : DomainMapper<MovieDto, MovieModel> {
+class TVDtoMapper : DomainMapper<TVDto, TVModel> {
 
-    override fun mapToDomainModel(model: MovieDto): MovieModel {
+    override fun mapToDomainModel(model: TVDto): TVModel {
         with(receiver = model) {
-            return MovieModel(
+            return TVModel(
                 id = id ?: 0,
-                originalTitle = originalTitle.orEmpty(),
+                originalName = originalName.orEmpty(),
                 overview = overview.orEmpty(),
                 popularity = popularity ?: 0.0,
                 posterPath = posterPath.orEmpty(),
                 releaseDate = releaseDate.orEmpty(),
-                title = title.orEmpty(),
+                name = name.orEmpty(),
                 rating = rating ?: 0.0,
                 isFavorite = false,
             )
         }
     }
 
-    override fun mapFromDomainModel(domainModel: MovieModel): MovieDto {
+    override fun mapFromDomainModel(domainModel: TVModel): TVDto {
         with(receiver = domainModel) {
-            return MovieDto(
+            return TVDto(
                 id = id,
-                originalTitle = originalTitle,
+                originalName = originalName,
                 overview = overview,
                 popularity = popularity,
                 posterPath = posterPath,
                 releaseDate = releaseDate,
-                title = title,
+                name = name,
                 rating = rating,
             )
         }

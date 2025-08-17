@@ -28,6 +28,7 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -55,6 +56,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
@@ -69,8 +71,12 @@ import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Data
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
 import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
+import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModel
+import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModels
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -289,39 +295,31 @@ fun Movie(id: Int, image: String, onClickMovie: (Int) -> Unit = {}) {
 }
 
 // region Previews
-// @UiModePreviews
-// @Preview(showSystemUi = true) // TODO: to check
-// @Composable
-// private fun MoviesHomeContentPreview() {
-//    MoviesTheme {
-//        val hostState: SnackbarHostState = remember { SnackbarHostState() }
-//        val movies = fakeMovieListDto.results?.map { MediaItemDtoMapper().mapToDomainModel(model = it) }.orEmpty()
-//        MoviesHomeContent(
-//            scaffoldState = rememberScaffoldState(),
-//            hostState = hostState,
-//            searchType = Type.MOVIE,
-//            user = null,
-//            movies = movies,
-//        )
-//    }
-// }
-//
-// @UiModePreviews
-// @Composable
-// private fun MoviesGridPreview() {
-//    MoviesTheme {
-//        Surface {
-//            val movies = fakeMovieListDto.results?.map { MediaItemDtoMapper().mapToDomainModel(model = it) }.orEmpty()
-//            MoviesGrid(movies = movies)
-//        }
-//    }
-// }
+@UiModePreviews
+@Preview(showSystemUi = true) // TODO: to check
+@Composable
+private fun MoviesHomeContentPreview() {
+    MoviesTheme {
+        val hostState: SnackbarHostState = remember { SnackbarHostState() }
+        MoviesHomeContent(
+            scaffoldState = rememberScaffoldState(),
+            hostState = hostState,
+            searchType = Type.MOVIE,
+            user = null,
+            movies = fakeMovieModels,
+        )
+    }
+}
 
-// @UiModePreviews
-// @Composable
-// private fun MoviePreview() {
-//    MoviesTheme { Surface { with(
-//        receiver = MediaItemDtoMapper().mapToDomainModel(model = fakeMovieListDto.results[0])
-//    ) { Movie(id, posterPath) } } }
-// }
+@UiModePreviews
+@Composable
+private fun MoviesGridPreview() {
+    MoviesTheme { Surface { MoviesGrid(movies = fakeMovieModels) } }
+}
+
+@UiModePreviews
+@Composable
+private fun MoviePreview() {
+    MoviesTheme { Surface { with(receiver = fakeMovieModel) { Movie(id, posterPath) } } }
+}
 // endregion
