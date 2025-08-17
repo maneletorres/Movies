@@ -2,7 +2,6 @@ package com.manishsputnikcorporation.movies.data.local.dao
 
 import android.database.sqlite.SQLiteException
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -22,8 +21,6 @@ interface TvShowDao {
     fun insertAll(tvShows: List<DatabaseTV>)
 
     @Update suspend fun update(tvShow: DatabaseTV)
-
-    @Delete suspend fun delete(tvShow: DatabaseTV)
 
     @Query("SELECT * FROM tvs WHERE id = :id") fun getTvShow(id: String): Flow<DatabaseTV>
 

@@ -58,7 +58,7 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
             )
         }
         composable(route = MovieDetail.routeWithArgs, arguments = MovieDetail.arguments) { navBackStackEntry ->
-            val movieId = navBackStackEntry.arguments?.getInt(MovieDetail.movieIdArg)
+            val movieId = navBackStackEntry.arguments?.getInt(MovieDetail.MOVIE_ID_ARG)
             MovieDetailScreen(movieDetailViewModel = hiltViewModel(), movieId = movieId) { navController.popBackStack() }
         }
     }

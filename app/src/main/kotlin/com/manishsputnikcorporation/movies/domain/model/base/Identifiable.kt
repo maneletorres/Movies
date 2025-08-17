@@ -12,5 +12,3 @@ interface Model : Identifiable {
     val rating: Double
     val isFavorite: Boolean
 }
-
-data class CustomIdentifiable(override val id: Int) : Identifiable

@@ -15,6 +15,7 @@ import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.Dispa
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
 import com.manishsputnikcorporation.movies.network.model.TVDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.model.TVDtoMapper
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManagerImpl
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
@@ -56,7 +57,9 @@ object MapperModule {
 
     @Provides @ViewModelScoped fun provideMovieDetailDtoMapper(): MovieDetailDtoMapper = MovieDetailDtoMapper()
 
-    @Provides @ViewModelScoped fun provideTvDetailDtoMapper(): TVDetailDtoMapper = TVDetailDtoMapper()
+    @Provides @ViewModelScoped fun provideTVDtoMapper(): TVDtoMapper = TVDtoMapper()
+
+    @Provides @ViewModelScoped fun provideTVDetailDtoMapper(): TVDetailDtoMapper = TVDetailDtoMapper()
 }
 
 @Module

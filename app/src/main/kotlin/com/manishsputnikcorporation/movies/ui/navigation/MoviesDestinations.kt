@@ -32,7 +32,7 @@ object MoviesHome : MoviesDestination {
 
 object MovieDetail : MoviesDestination {
     override val route: String = "detail_screen"
-    const val movieIdArg = "movie_id"
-    val routeWithArgs = "$route/{$movieIdArg}"
-    val arguments = listOf(navArgument(movieIdArg) { type = NavType.StringType })
+    const val MOVIE_ID_ARG = "movie_id"
+    val routeWithArgs = "$route/{$MOVIE_ID_ARG}"
+    val arguments = listOf(navArgument(MOVIE_ID_ARG) { type = NavType.StringType })
 }
