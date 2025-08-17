@@ -30,69 +30,53 @@ version-catalog-update-version = "1.0.0"
 # Dependency injection (DI) libraries:
 dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt-version" }
 dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt-version" }
-
 # Firebase libraries:
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-
 # Jetpack Compose libraries:
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-bom-version" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
-
 # OkHttp libraries:
 com-squareup-okhttp3-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp3-bom" }
 com-squareup-okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 com-squareup-okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp3-bom" }
 com-squareup-okhttp3-okhttp = { module = "com.squareup.okhttp3:okhttp" }
 com-squareup-okhttp3-okhttp-urlconnection = { module = "com.squareup.okhttp3:okhttp-urlconnection" }
-
 # Retrofit libraries:
 com-squareup-retrofit2-bom = { module = "com.squareup.retrofit2:retrofit-bom", version.ref = "retrofit2-bom-version" }
 com-squareup-retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi" }
 com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit" }
-
 # Moshi:
 com-squareup-moshi-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi-version" }
-
 # Navigation libraries:
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx-version" }
-
 # Room:
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-version" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-version" }
 androidx-room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room-version" }
-
 # Navigation libraries:
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-version" }
-
 # Timber libraries:
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
-
 # UI libraries:
 io-coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt-version" }
-
 # Testing libraries:
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
-
 # Hilt testing libraries:
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger-hilt-version" }
-
 # Coroutines testing libraries:
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
-
 # Mock libraries:
 io-mockk = { module = "io.mockk:mockk", version.ref = "io-mockk-version" }
 junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
-
 # Room
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-version" }
-
 # ViewModel testing libraries:
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine-version" }
 
@@ -101,7 +85,7 @@ compose = [
     "androidx-compose-material",
     "androidx-compose-material-icons-core",
     "androidx-compose-ui-tooling",
-    "io-coil-kt-coil-compose"
+    "io-coil-kt-coil-compose",
 ]
 firebase = [
     "firebase-analytics",
@@ -125,7 +109,6 @@ room = [
     "androidx-room-ktx",
     "androidx-room-runtime",
 ]
-
 # Testing bundles:
 android-testing = [
     "androidx-arch-core-testing",
@@ -138,7 +121,6 @@ android-testing = [
     "kotlinx-coroutines-test",
     "turbine",
 ]
-
 unit-testing = [
     "com-squareup-okhttp3-mockwebserver",
     "io-mockk",
