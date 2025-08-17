@@ -11,7 +11,6 @@ import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSourceImpl
 import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSource
 import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSourceImpl
-import com.manishsputnikcorporation.movies.di.annotations.ApiUrl
 import com.manishsputnikcorporation.movies.network.NetworkManager
 import com.manishsputnikcorporation.movies.network.NetworkManagerImpl
 import com.manishsputnikcorporation.movies.network.service.RemoteApiService
