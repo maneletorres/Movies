@@ -20,16 +20,16 @@ interface MovieDao {
 
     @Delete suspend fun delete(movie: DatabaseMovie)
 
-    @Query("SELECT * FROM movies WHERE id = :id") fun getMovie(id: String): Flow<DatabaseMovie>
+    @Query("SELECT * FROM movies WHERE id = :id") fun getMovie(id: Int): Flow<DatabaseMovie>
 
-    @Query("SELECT is_favorite FROM movies WHERE id = :id") fun isFavoriteMovie(id: String): Flow<Boolean>
+    @Query("SELECT is_favorite FROM movies WHERE id = :id") fun isFavoriteMovie(id: Int): Flow<Boolean>
 
-    @Query("SELECT * FROM movies ORDER BY rank ASC") fun getMovies(): Flow<List<DatabaseMovie>>
+    @Query("SELECT * FROM movies ORDER BY rating ASC") fun getMovies(): Flow<List<DatabaseMovie>>
 
-    @Query("SELECT * FROM movies WHERE is_favorite = true ORDER BY rank ASC") fun getFavorites(): Flow<List<DatabaseMovie>>
+    @Query("SELECT * FROM movies WHERE is_favorite = true ORDER BY rating ASC") fun getFavorites(): Flow<List<DatabaseMovie>>
 
     // region Helper methods
-    // fun getDistinctMovieById(id: String) = getMovie(id).distinctUntilChanged()
+    // fun getDistinctMovieById(id: Int) = getMovie(id).distinctUntilChanged()
 
     // fun getDistinctMovies() = getMovies(type).distinctUntilChanged()
     // endregion

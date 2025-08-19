@@ -1,6 +1,5 @@
-package com.manishsputnikcorporation.movies.navigation
-
-// TODO: to implement correctly!
+// package com.manishsputnikcorporation.movies.navigation
+//
 // import androidx.compose.ui.platform.LocalContext
 // import androidx.compose.ui.test.assertIsDisplayed
 // import androidx.compose.ui.test.junit4.createComposeRule
@@ -15,28 +14,27 @@ package com.manishsputnikcorporation.movies.navigation
 //
 // class NavigationTest {
 //
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
+//  @get:Rule val composeTestRule = createComposeRule()
 //
-//    @Before
-//    fun setupMoviesNavHost() {
-//      composeTestRule.setContent {
-//        val navController = TestNavHostController(LocalContext.current)
-//        navController.navigatorProvider.addNavigator(ComposeNavigator())
+//  @Before
+//  fun setupMoviesNavHost() {
+//    composeTestRule.setContent {
+//      val navController = TestNavHostController(LocalContext.current)
+//      navController.navigatorProvider.addNavigator(ComposeNavigator())
 //
-//        AppNavigation(navController = navController)
-//      }
+//      AppNavigation(navController = navController)
 //    }
+//  }
 //
-//    @Test
-//    fun moviesNavHost_verifyMovieDetailStartDestination() {
-//      composeTestRule.onNodeWithContentDescription("Movies Home Screen").assertIsDisplayed()
-//    }
+//  @Test
+//  fun moviesNavHost_verifyMovieDetailStartDestination() {
+//    composeTestRule.onNodeWithContentDescription("Movies Home Screen").assertIsDisplayed()
+//  }
 //
-//    @Test
-//    fun moviesNavHost_clickMovie_navigatesToMovieDetail() {
-//      composeTestRule.onNodeWithContentDescription("Movie Detail").performClick()
+//  @Test
+//  fun moviesNavHost_clickMovie_navigatesToMovieDetail() {
+//    composeTestRule.onNodeWithContentDescription("Movie Detail").performClick()
 //
-//      composeTestRule.onNodeWithContentDescription("Movie Detail Screen").assertIsDisplayed()
-//    }
+//    composeTestRule.onNodeWithContentDescription("Movie Detail Screen").assertIsDisplayed()
+//  }
 // }

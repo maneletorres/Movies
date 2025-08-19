@@ -21,9 +21,9 @@ private val domine = FontFamily(Font(R.font.domine_regular), Font(R.font.domine_
 
 val MoviesTypography =
     Typography(
-        h4 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 30.sp),
-        h5 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 24.sp),
-        h6 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 20.sp),
+        h4 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 34.sp),
+        h5 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Normal, fontSize = 24.sp),
+        h6 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.Medium, fontSize = 20.sp),
         subtitle1 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W600, fontSize = 16.sp),
         subtitle2 = TextStyle(fontFamily = montserrat, fontWeight = FontWeight.W500, fontSize = 14.sp),
         body1 = TextStyle(fontFamily = domine, fontWeight = FontWeight.Normal, fontSize = 16.sp),

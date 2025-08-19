@@ -20,28 +20,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.ui.navigation.SplashScreen
 import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(analyticsManager: AnalyticsManager, onNavigation: () -> Unit = {}) {
+fun SplashScreen(splashViewModel: SplashViewModel, onNavigation: () -> Unit) {
+    splashViewModel.trackScreen()
+
+    SplashScreenContent(onNavigation = onNavigation)
+}
+
+@Composable
+fun SplashScreenContent(onNavigation: () -> Unit = {}) {
     LaunchedEffect(key1 = true) {
         // TODO: to implement resource load
         delay(3000)
         onNavigation()
     }
 
-    analyticsManager.trackScreen(screenName = SplashScreen.route)
     Surface { MoviesLogo(textRes = R.string.welcome_message, modifier = Modifier.fillMaxSize()) }
 }
 
@@ -62,6 +65,5 @@ fun MoviesLogo(@StringRes textRes: Int, modifier: Modifier = Modifier) {
 @UiModePreviews
 @Composable
 fun SplashScreenPreview() {
-    val context = LocalContext.current
-    MoviesTheme { SplashScreen(AnalyticsManager(context)) }
+    MoviesTheme { SplashScreenContent() }
 }

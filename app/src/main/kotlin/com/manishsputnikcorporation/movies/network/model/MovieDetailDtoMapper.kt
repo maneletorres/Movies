@@ -7,46 +7,36 @@ import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
 class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
 
     override fun mapToDomainModel(model: MovieDetailDto): MovieDetailModel {
-        with(model) {
+        with(receiver = model) {
             return MovieDetailModel(
-                id = id.toString(),
-                title = title,
-                originalTitle = originalTitle,
-                fullTitle = title,
-                plot = overview,
-                image = image,
-                releaseDate = releaseDate,
-                runtimeStr = runtime.toString(),
+                id = id ?: 0,
+                imdbId = imdbId.orEmpty(),
+                originalTitle = originalTitle.orEmpty(),
+                overview = overview.orEmpty(),
+                popularity = popularity ?: 0.0,
+                posterPath = posterPath.orEmpty(),
+                releaseDate = releaseDate.orEmpty(),
+                runtime = runtime ?: 0,
+                title = title.orEmpty(),
+                rating = rating ?: 0.0,
             )
         }
     }
 
     override fun mapFromDomainModel(domainModel: MovieDetailModel): MovieDetailDto {
-        with(domainModel) {
+        with(receiver = domainModel) {
             return MovieDetailDto(
-                imdbId = "",
-                id = id.toInt(),
-                title = title,
+                id = id,
+                imdbId = imdbId,
                 originalTitle = originalTitle,
-                image = image,
+                overview = overview,
+                popularity = popularity,
+                posterPath = posterPath,
                 releaseDate = releaseDate,
-                runtime = runtimeStr?.let { timeToInt(it) } ?: 0,
-                overview = plot,
+                runtime = runtime,
+                title = title,
+                rating = rating,
             )
         }
     }
-
-    // region Helper methods
-    private fun intToTime(time: Int): String {
-        val hours = time / 60
-        val minutes = time % 60
-        return String.format("%02d %02d", hours, minutes)
-    }
-
-    private fun timeToInt(time: String): Int {
-        val hours = time.substring(0, 2).toInt()
-        val minutes = time.substring(3, 5).toInt()
-        return hours * 60 + minutes
-    }
-    // endregion
 }

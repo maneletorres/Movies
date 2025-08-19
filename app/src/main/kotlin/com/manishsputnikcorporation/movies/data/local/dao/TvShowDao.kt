@@ -2,12 +2,11 @@ package com.manishsputnikcorporation.movies.data.local.dao
 
 import android.database.sqlite.SQLiteException
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.manishsputnikcorporation.movies.data.local.DatabaseTvShow
+import com.manishsputnikcorporation.movies.data.local.DatabaseTV
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 
@@ -15,23 +14,21 @@ import kotlinx.coroutines.flow.Flow
 interface TvShowDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE) // TODO: to find the best strategy
-    suspend fun insert(tvShow: DatabaseTvShow)
+    suspend fun insert(tvShow: DatabaseTV)
 
     @Throws(SQLiteException::class, IOException::class) // TODO: is it necessary?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(tvShows: List<DatabaseTvShow>)
+    fun insertAll(tvShows: List<DatabaseTV>)
 
-    @Update suspend fun update(tvShow: DatabaseTvShow)
+    @Update suspend fun update(tvShow: DatabaseTV)
 
-    @Delete suspend fun delete(tvShow: DatabaseTvShow)
+    @Query("SELECT * FROM tvs WHERE id = :id") fun getTvShow(id: String): Flow<DatabaseTV>
 
-    @Query("SELECT * FROM tv_shows WHERE id = :id") fun getTvShow(id: String): Flow<DatabaseTvShow>
+    @Query("SELECT is_favorite FROM tvs WHERE id = :id") fun isFavoriteTvShow(id: String): Flow<Boolean>
 
-    @Query("SELECT is_favorite FROM tv_shows WHERE id = :id") fun isFavoriteTvShow(id: String): Flow<Boolean>
+    @Query("SELECT * FROM tvs ORDER BY rating ASC") fun getTvShows(): Flow<List<DatabaseTV>>
 
-    @Query("SELECT * FROM tv_shows ORDER BY rank ASC") fun getTvShows(): Flow<List<DatabaseTvShow>>
-
-    @Query("SELECT * FROM tv_shows WHERE is_favorite = true ORDER BY rank ASC") fun getFavorites(): Flow<List<DatabaseTvShow>>
+    @Query("SELECT * FROM tvs WHERE is_favorite = true ORDER BY rating ASC") fun getFavorites(): Flow<List<DatabaseTV>>
 
     // region Helper methods
     // fun getDistinctTvShowById(id: String) = getTvShow(id).distinctUntilChanged()
