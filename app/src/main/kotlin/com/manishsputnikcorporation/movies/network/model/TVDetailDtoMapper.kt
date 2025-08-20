@@ -1,14 +1,14 @@
 package com.manishsputnikcorporation.movies.network.model
 
-import com.manishsputnikcorporation.movies.domain.model.TvDetailModel
+import com.manishsputnikcorporation.movies.domain.model.TVDetailModel
 import com.manishsputnikcorporation.movies.domain.util.DomainMapper
 import com.manishsputnikcorporation.movies.network.response.tv.TVDetailDto
 
-class TVDetailDtoMapper : DomainMapper<TVDetailDto, TvDetailModel> {
+class TVDetailDtoMapper : DomainMapper<TVDetailDto, TVDetailModel> {
 
-    override fun mapToDomainModel(model: TVDetailDto): TvDetailModel {
-        with(receiver = model) {
-            return TvDetailModel(
+    override fun mapToDomainModel(dto: TVDetailDto): TVDetailModel {
+        with(receiver = dto) {
+            return TVDetailModel(
                 id = id ?: 0,
                 originalName = originalName.orEmpty(),
                 overview = overview.orEmpty(),
@@ -17,11 +17,12 @@ class TVDetailDtoMapper : DomainMapper<TVDetailDto, TvDetailModel> {
                 releaseDate = releaseDate.orEmpty(),
                 name = name.orEmpty(),
                 rating = rating ?: 0.0,
+                isFavorite = false,
             )
         }
     }
 
-    override fun mapFromDomainModel(domainModel: TvDetailModel): TVDetailDto {
+    override fun mapFromDomainModel(domainModel: TVDetailModel): TVDetailDto {
         with(receiver = domainModel) {
             return TVDetailDto(
                 id = id,

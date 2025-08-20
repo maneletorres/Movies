@@ -6,8 +6,8 @@ import com.manishsputnikcorporation.movies.network.response.tv.TVDto
 
 class TVDtoMapper : DomainMapper<TVDto, TVModel> {
 
-    override fun mapToDomainModel(model: TVDto): TVModel {
-        with(receiver = model) {
+    override fun mapToDomainModel(dto: TVDto): TVModel {
+        with(receiver = dto) {
             return TVModel(
                 id = id ?: 0,
                 originalName = originalName.orEmpty(),

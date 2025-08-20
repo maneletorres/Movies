@@ -38,7 +38,7 @@ import com.manishsputnikcorporation.movies.ui.navigation.LoginScreen
 import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.navigation.RecoverPasswordScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.MoviesLogo
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
@@ -176,12 +176,12 @@ private fun onForgottenPasswordClick(analyticsManager: AnalyticsManager, onNavig
 @UiModePreviews
 @Composable
 fun LoginScreenContentPreview() {
-    MoviesTheme { Surface { LoginScreenContent() } }
+    MediaTheme { Surface { LoginScreenContent() } }
 }
 
 @Preview
 @Composable
 fun BottomContentPreview() {
-    MoviesTheme { Surface { BottomContent() } }
+    MediaTheme { Surface { BottomContent() } }
 }
 // endregion

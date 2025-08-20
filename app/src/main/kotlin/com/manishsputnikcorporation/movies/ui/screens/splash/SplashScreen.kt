@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import kotlinx.coroutines.delay
 
@@ -65,5 +65,5 @@ fun MoviesLogo(@StringRes textRes: Int, modifier: Modifier = Modifier) {
 @UiModePreviews
 @Composable
 fun SplashScreenPreview() {
-    MoviesTheme { SplashScreenContent() }
+    MediaTheme { SplashScreenContent() }
 }

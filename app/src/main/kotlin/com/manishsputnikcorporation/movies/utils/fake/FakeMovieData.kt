@@ -210,5 +210,6 @@ val fakeMovieDetailModel =
         runtime = 154,
         title = "Pulp Fiction",
         rating = 8.487,
+        isFavorite = true,
     )
 // endregion

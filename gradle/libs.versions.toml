@@ -65,6 +65,8 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 com-jakewharton-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
 # UI libraries:
 io-coil-kt-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-kt-version" }
+# Serialization JSON libraries:
+kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
 # Testing libraries:
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core-testing" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
@@ -140,3 +142,4 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
 ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt-version" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update-version" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-version" }

@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.ui.screens.auth.signUp.SignUpViewModel.Event.*
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.extensions.isValidEmail
 import com.manishsputnikcorporation.movies.utils.extensions.isValidPassword
@@ -195,13 +195,13 @@ fun SignUpTextField(
 @UiModePreviews
 @Composable
 fun SignUpScreenPreview() {
-    MoviesTheme { Surface { SignUpScreen(signUpViewModel = hiltViewModel()) } }
+    MediaTheme { Surface { SignUpScreen(signUpViewModel = hiltViewModel()) } }
 }
 
 @UiModePreviews
 @Composable
 fun SignUpTextFieldPreview() {
-    MoviesTheme {
+    MediaTheme {
         Surface {
             var password by rememberSaveable { mutableStateOf("") }
             SignUpTextField(

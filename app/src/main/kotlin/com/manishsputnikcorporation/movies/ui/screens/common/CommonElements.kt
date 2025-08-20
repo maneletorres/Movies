@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 
 @Composable
@@ -76,24 +76,24 @@ fun AlertDialog(
 @UiModePreviews
 @Composable
 private fun LoadingPreview() {
-    MoviesTheme { Loading() }
+    MediaTheme { Loading() }
 }
 
 @UiModePreviews
 @Composable
 private fun EmptyContentPreview() {
-    MoviesTheme { EmptyContent(message = R.string.dummy_error_message) }
+    MediaTheme { EmptyContent(message = R.string.dummy_error_message) }
 }
 
 @UiModePreviews
 @Composable
 private fun PlaceholderPreview() {
-    MoviesTheme { Placeholder(modifier = Modifier.size(50.dp)) }
+    MediaTheme { Placeholder(modifier = Modifier.size(50.dp)) }
 }
 
 @UiModePreviews
 @Composable
 private fun AlertDialogPreview() {
-    MoviesTheme { AlertDialog(dialogTitle = R.string.movies_home_sign_out, dialogText = R.string.sign_out_dialog_description) }
+    MediaTheme { AlertDialog(dialogTitle = R.string.movies_home_sign_out, dialogText = R.string.sign_out_dialog_description) }
 }
 // endregion

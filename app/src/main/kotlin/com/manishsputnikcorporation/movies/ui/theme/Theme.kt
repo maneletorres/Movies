@@ -30,6 +30,6 @@ private val darkColors =
 
 /** A [MaterialTheme] for MoviesTheme */
 @Composable
-fun MoviesTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun MediaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(colors = if (darkTheme) darkColors else lightColors, typography = MoviesTypography, content = content)
 }

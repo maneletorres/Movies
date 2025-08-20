@@ -6,6 +6,8 @@ import com.manishsputnikcorporation.movies.data.local.MediaDatabase
 import com.manishsputnikcorporation.movies.di.annotations.TestDatabase
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
+import com.manishsputnikcorporation.movies.network.model.TVDetailDtoMapper
+import com.manishsputnikcorporation.movies.network.model.TVDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +36,11 @@ object TestAppModule {
 @TestInstallIn(components = [SingletonComponent::class], replaces = [MapperModule::class])
 object FakeMapperModule {
 
-    @Provides fun provideMediaItemDtoMapper() = MovieDtoMapper()
+    @Provides fun provideMovieDtoMapper() = MovieDtoMapper()
 
     @Provides fun provideMovieDetailDtoMapper() = MovieDetailDtoMapper()
+
+    @Provides fun provideTVDtoMapper() = TVDtoMapper()
+
+    @Provides fun provideTVDetailDtoMapper() = TVDetailDtoMapper()
 }
