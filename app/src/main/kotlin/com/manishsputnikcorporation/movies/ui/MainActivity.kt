@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.manishsputnikcorporation.movies.ui.navigation.AppNavigation
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MoviesApp() {
-    MoviesTheme {
+    MediaTheme {
         val navController = rememberNavController()
         AppNavigation(mainViewModel = hiltViewModel(), navController = navController)
     }

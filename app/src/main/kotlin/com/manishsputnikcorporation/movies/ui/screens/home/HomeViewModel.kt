@@ -12,9 +12,9 @@ import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
 import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Data
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Idle
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.Loading
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Data
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Idle
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Loading
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
 @HiltViewModel
-class MoviesHomeViewModel
+class HomeViewModel
 @Inject
 constructor(
     private val analyticsManager: AnalyticsManager,

@@ -30,7 +30,7 @@ constructor(
         movieRemoteDataSource
             .getMovie(id)
             .mapSuccess { movieDetailDto ->
-                return eitherSuccess(data = movieDetailMapper.mapToDomainModel(model = movieDetailDto))
+                return eitherSuccess(data = movieDetailMapper.mapToDomainModel(dto = movieDetailDto))
             }
             .mapFailure { error ->
                 return eitherFailure(error = DomainError(code = error.statusCode.toString(), message = error.description ?: ""))

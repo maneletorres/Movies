@@ -71,7 +71,7 @@ internal class TVDetailRepositoryImplTest {
 
         assert(result.isSuccess)
         verify(exactly = 1) { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) }
-        verify(exactly = 1) { tvDetailMapper.mapToDomainModel(model = fakeTVDetailDto) }
+        verify(exactly = 1) { tvDetailMapper.mapToDomainModel(dto = fakeTVDetailDto) }
         confirmVerified(tvRemoteDataSource, tvDetailMapper)
     }
 
@@ -83,7 +83,7 @@ internal class TVDetailRepositoryImplTest {
 
         assert(result.isFailure)
         verify(exactly = 1) { tvRemoteDataSource.getTV(id = fakeDatabaseTVId) }
-        verify(exactly = 0) { tvDetailMapper.mapToDomainModel(model = any()) }
+        verify(exactly = 0) { tvDetailMapper.mapToDomainModel(dto = any()) }
         confirmVerified(tvRemoteDataSource, tvDetailMapper)
     }
 

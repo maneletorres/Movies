@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery.PasswordRecoveryViewModel.Event.PasswordRecoveryFailed
 import com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery.PasswordRecoveryViewModel.Event.PasswordRecoverySuccessful
-import com.manishsputnikcorporation.movies.ui.theme.MoviesTheme
+import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.extensions.showSnackBar
 import kotlinx.coroutines.flow.collectLatest
@@ -94,6 +94,6 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
 @UiModePreviews
 @Composable
 fun PasswordRecoveryScreenPreview() {
-    MoviesTheme { Surface { PasswordRecoveryScreen(hiltViewModel()) } }
+    MediaTheme { Surface { PasswordRecoveryScreen(hiltViewModel()) } }
 }
 // endregion

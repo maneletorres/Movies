@@ -5,12 +5,18 @@ import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
+import com.manishsputnikcorporation.movies.domain.repository.TVDetailRepository
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
+import com.manishsputnikcorporation.movies.utils.fake.fakeTVDetailModel
 import com.manishsputnikcorporation.movies.utils.fakeDomainError
+import com.manishsputnikcorporation.movies.utils.fakeMovieDetailModelId
+import com.manishsputnikcorporation.movies.utils.fakeTVDetailModelId
+import com.manishsputnikcorporation.movies.utils.movieDetailsArgs
+import com.manishsputnikcorporation.movies.utils.tvDetailsArgs
 import io.mockk.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -24,28 +30,29 @@ import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class GetMovieDetailUseCaseTest {
+internal class GetMovieDetailUseCaseTest() {
 
     // region Setup
     @get:Rule val coroutineTestRule = MainCoroutinesRule()
 
-    private lateinit var repository: MovieDetailRepository
+    private lateinit var movieDetailRepository: MovieDetailRepository
+    private lateinit var tvDetailRepository: TVDetailRepository
     private lateinit var globalErrorMapper: GlobalErrorMapper
     private lateinit var globalErrorManager: GlobalErrorManager
     private lateinit var safeFlowUseCaseDelegate: FlowUseCaseDelegate
-    private lateinit var useCaseToTest: GetMovieDetailUseCase
-
-    private val fakeMovieDetailModelId = fakeMovieDetailModel.id
+    private lateinit var useCaseToTest: GetDetailUseCase
 
     @Before
     fun setUp() {
-        repository = mockk(relaxed = true)
+        movieDetailRepository = mockk(relaxed = true)
+        tvDetailRepository = mockk(relaxed = true)
         globalErrorMapper = mockk(relaxed = true)
         globalErrorManager = mockk(relaxed = true)
         safeFlowUseCaseDelegate = FlowUseCaseDelegate.Default(globalErrorManager)
         useCaseToTest =
-            GetMovieDetailUseCase(
-                movieDetailRepository = repository,
+            GetDetailUseCase(
+                movieDetailRepository = movieDetailRepository,
+                tvDetailRepository = tvDetailRepository,
                 globalErrorMapper = globalErrorMapper,
                 dispatcherProvider = coroutineTestRule.testDispatcherProvider,
             )
@@ -61,33 +68,64 @@ internal class GetMovieDetailUseCaseTest {
 
     // region Testing
     @Test
-    fun `WHEN use case is called successfully THEN returns a success response with the corresponding movie detail`() = runTest {
-        every { repository.getMovieDetail(fakeMovieDetailModelId) } returns eitherSuccess(data = fakeMovieDetailModel)
+    fun `WHEN use case is called successfully with a MOVIE type THEN returns a success response with the corresponding movie detail`() =
+        runTest {
+            every { movieDetailRepository.getMovieDetail(fakeMovieDetailModelId) } returns eitherSuccess(data = fakeMovieDetailModel)
+
+            with(receiver = safeFlowUseCaseDelegate) {
+                useCaseToTest.safePrepare(input = movieDetailsArgs).collect { response ->
+                    assert(response.isSuccess)
+                    response.mapSuccess { movieDetailModel ->
+                        assertNotNull(movieDetailModel)
+                        assertEquals(fakeMovieDetailModel, movieDetailModel)
+                    }
+                }
+            }
+
+            coVerify(exactly = 1) { movieDetailRepository.getMovieDetail(fakeMovieDetailModelId) }
+            coVerify(exactly = 0) { tvDetailRepository.getTVDetail(id = any()) }
+            confirmVerified(movieDetailRepository, tvDetailRepository)
+        }
+
+    @Test
+    fun `WHEN use case is called successfully with a TV type THEN returns a success response with the corresponding TV detail`() = runTest {
+        every { tvDetailRepository.getTVDetail(fakeTVDetailModelId) } returns eitherSuccess(data = fakeTVDetailModel)
 
         with(receiver = safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { response ->
+            useCaseToTest.safePrepare(input = tvDetailsArgs).collect { response ->
                 assert(response.isSuccess)
-                response.mapSuccess { movieDetailModel ->
-                    assertNotNull(movieDetailModel)
-                    assertEquals(fakeMovieDetailModel, movieDetailModel)
+                response.mapSuccess { tvDetailModel ->
+                    assertNotNull(tvDetailModel)
+                    assertEquals(fakeTVDetailModel, tvDetailModel)
                 }
             }
         }
 
-        coVerify(exactly = 1) { repository.getMovieDetail(fakeMovieDetailModelId) }
-        confirmVerified(repository)
+        coVerify(exactly = 0) { movieDetailRepository.getMovieDetail(id = any()) }
+        coVerify(exactly = 1) { tvDetailRepository.getTVDetail(id = fakeTVDetailModelId) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
     }
 
     @Test
-    fun `WHEN use case is called successfully THEN returns a failure response`() = runTest {
-        every { repository.getMovieDetail(fakeMovieDetailModelId) } returns fakeDomainError
+    fun `WHEN use case is called successfully with a MOVIE type THEN returns a failure response`() = runTest {
+        every { movieDetailRepository.getMovieDetail(fakeMovieDetailModelId) } returns fakeDomainError
 
-        with(receiver = safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { assert(it.isFailure) }
-        }
+        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = movieDetailsArgs).collect { assert(it.isFailure) } }
 
-        coVerify(exactly = 1) { repository.getMovieDetail(fakeMovieDetailModelId) }
-        confirmVerified(repository)
+        coVerify(exactly = 1) { movieDetailRepository.getMovieDetail(fakeMovieDetailModelId) }
+        coVerify(exactly = 0) { tvDetailRepository.getTVDetail(id = any()) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
+    }
+
+    @Test
+    fun `WHEN use case is called successfully with a TV type THEN returns a failure response`() = runTest {
+        every { tvDetailRepository.getTVDetail(fakeTVDetailModelId) } returns fakeDomainError
+
+        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = tvDetailsArgs).collect { assert(it.isFailure) } }
+
+        coVerify(exactly = 0) { movieDetailRepository.getMovieDetail(id = any()) }
+        coVerify(exactly = 1) { tvDetailRepository.getTVDetail(id = fakeTVDetailModelId) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
     }
     // endregion
 }

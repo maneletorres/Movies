@@ -6,7 +6,7 @@ import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeViewModel.MoviesHomeUiState.*
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.*
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
@@ -30,7 +30,7 @@ import org.junit.runners.Parameterized
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(Parameterized::class)
-internal class MoviesHomeViewModelTest(private val searchType: Type) {
+internal class HomeViewModelTest(private val searchType: Type) {
 
     // region Setup
     companion object {
@@ -43,7 +43,7 @@ internal class MoviesHomeViewModelTest(private val searchType: Type) {
     private lateinit var getDataUseCase: GetDataUseCase
     private lateinit var getFavoriteDataUseCase: GetFavoriteDataUseCase
     private lateinit var safeFlowUseCaseDelegate: FlowUseCaseDelegate
-    private lateinit var viewModel: MoviesHomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
     @Before
     fun setUp() {
@@ -54,7 +54,7 @@ internal class MoviesHomeViewModelTest(private val searchType: Type) {
         getFavoriteDataUseCase = mockk(relaxed = true)
         safeFlowUseCaseDelegate = mockk(relaxed = true)
         viewModel =
-            MoviesHomeViewModel(
+            HomeViewModel(
                 analyticsManager = analyticsManager,
                 authManager = authManager,
                 loadDataUseCase = loadDataUseCase,
@@ -107,7 +107,7 @@ internal class MoviesHomeViewModelTest(private val searchType: Type) {
                 assertTrue(awaitItem() is Idle)
                 assertTrue(awaitItem() is Loading)
 
-                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
 
                 coVerify(exactly = 0) { authManager.getCurrentUser() }
                 confirmVerified(authManager)
@@ -147,7 +147,7 @@ internal class MoviesHomeViewModelTest(private val searchType: Type) {
 
                 assertTrue(awaitItem() is Idle)
 
-                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
 
                 coVerify(exactly = 0) { authManager.getCurrentUser() }
                 confirmVerified(authManager)
@@ -185,7 +185,7 @@ internal class MoviesHomeViewModelTest(private val searchType: Type) {
 
                 assertTrue(awaitItem() is Idle)
 
-                viewModel.event.test { assertTrue(awaitItem() is MoviesHomeViewModel.Event.Error) }
+                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
 
                 cancelAndConsumeRemainingEvents()
             }

@@ -5,7 +5,7 @@ import com.manishsputnikcorporation.movies.data.local.toTVModel
 import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSource
 import com.manishsputnikcorporation.movies.domain.common.DomainError
 import com.manishsputnikcorporation.movies.domain.common.DomainResponse
-import com.manishsputnikcorporation.movies.domain.model.TvDetailModel
+import com.manishsputnikcorporation.movies.domain.model.TVDetailModel
 import com.manishsputnikcorporation.movies.domain.repository.TVDetailRepository
 import com.manishsputnikcorporation.movies.network.model.TVDetailDtoMapper
 import com.manishsputnikcorporation.movies.utils.eitherFailure
@@ -25,11 +25,11 @@ constructor(
     private val tvDetailMapper: TVDetailDtoMapper,
 ) : TVDetailRepository {
 
-    override fun getTVDetail(id: Int): DomainResponse<TvDetailModel> =
+    override fun getTVDetail(id: Int): DomainResponse<TVDetailModel> =
         tvRemoteDataSource
             .getTV(id)
             .mapSuccess { tvDetailDto ->
-                return eitherSuccess(data = tvDetailMapper.mapToDomainModel(model = tvDetailDto))
+                return eitherSuccess(data = tvDetailMapper.mapToDomainModel(dto = tvDetailDto))
             }
             .mapFailure { error ->
                 return eitherFailure(error = DomainError(code = error.statusCode.toString(), message = error.description ?: ""))

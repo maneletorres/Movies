@@ -71,7 +71,7 @@ internal class MovieDetailRepositoryImplTest {
 
         assert(result.isSuccess)
         verify(exactly = 1) { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) }
-        verify(exactly = 1) { movieDetailMapper.mapToDomainModel(model = fakeMovieDetailDto) }
+        verify(exactly = 1) { movieDetailMapper.mapToDomainModel(dto = fakeMovieDetailDto) }
         confirmVerified(movieRemoteDataSource, movieDetailMapper)
     }
 
@@ -83,7 +83,7 @@ internal class MovieDetailRepositoryImplTest {
 
         assert(result.isFailure)
         verify(exactly = 1) { movieRemoteDataSource.getMovie(id = fakeDatabaseMovieId) }
-        verify(exactly = 0) { movieDetailMapper.mapToDomainModel(model = any()) }
+        verify(exactly = 0) { movieDetailMapper.mapToDomainModel(dto = any()) }
         confirmVerified(movieRemoteDataSource, movieDetailMapper)
     }
 

@@ -1,6 +1,7 @@
 package com.manishsputnikcorporation.movies.utils.fake
 
 import com.manishsputnikcorporation.movies.data.local.DatabaseTV
+import com.manishsputnikcorporation.movies.domain.model.TVDetailModel
 import com.manishsputnikcorporation.movies.domain.model.TVModel
 import com.manishsputnikcorporation.movies.network.response.tv.TVDetailDto
 import com.manishsputnikcorporation.movies.network.response.tv.TVDto
@@ -113,4 +114,18 @@ val fakeTVModel =
         name = "Better Call Saul",
     )
 val fakeTVModels = listOf(fakeTVModel)
+
+val fakeTVDetailModel =
+    TVDetailModel(
+        id = 60059,
+        overview =
+            "Six years before Saul Goodman meets Walter White. We meet him when the man who will become Saul Goodman is known as Jimmy McGill, a small-time lawyer searching for his destiny, and, more immediately, hustling to make ends meet. Working alongside, and, often, against Jimmy, is “fixer” Mike Ehrmantraut. The series tracks Jimmy’s transformation into Saul Goodman, the man who puts “criminal” in “criminal lawyer\".",
+        popularity = 34.4233,
+        posterPath = "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
+        releaseDate = "2015-02-08",
+        rating = 8.696,
+        isFavorite = true,
+        originalName = "Better Call Saul",
+        name = "Better Call Saul",
+    )
 // endregion

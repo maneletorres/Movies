@@ -6,9 +6,9 @@ import com.manishsputnikcorporation.movies.network.response.movie.MovieDetailDto
 
 class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
 
-    override fun mapToDomainModel(model: MovieDetailDto): MovieDetailModel {
-        with(receiver = model) {
-            return MovieDetailModel(
+    override fun mapToDomainModel(dto: MovieDetailDto): MovieDetailModel =
+        with(receiver = dto) {
+            MovieDetailModel(
                 id = id ?: 0,
                 imdbId = imdbId.orEmpty(),
                 originalTitle = originalTitle.orEmpty(),
@@ -19,13 +19,13 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
                 runtime = runtime ?: 0,
                 title = title.orEmpty(),
                 rating = rating ?: 0.0,
+                isFavorite = false,
             )
         }
-    }
 
-    override fun mapFromDomainModel(domainModel: MovieDetailModel): MovieDetailDto {
+    override fun mapFromDomainModel(domainModel: MovieDetailModel): MovieDetailDto =
         with(receiver = domainModel) {
-            return MovieDetailDto(
+            MovieDetailDto(
                 id = id,
                 imdbId = imdbId,
                 originalTitle = originalTitle,
@@ -38,5 +38,4 @@ class MovieDetailDtoMapper : DomainMapper<MovieDetailDto, MovieDetailModel> {
                 rating = rating,
             )
         }
-    }
 }

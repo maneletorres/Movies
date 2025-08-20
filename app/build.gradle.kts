@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ktfmt)
     id("kotlin-parcelize")
+    alias(libs.plugins.jetbrains.kotlin.serialization)
     id("androidx.room")
     jacoco
 }
@@ -66,6 +67,7 @@ android {
         }
     }
     sourceSets { getByName("androidTest").assets.srcDir("$projectDir/schemas") }
+    testOptions { unitTests.isReturnDefaultValues = true }
 }
 
 dependencies {
@@ -101,7 +103,8 @@ dependencies {
 
     implementation(libs.com.jakewharton.timber)
     implementation(libs.bundles.navigation)
-    implementation(libs.bundles.compose)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // region Testing libraries:
     testImplementation(project(":shared-test-util"))

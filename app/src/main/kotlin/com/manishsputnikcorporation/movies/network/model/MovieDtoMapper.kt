@@ -6,8 +6,8 @@ import com.manishsputnikcorporation.movies.network.response.movie.MovieDto
 
 class MovieDtoMapper : DomainMapper<MovieDto, MovieModel> {
 
-    override fun mapToDomainModel(model: MovieDto): MovieModel =
-        with(receiver = model) {
+    override fun mapToDomainModel(dto: MovieDto): MovieModel =
+        with(receiver = dto) {
             MovieModel(
                 id = id ?: 0,
                 originalTitle = originalTitle.orEmpty(),

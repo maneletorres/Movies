@@ -5,7 +5,11 @@ import com.manishsputnikcorporation.movies.domain.error.FlowUseCaseDelegate
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorManager
 import com.manishsputnikcorporation.movies.domain.error.GlobalErrorMapper
 import com.manishsputnikcorporation.movies.domain.repository.MovieDetailRepository
-import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailModel
+import com.manishsputnikcorporation.movies.domain.repository.TVDetailRepository
+import com.manishsputnikcorporation.movies.utils.fakeMovieDetailModelId
+import com.manishsputnikcorporation.movies.utils.fakeTVDetailModelId
+import com.manishsputnikcorporation.movies.utils.movieDetailsArgs
+import com.manishsputnikcorporation.movies.utils.tvDetailsArgs
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,23 +29,24 @@ internal class GetMovieFavoriteStatusUseCaseTest {
     // region Setup
     @get:Rule val coroutineTestRule = MainCoroutinesRule()
 
-    private lateinit var repository: MovieDetailRepository
+    private lateinit var movieDetailRepository: MovieDetailRepository
+    private lateinit var tvDetailRepository: TVDetailRepository
     private lateinit var globalErrorMapper: GlobalErrorMapper
     private lateinit var globalErrorManager: GlobalErrorManager
     private lateinit var safeFlowUseCaseDelegate: FlowUseCaseDelegate
-    private lateinit var useCaseToTest: GetMovieFavoriteStatusUseCase
-
-    private val fakeMovieDetailModelId = fakeMovieDetailModel.id
+    private lateinit var useCaseToTest: GetFavoriteStatusUseCase
 
     @Before
     fun setUp() {
-        repository = mockk(relaxed = true)
+        movieDetailRepository = mockk(relaxed = true)
+        tvDetailRepository = mockk(relaxed = true)
         globalErrorMapper = mockk(relaxed = true)
         globalErrorManager = mockk(relaxed = true)
         safeFlowUseCaseDelegate = FlowUseCaseDelegate.Default(globalErrorManager)
         useCaseToTest =
-            GetMovieFavoriteStatusUseCase(
-                movieDetailRepository = repository,
+            GetFavoriteStatusUseCase(
+                movieDetailRepository = movieDetailRepository,
+                tvDetailRepository = tvDetailRepository,
                 globalErrorMapper = globalErrorMapper,
                 dispatcherProvider = coroutineTestRule.testDispatcherProvider,
             )
@@ -57,27 +62,55 @@ internal class GetMovieFavoriteStatusUseCaseTest {
 
     // region Testing
     @Test
-    fun `WHEN use case is called successfully AND the movie is favorite THEN returns true`() = runTest {
-        every { repository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = true) }
+    fun `WHEN use case is called successfully with a MOVIE type AND the movie is favorite THEN returns true`() = runTest {
+        every { movieDetailRepository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = true) }
 
         with(receiver = safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { isFavorite -> assertTrue(isFavorite) }
+            useCaseToTest.safePrepare(input = movieDetailsArgs).collect { isFavorite -> assertTrue(isFavorite) }
         }
 
-        coVerify(exactly = 1) { repository.isFavoriteMovie(fakeMovieDetailModelId) }
-        confirmVerified(repository)
+        coVerify(exactly = 1) { movieDetailRepository.isFavoriteMovie(fakeMovieDetailModelId) }
+        coVerify(exactly = 0) { tvDetailRepository.isFavoriteTV(any()) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
     }
 
     @Test
-    fun `WHEN use case is called successfully AND the movie is not favorite THEN returns false`() = runTest {
-        every { repository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = false) }
+    fun `WHEN use case is called successfully with a MOVIE type AND the movie is not favorite THEN returns false`() = runTest {
+        every { movieDetailRepository.isFavoriteMovie(fakeMovieDetailModelId) } returns flow { emit(value = false) }
 
         with(receiver = safeFlowUseCaseDelegate) {
-            useCaseToTest.safePrepare(input = fakeMovieDetailModelId).collect { isFavorite -> assertFalse(isFavorite) }
+            useCaseToTest.safePrepare(input = movieDetailsArgs).collect { isFavorite -> assertFalse(isFavorite) }
         }
 
-        coVerify(exactly = 1) { repository.isFavoriteMovie(fakeMovieDetailModelId) }
-        confirmVerified(repository)
+        coVerify(exactly = 1) { movieDetailRepository.isFavoriteMovie(fakeMovieDetailModelId) }
+        coVerify(exactly = 0) { tvDetailRepository.isFavoriteTV(any()) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
+    }
+
+    @Test
+    fun `WHEN use case is called successfully with a TV type AND the movie is favorite THEN returns true`() = runTest {
+        every { tvDetailRepository.isFavoriteTV(fakeTVDetailModelId) } returns flow { emit(value = true) }
+
+        with(receiver = safeFlowUseCaseDelegate) {
+            useCaseToTest.safePrepare(input = tvDetailsArgs).collect { isFavorite -> assertTrue(isFavorite) }
+        }
+
+        coVerify(exactly = 0) { movieDetailRepository.isFavoriteMovie(id = any()) }
+        coVerify(exactly = 1) { tvDetailRepository.isFavoriteTV(id = fakeTVDetailModelId) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
+    }
+
+    @Test
+    fun `WHEN use case is called successfully with a TV type AND the movie is not favorite THEN returns false`() = runTest {
+        every { tvDetailRepository.isFavoriteTV(fakeTVDetailModelId) } returns flow { emit(value = false) }
+
+        with(receiver = safeFlowUseCaseDelegate) {
+            useCaseToTest.safePrepare(input = tvDetailsArgs).collect { isFavorite -> assertFalse(isFavorite) }
+        }
+
+        coVerify(exactly = 0) { movieDetailRepository.isFavoriteMovie(id = any()) }
+        coVerify(exactly = 1) { tvDetailRepository.isFavoriteTV(id = fakeTVDetailModelId) }
+        confirmVerified(movieDetailRepository, tvDetailRepository)
     }
     // endregion
 }

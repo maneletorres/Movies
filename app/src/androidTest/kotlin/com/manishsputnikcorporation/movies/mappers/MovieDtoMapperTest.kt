@@ -27,7 +27,7 @@ class MovieDtoMapperTest {
     // region Testing
     @Test
     fun `WHEN mapToDomainModel is called on a MovieDto THEN returns the corresponding MovieModel`() {
-        val result: MovieModel = mapper.mapToDomainModel(model = fakeMovieDto)
+        val result: MovieModel = mapper.mapToDomainModel(dto = fakeMovieDto)
 
         assert(result.isContentEquals(movieDto = fakeMovieDto))
     }
