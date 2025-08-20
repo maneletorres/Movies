@@ -25,13 +25,6 @@ object TestAppModule {
         Room.inMemoryDatabaseBuilder(context, klass = MediaDatabase::class.java).allowMainThreadQueries().build()
 }
 
-// @Module
-// @TestInstallIn(components = [SingletonComponent::class], replaces = [FakeRetrofitModule::class])
-// object FakeApiBaseUrlModule {
-//
-//  @Provides @Singleton @ApiUrl fun provideBaseUrl() = TEST_API_BASE_URL
-// }
-
 @Module
 @TestInstallIn(components = [SingletonComponent::class], replaces = [MapperModule::class])
 object FakeMapperModule {

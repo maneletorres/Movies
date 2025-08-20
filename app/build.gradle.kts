@@ -103,10 +103,10 @@ dependencies {
 
     implementation(libs.com.jakewharton.timber)
     implementation(libs.bundles.navigation)
-
     implementation(libs.kotlinx.serialization.json)
 
     // region Testing libraries:
+    // TODO: to check these dependencies
     testImplementation(project(":shared-test-util"))
     testImplementation(kotlin("test"))
     testImplementation(libs.bundles.unit.testing)
@@ -114,6 +114,9 @@ dependencies {
     androidTestImplementation(project(":shared-test-util"))
     androidTestImplementation(kotlin("test"))
     androidTestImplementation(libs.bundles.android.testing)
+    androidTestImplementation(libs.bundles.androidx.testing)
+
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
     // endregion
 }
 
