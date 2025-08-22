@@ -23,7 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +37,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
@@ -142,6 +143,7 @@ fun MoviesHomeContent(
     onClickSignOut: () -> Unit = {},
     onClickMovie: (DetailArgs) -> Unit = {},
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
@@ -160,8 +162,7 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
-        scaffoldState = scaffoldState,
+        modifier = Modifier.systemBarsPadding().nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = { SnackbarHost(hostState = hostState) },
         topBar = {
             TopAppBar(

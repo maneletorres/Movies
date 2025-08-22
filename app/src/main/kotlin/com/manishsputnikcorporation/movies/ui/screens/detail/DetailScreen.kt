@@ -35,11 +35,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -66,6 +69,7 @@ import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit = {}) {
     detailViewModel.trackScreen()
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val detailUiState by detailViewModel.detailUiState.collectAsState()
     detailUiState.let { state ->
         when {
@@ -73,6 +77,7 @@ fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit 
             else ->
                 DetailContent(
                     state = state,
+                    scrollBehavior = scrollBehavior,
                     onBackArrowClick = { onBackArrowClick() },
                     onFavoriteClick = { detailViewModel.setFavoriteStatus() },
                 )
@@ -80,16 +85,16 @@ fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit 
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailContent(
     state: DetailUiState,
+    scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
 ) {
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).systemBarsPadding(),
         topBar = {
             TopAppBar(
                 title = {
@@ -226,8 +231,9 @@ fun SecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
 @Composable
 private fun DetailContentPreview() {
     MediaTheme {
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         val movieDetail = MovieDetailDtoMapper().mapToDomainModel(dto = fakeMovieDetailDto)
-        DetailContent(state = DetailUiState(detailData = DetailData(detailModel = movieDetail)))
+        DetailContent(state = DetailUiState(detailData = DetailData(detailModel = movieDetail)), scrollBehavior = scrollBehavior)
     }
 }
 
