@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.ui.screens.detail
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -108,11 +116,9 @@ fun DetailContent(
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier =
-                        modifier
-                            .verticalScroll(state = rememberScrollState())
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                            .fillMaxHeight()
-                            .semantics { contentDescription = "Detail Screen" },
+                        modifier.verticalScroll(state = rememberScrollState()).padding(contentPadding).fillMaxHeight().semantics {
+                            contentDescription = "Detail Screen"
+                        },
                 ) {
                     with(receiver = state.detailData.detailModel) {
                         val (title, runtime) =
@@ -132,7 +138,7 @@ fun DetailContent(
                             onFavoriteClick()
                         }
                         Spacer(modifier = Modifier.height(height = 8.dp))
-                        Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                        Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyLarge)
                     }
                 }
             }
@@ -188,7 +194,7 @@ fun Info(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(weight = 1f), style = MaterialTheme.typography.h5)
+            Text(text = title, modifier = Modifier.weight(weight = 1f), style = MaterialTheme.typography.headlineSmall)
             Favorite(isFavorite, onFavoriteClick)
         }
         SecondaryInfo(year = releaseDate, runtime = runtime)
@@ -210,8 +216,8 @@ fun Favorite(isFavorite: Boolean, onFavoriteClick: () -> Unit = {}) {
 @Composable
 fun SecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = year, style = MaterialTheme.typography.subtitle1)
-        runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
+        Text(text = year, style = MaterialTheme.typography.titleMedium)
+        runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.titleMedium) }
     }
 }
 

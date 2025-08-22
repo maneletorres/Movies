@@ -101,6 +101,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     // endregion
 
+    implementation(libs.androidx.material3)
     implementation(libs.com.jakewharton.timber)
     implementation(libs.bundles.navigation)
     implementation(libs.kotlinx.serialization.json)

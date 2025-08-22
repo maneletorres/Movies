@@ -67,7 +67,7 @@ fun LoginScreenContent(
 ) {
     Surface {
         Column(modifier = modifier) {
-            MoviesLogo(textRes = R.string.app_name, modifier = Modifier.fillMaxWidth().weight(1f))
+            MoviesLogo(textRes = R.string.app_name, modifier = Modifier.fillMaxWidth().weight(weight = 1f))
             BottomContent(
                 onIncognitoSignUpClick = { onIncognitoSignUp() },
                 onGoogleSignUpClick = { onGoogleSignUpClick() },
@@ -92,7 +92,7 @@ fun BottomContent(
             onGoogleSignInClick = onGoogleSignUpClick,
             onEmailSignInClick = onEmailSignUpClick,
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(height = 8.dp))
         Text(
             text = AnnotatedString(text = stringResource(id = R.string.login_forgotten_password)),
             modifier = Modifier.align(Alignment.CenterHorizontally).clickable(onClick = { onForgottenPasswordClick() }),
@@ -105,7 +105,7 @@ fun BottomContent(
                     textDecoration = TextDecoration.Underline,
                 ),
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(height = 16.dp))
     }
 }
 
@@ -143,34 +143,14 @@ fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit
     Button(
         onClick = { onClick() },
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(6.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black, contentColor = Color.White),
+        shape = RoundedCornerShape(size = 6.dp),
+        colors = ButtonDefaults.buttonColors(),
     ) {
         leadingIcon.invoke()
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(width = 8.dp))
         Text(text = stringResource(id = textRes))
     }
 }
-
-// region Helper methods
-private suspend fun incognitoSignIn(authManager: AuthManager, analyticsManager: AnalyticsManager, onNavigation: (String, String) -> Unit) {
-    when (val result = authManager.signInAnonymously()) {
-        is AuthRes.Success -> {
-            analyticsManager.trackButtonClick("incognito_sign_in")
-            onNavigation.invoke(MoviesHome.route, LoginScreen.route)
-        }
-        is AuthRes.Error -> {
-            analyticsManager.trackError(result.errorMessage)
-        }
-    }
-}
-
-private fun onForgottenPasswordClick(analyticsManager: AnalyticsManager, onNavigation: (String, String) -> Unit = { _, _ -> }) {
-    analyticsManager.trackButtonClick("forgotten_password")
-    onNavigation.invoke(RecoverPasswordScreen.route, LoginScreen.route)
-}
-
-// endregion
 
 // region Preview
 @UiModePreviews

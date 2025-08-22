@@ -2,22 +2,18 @@ package com.manishsputnikcorporation.movies.ui.screens.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,14 +26,14 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 
 @Composable
 fun Loading(modifier: Modifier = Modifier) {
-    Surface(contentColor = MaterialTheme.colors.primary) {
+    Surface(contentColor = MaterialTheme.colorScheme.primary) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
     }
 }
 
 @Composable
 fun EmptyContent(@StringRes message: Int) {
-    Surface(contentColor = MaterialTheme.colors.primary) {
+    Surface(contentColor = MaterialTheme.colorScheme.primary) {
         Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
             Text(text = stringResource(id = message))
         }
@@ -55,18 +51,15 @@ fun Placeholder(modifier: Modifier = Modifier) {
 fun AlertDialog(
     @StringRes dialogTitle: Int,
     @StringRes dialogText: Int,
+    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     onConfirmation: () -> Unit = {},
 ) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
-        buttons = {
-            Row(modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.End) {
-                TextButton(onClick = { onDismissRequest() }) { Text(text = stringResource(id = R.string.dialog_cancel)) }
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(onClick = { onConfirmation() }) { Text(text = stringResource(id = R.string.dialog_accept)) }
-            }
-        },
+        confirmButton = { Text(text = stringResource(id = R.string.dialog_accept), modifier = Modifier.clickable { onConfirmation() }) },
+        modifier = modifier,
+        dismissButton = { Text(text = stringResource(id = R.string.dialog_cancel), modifier = Modifier.clickable { onDismissRequest() }) },
         title = { Text(text = stringResource(id = dialogTitle)) },
         text = { Text(text = stringResource(id = dialogText)) },
     )
