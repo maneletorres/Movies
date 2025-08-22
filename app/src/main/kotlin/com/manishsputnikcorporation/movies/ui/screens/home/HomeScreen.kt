@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.manishsputnikcorporation.movies.ui.screens.home
 
 import androidx.compose.animation.AnimatedContent

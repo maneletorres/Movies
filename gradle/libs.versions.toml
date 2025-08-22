@@ -1,11 +1,13 @@
 [versions]
 android-version = "8.12.1"
 androidx-bom-version = "2025.08.00"
+androidx-credentials = "1.5.0"
 coil-kt-version = "2.7.0"
 core-testing = "2.2.0"
 dagger-hilt-version = "2.57"
 firebase-bom-version = "34.1.0"
 firebase-crashlytics-version = "3.0.6"
+google-id = "1.1.1"
 google-services-version = "4.4.3"
 gradle-versions-version = "0.52.0"
 hilt-version = "1.2.0"
@@ -39,7 +41,11 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-# Jetpack Compose libraries:
+# Google auth:
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "androidx-credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "androidx-credentials" }
+google-id = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "google-id" }
+# Jetpack Compose:
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-bom-version" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
@@ -101,6 +107,11 @@ firebase = [
     "firebase-analytics",
     "firebase-auth",
     "firebase-crashlytics",
+]
+google = [
+    "androidx-credentials",
+    "androidx-credentials-play-services-auth",
+    "google-id"
 ]
 navigation = [
     "androidx-hilt-navigation-compose",

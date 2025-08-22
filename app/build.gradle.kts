@@ -86,6 +86,9 @@ dependencies {
     implementation(libs.bundles.firebase)
     // endregion
 
+    // Google:
+    implementation(libs.bundles.google)
+
     // region Retrofit
     implementation(platform(libs.com.squareup.retrofit2.bom))
     implementation(libs.bundles.retrofit2)

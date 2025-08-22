@@ -24,6 +24,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -34,15 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manishsputnikcorporation.movies.R
-import com.manishsputnikcorporation.movies.ui.navigation.LoginScreen
-import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
-import com.manishsputnikcorporation.movies.ui.navigation.RecoverPasswordScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.MoviesLogo
 import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
-import com.manishsputnikcorporation.movies.utils.manager.AuthManager
-import com.manishsputnikcorporation.movies.utils.manager.AuthRes
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,10 +45,12 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigation: (String, String) -
     loginViewModel.trackScreen()
 
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     LoginScreenContent(
         onIncognitoSignUp = { scope.launch { loginViewModel.incognitoSignIn(onNavigation = onNavigation) } },
         onEmailSignUpClick = { loginViewModel.navigateToSignUpScreen(onNavigation) },
         onForgottenPasswordClick = { loginViewModel.navigateToPasswordRecoveryScreen(onNavigation) },
+        onGoogleSignUpClick = { loginViewModel.launchGoogleSignIn(context = context, onNavigation = onNavigation) },
     )
 }
 
