@@ -1,11 +1,8 @@
 package com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manishsputnikcorporation.movies.ui.navigation.RecoverPasswordScreen
 import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthRes
@@ -23,11 +20,9 @@ class PasswordRecoveryViewModel @Inject constructor(private val analyticsManager
     private val _event: Channel<Event> = Channel()
     val event: Flow<Event> = _event.receiveAsFlow()
 
-    @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = RecoverPasswordScreen.route)
-
     fun onRecoverPasswordClicked(email: String) {
         // TODO: to move to a UseCase
-        analyticsManager.trackButtonClick("recover_password")
+        analyticsManager.trackButtonClick(buttonName = "recover_password")
 
         viewModelScope.launch {
             when (val res = authManager.recoverPassword(email)) {

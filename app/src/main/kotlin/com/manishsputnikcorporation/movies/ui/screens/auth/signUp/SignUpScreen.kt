@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}) {
+fun SignUpScreen(signUpViewModel: SignUpViewModel, modifier: Modifier = Modifier, onNavigation: () -> Unit = {}) {
     signUpViewModel.trackScreen()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -88,7 +88,7 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
     }
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize().padding(all = 32.dp),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize().padding(all = 32.dp),
         snackbarHost = { SnackbarHost(hostState = hostState) },
     ) { contentPadding ->
         Column(
@@ -140,12 +140,12 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
                         }
                     },
                 ) {
-                    Text(text = "Sign up")
+                    Text(text = "Sign up") // TODO: delete this hardcoded value
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = AnnotatedString(text = "Do you have an account yet?"),
+                text = AnnotatedString(text = "Do you have an account yet?"), // TODO: delete this hardcoded value
                 modifier =
                     Modifier.clickable {
                         if (enabled) {

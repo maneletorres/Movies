@@ -16,7 +16,7 @@ import com.manishsputnikcorporation.movies.ui.screens.auth.login.LoginScreen
 import com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery.PasswordRecoveryScreen
 import com.manishsputnikcorporation.movies.ui.screens.auth.signUp.SignUpScreen
 import com.manishsputnikcorporation.movies.ui.screens.detail.DetailScreen
-import com.manishsputnikcorporation.movies.ui.screens.home.MoviesHomeScreen
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.SplashScreen
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.navigateInclusiveTo
@@ -43,7 +43,7 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
 
         // region Auth screens:
         composable(route = LoginScreen.route) {
-            LoginScreen(loginViewModel = hiltViewModel()) { nextScreen, previousScreen ->
+            LoginScreen(loginViewModel = hiltViewModel(), analyticsManager = mainViewModel.analyticsManager) { nextScreen, previousScreen ->
                 navController.navigateInclusiveTo(nextScreenRoute = nextScreen, previousScreenRoute = previousScreen)
             }
         }
@@ -53,13 +53,16 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
             }
         }
         composable(route = RecoverPasswordScreen.route) {
-            PasswordRecoveryScreen(passwordRecoveryViewModel = hiltViewModel()) { navController.navigate(route = LoginScreen.route) }
+            PasswordRecoveryScreen(passwordRecoveryViewModel = hiltViewModel(), analyticsManager = mainViewModel.analyticsManager) {
+                navController.navigate(route = LoginScreen.route)
+            }
         }
         // endregion
 
         composable(route = MoviesHome.route) {
-            MoviesHomeScreen(
+            HomeScreen(
                 homeViewModel = hiltViewModel(),
+                analyticsManager = mainViewModel.analyticsManager,
                 onClickSignOut = {
                     mainViewModel.signOut()
                     navController.navigateInclusiveTo(nextScreenRoute = LoginScreen.route, previousScreenRoute = MoviesHome.route)
@@ -70,7 +73,9 @@ fun AppNavigation(mainViewModel: MainViewModel, navController: NavHostController
             )
         }
         composable<DetailArgs>(typeMap = DetailArgs.typeMap) { navBackStackEntry ->
-            DetailScreen(detailViewModel = hiltViewModel()) { navController.popBackStack() }
+            DetailScreen(detailViewModel = hiltViewModel(), analyticsManager = mainViewModel.analyticsManager) {
+                navController.popBackStack()
+            }
         }
     }
 }

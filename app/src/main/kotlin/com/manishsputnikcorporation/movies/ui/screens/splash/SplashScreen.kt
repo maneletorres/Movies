@@ -39,7 +39,7 @@ fun SplashScreen(splashViewModel: SplashViewModel, onNavigation: () -> Unit) {
 
 @Composable
 fun SplashScreenContent(onNavigation: () -> Unit = {}) {
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = Unit) {
         // TODO: to implement resource load
         delay(3000)
         onNavigation()

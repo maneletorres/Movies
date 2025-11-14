@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import com.google.firebase.analytics.FirebaseAnalytics
 
 interface AnalyticsManager {
@@ -21,14 +21,11 @@ interface AnalyticsManager {
 class AnalyticsManagerImpl(context: Context) : AnalyticsManager {
     private val firebaseAnalytics: FirebaseAnalytics by lazy { FirebaseAnalytics.getInstance(context) }
 
-    @SuppressLint("ComposableNaming")
     @Composable
     override fun trackScreen(screenName: String) {
-        DisposableEffect(Unit) {
-            onDispose {
-                val params = Bundle().apply { putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName) }
-                trackEvent(eventName = FirebaseAnalytics.Event.SCREEN_VIEW, params = params)
-            }
+        LaunchedEffect(key1 = screenName) {
+            val params = Bundle().apply { putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName) }
+            trackEvent(eventName = FirebaseAnalytics.Event.SCREEN_VIEW, params = params)
         }
     }
 

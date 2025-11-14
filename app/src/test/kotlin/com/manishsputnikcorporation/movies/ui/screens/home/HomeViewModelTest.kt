@@ -6,13 +6,12 @@ import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.GetFavoriteDataUseCase
 import com.manishsputnikcorporation.movies.domain.usecase.home.LoadDataUseCase
-import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.*
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.HomeUiState.*
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.enums.Type.*
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModels
 import com.manishsputnikcorporation.movies.utils.fake.fakeTVModels
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import io.mockk.*
 import kotlin.test.assertTrue
@@ -37,7 +36,6 @@ internal class HomeViewModelTest(private val searchType: Type) {
         @JvmStatic @Parameterized.Parameters fun data() = listOf(MOVIE, TV)
     }
 
-    private lateinit var analyticsManager: AnalyticsManager
     private lateinit var authManager: AuthManager
     private lateinit var loadDataUseCase: LoadDataUseCase
     private lateinit var getDataUseCase: GetDataUseCase
@@ -47,7 +45,6 @@ internal class HomeViewModelTest(private val searchType: Type) {
 
     @Before
     fun setUp() {
-        analyticsManager = mockk(relaxed = true)
         authManager = mockk(relaxed = true)
         loadDataUseCase = mockk(relaxed = true)
         getDataUseCase = mockk(relaxed = true)
@@ -55,7 +52,6 @@ internal class HomeViewModelTest(private val searchType: Type) {
         safeFlowUseCaseDelegate = mockk(relaxed = true)
         viewModel =
             HomeViewModel(
-                analyticsManager = analyticsManager,
                 authManager = authManager,
                 loadDataUseCase = loadDataUseCase,
                 getDataUseCase = getDataUseCase,
@@ -80,7 +76,7 @@ internal class HomeViewModelTest(private val searchType: Type) {
             coEvery { loadDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = eitherSuccess(data = Unit)) }
             coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.loadData(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
@@ -101,13 +97,13 @@ internal class HomeViewModelTest(private val searchType: Type) {
         with(receiver = safeFlowUseCaseDelegate) {
             coEvery { loadDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.loadData(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
                 assertTrue(awaitItem() is Loading)
 
-                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
+                viewModel.homeEvent.test { assertTrue(awaitItem() is HomeViewModel.HomeEvent.Error) }
 
                 coVerify(exactly = 0) { authManager.getCurrentUser() }
                 confirmVerified(authManager)
@@ -122,7 +118,7 @@ internal class HomeViewModelTest(private val searchType: Type) {
             val expected = getExpectedFakeData()
             coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.getData(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
@@ -142,12 +138,12 @@ internal class HomeViewModelTest(private val searchType: Type) {
         with(receiver = safeFlowUseCaseDelegate) {
             coEvery { getDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.getData(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
 
-                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
+                viewModel.homeEvent.test { assertTrue(awaitItem() is HomeViewModel.HomeEvent.Error) }
 
                 coVerify(exactly = 0) { authManager.getCurrentUser() }
                 confirmVerified(authManager)
@@ -162,7 +158,7 @@ internal class HomeViewModelTest(private val searchType: Type) {
             val expected = getExpectedFakeData()
             coEvery { getFavoriteDataUseCase.safePrepare(input = searchType) } returns flow { emit(value = expected) }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.getFavorites(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
@@ -180,12 +176,12 @@ internal class HomeViewModelTest(private val searchType: Type) {
         with(receiver = safeFlowUseCaseDelegate) {
             coEvery { getFavoriteDataUseCase.safePrepare(input = searchType) } returns flow { throw Exception() }
 
-            viewModel.moviesHomeUiState.test {
+            viewModel.homeUiState.test {
                 viewModel.getFavorites(type = searchType)
 
                 assertTrue(awaitItem() is Idle)
 
-                viewModel.event.test { assertTrue(awaitItem() is HomeViewModel.Event.Error) }
+                viewModel.homeEvent.test { assertTrue(awaitItem() is HomeViewModel.HomeEvent.Error) }
 
                 cancelAndConsumeRemainingEvents()
             }

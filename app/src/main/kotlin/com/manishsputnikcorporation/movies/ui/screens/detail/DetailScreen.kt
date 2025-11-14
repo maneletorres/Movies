@@ -7,15 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -30,10 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -44,56 +38,79 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.manishsputnikcorporation.movies.R
+import com.manishsputnikcorporation.movies.domain.model.DetailModel
 import com.manishsputnikcorporation.movies.domain.model.MovieDetailModel
 import com.manishsputnikcorporation.movies.domain.model.TVDetailModel
 import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
+import com.manishsputnikcorporation.movies.ui.navigation.MovieDetail
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
 import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
 import com.manishsputnikcorporation.movies.ui.screens.detail.DetailViewModel.DetailUiState
-import com.manishsputnikcorporation.movies.ui.screens.detail.DetailViewModel.DetailUiState.DetailData
+import com.manishsputnikcorporation.movies.ui.screens.detail.DetailViewModel.DetailUiState.Data
 import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
+import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 
 @Composable
-fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit = {}) {
-    detailViewModel.trackScreen()
+fun DetailScreen(detailViewModel: DetailViewModel, analyticsManager: AnalyticsManager, onBackArrowClick: () -> Unit = {}) {
+    analyticsManager.trackScreen(screenName = MovieDetail.route)
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val detailUiState by detailViewModel.detailUiState.collectAsState()
-    detailUiState.let { state ->
-        when {
-            state.isIdle -> detailViewModel.loadData()
-            else ->
+    when (val state = detailViewModel.detailUiState.collectAsStateWithLifecycle().value) {
+        DetailUiState.Idle -> detailViewModel.loadData()
+        DetailUiState.Loading -> Loading()
+        is Data -> {
+            state.detailModel?.let {
                 DetailContent(
-                    state = state,
-                    scrollBehavior = scrollBehavior,
+                    detailModel = state.detailModel,
+                    searchType = state.searchType,
+                    isFavorite = state.isFavorite,
                     onBackArrowClick = { onBackArrowClick() },
-                    onFavoriteClick = { detailViewModel.setFavoriteStatus() },
+                    // TODO: aplicar :: a todo el proyecto
+                    onFavoriteClick = detailViewModel::setFavoriteStatus,
                 )
+            }
+        }
+        is DetailUiState.Empty -> {
+            analyticsManager.trackError(errorType = state.errorMessage)
+            val message =
+                when (state.searchType) {
+                    Type.MOVIE -> R.string.movie_detail_error
+                    Type.TV -> R.string.tv_detail_error
+                }
+            EmptyContent(message = message)
         }
     }
 }
 
 @Composable
 fun DetailContent(
-    state: DetailUiState,
-    scrollBehavior: TopAppBarScrollBehavior,
+    detailModel: DetailModel,
+    searchType: Type,
+    isFavorite: Boolean,
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).systemBarsPadding(),
+        modifier = modifier.systemBarsPadding().nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
                 title = {
-                    // TODO:
-                    Text(text = stringResource(id = R.string.detail_label))
+                    val labelId =
+                        when (searchType) {
+                            Type.MOVIE -> R.string.movie_detail_label
+                            Type.TV -> R.string.tv_detail_label
+                        }
+                    Text(text = stringResource(id = labelId))
                 },
                 navigationIcon = {
                     IconButton(onClick = { onBackArrowClick() }) {
@@ -105,44 +122,26 @@ fun DetailContent(
                 },
             )
         },
-        bottomBar = {
-            // TODO: implement when new features are introduced
-        },
     ) { contentPadding ->
-        when {
-            state.isLoading -> Loading()
-            state.detailData.detailModel != null -> {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                    modifier =
-                        modifier.verticalScroll(state = rememberScrollState()).padding(contentPadding).fillMaxHeight().semantics {
-                            contentDescription = "Detail Screen"
-                        },
-                ) {
-                    with(receiver = state.detailData.detailModel) {
-                        val (title, runtime) =
-                            when (this) {
-                                is MovieDetailModel -> title to runtime
-                                is TVDetailModel -> name to null
-                                else -> "" to null
-                            }
-
-                        Overview(
-                            image = posterPath,
-                            title = title,
-                            releaseDate = releaseDate,
-                            runtime = runtime,
-                            isFavorite = state.detailData.isFavorite,
-                        ) {
-                            onFavoriteClick()
-                        }
-                        Spacer(modifier = Modifier.height(height = 8.dp))
-                        Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyLarge)
+        val screenName = stringResource(id = R.string.detail_screen_name)
+        Column(
+            modifier = modifier.padding(paddingValues = contentPadding).padding(all = 16.dp).semantics { contentDescription = screenName },
+            horizontalAlignment = Alignment.Start,
+        ) {
+            with(receiver = detailModel) {
+                val (title, runtime) =
+                    when (this) {
+                        is MovieDetailModel -> title to runtime
+                        is TVDetailModel -> name to null
+                        else -> "" to null
                     }
+
+                Overview(image = posterPath, title = title, releaseDate = releaseDate, runtime = runtime, isFavorite = isFavorite) {
+                    onFavoriteClick()
                 }
+                Spacer(modifier = Modifier.height(height = 8.dp))
+                Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyLarge)
             }
-            // TODO:
-            state.isFailed -> EmptyContent(message = R.string.detail_error)
         }
     }
 }
@@ -197,7 +196,6 @@ fun Info(
             Favorite(isFavorite, onFavoriteClick)
         }
         SecondaryInfo(year = releaseDate, runtime = runtime)
-        // TODO: Text(text = budget, style = MaterialTheme.typography.subtitle2)
     }
 }
 
@@ -225,9 +223,8 @@ fun SecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
 @Composable
 private fun DetailContentPreview() {
     MediaTheme {
-        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         val movieDetail = MovieDetailDtoMapper().mapToDomainModel(dto = fakeMovieDetailDto)
-        DetailContent(state = DetailUiState(detailData = DetailData(detailModel = movieDetail)), scrollBehavior = scrollBehavior)
+        DetailContent(detailModel = movieDetail, isFavorite = true, searchType = Type.MOVIE)
     }
 }
 

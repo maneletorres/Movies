@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery
 
+import android.os.Bundle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,17 +36,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.manishsputnikcorporation.movies.R
+import com.manishsputnikcorporation.movies.ui.navigation.RecoverPasswordScreen
 import com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery.PasswordRecoveryViewModel.Event.PasswordRecoveryFailed
 import com.manishsputnikcorporation.movies.ui.screens.auth.passwordRecovery.PasswordRecoveryViewModel.Event.PasswordRecoverySuccessful
 import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.extensions.showSnackBar
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel, onNavigation: () -> Unit = {}) {
-    passwordRecoveryViewModel.trackScreen()
+fun PasswordRecoveryScreen(
+    passwordRecoveryViewModel: PasswordRecoveryViewModel,
+    analyticsManager: AnalyticsManager,
+    onNavigation: () -> Unit = {},
+) {
+    analyticsManager.trackScreen(screenName = RecoverPasswordScreen.route)
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val hostState: SnackbarHostState = remember { SnackbarHostState() }
@@ -101,6 +108,25 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
 @UiModePreviews
 @Composable
 fun PasswordRecoveryScreenPreview() {
-    MediaTheme { Surface { PasswordRecoveryScreen(hiltViewModel()) } }
+    val analyticsManager: AnalyticsManager =
+        object : AnalyticsManager {
+            @Composable
+            override fun trackScreen(screenName: String) {
+                TODO("Not yet implemented")
+            }
+
+            override fun trackEvent(eventName: String, params: Bundle) {
+                TODO("Not yet implemented")
+            }
+
+            override fun trackButtonClick(buttonName: String) {
+                TODO("Not yet implemented")
+            }
+
+            override fun trackError(errorType: String) {
+                TODO("Not yet implemented")
+            }
+        }
+    MediaTheme { Surface { PasswordRecoveryScreen(passwordRecoveryViewModel = hiltViewModel(), analyticsManager = analyticsManager) } }
 }
 // endregion

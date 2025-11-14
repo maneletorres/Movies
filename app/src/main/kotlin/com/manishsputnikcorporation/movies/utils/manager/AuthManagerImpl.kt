@@ -153,14 +153,6 @@ class AuthManagerImpl(context: Context) : AuthManager {
             Timber.e(javaClass.simpleName, "firebaseAuthWithGoogle:failure", e.message)
             AuthRes.Error(errorMessage = e.message ?: "")
         }
-
-        //            .addOnCompleteListener { task ->
-        //                if (task.isSuccessful) {
-        //                    val user = auth.currentUser
-        //                } else {
-        //                    Timber.e(javaClass.simpleName, "signInWithCredential:failure", task.exception)
-        //                }
-        //            }.result
     }
 
     // region Helper methods

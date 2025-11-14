@@ -37,9 +37,9 @@
     <string name="dummy_movie_name_20">La dona rei</string>
     <string name="dummy_series_full_title">The Last of Us (Sèrie de TV 2023- )</string>
     <string name="dummy_series_overview">Vint anys després de la destrucció de la civilització moderna a causa d\'un fong -el cordyceps- que s\'apropia del cos dels humans, un dels supervivents, Joel, rep l\'encàrrec de treure la jove Ellie d\'una opressiva zona de quarantena . Junts creuen els Estats Units ajudant-se mútuament per intentar sobreviure… Adaptació de l\'aclamat videojoc homònim de Naughty Dog.</string>
-    <string name="detail_label">Detall de pel·lícula</string>
+    <string name="movie_detail_label">Detall de pel·lícula</string>
+    <string name="tv_detail_label">Detall de sèrie</string>
     <string name="detail_arrow_back_label">Fletxa del darrere</string>
-    <string name="detail_error">Ha passat un problema carregant el detall de la pel·lícula. Disculpeu les molèsties.</string>
     <string name="login_forgotten_password">Has oblidat la teva contrasenya?</string>
     <string name="sign_in_password">Contrasenya</string>
     <string name="sign_in_email">Correu electrònic</string>
@@ -55,4 +55,7 @@
     <string name="sign_in_incorrect_email">L\'adreça de correu electrònic no és correcta</string>
     <string name="sign_in_incorrect_password">Les contrasenyes han de tenir almenys 6 caràcters</string>
     <string name="sign_in_user_creation_failed">Error en crear usuari</string>
+    <string name="movie_detail_error">Ha passat un problema carregant el detall de la pel·lícula. Disculpeu les molèsties.</string>
+    <string name="tv_detail_error">Ha passat un problema carregant el detall de la sèrie. Disculpeu les molèsties.</string>
+    <string name="detail_screen_name">Pantalla de detall</string>
 </resources>

@@ -16,8 +16,7 @@ fun Type.toggleSearchType(): Type =
     }
 
 suspend fun SnackbarHostState.showSnackBar(context: Context, @StringRes message: Int) =
-    showSnackbar(
-        message = context.getString(message),
-        actionLabel = context.resources.getString(R.string.close_message),
-        duration = SnackbarDuration.Long,
-    )
+    showSnackBar(context = context, message = context.getString(message))
+
+suspend fun SnackbarHostState.showSnackBar(context: Context, message: String) =
+    showSnackbar(message = message, actionLabel = context.resources.getString(R.string.close_message), duration = SnackbarDuration.Long)

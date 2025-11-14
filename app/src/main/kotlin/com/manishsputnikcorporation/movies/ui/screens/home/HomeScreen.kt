@@ -42,7 +42,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -64,7 +64,10 @@ import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.google.firebase.auth.FirebaseUser
 import com.manishsputnikcorporation.movies.R
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
@@ -72,56 +75,58 @@ import com.manishsputnikcorporation.movies.domain.model.TVModel
 import com.manishsputnikcorporation.movies.domain.model.base.Model
 import com.manishsputnikcorporation.movies.network.util.TMDB_IMAGE_API_BASE_URL
 import com.manishsputnikcorporation.movies.ui.navigation.DetailArgs
+import com.manishsputnikcorporation.movies.ui.navigation.MoviesHome
 import com.manishsputnikcorporation.movies.ui.screens.common.AlertDialog
 import com.manishsputnikcorporation.movies.ui.screens.common.EmptyContent
 import com.manishsputnikcorporation.movies.ui.screens.common.Loading
 import com.manishsputnikcorporation.movies.ui.screens.common.Placeholder
-import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Data
-import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Idle
-import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.MoviesHomeUiState.Loading
+import com.manishsputnikcorporation.movies.ui.screens.home.HomeViewModel.HomeUiState
 import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.enums.Type
 import com.manishsputnikcorporation.movies.utils.extensions.toggleSearchType
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModel
 import com.manishsputnikcorporation.movies.utils.fake.fakeMovieModels
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoviesHomeScreen(homeViewModel: HomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (DetailArgs) -> Unit = {}) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel,
+    analyticsManager: AnalyticsManager,
+    onClickSignOut: () -> Unit = {},
+    onClickMovie: (DetailArgs) -> Unit = {},
+) {
     val hotState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(value = Type.MOVIE) }
 
-    homeViewModel.trackScreen()
+    analyticsManager.trackScreen(screenName = MoviesHome.route)
 
-    val moviesHomeUIState by homeViewModel.moviesHomeUiState.collectAsState()
-    moviesHomeUIState.let {
-        when (it) {
-            Idle -> homeViewModel.loadData()
-            Loading -> Loading()
-            is Data ->
-                MoviesHomeContent(
-                    hostState = hotState,
-                    searchType = searchType,
-                    user = it.user,
-                    movies = it.mediaModelList,
-                    onClickFavorites = { homeViewModel.getFavorites(searchType) },
-                    onClickSearchType = {
-                        searchType = searchType.toggleSearchType()
-                        homeViewModel.loadData(searchType)
-                    },
-                    onClickSignOut = onClickSignOut,
-                    onClickMovie = { movieId -> onClickMovie(movieId) },
-                )
-        }
+    when (val state = homeViewModel.homeUiState.collectAsStateWithLifecycle().value) {
+        HomeUiState.Idle -> homeViewModel.loadData()
+        HomeUiState.Loading -> Loading()
+        is HomeUiState.Data ->
+            HomeContent(
+                hostState = hotState,
+                searchType = searchType,
+                user = state.user,
+                movies = state.mediaModelList,
+                onClickFavorites = { homeViewModel.getFavorites(searchType) },
+                onClickSearchType = {
+                    searchType = searchType.toggleSearchType()
+                    homeViewModel.loadData(searchType)
+                },
+                onClickSignOut = onClickSignOut,
+                onClickMovie = { movieId -> onClickMovie(movieId) },
+            )
     }
 
     val resources = LocalResources.current
     LaunchedEffect(key1 = Unit) {
-        homeViewModel.event.collectLatest { event ->
+        homeViewModel.homeEvent.collectLatest { event ->
             when (event) {
-                is HomeViewModel.Event.Error -> {
+                is HomeViewModel.HomeEvent.Error -> {
                     hotState.showSnackbar(
                         message = resources.getString(R.string.movies_home_error, event.searchType),
                         actionLabel = resources.getString(R.string.close_message),
@@ -134,7 +139,7 @@ fun MoviesHomeScreen(homeViewModel: HomeViewModel, onClickSignOut: () -> Unit = 
 }
 
 @Composable
-fun MoviesHomeContent(
+fun HomeContent(
     hostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
@@ -164,14 +169,22 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
-        modifier = Modifier.systemBarsPadding().nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.systemBarsPadding().nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = { SnackbarHost(hostState = hostState) },
         topBar = {
             TopAppBar(
                 title = {
                     Row(horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
                         if (user?.photoUrl != null) {
-                            // TODO: Google case
+                            // TODO: to test
+                            AsyncImage(
+                                model =
+                                    ImageRequest.Builder(context = LocalContext.current).data(data = user.photoUrl).crossfade(true).build(),
+                                contentDescription = null, // TODO:
+                                //                                placeholder = TODO
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.padding(end = 8.dp).size(size = 40.dp).clip(CircleShape),
+                            )
                         } else {
                             Image(
                                 imageVector = Icons.Default.AccountCircle,
@@ -227,9 +240,6 @@ fun MoviesHomeContent(
                 },
             )
         },
-        bottomBar = {
-            // TODO: implement when new features are introduced
-        },
         floatingActionButton = {
             if (showButton) {
                 val coroutineScope = rememberCoroutineScope()
@@ -274,8 +284,8 @@ fun Grid(
     gridState: LazyGridState = rememberLazyGridState(),
     onClickMovie: (DetailArgs) -> Unit = {},
 ) {
-    LazyVerticalGrid(columns = GridCells.Fixed(3), modifier = modifier, state = gridState) {
-        items(items = movies, key = { it.id }) { media ->
+    LazyVerticalGrid(columns = GridCells.Fixed(count = 3), modifier = modifier, state = gridState) {
+        items(items = movies, key = Model::id) { media ->
             val rememberedMovie = rememberSaveable { media } // TODO: to check
             with(receiver = rememberedMovie) {
                 val type: Type? =
@@ -316,7 +326,7 @@ fun Media(detailArgs: DetailArgs, image: String, onClickMedia: (DetailArgs) -> U
 private fun MoviesHomeContentPreview() {
     MediaTheme {
         val hostState: SnackbarHostState = remember { SnackbarHostState() }
-        MoviesHomeContent(hostState = hostState, searchType = Type.MOVIE, user = null, movies = fakeMovieModels)
+        HomeContent(hostState = hostState, searchType = Type.MOVIE, user = null, movies = fakeMovieModels)
     }
 }
 

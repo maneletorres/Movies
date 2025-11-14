@@ -1,9 +1,7 @@
 package com.manishsputnikcorporation.movies.ui.screens.auth.login
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import androidx.compose.runtime.Composable
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
@@ -20,16 +18,24 @@ import com.manishsputnikcorporation.movies.utils.manager.AuthManager
 import com.manishsputnikcorporation.movies.utils.manager.AuthRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val analyticsManager: AnalyticsManager, private val authManager: AuthManager) :
-    ViewModel() {
+class LoginViewModel
+@Inject
+constructor(
+    private val analyticsManager: AnalyticsManager,
+    private val authManager: AuthManager,
+    private val credentialManager: CredentialManager,
+) : ViewModel() {
 
-    @SuppressLint("ComposableNaming") @Composable fun trackScreen() = analyticsManager.trackScreen(screenName = LoginScreen.route)
+    private val _loginEvent: Channel<LoginEvent> = Channel()
+    val loginEvent: Flow<LoginEvent> = _loginEvent.receiveAsFlow()
 
-    // TODO: to find out an alternative for uncouple AuthManager from this VM.
     suspend fun incognitoSignIn(onNavigation: (String, String) -> Unit) {
         analyticsManager.trackButtonClick(buttonName = "incognito_sign_in")
         when (val result = authManager.signInAnonymously()) {
@@ -38,8 +44,9 @@ class LoginViewModel @Inject constructor(private val analyticsManager: Analytics
                 onNavigation(MoviesHome.route, LoginScreen.route)
             }
             is AuthRes.Error -> {
-                analyticsManager.trackError(errorType = result.errorMessage)
-                // TODO: show Snackbar
+                val errorMessage = result.errorMessage
+                analyticsManager.trackError(errorType = errorMessage)
+                _loginEvent.send(element = LoginEvent.SignInFailed(errorMessage = errorMessage))
             }
         }
     }
@@ -60,9 +67,6 @@ class LoginViewModel @Inject constructor(private val analyticsManager: Analytics
 
         viewModelScope.launch {
             // TODO: mantener esto en estado para luego cerrarlo con credentialManager.clearCredentialState(clearRequest)
-            // TODO: esto va por inyección de dependencias
-            // TODO: actualizar la foto y el nombre con los datos obtenidos en Home
-            val credentialManager: CredentialManager = CredentialManager.create(context)
             try {
                 val result: GetCredentialResponse = credentialManager.getCredential(request = request, context = context)
                 when (val result = authManager.signInWithGoogle(result = result)) {
@@ -71,16 +75,24 @@ class LoginViewModel @Inject constructor(private val analyticsManager: Analytics
                         onNavigation(MoviesHome.route, LoginScreen.route)
                     }
                     is AuthRes.Error -> {
-                        Timber.e(javaClass.simpleName, "Exception: ${result.errorMessage}")
-                        analyticsManager.trackError(errorType = result.errorMessage)
-                        // TODO: show Snackbar
+                        val errorMessage = result.errorMessage
+                        Timber.e(javaClass.simpleName, "Exception: $errorMessage")
+                        analyticsManager.trackError(errorType = errorMessage)
+                        _loginEvent.send(element = LoginEvent.SignInFailed(errorMessage = errorMessage))
                     }
                 }
             } catch (e: GetCredentialException) {
-                Timber.e(javaClass.simpleName, "Exception: ${e.message}")
-                analyticsManager.trackError(errorType = e.message.orEmpty())
-                // TODO: show Snackbar
+                val errorMessage = e.message.orEmpty()
+                Timber.e(javaClass.simpleName, "Exception: $errorMessage")
+                analyticsManager.trackError(errorType = errorMessage)
+                _loginEvent.send(element = LoginEvent.SignInFailed(errorMessage = errorMessage))
             }
         }
     }
+
+    // region States & Events
+    sealed interface LoginEvent {
+        data class SignInFailed(val errorMessage: String) : LoginEvent
+    }
+    // endregion
 }

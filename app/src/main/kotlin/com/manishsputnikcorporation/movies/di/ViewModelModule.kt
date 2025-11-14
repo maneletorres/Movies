@@ -1,6 +1,5 @@
 package com.manishsputnikcorporation.movies.di
 
-import android.content.Context
 import com.manishsputnikcorporation.movies.data.repository.MovieDetailRepositoryImpl
 import com.manishsputnikcorporation.movies.data.repository.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.data.repository.TVDetailRepositoryImpl
@@ -16,16 +15,11 @@ import com.manishsputnikcorporation.movies.network.model.MovieDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.model.MovieDtoMapper
 import com.manishsputnikcorporation.movies.network.model.TVDetailDtoMapper
 import com.manishsputnikcorporation.movies.network.model.TVDtoMapper
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
-import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManagerImpl
-import com.manishsputnikcorporation.movies.utils.manager.AuthManager
-import com.manishsputnikcorporation.movies.utils.manager.AuthManagerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
@@ -60,14 +54,4 @@ object MapperModule {
     @Provides @ViewModelScoped fun provideTVDtoMapper(): TVDtoMapper = TVDtoMapper()
 
     @Provides @ViewModelScoped fun provideTVDetailDtoMapper(): TVDetailDtoMapper = TVDetailDtoMapper()
-}
-
-@Module
-@InstallIn(ViewModelComponent::class)
-object FirebaseModule {
-    @Provides
-    @ViewModelScoped
-    fun bindAnalyticsManager(@ApplicationContext context: Context): AnalyticsManager = AnalyticsManagerImpl(context)
-
-    @Provides @ViewModelScoped fun bindAuthManager(@ApplicationContext context: Context): AuthManager = AuthManagerImpl(context)
 }

@@ -1,11 +1,11 @@
 [versions]
-android-version = "8.12.1"
-androidx-bom-version = "2025.08.00"
+android-version = "8.13.1"
+androidx-bom-version = "2025.08.01"
 androidx-credentials = "1.5.0"
 coil-kt-version = "2.7.0"
 core-testing = "2.2.0"
-dagger-hilt-version = "2.57"
-firebase-bom-version = "34.1.0"
+dagger-hilt-version = "2.57.1"
+firebase-bom-version = "34.2.0"
 firebase-crashlytics-version = "3.0.6"
 google-id = "1.1.1"
 google-services-version = "4.4.3"
@@ -63,7 +63,7 @@ com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit" }
 # Moshi:
 com-squareup-moshi-moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi-version" }
 # Material3:
-androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3-version" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3-version" }
 # Navigation:
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx-version" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-version" }
@@ -83,7 +83,7 @@ androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", versi
 androidx-compose-ui-test-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "androidx-testing-ui-test" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-testing-ui-test" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-version" }
-androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation-testing-version" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation-testing-version" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core-version" }
 # Hilt testing:
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger-hilt-version" }
@@ -111,7 +111,7 @@ firebase = [
 google = [
     "androidx-credentials",
     "androidx-credentials-play-services-auth",
-    "google-id"
+    "google-id",
 ]
 navigation = [
     "androidx-hilt-navigation-compose",
@@ -137,7 +137,7 @@ android-testing = [
     "io-mockk",
     "junit",
     "kotlinx-coroutines-test",
-    "turbine"
+    "turbine",
 ]
 androidx-testing = [
     "androidx-arch-core-testing",

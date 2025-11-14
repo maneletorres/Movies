@@ -7,6 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,14 +17,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,18 +44,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.manishsputnikcorporation.movies.R
+import com.manishsputnikcorporation.movies.ui.navigation.LoginScreen
 import com.manishsputnikcorporation.movies.ui.screens.splash.MoviesLogo
 import com.manishsputnikcorporation.movies.ui.theme.MediaTheme
 import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
+import com.manishsputnikcorporation.movies.utils.extensions.showSnackBar
+import com.manishsputnikcorporation.movies.utils.manager.AnalyticsManager
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel, onNavigation: (String, String) -> Unit = { _, _ -> }) {
-    loginViewModel.trackScreen()
+fun LoginScreen(loginViewModel: LoginViewModel, analyticsManager: AnalyticsManager, onNavigation: (String, String) -> Unit = { _, _ -> }) {
+    analyticsManager.trackScreen(screenName = LoginScreen.route)
 
     val scope = rememberCoroutineScope()
+    val hostState: SnackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        loginViewModel.loginEvent.collectLatest { event ->
+            when (event) {
+                is LoginViewModel.LoginEvent.SignInFailed -> {
+                    hostState.showSnackBar(context = context, message = event.errorMessage)
+                }
+            }
+        }
+    }
+
     LoginScreenContent(
+        hostState = hostState,
         onIncognitoSignUp = { scope.launch { loginViewModel.incognitoSignIn(onNavigation = onNavigation) } },
         onEmailSignUpClick = { loginViewModel.navigateToSignUpScreen(onNavigation) },
         onForgottenPasswordClick = { loginViewModel.navigateToPasswordRecoveryScreen(onNavigation) },
@@ -54,16 +80,22 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigation: (String, String) -
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreenContent(
+    hostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     onIncognitoSignUp: () -> Unit = {},
     onGoogleSignUpClick: () -> Unit = {},
     onEmailSignUpClick: () -> Unit = {},
     onForgottenPasswordClick: () -> Unit = {},
 ) {
-    Surface {
-        Column(modifier = modifier) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize().padding(all = 32.dp),
+        snackbarHost = { SnackbarHost(hostState = hostState) },
+    ) { contentPadding ->
+        Column(modifier = modifier.fillMaxSize().padding(paddingValues = contentPadding)) {
             MoviesLogo(textRes = R.string.app_name, modifier = Modifier.fillMaxWidth().weight(weight = 1f))
             BottomContent(
                 onIncognitoSignUpClick = { onIncognitoSignUp() },
@@ -153,7 +185,8 @@ fun ProviderButton(@StringRes textRes: Int, leadingIcon: @Composable (() -> Unit
 @UiModePreviews
 @Composable
 fun LoginScreenContentPreview() {
-    MediaTheme { Surface { LoginScreenContent() } }
+    val hostState: SnackbarHostState = remember { SnackbarHostState() }
+    MediaTheme { Surface { LoginScreenContent(hostState = hostState) } }
 }
 
 @Preview
