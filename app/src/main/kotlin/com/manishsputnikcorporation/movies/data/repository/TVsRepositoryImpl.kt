@@ -17,6 +17,7 @@ import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import javax.inject.Inject
 import kotlin.collections.map
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
 
 class TVsRepositoryImpl
@@ -26,11 +27,12 @@ constructor(private val tvLocalDataSource: TVLocalDataSource, private val tvRemo
     // TODO: optimize the loadData and getData calls to these!!
     // override val tvs = tvLocalDataSource.getTvs().map { it.asDomainModel() }
 
-    override fun refreshPopularTVs(): DomainResponse<Unit> =
+    override suspend fun refreshPopularTVs(): DomainResponse<Unit> =
         tvRemoteDataSource
             .getPopularTVs()
             .mapSuccess { tvsDto ->
-                return insertTvs(tvsDto)
+                val favoriteStates = tvLocalDataSource.getTVs().first().associate { it.id to it.isFavorite }
+                return insertTvs(tvs = tvsDto, favoriteStates = favoriteStates)
             }
             .mapFailure { error ->
                 return eitherFailure(error = DomainError(code = error.statusCode.toString(), message = error.description ?: ""))
@@ -46,9 +48,12 @@ constructor(private val tvLocalDataSource: TVLocalDataSource, private val tvRemo
 
     // region Helper methods
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun insertTvs(tvs: TVsDto): DomainResponse<Unit> =
+    fun insertTvs(tvs: TVsDto, favoriteStates: Map<Int, Boolean> = emptyMap()): DomainResponse<Unit> =
         try {
-            eitherSuccess(data = tvLocalDataSource.insertAll(tvs = tvs.asDatabaseModel()))
+            val databaseTVs = tvs.asDatabaseModel().map { tv ->
+                tv.copy(isFavorite = favoriteStates[tv.id] ?: tv.isFavorite)
+            }
+            eitherSuccess(data = tvLocalDataSource.insertAll(tvs = databaseTVs))
         } catch (ex: Exception) {
             eitherFailure(error = DomainError(code = "Code: ", message = ex.message.toString()))
         }

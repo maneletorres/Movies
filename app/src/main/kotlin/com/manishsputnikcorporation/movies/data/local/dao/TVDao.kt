@@ -25,6 +25,9 @@ interface TVDao {
 
     @Delete suspend fun delete(tv: DatabaseTV)
 
+    @Query("UPDATE tvs SET is_favorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
+
     @Query("SELECT * FROM tvs WHERE id = :id") fun getTV(id: Int): Flow<DatabaseTV>
 
     @Query("SELECT is_favorite FROM tvs WHERE id = :id") fun isFavoriteTV(id: Int): Flow<Boolean>

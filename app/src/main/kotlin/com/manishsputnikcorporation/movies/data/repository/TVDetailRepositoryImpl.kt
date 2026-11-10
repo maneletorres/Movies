@@ -42,9 +42,8 @@ constructor(
     override suspend fun updateTV(id: Int): DomainResponse<Boolean> {
         val tv = tvLocalDataSource.getTV(id).first()
         val updatedTvFavoriteStatus: Boolean = !tv.isFavorite
-        val updatedTv = tv.copy(isFavorite = updatedTvFavoriteStatus)
         return try {
-            tvLocalDataSource.updateTV(updatedTv)
+            tvLocalDataSource.updateFavorite(id = id, isFavorite = updatedTvFavoriteStatus)
             eitherSuccess(data = updatedTvFavoriteStatus)
         } catch (ex: Exception) {
             eitherFailure(error = DomainError(code = "Code: ", message = ex.message.toString()))

@@ -44,9 +44,8 @@ constructor(
     override suspend fun updateMovie(id: Int): DomainResponse<Boolean> {
         val movie = movieLocalDataSource.getMovie(id).first()
         val updatedMovieFavoriteStatus: Boolean = !movie.isFavorite
-        val updatedMovie = movie.copy(isFavorite = updatedMovieFavoriteStatus)
         return try {
-            movieLocalDataSource.updateMovie(updatedMovie)
+            movieLocalDataSource.updateFavorite(id = id, isFavorite = updatedMovieFavoriteStatus)
             eitherSuccess(data = updatedMovieFavoriteStatus)
         } catch (ex: Exception) {
             eitherFailure(error = DomainError(code = "Code: ", message = ex.message.toString()))

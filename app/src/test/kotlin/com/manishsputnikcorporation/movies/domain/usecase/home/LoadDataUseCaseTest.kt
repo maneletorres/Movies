@@ -62,9 +62,10 @@ internal class LoadDataUseCaseTest {
     // region Testing
     @Test
     fun `WHEN use case is successfully called with a MOVIE type as input THEN returns a success response`() = runTest {
-        every { moviesRepository.refreshPopularMovies() } returns eitherSuccess(data = Unit)
+        coEvery { moviesRepository.refreshPopularMovies() } returns eitherSuccess(data = Unit)
 
-        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = MOVIE).collect { assertTrue(it.isSuccess) } }
+        val flow = with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = MOVIE) }
+        flow.collect { assertTrue(it.isSuccess) }
 
         coVerify(exactly = 1) { moviesRepository.refreshPopularMovies() }
         coVerify(exactly = 0) { tvsRepository.refreshPopularTVs() }
@@ -73,9 +74,10 @@ internal class LoadDataUseCaseTest {
 
     @Test
     fun `WHEN use case is unsuccessfully called with a MOVIE type as input THEN returns a failure response`() = runTest {
-        every { moviesRepository.refreshPopularMovies() } returns fakeDomainError
+        coEvery { moviesRepository.refreshPopularMovies() } returns fakeDomainError
 
-        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = MOVIE).collect { assertTrue(it.isFailure) } }
+        val flow = with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = MOVIE) }
+        flow.collect { assertTrue(it.isFailure) }
 
         coVerify(exactly = 1) { moviesRepository.refreshPopularMovies() }
         coVerify(exactly = 0) { tvsRepository.refreshPopularTVs() }
@@ -84,9 +86,10 @@ internal class LoadDataUseCaseTest {
 
     @Test
     fun `WHEN use case is successfully called with a TV type as input THEN returns a success response`() = runTest {
-        every { tvsRepository.refreshPopularTVs() } returns eitherSuccess(Unit)
+        coEvery { tvsRepository.refreshPopularTVs() } returns eitherSuccess(Unit)
 
-        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = TV).collect { assertTrue(it.isSuccess) } }
+        val flow = with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = TV) }
+        flow.collect { assertTrue(it.isSuccess) }
 
         coVerify(exactly = 0) { moviesRepository.refreshPopularMovies() }
         coVerify(exactly = 1) { tvsRepository.refreshPopularTVs() }
@@ -95,9 +98,10 @@ internal class LoadDataUseCaseTest {
 
     @Test
     fun `WHEN use case is unsuccessfully called with a TV type as input THEN returns a failure response`() = runTest {
-        every { tvsRepository.refreshPopularTVs() } returns fakeDomainError
+        coEvery { tvsRepository.refreshPopularTVs() } returns fakeDomainError
 
-        with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = TV).collect { assertTrue(it.isFailure) } }
+        val flow = with(receiver = safeFlowUseCaseDelegate) { useCaseToTest.safePrepare(input = TV) }
+        flow.collect { assertTrue(it.isFailure) }
 
         coVerify(exactly = 0) { moviesRepository.refreshPopularMovies() }
         coVerify(exactly = 1) { tvsRepository.refreshPopularTVs() }

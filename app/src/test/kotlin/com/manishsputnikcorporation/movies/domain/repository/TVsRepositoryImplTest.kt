@@ -45,26 +45,26 @@ internal class TVsRepositoryImplTest {
 
     // region Testing
     @Test
-    fun `WHEN refreshPopularTVs is called AND remote data doesn't contain an error THEN returns a success response`() {
-        every { tvRemoteDataSource.getPopularTVs() } returns eitherSuccess(data = fakeTVsDto)
+    fun `WHEN refreshPopularTVs is called AND remote data doesn't contain an error THEN returns a success response`() = runTest {
+        coEvery { tvRemoteDataSource.getPopularTVs() } returns eitherSuccess(data = fakeTVsDto)
 
         val result = tvsRepository.refreshPopularTVs()
 
         assertTrue(result.isSuccess)
-        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
-        verify(exactly = 1) { tvLocalDataSource.insertAll(tvs = fakeTVsDto.asDatabaseModel()) }
+        coVerify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        coVerify(exactly = 1) { tvLocalDataSource.insertAll(tvs = fakeTVsDto.asDatabaseModel()) }
         confirmVerified(tvRemoteDataSource, tvLocalDataSource)
     }
 
     @Test
-    fun `WHEN refreshPopularTV is called AND remote data contains an error THEN returns a failure response`() {
-        every { tvRemoteDataSource.getPopularTVs() } returns fakeCustomError
+    fun `WHEN refreshPopularTV is called AND remote data contains an error THEN returns a failure response`() = runTest {
+        coEvery { tvRemoteDataSource.getPopularTVs() } returns fakeCustomError
 
         val result = tvsRepository.refreshPopularTVs()
 
         assertTrue(result.isFailure)
-        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
-        verify(exactly = 0) { tvLocalDataSource.insertAll(tvs = any()) }
+        coVerify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        coVerify(exactly = 0) { tvLocalDataSource.insertAll(tvs = any()) }
         confirmVerified(tvRemoteDataSource, tvLocalDataSource)
     }
 

@@ -46,26 +46,26 @@ internal class MoviesRepositoryImplTest {
 
     // region Testing
     @Test
-    fun `WHEN refreshPopularMovies is called AND remote data doesn't contain an error THEN returns a success response`() {
-        every { movieRemoteDataSource.getPopularMovies() } returns eitherSuccess(data = fakeMoviesDto)
+    fun `WHEN refreshPopularMovies is called AND remote data doesn't contain an error THEN returns a success response`() = runTest {
+        coEvery { movieRemoteDataSource.getPopularMovies() } returns eitherSuccess(data = fakeMoviesDto)
 
         val result = moviesRepository.refreshPopularMovies()
 
         assert(result.isSuccess)
-        verify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
-        verify(exactly = 1) { movieLocalDataSource.insertAll(movies = fakeMoviesDto.asDatabaseModel()) }
+        coVerify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
+        coVerify(exactly = 1) { movieLocalDataSource.insertAll(movies = fakeMoviesDto.asDatabaseModel()) }
         confirmVerified(movieRemoteDataSource, movieLocalDataSource)
     }
 
     @Test
-    fun `WHEN refreshPopularMovies is called AND remote data contains an error THEN returns a failure response`() {
-        every { movieRemoteDataSource.getPopularMovies() } returns fakeCustomError
+    fun `WHEN refreshPopularMovies is called AND remote data contains an error THEN returns a failure response`() = runTest {
+        coEvery { movieRemoteDataSource.getPopularMovies() } returns fakeCustomError
 
         val result = moviesRepository.refreshPopularMovies()
 
         assert(result.isFailure)
-        verify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
-        verify(exactly = 0) { movieLocalDataSource.insertAll(movies = any()) }
+        coVerify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
+        coVerify(exactly = 0) { movieLocalDataSource.insertAll(movies = any()) }
         confirmVerified(movieRemoteDataSource, movieLocalDataSource)
     }
 

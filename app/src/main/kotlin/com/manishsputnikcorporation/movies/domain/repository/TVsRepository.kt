@@ -9,7 +9,7 @@ interface TVsRepository {
     // TODO: optimize the loadData and getData calls to this!!
     // val tvs: Flow<List<TVModel>>
 
-    fun refreshPopularTVs(): DomainResponse<Unit>
+    suspend fun refreshPopularTVs(): DomainResponse<Unit>
 
     fun getTVs(): Flow<List<TVModel>>
 

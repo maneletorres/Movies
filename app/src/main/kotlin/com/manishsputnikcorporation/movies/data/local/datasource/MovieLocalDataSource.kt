@@ -18,6 +18,8 @@ interface MovieLocalDataSource {
     fun getMovie(id: Int): Flow<DatabaseMovie>
 
     suspend fun updateMovie(movie: DatabaseMovie)
+
+    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
 }
 
 class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDao) : MovieLocalDataSource {
@@ -33,4 +35,6 @@ class MovieLocalDataSourceImpl @Inject constructor(private val movieDao: MovieDa
     override fun getMovie(id: Int) = movieDao.getMovie(id)
 
     override suspend fun updateMovie(movie: DatabaseMovie) = movieDao.update(movie)
+
+    override suspend fun updateFavorite(id: Int, isFavorite: Boolean) = movieDao.updateFavorite(id, isFavorite)
 }

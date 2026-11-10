@@ -18,6 +18,8 @@ interface TVLocalDataSource {
     fun getTV(id: Int): Flow<DatabaseTV>
 
     suspend fun updateTV(tv: DatabaseTV)
+
+    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
 }
 
 class TVLocalDataSourceImpl @Inject constructor(private val tvDao: TVDao) : TVLocalDataSource {
@@ -33,4 +35,6 @@ class TVLocalDataSourceImpl @Inject constructor(private val tvDao: TVDao) : TVLo
     override fun getTV(id: Int) = tvDao.getTV(id)
 
     override suspend fun updateTV(tv: DatabaseTV) = tvDao.update(tv)
+
+    override suspend fun updateFavorite(id: Int, isFavorite: Boolean) = tvDao.updateFavorite(id, isFavorite)
 }
