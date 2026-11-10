@@ -1,6 +1,7 @@
 package com.manishsputnikcorporation.movies.data.remote
 
 import android.content.Context
+import com.manishsputnikcorporation.movies.BuildConfig.BEARER_TOKEN
 import com.manishsputnikcorporation.movies.BuildConfig.DEBUG
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
@@ -32,7 +33,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
 
     @Throws(NetworkException::class, ServiceException::class)
     override fun getPopularMovies(): Either<MoviesDto, ServiceError> {
-        if (DEBUG) {
+        if (BEARER_TOKEN.isEmpty()) {
             val localResponse = LocalJsonAssetReader.readListAsset(
                 context = context,
                 fileName = "mock/movies/popular_movies.json",
@@ -49,7 +50,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
 
     @Throws(NetworkException::class, ServiceException::class)
     override fun getMovie(id: Int): Either<MovieDetailDto, ServiceError> {
-        if (DEBUG) {
+        if (BEARER_TOKEN.isEmpty()) {
             val localResponse = LocalJsonAssetReader.readDetailAsset(
                 context = context,
                 assetRoot = "mock/movies",
