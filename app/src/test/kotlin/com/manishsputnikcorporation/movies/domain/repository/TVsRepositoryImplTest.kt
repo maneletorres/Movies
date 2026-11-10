@@ -6,7 +6,6 @@ import com.manishsputnikcorporation.movies.data.local.toTVModel
 import com.manishsputnikcorporation.movies.data.remote.TVRemoteDataSource
 import com.manishsputnikcorporation.movies.data.repository.TVsRepositoryImpl
 import com.manishsputnikcorporation.movies.domain.model.TVModel
-import com.manishsputnikcorporation.movies.network.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
@@ -46,25 +45,27 @@ internal class TVsRepositoryImplTest {
     // region Testing
     @Test
     fun `WHEN refreshPopularTVs is called AND remote data doesn't contain an error THEN returns a success response`() = runTest {
-        coEvery { tvRemoteDataSource.getPopularTVs() } returns eitherSuccess(data = fakeTVsDto)
+        every { tvRemoteDataSource.getPopularTVs() } returns eitherSuccess(data = fakeTVsDto)
+        every { tvLocalDataSource.getTVs() } returns flow { emit(value = fakeDatabaseTVs) }
 
         val result = tvsRepository.refreshPopularTVs()
 
         assertTrue(result.isSuccess)
-        coVerify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
-        coVerify(exactly = 1) { tvLocalDataSource.insertAll(tvs = fakeTVsDto.asDatabaseModel()) }
+        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        verify(exactly = 1) { tvLocalDataSource.getTVs() }
+        verify(exactly = 1) { tvLocalDataSource.insertAll(tvs = any()) }
         confirmVerified(tvRemoteDataSource, tvLocalDataSource)
     }
 
     @Test
     fun `WHEN refreshPopularTV is called AND remote data contains an error THEN returns a failure response`() = runTest {
-        coEvery { tvRemoteDataSource.getPopularTVs() } returns fakeCustomError
+        every { tvRemoteDataSource.getPopularTVs() } returns fakeCustomError
 
         val result = tvsRepository.refreshPopularTVs()
 
         assertTrue(result.isFailure)
-        coVerify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
-        coVerify(exactly = 0) { tvLocalDataSource.insertAll(tvs = any()) }
+        verify(exactly = 1) { tvRemoteDataSource.getPopularTVs() }
+        verify(exactly = 0) { tvLocalDataSource.insertAll(tvs = any()) }
         confirmVerified(tvRemoteDataSource, tvLocalDataSource)
     }
 
@@ -79,7 +80,7 @@ internal class TVsRepositoryImplTest {
 
             assertTrue(result.isNotEmpty())
             assertEquals(expected, result)
-            coVerify(exactly = 1) { tvLocalDataSource.getTVs() }
+            verify(exactly = 1) { tvLocalDataSource.getTVs() }
             confirmVerified(tvLocalDataSource)
         }
     }
@@ -96,7 +97,7 @@ internal class TVsRepositoryImplTest {
 
             assertTrue(result.isNotEmpty())
             assertEquals(expected, result)
-            coVerify(exactly = 1) { tvLocalDataSource.getFavoriteTVs() }
+            verify(exactly = 1) { tvLocalDataSource.getFavoriteTVs() }
             confirmVerified(tvLocalDataSource)
         }
     }

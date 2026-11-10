@@ -133,14 +133,14 @@ internal class TVDetailRepositoryImplTest {
     fun `WHEN updateTV is called AND the database update process is successful THEN returns a success response`() = runTest {
         val updatedTV = fakeDatabaseTV.copy(isFavorite = !fakeDatabaseTV.isFavorite)
         every { tvLocalDataSource.getTV(fakeDatabaseTVId) } returns flow { emit(value = fakeDatabaseTV) }
-        coEvery { tvLocalDataSource.updateTV(tv = updatedTV) } returns Unit
+        coEvery { tvLocalDataSource.updateFavorite(id = fakeDatabaseTVId, isFavorite = updatedTV.isFavorite) } returns Unit
 
         val result = tvDetailRepository.updateTV(fakeDatabaseTVId)
 
         assert(result.isSuccess)
         result.mapSuccess { updatedTVFavoriteStatus -> assertEquals(updatedTV.isFavorite, updatedTVFavoriteStatus) }
         verify(exactly = 1) { tvLocalDataSource.getTV(id = fakeDatabaseTVId) }
-        coVerify(exactly = 1) { tvLocalDataSource.updateTV(tv = updatedTV) }
+        coVerify(exactly = 1) { tvLocalDataSource.updateFavorite(id = updatedTV.id, isFavorite = updatedTV.isFavorite) }
         confirmVerified(tvLocalDataSource)
     }
 
@@ -148,13 +148,13 @@ internal class TVDetailRepositoryImplTest {
     fun `WHEN updateTV is called AND the database update process is unsuccessful THEN returns a failure response`() = runTest {
         val updatedTV = fakeDatabaseTV.copy(isFavorite = !fakeDatabaseTV.isFavorite)
         every { tvLocalDataSource.getTV(fakeDatabaseTVId) } returns flow { emit(value = fakeDatabaseTV) }
-        coEvery { tvLocalDataSource.updateTV(tv = updatedTV) } throws Exception()
+        coEvery { tvLocalDataSource.updateFavorite(id = fakeDatabaseTVId, isFavorite = updatedTV.isFavorite) } throws Exception()
 
         val result = tvDetailRepository.updateTV(fakeDatabaseTVId)
 
         assert(result.isFailure)
         verify(exactly = 1) { tvLocalDataSource.getTV(fakeDatabaseTVId) }
-        coVerify(exactly = 1) { tvLocalDataSource.updateTV(tv = updatedTV) }
+        coVerify(exactly = 1) { tvLocalDataSource.updateFavorite(id = updatedTV.id, isFavorite = updatedTV.isFavorite) }
         confirmVerified(tvLocalDataSource)
     }
     // endregion
