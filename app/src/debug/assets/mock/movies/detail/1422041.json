@@ -1,0 +1,53 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/bDsmYvrzto7xrEwqDpLC3SPhn9A.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  18,
+                       "name":  "Drama"
+                   },
+                   {
+                       "id":  10752,
+                       "name":  "War"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1422041,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "es",
+    "original_title":  "La bola negra",
+    "overview":  "The intertwined lives of three men in three different eras, three lives intimately linked by sexuality and desire, pain, and legacy.",
+    "popularity":  144.1291,
+    "poster_path":  "/7HwFQTMghL6HOvzEnXYUvyuZXeh.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-09-25",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "La Bola Negra",
+    "video":  false,
+    "vote_average":  8,
+    "vote_count":  204
+}

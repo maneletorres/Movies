@@ -1,0 +1,53 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  878,
+                       "name":  "Science Fiction"
+                   },
+                   {
+                       "id":  12,
+                       "name":  "Adventure"
+                   }
+               ],
+    "homepage":  "",
+    "id":  687163,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "Project Hail Mary",
+    "overview":  "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
+    "popularity":  1459.3002,
+    "poster_path":  "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-03-15",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Project Hail Mary",
+    "video":  false,
+    "vote_average":  8.628,
+    "vote_count":  8781
+}

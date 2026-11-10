@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/oqrYIDH4tvfEzPe1yqT4jzmAWHQ.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  878,
+                       "name":  "Science Fiction"
+                   },
+                   {
+                       "id":  27,
+                       "name":  "Horror"
+                   },
+                   {
+                       "id":  28,
+                       "name":  "Action"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1381071,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "ja",
+    "original_title":  "ã‚´ã‚¸ãƒ©-0.0",
+    "overview":  "War reduced Japan to zero, and Godzilla plunged it into minus. Two years have passed since then, and the country has faced agonizing struggles to achieve recovery and finally reclaim its daily life. Just as humanity managed to cling to a hard-won peace, a new threat strikes, crushing hope in an instant. There is no third time. Everything ends here.",
+    "popularity":  208.9434,
+    "poster_path":  "/hSmIJluOJmTWvJs4d7kHRxjc8s8.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-11-03",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Godzilla Minus Zero",
+    "video":  false,
+    "vote_average":  7.96,
+    "vote_count":  126
+}

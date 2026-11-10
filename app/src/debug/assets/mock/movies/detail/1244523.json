@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/9nU0FKNefmhbgi2xXlvZchZsqwm.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  27,
+                       "name":  "Horror"
+                   },
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   },
+                   {
+                       "id":  28,
+                       "name":  "Action"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1244523,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "Beware BoiÃºna",
+    "overview":  "A medical mission deep in the Amazon becomes a desperate fight for survival when a colossal ancient predator awakens, turning the jungle into a deadly battleground where nature decides who lives and dies.",
+    "popularity":  157.1292,
+    "poster_path":  "/uW5YMPxJUzT9bkafrCKHXjPTCoQ.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-10-01",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Beware BoiÃºna",
+    "video":  false,
+    "vote_average":  6.255,
+    "vote_count":  47
+}

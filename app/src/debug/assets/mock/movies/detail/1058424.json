@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/j96rurZqmBjyY37Fncl3IB0qJNe.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  878,
+                       "name":  "Science Fiction"
+                   },
+                   {
+                       "id":  9648,
+                       "name":  "Mystery"
+                   },
+                   {
+                       "id":  28,
+                       "name":  "Action"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1058424,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "ko",
+    "original_title":  "í˜¸í”„",
+    "overview":  "In the remote South Korean village of Hope Harbor, police chief Bum-seok and officer Sung-ae are called to investigate a mysterious creature wreaking havoc on the community. But all is not as it seems, and perceptions can be misleading. What begins as ignorance plants the seed of disaster, escalating through human conflict into a tragedy of cosmic proportions.",
+    "popularity":  356.4992,
+    "poster_path":  "/6VY1ZKgpsc8CfGsQcCGiYEgHdH0.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-07-15",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Hope",
+    "video":  false,
+    "vote_average":  6.685,
+    "vote_count":  550
+}

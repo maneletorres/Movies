@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/yHVZncPRZr63mezRX20IyKLrSkv.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  14,
+                       "name":  "Fantasy"
+                   },
+                   {
+                       "id":  28,
+                       "name":  "Action"
+                   },
+                   {
+                       "id":  12,
+                       "name":  "Adventure"
+                   }
+               ],
+    "homepage":  "",
+    "id":  656908,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "hi",
+    "original_title":  "à¤°à¤¾à¤®à¤¾à¤¯à¤£à¤®à¥",
+    "overview":  "An ancient epic follows a young prince and princess whose marriage and subsequent exile mark the beginning of a legendary journey. Their story of love, duty and destiny sets the stage for greater challenges ahead.",
+    "popularity":  169.7875,
+    "poster_path":  "/dPrtk4iNf6T5w8fWfg4uxDDbJSW.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-11-05",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Ramayana: Rise of a Legend",
+    "video":  false,
+    "vote_average":  7.732,
+    "vote_count":  28
+}

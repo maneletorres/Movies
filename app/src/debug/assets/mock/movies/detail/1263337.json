@@ -1,0 +1,53 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/6uVRPFflyJpo8Cx872olmlGTWla.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  12,
+                       "name":  "Adventure"
+                   },
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1263337,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "Heart of the Beast",
+    "overview":  "After a harrowing plane crash, Special Forces officer James Belmont and his combat dog, Odin, find themselves stranded deep in the Alaskan wilderness. Together, they are forced into a brutal fight for survival against the elements.",
+    "popularity":  445.8409,
+    "poster_path":  "/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-09-19",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Heart of the Beast",
+    "video":  false,
+    "vote_average":  7.304,
+    "vote_count":  548
+}

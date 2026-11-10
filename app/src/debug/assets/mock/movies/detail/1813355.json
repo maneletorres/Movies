@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/8vky6e0D4dSZMlxHWXBIRRFP1Pb.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  18,
+                       "name":  "Drama"
+                   },
+                   {
+                       "id":  27,
+                       "name":  "Horror"
+                   },
+                   {
+                       "id":  9648,
+                       "name":  "Mystery"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1813355,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "A Story of Derry",
+    "overview":  "Hundreds of years before Pennywise, three youngsters venture into the Western Wood...where they encounter a terrifying ancient spirit.",
+    "popularity":  316.6344,
+    "poster_path":  "/4PtzGcegF5Po1NmDAW9IklyvAUh.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-10-31",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "A Story of Derry",
+    "video":  false,
+    "vote_average":  6.864,
+    "vote_count":  99
+}

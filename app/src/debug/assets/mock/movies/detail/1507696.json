@@ -1,0 +1,57 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/o3XwuDUj0n8qnK91p6q8LKfr6rj.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  28,
+                       "name":  "Action"
+                   },
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   },
+                   {
+                       "id":  27,
+                       "name":  "Horror"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1507696,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "es",
+    "original_title":  "Apocalipsis Z: Nuevo mundo",
+    "overview":  "The Canary Islands have become Europeâ€™s last refuge following the outbreak of the TSJ virus. When a special mission sets out for the mainland in search of vital supplies, Roberto joins the team with questionable intentions. The dangerous operation turns into a desperate race for survival, and Roberto and his companions find themselves caught between hordes of infected and divided loyalties.",
+    "popularity":  355.7244,
+    "poster_path":  "/wXln4DUrwcyjcFPwgQxFPYTlG1Z.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-10-09",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Apocalypse Z: New World",
+    "video":  false,
+    "vote_average":  6.194,
+    "vote_count":  173
+}
