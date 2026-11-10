@@ -53,9 +53,8 @@ constructor(private val movieLocalDataSource: MovieLocalDataSource, private val 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun insertMovies(movies: MoviesDto, favoriteStates: Map<Int, Boolean> = emptyMap()): DomainResponse<Unit> =
         try {
-            val databaseMovies = movies.asDatabaseModel().map { movie ->
-                movie.copy(isFavorite = favoriteStates[movie.id] ?: movie.isFavorite)
-            }
+            val databaseMovies =
+                movies.asDatabaseModel().map { movie -> movie.copy(isFavorite = favoriteStates[movie.id] ?: movie.isFavorite) }
             eitherSuccess(data = movieLocalDataSource.insertAll(movies = databaseMovies))
         } catch (ex: Exception) {
             eitherFailure(error = DomainError(code = "Code: ", message = ex.message.toString()))

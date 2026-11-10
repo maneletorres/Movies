@@ -16,12 +16,7 @@ internal object LocalJsonAssetReader {
 
     fun resolveDetailAssetPath(assetRoot: String, id: Int): String = "$assetRoot/detail/$id.json"
 
-    fun <T> readJsonAssetAsDto(
-        context: Context,
-        fileName: String,
-        clazz: Class<T>,
-        missingMessage: String,
-    ): Either<T, ServiceError> {
+    fun <T> readJsonAssetAsDto(context: Context, fileName: String, clazz: Class<T>, missingMessage: String): Either<T, ServiceError> {
         return try {
             val json = readJsonAsset(context, fileName)
             val dto = moshi.adapter(clazz).fromJson(json)
@@ -31,17 +26,8 @@ internal object LocalJsonAssetReader {
         }
     }
 
-    fun <T> readListAsset(
-        context: Context,
-        fileName: String,
-        clazz: Class<T>,
-        missingMessage: String,
-    ): Either<T, ServiceError> = readJsonAssetAsDto(
-        context = context,
-        fileName = fileName,
-        clazz = clazz,
-        missingMessage = missingMessage,
-    )
+    fun <T> readListAsset(context: Context, fileName: String, clazz: Class<T>, missingMessage: String): Either<T, ServiceError> =
+        readJsonAssetAsDto(context = context, fileName = fileName, clazz = clazz, missingMessage = missingMessage)
 
     fun <T> readDetailAsset(
         context: Context,
@@ -49,13 +35,13 @@ internal object LocalJsonAssetReader {
         id: Int,
         clazz: Class<T>,
         missingMessage: String,
-    ): Either<T, ServiceError> = readJsonAssetAsDto(
-        context = context,
-        fileName = resolveDetailAssetPath(assetRoot, id),
-        clazz = clazz,
-        missingMessage = missingMessage,
-    )
+    ): Either<T, ServiceError> =
+        readJsonAssetAsDto(
+            context = context,
+            fileName = resolveDetailAssetPath(assetRoot, id),
+            clazz = clazz,
+            missingMessage = missingMessage,
+        )
 
-    private fun String.sanitizeJson(): String =
-        trimStart('\uFEFF', '\u200B', '\u2060', '\u00A0')
+    private fun String.sanitizeJson(): String = trimStart('\uFEFF', '\u200B', '\u2060', '\u00A0')
 }

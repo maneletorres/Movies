@@ -20,8 +20,7 @@ interface MovieDao {
 
     @Delete suspend fun delete(movie: DatabaseMovie)
 
-    @Query("UPDATE movies SET is_favorite = :isFavorite WHERE id = :id")
-    suspend fun updateFavorite(id: Int, isFavorite: Boolean)
+    @Query("UPDATE movies SET is_favorite = :isFavorite WHERE id = :id") suspend fun updateFavorite(id: Int, isFavorite: Boolean)
 
     @Query("SELECT * FROM movies WHERE id = :id") fun getMovie(id: Int): Flow<DatabaseMovie>
 

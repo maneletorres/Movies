@@ -14,8 +14,8 @@ import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import dagger.hilt.android.qualifiers.ApplicationContext
-import retrofit2.Call
 import javax.inject.Inject
+import retrofit2.Call
 
 interface TVRemoteDataSource {
 
@@ -24,7 +24,9 @@ interface TVRemoteDataSource {
     @Throws(NetworkException::class, ServiceException::class) fun getTV(id: Int): Either<TVDetailDto, ServiceError>
 }
 
-class TVRemoteDataSourceImpl @Inject constructor(
+class TVRemoteDataSourceImpl
+@Inject
+constructor(
     private val serviceExecutor: ServiceExecutor,
     private val service: RemoteApiService,
     @param:ApplicationContext private val context: Context,
@@ -33,12 +35,13 @@ class TVRemoteDataSourceImpl @Inject constructor(
     @Throws(NetworkException::class, ServiceException::class)
     override fun getPopularTVs(): Either<TVsDto, ServiceError> {
         if (BEARER_TOKEN.isEmpty()) {
-            val localResponse = LocalJsonAssetReader.readListAsset(
-                context = context,
-                fileName = "mock/tvshows/popular_tv_shows.json",
-                clazz = TVsDto::class.java,
-                missingMessage = "Missing JSON for TV shows",
-            )
+            val localResponse =
+                LocalJsonAssetReader.readListAsset(
+                    context = context,
+                    fileName = "mock/tvshows/popular_tv_shows.json",
+                    clazz = TVsDto::class.java,
+                    missingMessage = "Missing JSON for TV shows",
+                )
             if (localResponse.isSuccess) return localResponse
         }
 
@@ -50,13 +53,14 @@ class TVRemoteDataSourceImpl @Inject constructor(
     @Throws(NetworkException::class, ServiceException::class)
     override fun getTV(id: Int): Either<TVDetailDto, ServiceError> {
         if (BEARER_TOKEN.isEmpty()) {
-            val localResponse = LocalJsonAssetReader.readDetailAsset(
-                context = context,
-                assetRoot = "mock/tvshows",
-                id = id,
-                clazz = TVDetailDto::class.java,
-                missingMessage = "Missing JSON for TV detail",
-            )
+            val localResponse =
+                LocalJsonAssetReader.readDetailAsset(
+                    context = context,
+                    assetRoot = "mock/tvshows",
+                    id = id,
+                    clazz = TVDetailDto::class.java,
+                    missingMessage = "Missing JSON for TV detail",
+                )
             if (localResponse.isSuccess) return localResponse
         }
 

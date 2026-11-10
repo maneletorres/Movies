@@ -14,8 +14,8 @@ import com.manishsputnikcorporation.movies.utils.Either
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.mapSuccess
 import dagger.hilt.android.qualifiers.ApplicationContext
-import retrofit2.Call
 import javax.inject.Inject
+import retrofit2.Call
 
 interface MovieRemoteDataSource {
 
@@ -24,7 +24,9 @@ interface MovieRemoteDataSource {
     @Throws(NetworkException::class, ServiceException::class) fun getMovie(id: Int): Either<MovieDetailDto, ServiceError>
 }
 
-class MovieRemoteDataSourceImpl @Inject constructor(
+class MovieRemoteDataSourceImpl
+@Inject
+constructor(
     private val serviceExecutor: ServiceExecutor,
     private val service: RemoteApiService,
     @param:ApplicationContext private val context: Context,
@@ -33,12 +35,13 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     @Throws(NetworkException::class, ServiceException::class)
     override fun getPopularMovies(): Either<MoviesDto, ServiceError> {
         if (BEARER_TOKEN.isEmpty()) {
-            val localResponse = LocalJsonAssetReader.readListAsset(
-                context = context,
-                fileName = "mock/movies/popular_movies.json",
-                clazz = MoviesDto::class.java,
-                missingMessage = "Missing JSON for movies",
-            )
+            val localResponse =
+                LocalJsonAssetReader.readListAsset(
+                    context = context,
+                    fileName = "mock/movies/popular_movies.json",
+                    clazz = MoviesDto::class.java,
+                    missingMessage = "Missing JSON for movies",
+                )
             if (localResponse.isSuccess) return localResponse
         }
 
@@ -50,13 +53,14 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     @Throws(NetworkException::class, ServiceException::class)
     override fun getMovie(id: Int): Either<MovieDetailDto, ServiceError> {
         if (BEARER_TOKEN.isEmpty()) {
-            val localResponse = LocalJsonAssetReader.readDetailAsset(
-                context = context,
-                assetRoot = "mock/movies",
-                id = id,
-                clazz = MovieDetailDto::class.java,
-                missingMessage = "Missing JSON for movie detail",
-            )
+            val localResponse =
+                LocalJsonAssetReader.readDetailAsset(
+                    context = context,
+                    assetRoot = "mock/movies",
+                    id = id,
+                    clazz = MovieDetailDto::class.java,
+                    missingMessage = "Missing JSON for movie detail",
+                )
             if (localResponse.isSuccess) return localResponse
         }
 

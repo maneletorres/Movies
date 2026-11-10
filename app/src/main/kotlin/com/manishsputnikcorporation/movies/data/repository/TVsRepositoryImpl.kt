@@ -50,9 +50,7 @@ constructor(private val tvLocalDataSource: TVLocalDataSource, private val tvRemo
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun insertTvs(tvs: TVsDto, favoriteStates: Map<Int, Boolean> = emptyMap()): DomainResponse<Unit> =
         try {
-            val databaseTVs = tvs.asDatabaseModel().map { tv ->
-                tv.copy(isFavorite = favoriteStates[tv.id] ?: tv.isFavorite)
-            }
+            val databaseTVs = tvs.asDatabaseModel().map { tv -> tv.copy(isFavorite = favoriteStates[tv.id] ?: tv.isFavorite) }
             eitherSuccess(data = tvLocalDataSource.insertAll(tvs = databaseTVs))
         } catch (ex: Exception) {
             eitherFailure(error = DomainError(code = "Code: ", message = ex.message.toString()))
