@@ -3,11 +3,13 @@ package com.manishsputnikcorporation.movies
 import com.manishsputnikcorporation.movies.domain.usecase.base.dispatchers.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MainCoroutinesRule : TestRule {
 
     private val testCoroutineDispatcher = StandardTestDispatcher()

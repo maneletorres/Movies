@@ -9,7 +9,7 @@ interface MoviesRepository {
     // TODO: optimize the loadData and getData calls to this!!
     // val movies: Flow<List<MovieModel>>
 
-    fun refreshPopularMovies(): DomainResponse<Unit>
+    suspend fun refreshPopularMovies(): DomainResponse<Unit>
 
     fun getMovies(): Flow<List<MovieModel>>
 

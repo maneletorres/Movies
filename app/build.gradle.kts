@@ -86,6 +86,9 @@ dependencies {
     implementation(libs.bundles.firebase)
     // endregion
 
+    // Google:
+    implementation(libs.bundles.google)
+
     // region Retrofit
     implementation(platform(libs.com.squareup.retrofit2.bom))
     implementation(libs.bundles.retrofit2)
@@ -101,12 +104,13 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     // endregion
 
+    implementation(libs.androidx.material3)
     implementation(libs.com.jakewharton.timber)
     implementation(libs.bundles.navigation)
-
     implementation(libs.kotlinx.serialization.json)
 
     // region Testing libraries:
+    // TODO: to check these dependencies
     testImplementation(project(":shared-test-util"))
     testImplementation(kotlin("test"))
     testImplementation(libs.bundles.unit.testing)
@@ -114,6 +118,9 @@ dependencies {
     androidTestImplementation(project(":shared-test-util"))
     androidTestImplementation(kotlin("test"))
     androidTestImplementation(libs.bundles.android.testing)
+    androidTestImplementation(libs.bundles.androidx.testing)
+
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
     // endregion
 }
 

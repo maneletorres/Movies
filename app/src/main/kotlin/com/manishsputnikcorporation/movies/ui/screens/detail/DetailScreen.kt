@@ -1,6 +1,7 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.manishsputnikcorporation.movies.ui.screens.detail
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,23 +16,27 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -58,6 +63,7 @@ import com.manishsputnikcorporation.movies.utils.fake.fakeMovieDetailDto
 fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit = {}) {
     detailViewModel.trackScreen()
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val detailUiState by detailViewModel.detailUiState.collectAsState()
     detailUiState.let { state ->
         when {
@@ -65,6 +71,7 @@ fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit 
             else ->
                 DetailContent(
                     state = state,
+                    scrollBehavior = scrollBehavior,
                     onBackArrowClick = { onBackArrowClick() },
                     onFavoriteClick = { detailViewModel.setFavoriteStatus() },
                 )
@@ -72,16 +79,16 @@ fun DetailScreen(detailViewModel: DetailViewModel, onBackArrowClick: () -> Unit 
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailContent(
     state: DetailUiState,
+    scrollBehavior: TopAppBarScrollBehavior,
     modifier: Modifier = Modifier,
     onBackArrowClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
 ) {
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).systemBarsPadding(),
         topBar = {
             TopAppBar(
                 title = {
@@ -108,11 +115,9 @@ fun DetailContent(
                 Column(
                     horizontalAlignment = Alignment.Start,
                     modifier =
-                        modifier
-                            .verticalScroll(state = rememberScrollState())
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                            .fillMaxHeight()
-                            .semantics { contentDescription = "Detail Screen" },
+                        modifier.verticalScroll(state = rememberScrollState()).padding(contentPadding).fillMaxHeight().semantics {
+                            contentDescription = "Detail Screen"
+                        },
                 ) {
                     with(receiver = state.detailData.detailModel) {
                         val (title, runtime) =
@@ -132,7 +137,7 @@ fun DetailContent(
                             onFavoriteClick()
                         }
                         Spacer(modifier = Modifier.height(height = 8.dp))
-                        Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.body1)
+                        Text(text = overview, modifier = modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyLarge)
                     }
                 }
             }
@@ -188,7 +193,7 @@ fun Info(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row {
-            Text(text = title, modifier = Modifier.weight(weight = 1f), style = MaterialTheme.typography.h5)
+            Text(text = title, modifier = Modifier.weight(weight = 1f), style = MaterialTheme.typography.headlineSmall)
             Favorite(isFavorite, onFavoriteClick)
         }
         SecondaryInfo(year = releaseDate, runtime = runtime)
@@ -210,8 +215,8 @@ fun Favorite(isFavorite: Boolean, onFavoriteClick: () -> Unit = {}) {
 @Composable
 fun SecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = year, style = MaterialTheme.typography.subtitle1)
-        runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.subtitle1) }
+        Text(text = year, style = MaterialTheme.typography.titleMedium)
+        runtime?.let { Text(text = "$runtime min", style = MaterialTheme.typography.titleMedium) }
     }
 }
 
@@ -220,8 +225,9 @@ fun SecondaryInfo(year: String, runtime: Int?, modifier: Modifier = Modifier) {
 @Composable
 private fun DetailContentPreview() {
     MediaTheme {
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
         val movieDetail = MovieDetailDtoMapper().mapToDomainModel(dto = fakeMovieDetailDto)
-        DetailContent(state = DetailUiState(detailData = DetailData(detailModel = movieDetail)))
+        DetailContent(state = DetailUiState(detailData = DetailData(detailModel = movieDetail)), scrollBehavior = scrollBehavior)
     }
 }
 

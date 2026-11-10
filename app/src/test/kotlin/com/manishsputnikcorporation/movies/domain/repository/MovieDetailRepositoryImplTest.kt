@@ -96,7 +96,7 @@ internal class MovieDetailRepositoryImplTest {
             awaitComplete()
 
             assertTrue(result)
-            coVerify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
+            verify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
             confirmVerified(movieLocalDataSource)
         }
     }
@@ -110,7 +110,7 @@ internal class MovieDetailRepositoryImplTest {
             awaitComplete()
 
             assertFalse(result)
-            coVerify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
+            verify(exactly = 1) { movieLocalDataSource.isFavoriteMovie(id = fakeDatabaseMovieId) }
             confirmVerified(movieLocalDataSource)
         }
     }
@@ -124,7 +124,7 @@ internal class MovieDetailRepositoryImplTest {
             awaitComplete()
 
             assertEquals(fakeMovieModel, result)
-            coVerify(exactly = 1) { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) }
+            verify(exactly = 1) { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) }
             confirmVerified(movieLocalDataSource)
         }
     }
@@ -133,14 +133,14 @@ internal class MovieDetailRepositoryImplTest {
     fun `WHEN updateMovie is called AND the database update process is successful THEN returns a success response`() = runTest {
         val updatedMovie = fakeDatabaseMovie.copy(isFavorite = !fakeDatabaseMovie.isFavorite)
         every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(value = fakeDatabaseMovie) }
-        coEvery { movieLocalDataSource.updateMovie(movie = updatedMovie) } returns Unit
+        coEvery { movieLocalDataSource.updateFavorite(id = fakeDatabaseMovieId, isFavorite = updatedMovie.isFavorite) } returns Unit
 
         val result = movieDetailRepository.updateMovie(fakeDatabaseMovieId)
 
         assert(result.isSuccess)
         result.mapSuccess { updatedMovieFavoriteStatus -> assertEquals(updatedMovie.isFavorite, updatedMovieFavoriteStatus) }
         verify(exactly = 1) { movieLocalDataSource.getMovie(id = fakeDatabaseMovieId) }
-        coVerify(exactly = 1) { movieLocalDataSource.updateMovie(movie = updatedMovie) }
+        coVerify(exactly = 1) { movieLocalDataSource.updateFavorite(id = updatedMovie.id, isFavorite = updatedMovie.isFavorite) }
         confirmVerified(movieLocalDataSource)
     }
 
@@ -148,13 +148,13 @@ internal class MovieDetailRepositoryImplTest {
     fun `WHEN updateMovie is called AND the database update process is unsuccessful THEN returns a failure response`() = runTest {
         val updatedMovie = fakeDatabaseMovie.copy(isFavorite = !fakeDatabaseMovie.isFavorite)
         every { movieLocalDataSource.getMovie(fakeDatabaseMovieId) } returns flow { emit(value = fakeDatabaseMovie) }
-        coEvery { movieLocalDataSource.updateMovie(movie = updatedMovie) } throws Exception()
+        coEvery { movieLocalDataSource.updateFavorite(id = fakeDatabaseMovieId, isFavorite = updatedMovie.isFavorite) } throws Exception()
 
         val result = movieDetailRepository.updateMovie(fakeDatabaseMovieId)
 
         assert(result.isFailure)
         verify(exactly = 1) { movieLocalDataSource.getMovie(fakeDatabaseMovieId) }
-        coVerify(exactly = 1) { movieLocalDataSource.updateMovie(movie = updatedMovie) }
+        coVerify(exactly = 1) { movieLocalDataSource.updateFavorite(id = updatedMovie.id, isFavorite = updatedMovie.isFavorite) }
         confirmVerified(movieLocalDataSource)
     }
     // endregion

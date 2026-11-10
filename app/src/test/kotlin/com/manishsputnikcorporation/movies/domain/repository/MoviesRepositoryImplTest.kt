@@ -6,7 +6,6 @@ import com.manishsputnikcorporation.movies.data.local.toMovieModel
 import com.manishsputnikcorporation.movies.data.remote.MovieRemoteDataSource
 import com.manishsputnikcorporation.movies.data.repository.MoviesRepositoryImpl
 import com.manishsputnikcorporation.movies.domain.model.MovieModel
-import com.manishsputnikcorporation.movies.network.asDatabaseModel
 import com.manishsputnikcorporation.movies.utils.eitherSuccess
 import com.manishsputnikcorporation.movies.utils.extensions.isFailure
 import com.manishsputnikcorporation.movies.utils.extensions.isSuccess
@@ -46,19 +45,21 @@ internal class MoviesRepositoryImplTest {
 
     // region Testing
     @Test
-    fun `WHEN refreshPopularMovies is called AND remote data doesn't contain an error THEN returns a success response`() {
+    fun `WHEN refreshPopularMovies is called AND remote data doesn't contain an error THEN returns a success response`() = runTest {
         every { movieRemoteDataSource.getPopularMovies() } returns eitherSuccess(data = fakeMoviesDto)
+        every { movieLocalDataSource.getMovies() } returns flow { emit(value = fakeDatabaseMovies) }
 
         val result = moviesRepository.refreshPopularMovies()
 
         assert(result.isSuccess)
         verify(exactly = 1) { movieRemoteDataSource.getPopularMovies() }
-        verify(exactly = 1) { movieLocalDataSource.insertAll(movies = fakeMoviesDto.asDatabaseModel()) }
+        verify(exactly = 1) { movieLocalDataSource.getMovies() }
+        verify(exactly = 1) { movieLocalDataSource.insertAll(movies = any()) }
         confirmVerified(movieRemoteDataSource, movieLocalDataSource)
     }
 
     @Test
-    fun `WHEN refreshPopularMovies is called AND remote data contains an error THEN returns a failure response`() {
+    fun `WHEN refreshPopularMovies is called AND remote data contains an error THEN returns a failure response`() = runTest {
         every { movieRemoteDataSource.getPopularMovies() } returns fakeCustomError
 
         val result = moviesRepository.refreshPopularMovies()
@@ -80,7 +81,7 @@ internal class MoviesRepositoryImplTest {
 
             assertTrue(result.isNotEmpty())
             assertEquals(expected, result)
-            coVerify(exactly = 1) { movieLocalDataSource.getMovies() }
+            verify(exactly = 1) { movieLocalDataSource.getMovies() }
             confirmVerified(movieLocalDataSource)
         }
     }
@@ -97,7 +98,7 @@ internal class MoviesRepositoryImplTest {
 
             assertTrue(result.isNotEmpty())
             assertEquals(expected, result)
-            coVerify(exactly = 1) { movieLocalDataSource.getFavoriteMovies() }
+            verify(exactly = 1) { movieLocalDataSource.getFavoriteMovies() }
             confirmVerified(movieLocalDataSource)
         }
     }

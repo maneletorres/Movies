@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.manishsputnikcorporation.movies.ui.screens.home
 
 import androidx.compose.animation.AnimatedContent
@@ -19,25 +21,25 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,6 +53,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
@@ -87,7 +90,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MoviesHomeScreen(homeViewModel: HomeViewModel, onClickSignOut: () -> Unit = {}, onClickMovie: (DetailArgs) -> Unit = {}) {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
     val hotState: SnackbarHostState = remember { SnackbarHostState() }
     var searchType by rememberSaveable { mutableStateOf(value = Type.MOVIE) }
 
@@ -100,7 +102,6 @@ fun MoviesHomeScreen(homeViewModel: HomeViewModel, onClickSignOut: () -> Unit = 
             Loading -> Loading()
             is Data ->
                 MoviesHomeContent(
-                    scaffoldState = scaffoldState,
                     hostState = hotState,
                     searchType = searchType,
                     user = it.user,
@@ -134,7 +135,6 @@ fun MoviesHomeScreen(homeViewModel: HomeViewModel, onClickSignOut: () -> Unit = 
 
 @Composable
 fun MoviesHomeContent(
-    scaffoldState: ScaffoldState,
     hostState: SnackbarHostState,
     searchType: Type,
     user: FirebaseUser?,
@@ -145,6 +145,7 @@ fun MoviesHomeContent(
     onClickSignOut: () -> Unit = {},
     onClickMovie: (DetailArgs) -> Unit = {},
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val gridState = rememberLazyGridState()
     val showButton by remember { derivedStateOf { gridState.firstVisibleItemIndex > 0 } }
 
@@ -163,8 +164,7 @@ fun MoviesHomeContent(
     // endregion
 
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
-        scaffoldState = scaffoldState,
+        modifier = Modifier.systemBarsPadding().nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = { SnackbarHost(hostState = hostState) },
         topBar = {
             TopAppBar(
@@ -219,8 +219,8 @@ fun MoviesHomeContent(
                         )
                         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                             DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.movies_home_sign_out)) },
                                 onClick = { showDialog = true },
-                                content = { Text(text = stringResource(id = R.string.movies_home_sign_out)) },
                             )
                         }
                     }
@@ -316,13 +316,7 @@ fun Media(detailArgs: DetailArgs, image: String, onClickMedia: (DetailArgs) -> U
 private fun MoviesHomeContentPreview() {
     MediaTheme {
         val hostState: SnackbarHostState = remember { SnackbarHostState() }
-        MoviesHomeContent(
-            scaffoldState = rememberScaffoldState(),
-            hostState = hostState,
-            searchType = Type.MOVIE,
-            user = null,
-            movies = fakeMovieModels,
-        )
+        MoviesHomeContent(hostState = hostState, searchType = Type.MOVIE, user = null, movies = fakeMovieModels)
     }
 }
 

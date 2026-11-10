@@ -12,23 +12,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +37,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -60,10 +60,12 @@ import com.manishsputnikcorporation.movies.utils.extensions.showSnackBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}) {
     signUpViewModel.trackScreen()
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val scope = rememberCoroutineScope()
     val hostState: SnackbarHostState = remember { SnackbarHostState() }
 
@@ -85,8 +87,10 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
         }
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize().padding(all = 32.dp), snackbarHost = { SnackbarHost(hostState = hostState) }) {
-        contentPadding ->
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize().padding(all = 32.dp),
+        snackbarHost = { SnackbarHost(hostState = hostState) },
+    ) { contentPadding ->
         Column(
             modifier = Modifier.fillMaxSize().padding(paddingValues = contentPadding),
             verticalArrangement = Arrangement.Center,
@@ -140,18 +144,16 @@ fun SignUpScreen(signUpViewModel: SignUpViewModel, onNavigation: () -> Unit = {}
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
-            CompositionLocalProvider(LocalContentAlpha provides if (enabled) ContentAlpha.high else ContentAlpha.disabled) {
-                Text(
-                    text = AnnotatedString(text = "Do you have an account yet?"),
-                    modifier =
-                        Modifier.clickable {
-                            if (enabled) {
-                                scope.launch { signUpViewModel.createUser(email, password, onNavigation) }
-                            }
-                        },
-                    style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline),
-                )
-            }
+            Text(
+                text = AnnotatedString(text = "Do you have an account yet?"),
+                modifier =
+                    Modifier.clickable {
+                        if (enabled) {
+                            scope.launch { signUpViewModel.createUser(email, password, onNavigation) }
+                        }
+                    },
+                style = TextStyle(fontSize = 14.sp, fontFamily = FontFamily.Default, textDecoration = TextDecoration.Underline),
+            )
         }
     }
 }
@@ -174,14 +176,14 @@ fun SignUpTextField(
         modifier = modifier,
         label = {
             if (isError) {
-                Text(text = errorText, modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colors.error)
+                Text(text = errorText, modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.error)
             }
         },
         placeholder = { Text(text = placeholder) },
         leadingIcon = leadingIcon,
         trailingIcon = {
             if (isError) {
-                Icon(imageVector = Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colors.error)
+                Icon(imageVector = Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.error)
             }
         },
         isError = isError,

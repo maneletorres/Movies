@@ -1,0 +1,53 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/hbz4aeVsjnKb2HRoFbbr46Egh8y.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  10749,
+                       "name":  "Romance"
+                   },
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1596275,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "de",
+    "original_title":  "Drive â€“ The Pretenders",
+    "overview":  "A young mechanic fakes an engagement with racing\u0027s most scandalous star â€” officially for his reputation, secretly for her own shot behind the wheel. But soon the lie threatens to destroy everything â€” including what\u0027s already become so much more than just a deal.",
+    "popularity":  144.0079,
+    "poster_path":  "/s9syckECnUYhKePQ1A0DC0mFVZ9.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-10-27",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Drive - The Pretenders",
+    "video":  false,
+    "vote_average":  7.722,
+    "vote_count":  151
+}

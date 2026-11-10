@@ -1,0 +1,49 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/nGau0KBOaRILSK5MqFcuTfv7GMl.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1101412,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "Fall 2: Deadpoint",
+    "overview":  "On a perilous climb across Thailand\u0027s Mount Kwan, two climbers become trapped thousands of feet above the ground, where vertigo-inducing heights, sheer exposure, and impossible odds turn every moment into a fight for survival.",
+    "popularity":  143.071,
+    "poster_path":  "/fgSm5ylwiXbIHn8UbUXDjk9RRu4.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-09-01",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Fall 2: Deadpoint",
+    "video":  false,
+    "vote_average":  7.275,
+    "vote_count":  761
+}

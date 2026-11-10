@@ -10,13 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,10 +42,12 @@ import com.manishsputnikcorporation.movies.utils.annotations.UiModePreviews
 import com.manishsputnikcorporation.movies.utils.extensions.showSnackBar
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel, onNavigation: () -> Unit = {}) {
     passwordRecoveryViewModel.trackScreen()
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val hostState: SnackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit) {
@@ -59,8 +64,10 @@ fun PasswordRecoveryScreen(passwordRecoveryViewModel: PasswordRecoveryViewModel,
         }
     }
 
-    Scaffold(modifier = Modifier.fillMaxSize().padding(all = 32.dp), snackbarHost = { SnackbarHost(hostState = hostState) }) {
-        contentPadding ->
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize().padding(all = 32.dp),
+        snackbarHost = { SnackbarHost(hostState = hostState) },
+    ) { contentPadding ->
         Column(
             modifier = Modifier.fillMaxSize().padding(paddingValues = contentPadding),
             verticalArrangement = Arrangement.Top,

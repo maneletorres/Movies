@@ -1,0 +1,53 @@
+{
+    "adult":  false,
+    "backdrop_path":  "/cKetrF2dAnQ0AMV5i4BMOs41I5P.jpg",
+    "belongs_to_collection":  null,
+    "budget":  0,
+    "genres":  [
+                   {
+                       "id":  9648,
+                       "name":  "Mystery"
+                   },
+                   {
+                       "id":  53,
+                       "name":  "Thriller"
+                   }
+               ],
+    "homepage":  "",
+    "id":  1283515,
+    "imdb_id":  "",
+    "origin_country":  [
+                           "US"
+                       ],
+    "original_language":  "en",
+    "original_title":  "Verity",
+    "overview":  "Lowen Ashleigh, hired to ghostwrite for best-selling author Verity Crawford, uncovers Verity\u0027s autobiographical notes, and becomes involved in what may prove to be a lethal conspiracy.",
+    "popularity":  172.6327,
+    "poster_path":  "/rmaNMA1seHqpjtnYKzyynFAr1g8.jpg",
+    "production_companies":  [
+
+                             ],
+    "production_countries":  [
+                                 {
+                                     "name":  "United States of America",
+                                     "iso_3166_1":  "US"
+                                 }
+                             ],
+    "release_date":  "2026-09-30",
+    "revenue":  0,
+    "runtime":  120,
+    "softcore":  false,
+    "spoken_languages":  [
+                             {
+                                 "english_name":  "English",
+                                 "name":  "English",
+                                 "iso_639_1":  "en"
+                             }
+                         ],
+    "status":  "Released",
+    "tagline":  "",
+    "title":  "Verity",
+    "video":  false,
+    "vote_average":  7.008,
+    "vote_count":  655
+}
