@@ -2,7 +2,6 @@ package com.manishsputnikcorporation.movies.data.remote
 
 import android.content.Context
 import com.manishsputnikcorporation.movies.BuildConfig.BEARER_TOKEN
-import com.manishsputnikcorporation.movies.BuildConfig.DEBUG
 import com.manishsputnikcorporation.movies.domain.error.exception.NetworkException
 import com.manishsputnikcorporation.movies.domain.error.exception.ServiceException
 import com.manishsputnikcorporation.movies.network.response.tv.TVDetailDto
