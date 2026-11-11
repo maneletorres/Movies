@@ -95,3 +95,22 @@ The project is structured around a clean, maintainable architecture that separat
 
 ## Screenshots
 <img width="200" alt="Splash screen" src="https://user-images.githubusercontent.com/33102786/220135136-cfdc255c-41d7-4a3f-9664-bc97148dcf2f.jpg"> <img width="200" alt="Movies home screen" src="https://user-images.githubusercontent.com/33102786/220135247-76172262-990e-4009-bb95-62ce8e0a4933.jpg"> <img width="200" alt="Movie detail screen" src="https://user-images.githubusercontent.com/33102786/220135288-22982b86-a86c-4f1d-a036-551a340631e9.jpg">
+
+## Firebase / Google Services note
+
+This project is prepared to run as an Android app, but the `google-services.json` file required by Firebase is not included in the repository.
+
+If you open the project in Android Studio without that file, the app will not start correctly unless Firebase is configured separately.
+
+The `google-services.json` must include Firebase Authentication with the sign-in methods enabled for:
+- anonymous sign-in
+- Google sign-in
+- email/password sign-in
+
+Without this Firebase Authentication setup, the app will not start or function as expected.
+
+For review/demo execution, the reviewer should either:
+- create their own Firebase project and download the corresponding `google-services.json` with the required Authentication providers enabled, or
+- contact the project maintainer for the configured file.
+
+This repository intentionally does not include the Firebase configuration file to avoid committing environment-specific credentials.
