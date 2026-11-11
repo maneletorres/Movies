@@ -98,19 +98,32 @@ The project is structured around a clean, maintainable architecture that separat
 
 ## Firebase / Google Services note
 
-This project is prepared to run as an Android app, but the `google-services.json` file required by Firebase is not included in the repository.
+This project is prepared to run as an Android app, but the `google-services.json` file required by Firebase is intentionally not included in the repository.
 
-If you open the project in Android Studio without that file, the app will not start correctly unless Firebase is configured separately.
+The file is excluded from version control so that project-specific Firebase configuration and credentials are not committed to Git.
 
-The `google-services.json` must include Firebase Authentication with the sign-in methods enabled for:
+For review/demo execution, the reviewer should receive a configured `google-services.json` for the dedicated Firebase test project and place it in:
+
+```text
+app/google-services.json
+```
+
+This file must match the Android app package name configured in the project:
+
+```text
+com.manishsputnikcorporation.movies
+```
+
+For this project, the Firebase test project only needs Authentication enabled with the sign-in methods used by the app:
 - anonymous sign-in
-- Google sign-in
 - email/password sign-in
 
-Without this Firebase Authentication setup, the app will not start or function as expected.
+No other Firebase services are required for the review build unless they are explicitly activated in the test project.
 
-For review/demo execution, the reviewer should either:
-- create their own Firebase project and download the corresponding `google-services.json` with the required Authentication providers enabled, or
-- contact the project maintainer for the configured file.
+Important:
+- do not commit `google-services.json` to the repository
+- do not share the file publicly in GitHub or other public repos
+- share it privately with the reviewer as part of the demo setup
+- if the Firebase project is replaced or regenerated, regenerate and re-distribute the JSON
 
-This repository intentionally does not include the Firebase configuration file to avoid committing environment-specific credentials.
+This repository intentionally does not include the Firebase configuration file to avoid committing environment-specific credentials, while still allowing a reviewer to run the app with a test Firebase project that has been configured for the app.
