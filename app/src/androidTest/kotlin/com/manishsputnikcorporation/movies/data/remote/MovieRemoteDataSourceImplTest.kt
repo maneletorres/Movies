@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-class MovieRemoteDataSourceImplImplTest : RemoteDataSourceImplBaseTest() {
+class MovieRemoteDataSourceImplTest : RemoteDataSourceImplBaseTest() {
 
     // region Setup
     private lateinit var remoteDataSource: MovieRemoteDataSource
@@ -18,7 +18,7 @@ class MovieRemoteDataSourceImplImplTest : RemoteDataSourceImplBaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        remoteDataSource = MovieRemoteDataSourceImpl(serviceExecutor = serviceExecutor, service = service)
+        remoteDataSource = MovieRemoteDataSourceImpl(serviceExecutor = serviceExecutor, service = service, context = appContext)
     }
 
     // endregion

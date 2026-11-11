@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.data.remote.base
 
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.manishsputnikcorporation.movies.extensions.fromJson
 import com.manishsputnikcorporation.movies.network.NetworkManagerImpl
@@ -21,18 +22,20 @@ open class RemoteDataSourceImplBaseTest {
     lateinit var server: MockWebServer
     lateinit var serviceExecutor: ServiceExecutor
     lateinit var service: RemoteApiService
+    lateinit var appContext: Context
 
     @Before
     open fun setUp() {
         server = MockWebServer()
         server.start(port = 8080)
+        appContext = ApplicationProvider.getApplicationContext()
         service =
             Retrofit.Builder()
                 .baseUrl(server.url(path = "/"))
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(RemoteApiService::class.java)
-        serviceExecutor = RetrofitServiceExecutor(NetworkManagerImpl(context = ApplicationProvider.getApplicationContext()))
+        serviceExecutor = RetrofitServiceExecutor(NetworkManagerImpl(context = appContext))
     }
 
     @After

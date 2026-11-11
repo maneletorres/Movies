@@ -18,7 +18,7 @@ class TVRemoteDataSourceImplImplTest : RemoteDataSourceImplBaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        remoteDataSource = TVRemoteDataSourceImpl(serviceExecutor = serviceExecutor, service = service)
+        remoteDataSource = TVRemoteDataSourceImpl(serviceExecutor = serviceExecutor, service = service, context = appContext)
     }
 
     // endregion
