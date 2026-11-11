@@ -55,32 +55,32 @@ class LoginViewModel @Inject constructor(private val analyticsManager: Analytics
     }
 
     fun launchGoogleSignIn(context: Context, onNavigation: (String, String) -> Unit) {
-        val request: GetCredentialRequest =
-            GetCredentialRequest.Builder().addCredentialOption(credentialOption = authManager.getGoogleIdOption()).build()
-
-        viewModelScope.launch {
-            // TODO: mantener esto en estado para luego cerrarlo con credentialManager.clearCredentialState(clearRequest)
-            // TODO: esto va por inyección de dependencias
-            // TODO: actualizar la foto y el nombre con los datos obtenidos en Home
-            val credentialManager: CredentialManager = CredentialManager.create(context)
-            try {
-                val result: GetCredentialResponse = credentialManager.getCredential(request = request, context = context)
-                when (val result = authManager.signInWithGoogle(result = result)) {
-                    is AuthRes.Success -> {
-                        analyticsManager.trackEvent(eventName = FirebaseAnalytics.Event.LOGIN, params = Bundle())
-                        onNavigation(MoviesHome.route, LoginScreen.route)
-                    }
-                    is AuthRes.Error -> {
-                        Timber.e(javaClass.simpleName, "Exception: ${result.errorMessage}")
-                        analyticsManager.trackError(errorType = result.errorMessage)
-                        // TODO: show Snackbar
-                    }
-                }
-            } catch (e: GetCredentialException) {
-                Timber.e(javaClass.simpleName, "Exception: ${e.message}")
-                analyticsManager.trackError(errorType = e.message.orEmpty())
-                // TODO: show Snackbar
-            }
-        }
+//        val request: GetCredentialRequest =
+//            GetCredentialRequest.Builder().addCredentialOption(credentialOption = authManager.getGoogleIdOption()).build()
+//
+//        viewModelScope.launch {
+//            // TODO: mantener esto en estado para luego cerrarlo con credentialManager.clearCredentialState(clearRequest)
+//            // TODO: esto va por inyección de dependencias
+//            // TODO: actualizar la foto y el nombre con los datos obtenidos en Home
+//            val credentialManager: CredentialManager = CredentialManager.create(context)
+//            try {
+//                val result: GetCredentialResponse = credentialManager.getCredential(request = request, context = context)
+//                when (val result = authManager.signInWithGoogle(result = result)) {
+//                    is AuthRes.Success -> {
+//                        analyticsManager.trackEvent(eventName = FirebaseAnalytics.Event.LOGIN, params = Bundle())
+//                        onNavigation(MoviesHome.route, LoginScreen.route)
+//                    }
+//                    is AuthRes.Error -> {
+//                        Timber.e(javaClass.simpleName, "Exception: ${result.errorMessage}")
+//                        analyticsManager.trackError(errorType = result.errorMessage)
+//                        // TODO: show Snackbar
+//                    }
+//                }
+//            } catch (e: GetCredentialException) {
+//                Timber.e(javaClass.simpleName, "Exception: ${e.message}")
+//                analyticsManager.trackError(errorType = e.message.orEmpty())
+//                // TODO: show Snackbar
+//            }
+//        }
     }
 }

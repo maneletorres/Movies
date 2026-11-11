@@ -1,5 +1,6 @@
 package com.manishsputnikcorporation.movies.ui.screens.auth.login
 
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -50,7 +51,10 @@ fun LoginScreen(loginViewModel: LoginViewModel, onNavigation: (String, String) -
         onIncognitoSignUp = { scope.launch { loginViewModel.incognitoSignIn(onNavigation = onNavigation) } },
         onEmailSignUpClick = { loginViewModel.navigateToSignUpScreen(onNavigation) },
         onForgottenPasswordClick = { loginViewModel.navigateToPasswordRecoveryScreen(onNavigation) },
-        onGoogleSignUpClick = { loginViewModel.launchGoogleSignIn(context = context, onNavigation = onNavigation) },
+        onGoogleSignUpClick = {
+//            loginViewModel.launchGoogleSignIn(context = context, onNavigation = onNavigation)
+            Toast(context).show()
+        },
     )
 }
 

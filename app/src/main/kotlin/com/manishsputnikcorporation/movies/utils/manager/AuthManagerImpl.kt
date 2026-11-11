@@ -25,7 +25,7 @@ interface AuthManager {
 
     fun getCurrentUser(): FirebaseUser?
 
-    fun getGoogleIdOption(): GetGoogleIdOption
+//    fun getGoogleIdOption(): GetGoogleIdOption
 
     suspend fun signInAnonymously(): AuthRes<FirebaseUser>
 
@@ -43,24 +43,23 @@ interface AuthManager {
 class AuthManagerImpl(context: Context) : AuthManager {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
 
-    private val webClientId = context.getString(R.string.default_web_client_id)
+//    private val webClientId = context.getString(R.string.default_web_client_id)
 
-    private val googleIdOption: GetGoogleIdOption =
-        GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(webClientId)
-            .setAutoSelectEnabled(true)
-            // nonce string to use when generating a Google ID token
-            .setNonce("") // TODO: to apply nonce
-            .build()
+//    private val googleIdOption: GetGoogleIdOption =
+//        GetGoogleIdOption.Builder()
+//            .setFilterByAuthorizedAccounts(false)
+//            .setServerClientId(webClientId)
+//            .setAutoSelectEnabled(true)
+//            // nonce string to use when generating a Google ID token
+//            .setNonce("") // TODO: to apply nonce
+//            .build()
 
-    // TODO: ¿como se usa esto?
-    val signInWithGoogleOption: GetSignInWithGoogleOption =
-        GetSignInWithGoogleOption.Builder(serverClientId = webClientId).setNonce("").build() // TODO: to apply nonce
+//    val signInWithGoogleOption: GetSignInWithGoogleOption =
+//        GetSignInWithGoogleOption.Builder(serverClientId = webClientId).setNonce("").build() // TODO: to apply nonce
 
     override fun getCurrentUser(): FirebaseUser? = auth.currentUser
 
-    override fun getGoogleIdOption(): GetGoogleIdOption = googleIdOption
+//    override fun getGoogleIdOption(): GetGoogleIdOption = googleIdOption
 
     override suspend fun signInAnonymously(): AuthRes<FirebaseUser> =
         manageAuthResult(authResult = auth.signInAnonymously(), errorMessage = "sign_in_anonymously_error")
